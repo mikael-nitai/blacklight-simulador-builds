@@ -37,7 +37,7 @@ def scenarios() -> tuple[tuple[str, tuple[Profile, Profile, Profile]], ...]:
 
 
 def seed_for(stage: str, scenario: str, policy: str, index: int) -> int:
-    value = f"blacklight-group-v1|{stage}|{scenario}|{policy}|{index}"
+    value = f"blacklight-group-pool-v2|{stage}|{scenario}|{policy}|{index}"
     return int.from_bytes(sha256(value.encode()).digest()[:8], "big")
 
 
@@ -59,6 +59,8 @@ def profile_record(profile: Profile) -> dict:
 
 def hashes() -> dict[str, str]:
     files = [ROOT / "GROUP_EXPERIMENT_SPEC.md", ROOT / "GROUP_SPEC.md",
+             ROOT / "GROUP_POOL_V2_ADDENDUM.md",
+             ROOT / "DAMAGE_POOL_RULING.md", ROOT / "FAST_STRIKES_RULING.md",
              ROOT / "scripts" / "group_experiment.py"]
     files.extend(ROOT / "experimental" / name for name in (
         "__init__.py", "group.py", "group_audit.py",
@@ -113,10 +115,12 @@ def main() -> None:
             print(f"{args.stage} {scenario_id} {policy.name}: {row['outcomes']}",
                   flush=True)
     payload = {
-        "schema": "blacklight-fixed-contact-group-v1",
+        "schema": "blacklight-fixed-contact-group-pool-v2",
+        "damage_model": "literal_marvel_pool_v2",
         "stage": args.stage,
         "n_per_cell": n,
-        "seed_formula": "first 8 bytes SHA-256 of blacklight-group-v1|stage|scenario|policy|index",
+        "seed_formula": "first 8 bytes SHA-256 of blacklight-group-pool-v2|stage|scenario|policy|index",
+        "damage_seed_formula": "battle seed XOR 0xD6162026; separate Python Random stream",
         "source_sha256": hashes(),
         "python": sys.version,
         "scenarios": [{"id": name,
@@ -125,7 +129,7 @@ def main() -> None:
         "policies": [asdict(policy) for policy in POLICIES],
         "rows": rows,
     }
-    output = ROOT / "results" / f"group_{args.stage}_summary.json"
+    output = ROOT / "results" / f"group_pool_v2_{args.stage}_summary.json"
     output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
                       encoding="utf-8")
 

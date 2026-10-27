@@ -12,8 +12,8 @@ from dataclasses import dataclass, field
 from random import Random
 from typing import Protocol
 
-from .damage import calculate
 from .dice import DieRoll, Result, resolve_check
+from .pool_damage import roll_damage_pool
 
 
 class IllegalAction(ValueError):
@@ -217,7 +217,7 @@ class Duel:
         seed: int,
         initial_distance: int = 1,
         max_rounds: int = 30,
-        stack_signature_edge: bool = False,
+        stack_signature_edge: bool = True,
         stack_stunned_edge: bool = False,
         end_turn_healing_first: bool = True,
         audit: bool = False,
@@ -227,6 +227,8 @@ class Duel:
         self.fighters = [Fighter(p) for p in profiles]
         self.policies = policies
         self.rng = Random(seed)
+        # Independent stream: extra damage dice never change future hit rolls.
+        self.damage_rng = Random(seed ^ 0xD6162026)
         self.seed = seed
         self.distance = initial_distance
         self.max_rounds = max_rounds
@@ -359,6 +361,8 @@ class Duel:
         blade = "blade" in weapons_used
         claw = "claw" in weapons_used
         hammer = "hammer" in weapons_used
+        if offhand and not fast:
+            raise IllegalAction("Two offensive weapons require Fast Strikes")
         if attacker.shield_active:
             attacker.shield_active = False
             self._record("shield_deactivate", ("HR-04",), actor=p.name,
@@ -397,10 +401,23 @@ class Duel:
             troubles += 1
             rules += ("ACT-07",)
         ability_for_damage = modifier * (2 if attacker.stance and not ranged else 1)
-        if hammer:
-            bonuses = [bonus + 2] if "mighty" in p.powers else [bonus, 2]
-        else:
-            bonuses = [bonus, 1] if (blade or claw) else [bonus]
+        first_weapon = ("ranged" if ranged else
+                        primary if primary in {"blade", "claw", "hammer"}
+                        else "bare")
+        strike_weapons = ([first_weapon, offhand or first_weapon]
+                          if fast else [first_weapon])
+
+        def component_bonuses(weapon: str) -> list[int]:
+            if weapon == "hammer":
+                return [bonus + 2] if "mighty" in p.powers else [bonus, 2]
+            if weapon in {"blade", "claw"}:
+                # HR-01/03 as subsequently clarified: +1 stacks with Mighty.
+                return [bonus + 1] if "mighty" in p.powers else [bonus, 1]
+            return [bonus]
+
+        component_specs = [(weapon, component_bonuses(weapon))
+                           for weapon in strike_weapons]
+        bonuses = component_specs[0][1]
         result, rerolls = resolve_check(
             self.rng, modifier, target, edges=edges, troubles=troubles,
             chooser=lambda roll, mod, tn: self.policies[actor].choose_edge_die(
@@ -436,25 +453,40 @@ class Duel:
         attacker.attacks += 1
         before = defender.health
         damage = 0
+        raw_damage = 0
+        damage_components: list[dict] = []
         if result.success:
             attacker.hits += 1
             if result.fantastic:
                 attacker.fantastic_hits += 1
             if ammo_immunity:
-                damage = 0
                 rules += ("HR-04",)
-            elif fast:
-                # Core p.99 specifies half regular on success, full on Fantastic.
-                damage = calculate(result.roll.marvel, p.rank, ability_for_damage,
-                                   bonuses, reduction, False,
-                                   denominator=1 if result.fantastic else 2)
-            else:
-                damage = calculate(result.roll.marvel, p.rank, ability_for_damage,
-                                   bonuses, reduction, result.fantastic)
-            raw_damage = calculate(
-                result.roll.marvel, p.rank, ability_for_damage, bonuses, 0,
-                result.fantastic if not fast else False,
-                denominator=(1 if result.fantastic else 2) if fast else 1)
+            for weapon, candidates in component_specs:
+                full_multiplier = p.rank + max(0, *candidates)
+                pool = roll_damage_pool(
+                    self.damage_rng, full_multiplier=full_multiplier,
+                    ability=ability_for_damage,
+                    reduction=0 if ammo_immunity else reduction,
+                    fast_strikes=fast, fantastic=result.fantastic,
+                    sample_counterfactual=not ammo_immunity)
+                applied_component = 0 if ammo_immunity else pool.damage
+                raw_component = (pool.damage if ammo_immunity else
+                                 pool.damage_without_reduction)
+                damage += applied_component
+                raw_damage += raw_component or 0
+                damage_components.append({
+                    "weapon": weapon, "bonus_candidates": candidates,
+                    "full_multiplier": full_multiplier,
+                    "reduction": reduction,
+                    "dice_after_reduction": pool.dice_after_reduction,
+                    "dice_rolled": pool.dice_rolled,
+                    "ability_added": pool.ability_added,
+                    "faces": list(pool.faces),
+                    "counterfactual_faces": list(pool.counterfactual_faces),
+                    "ammunition_immunity": ammo_immunity,
+                    "damage": applied_component,
+                    "damage_without_reduction": raw_component,
+                })
             defender.damage_mitigated += max(0, raw_damage - damage)
             defender.health -= damage
             if p.heroic and defender.health <= -q.max_health:
@@ -497,6 +529,9 @@ class Duel:
                      bonus_candidates=bonuses, reduction=reduction,
                      damage_denominator=(1 if result.fantastic else 2) if fast else 1,
                      default_fantastic_multiplier=not fast,
+                     damage_model="literal_marvel_pool_v2",
+                     damage_components=damage_components,
+                     strike_weapons=strike_weapons,
                      ammunition_immunity=ammo_immunity,
                      knockback_selected=knockback_selected,
                      calculated_damage=damage, damage=before - defender.health,

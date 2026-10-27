@@ -23,7 +23,8 @@ def replay(stage: str, scenario: str, variant: str,
     issues = audit_focus_duel(result, profiles, reduction)
     if issues:
         raise RuntimeError(f"Focus replay failed audit: {issues}")
-    data = {"schema": "blacklight-focus-full-trace-v1",
+    data = {"schema": "blacklight-focus-full-trace-pool-v2",
+            "damage_model": "literal_marvel_pool_v2",
             "stage": stage, "scenario": scenario,
             "variant": variant, "strategy": strategy,
             "index": index, "seed": seed,

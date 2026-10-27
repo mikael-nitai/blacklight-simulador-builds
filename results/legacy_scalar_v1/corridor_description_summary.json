@@ -1,0 +1,532 @@
+{
+  "schema": "blacklight-bounded-corridor-v1",
+  "stage": "description",
+  "n_per_cell": 5000,
+  "seed_formula": "first 8 bytes SHA-256 of blacklight-corridor-v1|stage|length|opponent|policy|index",
+  "source_sha256": {
+    "CORRIDOR_SPEC.md": "f86528b400d0fbfdc3c7eb3b6b151f9fd29c7f01134f02992e6dfa6d32bb7e8c",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "scripts/corridor_experiment.py": "8e7a5ab45c73e34f28cf8256a57f5c81d002e3940b8688d8e268236e59b92379",
+    "experimental/corridor.py": "2f59607a7338a85c969430e62c40e07febec6f09c60e0dadee381ef3300f1229",
+    "experimental/corridor_audit.py": "92f0f1a57ea05376a31ac79a5a2a41f40011e916c176dfb00170b6694482c2eb",
+    "blacklight/__init__.py": "30361ce63d1526dcee116dcf7b576b7a4e1162ba0c53376221f58a480b215491",
+    "blacklight/audit.py": "d897afc6aad0aaea7b79b3a04cf1413acd915a62e8c5b95943d2873d86df8901",
+    "blacklight/damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight/dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight/engine.py": "0cc35d055f340d6ce91dd714918ae3ba927c8f1e9af4cd7bcdb05e73fe8b9751",
+    "blacklight/experiment.py": "ea231961a0b17de3072136d8ac6d60980b6eab7c33e859670a05038fa72fea49",
+    "blacklight/policies.py": "c2ac709aab1beb288724b3561010b1ecc2e98d656ac0a94b2ee357eb2cc8b0a5",
+    "blacklight/search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight/sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f"
+  },
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "initial_positions": [
+    0,
+    8
+  ],
+  "lengths": [
+    12,
+    20
+  ],
+  "opponents": [
+    {
+      "id": "C1_rank3_ammo",
+      "profile": {
+        "name": "Gunner",
+        "rank": 3,
+        "max_health": 120,
+        "max_focus": 60,
+        "melee": 2,
+        "agility": 6,
+        "resilience": 4,
+        "vigilance": 2,
+        "melee_defense": 12,
+        "agility_defense": 16,
+        "run_speed": 6,
+        "health_dr": 0,
+        "melee_bonus": 0,
+        "ranged_bonus": 0,
+        "ranged_range": 10,
+        "ranged_is_ammunition": true,
+        "logic": 2,
+        "initiative_modifier": null,
+        "run_speed_exception": false,
+        "powers": [],
+        "traits": [],
+        "weapons": [],
+        "shield_active": false,
+        "heroic": false
+      }
+    },
+    {
+      "id": "C2_rank4_nonammo",
+      "profile": {
+        "name": "Gunner",
+        "rank": 4,
+        "max_health": 120,
+        "max_focus": 60,
+        "melee": 2,
+        "agility": 6,
+        "resilience": 4,
+        "vigilance": 2,
+        "melee_defense": 12,
+        "agility_defense": 16,
+        "run_speed": 6,
+        "health_dr": 0,
+        "melee_bonus": 0,
+        "ranged_bonus": 0,
+        "ranged_range": 10,
+        "ranged_is_ammunition": false,
+        "logic": 2,
+        "initiative_modifier": null,
+        "run_speed_exception": false,
+        "powers": [],
+        "traits": [],
+        "weapons": [],
+        "shield_active": false,
+        "heroic": false
+      }
+    }
+  ],
+  "policies": [
+    {
+      "name": "hammer_attack",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "hammer",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false
+    },
+    {
+      "name": "shield_hammer_reactive",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "hammer",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": false
+    }
+  ],
+  "opponent_policy": {
+    "name": "ranged_kiter",
+    "open_stance": false,
+    "heal_missing": null,
+    "heal_spend": 15,
+    "prefer_fast": false,
+    "weapon": "bare",
+    "offhand": null,
+    "kite": true,
+    "riposte": true,
+    "move_after_attack": true,
+    "knockback_stance": true,
+    "edge_mode": "hit",
+    "always_wait": false,
+    "dodge_below_health": null,
+    "treat_bleeding": true,
+    "shield_react": false,
+    "shield_standard": false,
+    "shield_end_turn": false
+  },
+  "rows": [
+    {
+      "stage": "description",
+      "length": 12,
+      "opponent": "C1_rank3_ammo",
+      "policy": "hammer_attack",
+      "n": 5000,
+      "outcomes": {
+        "win": 4999,
+        "loss": 1,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.9998,
+          "wilson95": [
+            0.9988679109191605,
+            0.9999646942165608
+          ]
+        },
+        "loss": {
+          "estimate": 0.0002,
+          "wilson95": [
+            3.530578343936526e-05,
+            0.0011320890808397363
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "draw": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        }
+      },
+      "wall_reached": 4694,
+      "contact_occurred": 5000,
+      "mean_rounds": 3.245,
+      "full_logs_audited": 50
+    },
+    {
+      "stage": "description",
+      "length": 12,
+      "opponent": "C1_rank3_ammo",
+      "policy": "shield_hammer_reactive",
+      "n": 5000,
+      "outcomes": {
+        "win": 5000,
+        "loss": 0,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.9992322980549431,
+            1.0000000000000002
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "draw": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        }
+      },
+      "wall_reached": 4676,
+      "contact_occurred": 5000,
+      "mean_rounds": 3.2454,
+      "full_logs_audited": 50
+    },
+    {
+      "stage": "description",
+      "length": 12,
+      "opponent": "C2_rank4_nonammo",
+      "policy": "hammer_attack",
+      "n": 5000,
+      "outcomes": {
+        "win": 4990,
+        "loss": 10,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.998,
+          "wilson95": [
+            0.996322115723667,
+            0.9989132531390561
+          ]
+        },
+        "loss": {
+          "estimate": 0.002,
+          "wilson95": [
+            0.0010867468609438852,
+            0.0036778842763330113
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "draw": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        }
+      },
+      "wall_reached": 4711,
+      "contact_occurred": 5000,
+      "mean_rounds": 3.2458,
+      "full_logs_audited": 50
+    },
+    {
+      "stage": "description",
+      "length": 12,
+      "opponent": "C2_rank4_nonammo",
+      "policy": "shield_hammer_reactive",
+      "n": 5000,
+      "outcomes": {
+        "win": 5000,
+        "loss": 0,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.9992322980549431,
+            1.0000000000000002
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "draw": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        }
+      },
+      "wall_reached": 4667,
+      "contact_occurred": 5000,
+      "mean_rounds": 3.2178,
+      "full_logs_audited": 50
+    },
+    {
+      "stage": "description",
+      "length": 20,
+      "opponent": "C1_rank3_ammo",
+      "policy": "hammer_attack",
+      "n": 5000,
+      "outcomes": {
+        "win": 4999,
+        "loss": 1,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.9998,
+          "wilson95": [
+            0.9988679109191605,
+            0.9999646942165608
+          ]
+        },
+        "loss": {
+          "estimate": 0.0002,
+          "wilson95": [
+            3.530578343936526e-05,
+            0.0011320890808397363
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "draw": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        }
+      },
+      "wall_reached": 4688,
+      "contact_occurred": 5000,
+      "mean_rounds": 4.7594,
+      "full_logs_audited": 50
+    },
+    {
+      "stage": "description",
+      "length": 20,
+      "opponent": "C1_rank3_ammo",
+      "policy": "shield_hammer_reactive",
+      "n": 5000,
+      "outcomes": {
+        "win": 5000,
+        "loss": 0,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.9992322980549431,
+            1.0000000000000002
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "draw": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        }
+      },
+      "wall_reached": 4731,
+      "contact_occurred": 5000,
+      "mean_rounds": 4.7852,
+      "full_logs_audited": 50
+    },
+    {
+      "stage": "description",
+      "length": 20,
+      "opponent": "C2_rank4_nonammo",
+      "policy": "hammer_attack",
+      "n": 5000,
+      "outcomes": {
+        "win": 4947,
+        "loss": 53,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.9894,
+          "wilson95": [
+            0.9861620249513982,
+            0.99188654838478
+          ]
+        },
+        "loss": {
+          "estimate": 0.0106,
+          "wilson95": [
+            0.008113451615220025,
+            0.013837975048601892
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "draw": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        }
+      },
+      "wall_reached": 4679,
+      "contact_occurred": 5000,
+      "mean_rounds": 4.7604,
+      "full_logs_audited": 50
+    },
+    {
+      "stage": "description",
+      "length": 20,
+      "opponent": "C2_rank4_nonammo",
+      "policy": "shield_hammer_reactive",
+      "n": 5000,
+      "outcomes": {
+        "win": 5000,
+        "loss": 0,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.9992322980549431,
+            1.0000000000000002
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        },
+        "draw": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0007677019450571244
+          ]
+        }
+      },
+      "wall_reached": 4680,
+      "contact_occurred": 5000,
+      "mean_rounds": 4.7552,
+      "full_logs_audited": 50
+    }
+  ]
+}

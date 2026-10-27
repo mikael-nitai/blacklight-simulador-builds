@@ -2,7 +2,7 @@
 
 Projeto de pesquisa reproduzível para Victor Halle (Rank 3) em *Marvel Multiverse Role-Playing Game*. Usa a ficha PDF fornecida nesta conversa, o Core Rulebook e as decisões de mesa registradas em [RULES_AUDIT.md](RULES_AUDIT.md). **Chicote não está disponível no Rank 3** e não entra no motor, nas políticas ou nos experimentos.
 
-**Atualização em andamento:** a mesa esclareceu que [todo dano usa vários d6 literais](DAMAGE_POOL_RULING.md), enquanto o motor atual multiplica um único dado Marvel. Por isso, **todas as taxas antigas de combate são históricas para a mesa atual**, inclusive as políticas sem Fast Strikes. A [nova regra de Fast Strikes](FAST_STRIKES_RULING.md) também confirma duas edges e dois componentes de dano. O motor, os auditores e os experimentos serão refeitos sob essas decisões; preserve os JSONs anteriores apenas como evidência reproduzível da versão antiga.
+**Versão atual em validação:** o motor de duelos, Focus, grupo e corredor agora lança [vários d6 literais com face Marvel 1→6](DAMAGE_POOL_RULING.md). [Fast Strikes](FAST_STRIKES_RULING.md) usa duas edges e dois componentes de dano no mesmo alvo. As 42 saídas da fórmula antiga foram copiadas para [results/legacy_scalar_v1/](results/legacy_scalar_v1/); suas taxas são históricas para a mesa atual. As saídas com `pool_v2` no nome usam a regra nova. A seleção final da estratégia ainda depende da replicação e dos cenários reservados descritos em [POOL_V2_CONFIRM_SPEC.md](POOL_V2_CONFIRM_SPEC.md).
 
 ## O que está implementado
 
@@ -30,7 +30,7 @@ Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidade
 - [VALIDATION_PLAN.md](VALIDATION_PLAN.md) e [REVIEW_FINDINGS.md](REVIEW_FINDINGS.md): oráculos independentes e revisão adversarial.
 - `blacklight/`: dado, dano, motor, políticas, auditor de logs, busca, experimentos e sensibilidade.
 - `tests/`: oráculos e 4.000 trilhas auditadas em dez políticas × quatro cenários × 100 sementes.
-- `results/`: JSONs estruturados; arquivos `pre_*` e `invalid_*` são versões históricas excluídas das conclusões.
+- `results/`: JSONs estruturados; `legacy_scalar_v1/`, `pre_*` e `invalid_*` são históricos. Arquivos `pool_v2` usam a regra atual da mesa.
 - [DEMONSTRATIONS.md](DEMONSTRATIONS.md): quatro combates completos válidos com rolagens, ações e estados auditados; a trilha antiga do Escudo em Fast Strikes está arquivada.
 - [REPORT.md](REPORT.md): resultados confirmatórios, intervalos, refutação, sensibilidade, cenários reservados e gráficos.
 - [MANUAL_BLACKLIGHT.md](MANUAL_BLACKLIGHT.md) e [QUICK_REFERENCE.md](QUICK_REFERENCE.md): estratégia prática e consulta durante a mesa.
@@ -43,12 +43,9 @@ Abra PowerShell nesta pasta. Requer Python 3.11 ou mais recente; não há depend
 ```powershell
 python -m unittest discover -s tests -q
 python -m scripts.verify_sources
-python -m blacklight.experiment --stage dev --n 1000 --output results/dev_summary.json
-python -m blacklight.experiment --stage confirm --n 10000 --output results/confirm_summary.json
-python -m blacklight.sensitivity
-python -m scripts.holdout
-python -m scripts.secondary_metrics
-python -m scripts.adversarial_scenarios
+python -m blacklight.experiment --stage dev --n 1000 --output results/pool_v2_dev_summary.json
+python -m scripts.pool_v2_confirm --stage confirm_v2 --n 10000 --output results/pool_v2_confirm_summary.json
+python -m scripts.pool_v2_confirm --stage holdout_v2 --n 10000 --output results/pool_v2_holdout_summary.json
 python -m scripts.group_experiment --stage description
 python -m scripts.focus_experiment --stage description
 python -m scripts.corridor_experiment --stage description
@@ -57,7 +54,7 @@ python -m scripts.replay --scenario mirror_hammer --strategy hammer --index 0 --
 
 As sementes são derivadas de SHA-256 de fase, cenário, política e índice. Reexecutar uma fase com o mesmo código produz os mesmos resultados. Os resultados de confirmação usam sementes diferentes das de desenvolvimento. `source_sha256` em cada JSON permite detectar mudanças nas regras, ficha auditada, especificação e código do pacote.
 
-A suíte atual tem **96 testes**: 58 do motor de duelos antigo, três da primitiva multi-alvo, onze do protótipo de grupo/auditor, doze de Focus, cinco do corredor, um das duas edges e seis da nova rolagem de dano isolada. A confirmação contém 10 000 duelos por célula (400 000 no total), os cenários reservados 150 000 duelos e a amostra suplementar 20 000 trilhas completas auditadas. Os experimentos separados de grupo e Focus têm 60 000 combates descritivos cada, com 600 trilhas auditadas cada; o corredor tem 40 000 combates descritivos e 400 trilhas auditadas. A primeira versão do cenário reservado H2 tinha Health incoerente com Resilience e foi arquivada como `invalid_holdout_pre_resilience_coherence.json`; H2 corrigido é exploratório, enquanto H1/H3 preservam a reserva original. Os PNG/SVG em `results/` são reproduzíveis com `python -m scripts.plot_results` após instalar opcionalmente Matplotlib; o simulador não depende dele.
+A suíte atual tem **106 testes** aprovados, incluindo oráculos do novo conjunto de dados, integração de duas armas e auditores independentes de duelos, Focus e grupo. A versão `pool_v2` já tem 52.000 duelos de desenvolvimento, 60.000 combates descritivos de grupo, 60.000 de Focus e 60.000 de corredor. A replicação confirmatória e a reserva v2 estão em execução; [PROJECT_STATUS.md](PROJECT_STATUS.md) separa o que ainda falta. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
 
 ## Leitura responsável
 

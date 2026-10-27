@@ -17,6 +17,9 @@ def verify(include_historical: bool = False) -> tuple[int, list[str]]:
                 "pre_" in result.name or result.name.startswith("invalid_")):
             continue
         payload = json.loads(result.read_text(encoding="utf-8"))
+        if (not include_historical and
+                payload.get("damage_model") != "literal_marvel_pool_v2"):
+            continue
         sources = payload.get("source_sha256")
         if not isinstance(sources, dict):
             continue

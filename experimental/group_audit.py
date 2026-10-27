@@ -3,9 +3,6 @@
 This module does not import production dice or damage functions.
 """
 
-from math import ceil
-
-
 def audit_group_log(log: tuple[dict, ...] | list[dict],
                     profiles: tuple[object, ...]) -> list[str]:
     issues: list[str] = []
@@ -100,8 +97,7 @@ def audit_group_log(log: tuple[dict, ...] | list[dict],
             attacker = by_name[check["actor"]]
             defender = by_name[target]
             roll = check["roll"]
-            marvel = 6 if roll[1] == 1 else roll[1]
-            total = roll[0] + marvel + roll[2] + check["check_modifier"]
+            total = roll[0] + (6 if roll[1] == 1 else roll[1]) + roll[2] + check["check_modifier"]
             fantastic = roll[1] == 1
             ultimate = roll == [6, 1, 6]
             success = ultimate or total >= event["defense"]
@@ -112,15 +108,25 @@ def audit_group_log(log: tuple[dict, ...] | list[dict],
             if event["mode"] == "hammer":
                 bonus = (bonus + 2 if "mighty" in attacker.powers
                          else max(bonus, 2))
-            multiplier = attacker.rank + max(0, bonus) - event["reduction"]
-            if not success or multiplier < 1:
-                calculated = 0
-            else:
-                regular = max(0, marvel * multiplier + attacker.melee)
-                if event["mode"] == "fast_strikes":
-                    calculated = ceil(regular / (1 if fantastic else 2))
-                else:
-                    calculated = regular * (2 if fantastic else 1)
+            fast = event["mode"] == "fast_strikes"
+            expected_components = (2 if fast and len(check["targets"]) == 1
+                                   else 1) if success else 0
+            face_groups = event["damage_faces"]
+            if len(face_groups) != expected_components:
+                issues.append(f"event {seq}: damage component count mismatch")
+            after_dr = max(0, attacker.rank + max(0, bonus)
+                           - event["reduction"])
+            dice_count = (after_dr if fantastic or not fast else after_dr // 2)
+            ability = attacker.melee if fantastic or not fast else attacker.melee // 2
+            if fast and not fantastic and attacker.melee % 2:
+                issues.append(f"event {seq}: unresolved odd Fast ability bonus")
+            calculated = 0
+            for faces in face_groups:
+                if len(faces) != dice_count or any(not 1 <= face <= 6 for face in faces):
+                    issues.append(f"event {seq}: damage dice ledger mismatch")
+                part = (max(0, sum(6 if face == 1 else face for face in faces)
+                               + ability) if dice_count else 0)
+                calculated += part * (2 if fantastic and not fast else 1)
             if calculated != event["calculated_damage"]:
                 issues.append(f"event {seq}: damage arithmetic mismatch")
             before, after = event["health_before"], event["health_after"]

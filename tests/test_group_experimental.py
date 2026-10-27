@@ -35,6 +35,24 @@ def lower_enemy(name: str, *, melee: int = 4,
 
 
 class TestGroupPrototype(unittest.TestCase):
+    def test_single_target_fast_uses_two_pools_and_two_edges(self):
+        game = GroupBattle(
+            (blacklight_profile(), lower_enemy("E1"), lower_enemy("E2")),
+            (NoEdgeGroupPolicy("fast", preferred="fast_strikes"),
+             GROUP_ENEMY, GROUP_ENEMY), seed=1, audit=True)
+        game.round = 1
+        game._reset_reactions()
+        game.rng = SequenceRNG([6, 6, 6])
+        game.damage_rng = SequenceRNG([1] * 30)
+        game._attack(0, GroupAction("fast_strikes", (1,)))
+        check = next(e for e in game.log if e["type"] == "attack_check")
+        target = next(e for e in game.log if e["type"] == "attack_target")
+        self.assertEqual(check["edges"], 2)
+        self.assertEqual((target["calculated_damage"],
+                          [len(faces) for faces in target["damage_faces"]]),
+                         (42, [3, 3]))
+        self.assertEqual(game.fighters[1].health, 48)
+
     def test_fixed_seed_replays_three_actor_log(self):
         profiles = (blacklight_profile(), lower_enemy("E1"),
                     lower_enemy("E2"))
@@ -63,6 +81,7 @@ class TestGroupPrototype(unittest.TestCase):
         self.assertIn(GroupAction("fast_strikes", (1, 2)),
                       game.legal_actions(0))
         game.rng = SequenceRNG([3, 3, 3])  # total 15 vs defenses 14 and 16
+        game.damage_rng = SequenceRNG([3] * 20)
         game._attack(0, GroupAction("fast_strikes", (1, 2)))
         self.assertEqual((game.fighters[1].health, game.fighters[2].health),
                          (78, 90))  # ceil((3*6+6)/2) = 12 vs E1 only
@@ -82,6 +101,7 @@ class TestGroupPrototype(unittest.TestCase):
         game.round = 1
         game._reset_reactions()
         game.rng = SequenceRNG([4, 4, 4])  # 16 vs Victor defense 16
+        game.damage_rng = SequenceRNG([4] * 20)
         game._attack(1, GroupAction("melee", (0,)))
         self.assertEqual(game.fighters[0].health, 142)
         self.assertEqual(game.fighters[0].reactions, 1)
@@ -121,6 +141,7 @@ class TestGroupPrototype(unittest.TestCase):
         game.round = 1
         game.turn_counts[0] = 1
         game.rng = SequenceRNG([5, 1, 4, 2, 2, 2])
+        game.damage_rng = SequenceRNG([6] * 30)
         game._attack(0, GroupAction("hammer", (1,)))
         self.assertEqual(game.fighters[1].health, 72)
         self.assertEqual(game.fighters[1].stunned_by, 0)

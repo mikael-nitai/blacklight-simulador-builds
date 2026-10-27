@@ -1,8 +1,11 @@
 """Hand-calculated references for the later literal-dice house rule."""
 
 import unittest
+from collections import Counter
+from itertools import product
+from random import Random
 
-from experimental.pool_damage import roll_damage_pool
+from blacklight.pool_damage import roll_damage_pool
 
 
 class SequenceRNG:
@@ -57,6 +60,16 @@ class TestPoolDamage(unittest.TestCase):
         self.assertEqual((hammer.dice_rolled, blade.dice_rolled), (2, 2))
         self.assertEqual(hammer.damage + blade.damage, 30)
 
+    def test_counterfactual_dice_are_separate_from_applied_dice(self):
+        result = roll_damage_pool(
+            SequenceRNG([1, 2, 3, 4]), full_multiplier=8,
+            ability=6, reduction=3, fast_strikes=True,
+            sample_counterfactual=True)
+        self.assertEqual(result.faces, (1, 2))
+        self.assertEqual(result.counterfactual_faces, (3, 4))
+        self.assertEqual(result.damage, 11)  # 6+2+3
+        self.assertEqual(result.damage_without_reduction, 18)  # 6+2+3+4+3
+
     def test_zero_dice_means_zero_damage_and_odd_bonus_requires_ruling(self):
         zero = roll_damage_pool(SequenceRNG([]), full_multiplier=3,
                                 ability=6, reduction=3)
@@ -64,6 +77,25 @@ class TestPoolDamage(unittest.TestCase):
         with self.assertRaises(ValueError):
             roll_damage_pool(SequenceRNG([]), full_multiplier=8,
                              ability=5, fast_strikes=True)
+
+    def test_exact_two_die_distribution_matches_enumeration(self):
+        observed = Counter()
+        expected = Counter()
+        face_values = (6, 2, 3, 4, 5, 6)
+        for first, second in product(range(1, 7), repeat=2):
+            actual = roll_damage_pool(SequenceRNG([first, second]),
+                                      full_multiplier=2, ability=0)
+            observed[actual.damage] += 1
+            expected[face_values[first - 1] + face_values[second - 1]] += 1
+        self.assertEqual(observed, expected)
+        self.assertEqual(sum(observed.values()), 36)
+
+    def test_large_pool_mean_matches_exact_mean(self):
+        rng = Random(4187)
+        sample = [roll_damage_pool(rng, full_multiplier=6, ability=6).damage
+                  for _ in range(50_000)]
+        self.assertAlmostEqual(sum(sample) / len(sample), 6 * (26 / 6) + 6,
+                               delta=0.08)
 
 
 if __name__ == "__main__":

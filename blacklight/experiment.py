@@ -13,9 +13,11 @@ import sys
 
 from . import __version__
 from .engine import Duel, Profile, blacklight_profile
-from .policies import (ATTACK, BLADE_HAMMER_FAST, HAMMER, HYBRID,
+from .policies import (ATTACK, BLADE_HAMMER_FAST, CLAW_HAMMER_FAST,
+                       HAMMER, HAMMER_FAST, HYBRID,
                        KITER, RulePolicy, SHIELD_BLADE_REACTIVE,
-                       SHIELD_HAMMER_ENDTURN, SHIELD_HAMMER_REACTIVE, STANCE)
+                       SHIELD_HAMMER_ENDTURN, SHIELD_HAMMER_REACTIVE,
+                       SHIELD_BLADE_HAMMER_REACTIVE, STANCE)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +43,9 @@ def strategies() -> tuple[Strategy, ...]:
         Strategy("stance_bare", STANCE),
         Strategy("hammer", HAMMER),
         Strategy("blade_hammer_fast", BLADE_HAMMER_FAST),
+        Strategy("hammer_fast", HAMMER_FAST),
+        Strategy("claw_hammer_fast", CLAW_HAMMER_FAST),
+        Strategy("shield_blade_hammer_reactive", SHIELD_BLADE_HAMMER_REACTIVE),
         Strategy("hammer_heal", replace(HAMMER, name="hammer_heal", heal_missing=30)),
         Strategy("shield_blade_reactive", SHIELD_BLADE_REACTIVE),
         Strategy("shield_hammer_reactive", SHIELD_HAMMER_REACTIVE),
@@ -70,7 +75,7 @@ def scenarios() -> tuple[Scenario, ...]:
 
 
 def seed_for(stage: str, scenario: str, strategy: str, index: int) -> int:
-    key = f"blacklight-v1|{stage}|{scenario}|{strategy}|{index}".encode("utf-8")
+    key = f"blacklight-pool-v2|{stage}|{scenario}|{strategy}|{index}".encode("utf-8")
     return int.from_bytes(sha256(key).digest()[:8], "big")
 
 
@@ -78,6 +83,8 @@ def source_hashes() -> dict[str, str]:
     paths = list((ROOT / "blacklight").glob("*.py")) + [
         ROOT / "EXPERIMENT_SPEC.md", ROOT / "RULES_AUDIT.md",
         ROOT / "CHARACTER_AUDIT.md",
+        ROOT / "DAMAGE_POOL_V2_SPEC.md", ROOT / "DAMAGE_POOL_RULING.md",
+        ROOT / "FAST_STRIKES_RULING.md",
     ]
     return {str(path.relative_to(ROOT)): sha256(path.read_bytes()).hexdigest()
             for path in sorted(paths)}
@@ -110,7 +117,7 @@ def wilson(successes: int, n: int, alpha: float = 0.05) -> tuple[float, float]:
 
 
 def run_cell(stage: str, scenario: Scenario, strategy: Strategy, n: int,
-             *, stack_signature_edge: bool = False,
+             *, stack_signature_edge: bool = True,
              profile_override: Profile | None = None,
              engine_kwargs: dict | None = None) -> dict:
     outcomes = {"win": 0, "loss": 0, "inconclusive": 0, "draw": 0}
@@ -187,7 +194,7 @@ def comparisons(rows: list[dict]) -> list[dict]:
 
 
 def execute(stage: str, n: int, output: Path,
-            *, stack_signature_edge: bool = False) -> dict:
+            *, stack_signature_edge: bool = True) -> dict:
     if n < 1:
         raise ValueError("n must be positive")
     rows = []
@@ -199,9 +206,11 @@ def execute(stage: str, n: int, output: Path,
             print(f"{stage} {scenario.id} {strategy.id}: "
                   f"{row['outcomes']['win']}/{n} wins", flush=True)
     payload = {
-        "schema": "blacklight-restricted-duel-v1", "engine_version": __version__,
+        "schema": "blacklight-restricted-duel-pool-v2", "engine_version": __version__,
+        "damage_model": "literal_marvel_pool_v2",
         "stage": stage, "n_per_cell": n,
-        "seed_formula": "first 8 bytes SHA-256 of blacklight-v1|stage|scenario|strategy|index",
+        "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|stage|scenario|strategy|index",
+        "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
         "python": sys.version, "source_sha256": source_hashes(),
         "rows": rows, "comparisons": comparisons(rows),
         "limitations": ["two-combatant open field", "no numeric limb effect",
@@ -218,10 +227,11 @@ def main() -> None:
     parser.add_argument("--stage", choices=("smoke", "dev", "confirm"), required=True)
     parser.add_argument("--n", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--stack-signature-edge", action="store_true")
+    parser.add_argument("--one-edge-counterfactual", action="store_true",
+                        help="Sensitivity run only; disables the confirmed second Fast Strikes edge")
     args = parser.parse_args()
     execute(args.stage, args.n, args.output,
-            stack_signature_edge=args.stack_signature_edge)
+            stack_signature_edge=not args.one_edge_counterfactual)
 
 
 if __name__ == "__main__":

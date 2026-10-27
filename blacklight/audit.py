@@ -8,6 +8,83 @@ from __future__ import annotations
 from math import ceil
 
 
+def _audit_pool_attack(event: dict, seq: int) -> tuple[int, list[str]]:
+    """Recompute literal Marvel pools without importing the engine's roller."""
+    issues: list[str] = []
+    fast = event["mode"] == "fast_strikes" or event["mode"].endswith("_fast")
+    primary = (event["mode"][:-5] if event["mode"].endswith("_fast")
+               else event["mode"])
+    first = ("ranged" if primary == "ranged" else
+             primary if primary in {"blade", "claw", "hammer"} else "bare")
+    expected_weapons = [first, event["offhand"] or first] if fast else [first]
+    if event["strike_weapons"] != expected_weapons:
+        issues.append(f"event {seq}: strike weapon ledger mismatch")
+    components = event["damage_components"]
+    if not event["success"]:
+        if components:
+            issues.append(f"event {seq}: damage components on miss")
+        return 0, issues
+    if len(components) != len(expected_weapons):
+        issues.append(f"event {seq}: wrong number of damage components")
+    total = 0
+    for index, component in enumerate(components):
+        if index >= len(expected_weapons):
+            issues.append(f"event {seq}: surplus component {index}")
+            continue
+        if component["weapon"] != expected_weapons[index]:
+            issues.append(f"event {seq}: component weapon mismatch")
+        bonuses = component["bonus_candidates"]
+        multiplier = event["rank"] + max(0, *bonuses)
+        if multiplier != component["full_multiplier"]:
+            issues.append(f"event {seq}: component multiplier mismatch")
+        immunity = event["ammunition_immunity"]
+        effective_dr = 0 if immunity else event["reduction"]
+        after_dr = max(0, multiplier - effective_dr)
+        if component["reduction"] != event["reduction"] or component[
+                "dice_after_reduction"] != after_dr:
+            issues.append(f"event {seq}: component reduction mismatch")
+        count = (after_dr if event["fantastic"] or not fast
+                 else after_dr // 2)
+        ability = event["ability_for_damage"]
+        if fast and not event["fantastic"]:
+            if ability % 2:
+                issues.append(f"event {seq}: unresolved odd ability half")
+            ability //= 2
+        if count < 1:
+            ability = 0
+        faces = component["faces"]
+        if (len(faces) != count or component["dice_rolled"] != count or
+                component["ability_added"] != ability or
+                any(not 1 <= face <= 6 for face in faces)):
+            issues.append(f"event {seq}: component dice ledger mismatch")
+        rolled = (max(0, sum(6 if face == 1 else face for face in faces)
+                      + ability) if count else 0)
+        if event["fantastic"] and not fast:
+            rolled *= 2
+        applied = 0 if immunity else rolled
+        if component["ammunition_immunity"] != immunity or component[
+                "damage"] != applied:
+            issues.append(f"event {seq}: component damage mismatch")
+        total += applied
+        raw_count = (multiplier if event["fantastic"] or not fast
+                     else multiplier // 2)
+        extra = component["counterfactual_faces"]
+        if (len(extra) != (0 if immunity else max(0, raw_count - count)) or
+                any(not 1 <= face <= 6 for face in extra)):
+            issues.append(f"event {seq}: counterfactual dice ledger mismatch")
+        raw_faces = faces if immunity else faces + extra
+        raw_ability = (event["ability_for_damage"]
+                       if event["fantastic"] or not fast else
+                       event["ability_for_damage"] // 2)
+        raw = (max(0, sum(6 if face == 1 else face for face in raw_faces)
+                   + raw_ability) if raw_faces else 0)
+        if event["fantastic"] and not fast:
+            raw *= 2
+        if component["damage_without_reduction"] != raw:
+            issues.append(f"event {seq}: counterfactual damage mismatch")
+    return total, issues
+
+
 def audit_log(log: tuple[dict, ...] | list[dict],
               initial_health: dict[str, int],
               initial_focus: dict[str, int]) -> list[str]:
@@ -67,7 +144,10 @@ def audit_log(log: tuple[dict, ...] | list[dict],
                     or fantastic != event["fantastic"] or success != event["success"]):
                 issues.append(f"event {seq}: check classification mismatch")
             calculated = 0
-            if success and not event["ammunition_immunity"]:
+            if event.get("damage_model") == "literal_marvel_pool_v2":
+                calculated, pool_issues = _audit_pool_attack(event, seq)
+                issues.extend(pool_issues)
+            elif success and not event["ammunition_immunity"]:
                 multiplier = (event["rank"] + max(0, *event["bonus_candidates"])
                               - event["reduction"])
                 if multiplier >= 1:

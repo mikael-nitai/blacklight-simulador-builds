@@ -39,6 +39,18 @@ class TestGroupAudit(unittest.TestCase):
         issues = audit_group_log(log, profiles)
         self.assertTrue(any("damage arithmetic mismatch" in i for i in issues))
 
+    def test_corrupted_damage_face_is_rejected(self):
+        profiles = self.profiles()
+        result = GroupBattle(profiles,
+                             (GROUP_HAMMER, GROUP_ENEMY, GROUP_ENEMY),
+                             seed=3, audit=True).run()
+        log = deepcopy(list(result.log))
+        target = next(e for e in log if e["type"] == "attack_target"
+                      and e["damage_faces"])
+        target["damage_faces"][0][0] = 7
+        issues = audit_group_log(log, profiles)
+        self.assertTrue(any("damage dice ledger mismatch" in i for i in issues))
+
     def test_duplicate_reaction_reset_is_rejected(self):
         profiles = self.profiles()
         result = GroupBattle(profiles,

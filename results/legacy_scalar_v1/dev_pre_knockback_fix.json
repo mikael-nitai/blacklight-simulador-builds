@@ -1,0 +1,2423 @@
+{
+  "schema": "blacklight-restricted-duel-v1",
+  "engine_version": "0.1.0",
+  "stage": "dev",
+  "n_per_cell": 1000,
+  "seed_formula": "first 8 bytes SHA-256 of blacklight-v1|stage|scenario|strategy|index",
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "source_sha256": {
+    "blacklight\\__init__.py": "30361ce63d1526dcee116dcf7b576b7a4e1162ba0c53376221f58a480b215491",
+    "blacklight\\audit.py": "69eaf7802922f05f5954430490fdd14cf14850150e51bdc8f72735ee085f246d",
+    "blacklight\\damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight\\dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight\\engine.py": "c231813fe651586ea6109b15bc48782e3878089280f9be16904fd524eb1ef117",
+    "blacklight\\experiment.py": "66de34ef5127cf83deb4c833f84b8004723b798f9b8835cd532474e8d98f0e09",
+    "blacklight\\policies.py": "85497c729248f338b5a03c4f19e3a4a06de8129790e17fb62952b840fe3df99f",
+    "CHARACTER_AUDIT.md": "26536de09e76b0c4bf5f98517d556110a647062d6496d009db1803981909b9f3",
+    "EXPERIMENT_SPEC.md": "591be3f759ad4700921408d6c209ce9dbe187f488f0e5d21882d7fe7f20e270a",
+    "RULES_AUDIT.md": "5f09792e96408e807caadcb227d1b0bd0eb8ab5f18e799c286b9e0a5907db585"
+  },
+  "rows": [
+    {
+      "stage": "dev",
+      "scenario": "mirror_attack",
+      "strategy": "bare_attack",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 473,
+        "loss": 527,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.473,
+      "win_ci95_wilson": [
+        0.4422178794680813,
+        0.5039887654901386
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 3.218,
+          "mc_se": 0.028342181978091945
+        },
+        "turns": {
+          "mean": 6.405,
+          "mc_se": 0.05084840765019647
+        },
+        "final_health": {
+          "mean": 21.687,
+          "mc_se": 1.6384625691759305
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 137.448,
+          "mc_se": 1.7469708650126947
+        },
+        "damage_taken": {
+          "mean": 141.123,
+          "mc_se": 1.6757559574797973
+        },
+        "damage_mitigated": {
+          "mean": 23.103,
+          "mc_se": 0.2781506044551381
+        },
+        "healing_effective": {
+          "mean": 12.81,
+          "mc_se": 0.15158125503134243
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 123.991,
+          "mc_se": 1.5940005510528397
+        },
+        "damage_round5": {
+          "mean": 137.288,
+          "mc_se": 1.7434783545466719
+        },
+        "damage_round10": {
+          "mean": 137.448,
+          "mc_se": 1.7469708650126947
+        }
+      },
+      "event_totals": {
+        "attacks": 3543,
+        "hits": 3140,
+        "fantastic_hits": 1013,
+        "ripostes": 341,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_attack",
+      "strategy": "stance_bare",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 371,
+        "loss": 629,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.371,
+      "win_ci95_wilson": [
+        0.341606326344111,
+        0.40138097734516226
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 4.277,
+          "mc_se": 0.03708971079216778
+        },
+        "turns": {
+          "mean": 8.592,
+          "mc_se": 0.07291675289570186
+        },
+        "final_health": {
+          "mean": 11.568,
+          "mc_se": 1.586459021919012
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 116.942,
+          "mc_se": 2.2790771879927254
+        },
+        "damage_taken": {
+          "mean": 155.762,
+          "mc_se": 1.6637131054653913
+        },
+        "damage_mitigated": {
+          "mean": 25.486,
+          "mc_se": 0.2768943381047624
+        },
+        "healing_effective": {
+          "mean": 17.33,
+          "mc_se": 0.1906763159321511
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 76.426,
+          "mc_se": 1.9346538215942948
+        },
+        "damage_round5": {
+          "mean": 111.562,
+          "mc_se": 2.19173672366593
+        },
+        "damage_round10": {
+          "mean": 116.942,
+          "mc_se": 2.2790771879927254
+        }
+      },
+      "event_totals": {
+        "attacks": 2533,
+        "hits": 2270,
+        "fantastic_hits": 729,
+        "ripostes": 396,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_attack",
+      "strategy": "hammer",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 745,
+        "loss": 255,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.745,
+      "win_ci95_wilson": [
+        0.7170834253930005,
+        0.7710414629490774
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 2.865,
+          "mc_se": 0.027304221661137315
+        },
+        "turns": {
+          "mean": 5.712,
+          "mc_se": 0.05217066012403694
+        },
+        "final_health": {
+          "mean": 60.238,
+          "mc_se": 1.9583826537780145
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 166.885,
+          "mc_se": 1.7455000846592783
+        },
+        "damage_taken": {
+          "mean": 100.647,
+          "mc_se": 2.0575626247954046
+        },
+        "damage_mitigated": {
+          "mean": 16.473,
+          "mc_se": 0.3398010237414475
+        },
+        "healing_effective": {
+          "mean": 10.885,
+          "mc_se": 0.18755519708062468
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 155.922,
+          "mc_se": 1.7188153601368135
+        },
+        "damage_round5": {
+          "mean": 166.885,
+          "mc_se": 1.7455000846592783
+        },
+        "damage_round10": {
+          "mean": 166.885,
+          "mc_se": 1.7455000846592783
+        }
+      },
+      "event_totals": {
+        "attacks": 3299,
+        "hits": 2951,
+        "fantastic_hits": 937,
+        "ripostes": 289,
+        "stuns_applied": 858,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_attack",
+      "strategy": "blade_hammer_fast",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 471,
+        "loss": 529,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.471,
+      "win_ci95_wilson": [
+        0.44023244570116365,
+        0.5019895062909986
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 3.716,
+          "mc_se": 0.03683341825979093
+        },
+        "turns": {
+          "mean": 7.465,
+          "mc_se": 0.07215248423291455
+        },
+        "final_health": {
+          "mean": 25.717,
+          "mc_se": 1.9017769760586194
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 129.768,
+          "mc_se": 1.9179323868793288
+        },
+        "damage_taken": {
+          "mean": 138.989,
+          "mc_se": 1.975011784914346
+        },
+        "damage_mitigated": {
+          "mean": 22.753,
+          "mc_se": 0.32591442314081653
+        },
+        "healing_effective": {
+          "mean": 14.706,
+          "mc_se": 0.21611633503803057
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 105.294,
+          "mc_se": 1.6423534604003154
+        },
+        "damage_round5": {
+          "mean": 128.214,
+          "mc_se": 1.8862656764629424
+        },
+        "damage_round10": {
+          "mean": 129.768,
+          "mc_se": 1.9179323868793288
+        }
+      },
+      "event_totals": {
+        "attacks": 4929,
+        "hits": 4379,
+        "fantastic_hits": 1316,
+        "ripostes": 384,
+        "stuns_applied": 1211,
+        "blade_bonus_actions": 821
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_attack",
+      "strategy": "hammer_heal",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 596,
+        "loss": 404,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.596,
+      "win_ci95_wilson": [
+        0.5652754709915897,
+        0.6259897913791836
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 6.718,
+          "mc_se": 0.08932219463523305
+        },
+        "turns": {
+          "mean": 13.469,
+          "mc_se": 0.1775008325207112
+        },
+        "final_health": {
+          "mean": 49.696,
+          "mc_se": 2.2362567894650267
+        },
+        "final_focus": {
+          "mean": 25.739,
+          "mc_se": 1.0955652158325135
+        },
+        "damage_dealt": {
+          "mean": 155.577,
+          "mc_se": 2.3390158327950803
+        },
+        "damage_taken": {
+          "mean": 257.378,
+          "mc_se": 4.435900622233363
+        },
+        "damage_mitigated": {
+          "mean": 42.13,
+          "mc_se": 0.729769596286159
+        },
+        "healing_effective": {
+          "mean": 157.074,
+          "mc_se": 2.6472095198986874
+        },
+        "focus_spent": {
+          "mean": 64.261,
+          "mc_se": 1.095565215832514
+        },
+        "damage_round3": {
+          "mean": 78.99,
+          "mc_se": 2.247793690816948
+        },
+        "damage_round5": {
+          "mean": 91.237,
+          "mc_se": 2.358691640986006
+        },
+        "damage_round10": {
+          "mean": 154.34,
+          "mc_se": 2.312681754348595
+        }
+      },
+      "event_totals": {
+        "attacks": 3186,
+        "hits": 2857,
+        "fantastic_hits": 900,
+        "ripostes": 717,
+        "stuns_applied": 704,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_attack",
+      "strategy": "shield_blade_fast",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 486,
+        "loss": 514,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.486,
+      "win_ci95_wilson": [
+        0.4551352556644078,
+        0.5169718935731877
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 4.952,
+          "mc_se": 0.04571417488904055
+        },
+        "turns": {
+          "mean": 9.977,
+          "mc_se": 0.08921002987012963
+        },
+        "final_health": {
+          "mean": 24.182,
+          "mc_se": 1.518260844516512
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 144.005,
+          "mc_se": 1.5761291692491957
+        },
+        "damage_taken": {
+          "mean": 147.423,
+          "mc_se": 1.6298099126436034
+        },
+        "damage_mitigated": {
+          "mean": 107.511,
+          "mc_se": 1.205447212441085
+        },
+        "healing_effective": {
+          "mean": 21.605,
+          "mc_se": 0.24074245976132236
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 93.945,
+          "mc_se": 1.3686493985590968
+        },
+        "damage_round5": {
+          "mean": 132.774,
+          "mc_se": 1.5040349214845523
+        },
+        "damage_round10": {
+          "mean": 144.005,
+          "mc_se": 1.5761291692491957
+        }
+      },
+      "event_totals": {
+        "attacks": 6834,
+        "hits": 6102,
+        "fantastic_hits": 1827,
+        "ripostes": 631,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 1194
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_attack",
+      "strategy": "hybrid",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 495,
+        "loss": 505,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.495,
+      "win_ci95_wilson": [
+        0.4640902748007247,
+        0.5259479927841308
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 8.701,
+          "mc_se": 0.09457559697693452
+        },
+        "turns": {
+          "mean": 17.397,
+          "mc_se": 0.18981417339182136
+        },
+        "final_health": {
+          "mean": 34.034,
+          "mc_se": 2.128412315079713
+        },
+        "final_focus": {
+          "mean": 15.053,
+          "mc_se": 0.8991098873828436
+        },
+        "damage_dealt": {
+          "mean": 133.623,
+          "mc_se": 2.7227328449822523
+        },
+        "damage_taken": {
+          "mean": 303.345,
+          "mc_se": 3.969767377067329
+        },
+        "damage_mitigated": {
+          "mean": 49.635,
+          "mc_se": 0.6542980061721728
+        },
+        "healing_effective": {
+          "mean": 187.379,
+          "mc_se": 2.2424361482278337
+        },
+        "focus_spent": {
+          "mean": 74.947,
+          "mc_se": 0.8991098873828434
+        },
+        "damage_round3": {
+          "mean": 41.531,
+          "mc_se": 1.9054111447744368
+        },
+        "damage_round5": {
+          "mean": 55.575,
+          "mc_se": 2.136945696996513
+        },
+        "damage_round10": {
+          "mean": 113.743,
+          "mc_se": 2.477399131641379
+        }
+      },
+      "event_totals": {
+        "attacks": 2534,
+        "hits": 2250,
+        "fantastic_hits": 699,
+        "ripostes": 841,
+        "stuns_applied": 466,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_hammer",
+      "strategy": "bare_attack",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 290,
+        "loss": 710,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.29,
+      "win_ci95_wilson": [
+        0.2627220349939292,
+        0.31888520357000394
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 2.875,
+          "mc_se": 0.02782353588509464
+        },
+        "turns": {
+          "mean": 5.744,
+          "mc_se": 0.05066587639655541
+        },
+        "final_health": {
+          "mean": -4.14,
+          "mc_se": 1.7971589190108315
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 104.232,
+          "mc_se": 2.0715311770324427
+        },
+        "damage_taken": {
+          "mean": 164.77,
+          "mc_se": 1.8167271665271028
+        },
+        "damage_mitigated": {
+          "mean": 20.786,
+          "mc_se": 0.23434829447453442
+        },
+        "healing_effective": {
+          "mean": 10.63,
+          "mc_se": 0.1467127282297777
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 97.543,
+          "mc_se": 1.9189201143886643
+        },
+        "damage_round5": {
+          "mean": 104.216,
+          "mc_se": 2.0711540316990003
+        },
+        "damage_round10": {
+          "mean": 104.232,
+          "mc_se": 2.0715311770324427
+        }
+      },
+      "event_totals": {
+        "attacks": 2696,
+        "hits": 2394,
+        "fantastic_hits": 758,
+        "ripostes": 340,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_hammer",
+      "strategy": "stance_bare",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 235,
+        "loss": 765,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.235,
+      "win_ci95_wilson": [
+        0.20976558842625362,
+        0.2622625935710906
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 3.062,
+          "mc_se": 0.028930831183928918
+        },
+        "turns": {
+          "mean": 6.192,
+          "mc_se": 0.05593088828424114
+        },
+        "final_health": {
+          "mean": -8.478,
+          "mc_se": 1.6777760423991184
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 81.973,
+          "mc_se": 2.3183025682161933
+        },
+        "damage_taken": {
+          "mean": 169.493,
+          "mc_se": 1.6900438453481617
+        },
+        "damage_mitigated": {
+          "mean": 21.185,
+          "mc_se": 0.2154604330223956
+        },
+        "healing_effective": {
+          "mean": 11.015,
+          "mc_se": 0.15351984674088018
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 71.053,
+          "mc_se": 2.0522489899904732
+        },
+        "damage_round5": {
+          "mean": 81.773,
+          "mc_se": 2.3115554848975095
+        },
+        "damage_round10": {
+          "mean": 81.973,
+          "mc_se": 2.3183025682161933
+        }
+      },
+      "event_totals": {
+        "attacks": 1765,
+        "hits": 1592,
+        "fantastic_hits": 520,
+        "ripostes": 350,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_hammer",
+      "strategy": "hammer",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 516,
+        "loss": 484,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.516,
+      "win_ci95_wilson": [
+        0.48502415202019794,
+        0.5468533917082642
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 2.704,
+          "mc_se": 0.026927850064739817
+        },
+        "turns": {
+          "mean": 5.409,
+          "mc_se": 0.04897057399211407
+        },
+        "final_health": {
+          "mean": 31.517,
+          "mc_se": 2.243562185962823
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 134.693,
+          "mc_se": 2.274047062186937
+        },
+        "damage_taken": {
+          "mean": 128.208,
+          "mc_se": 2.3000528209106372
+        },
+        "damage_mitigated": {
+          "mean": 16.234,
+          "mc_se": 0.2957037109755044
+        },
+        "healing_effective": {
+          "mean": 9.725,
+          "mc_se": 0.1657614305315077
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 127.565,
+          "mc_se": 2.1601870713396987
+        },
+        "damage_round5": {
+          "mean": 134.693,
+          "mc_se": 2.274047062186937
+        },
+        "damage_round10": {
+          "mean": 134.693,
+          "mc_se": 2.274047062186937
+        }
+      },
+      "event_totals": {
+        "attacks": 2662,
+        "hits": 2390,
+        "fantastic_hits": 755,
+        "ripostes": 262,
+        "stuns_applied": 680,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_hammer",
+      "strategy": "blade_hammer_fast",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 326,
+        "loss": 674,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.326,
+      "win_ci95_wilson": [
+        0.29766113143613737,
+        0.35567058051683587
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 3.214,
+          "mc_se": 0.03654503440331585
+        },
+        "turns": {
+          "mean": 6.516,
+          "mc_se": 0.07009034638705001
+        },
+        "final_health": {
+          "mean": 6.662,
+          "mc_se": 2.0431446831284847
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 103.364,
+          "mc_se": 2.172502075780198
+        },
+        "damage_taken": {
+          "mean": 154.988,
+          "mc_se": 2.0840756289605293
+        },
+        "damage_mitigated": {
+          "mean": 19.592,
+          "mc_se": 0.2672844495607199
+        },
+        "healing_effective": {
+          "mean": 11.65,
+          "mc_se": 0.2027772635642828
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 88.691,
+          "mc_se": 1.8773993041298238
+        },
+        "damage_round5": {
+          "mean": 102.623,
+          "mc_se": 2.1475131393506497
+        },
+        "damage_round10": {
+          "mean": 103.364,
+          "mc_se": 2.172502075780198
+        }
+      },
+      "event_totals": {
+        "attacks": 3799,
+        "hits": 3406,
+        "fantastic_hits": 1082,
+        "ripostes": 341,
+        "stuns_applied": 989,
+        "blade_bonus_actions": 676
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_hammer",
+      "strategy": "hammer_heal",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 241,
+        "loss": 759,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.241,
+      "win_ci95_wilson": [
+        0.215515307986809,
+        0.26846695290870853
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 4.263,
+          "mc_se": 0.07341130853090838
+        },
+        "turns": {
+          "mean": 8.589,
+          "mc_se": 0.14690697961860308
+        },
+        "final_health": {
+          "mean": 7.004,
+          "mc_se": 2.2332396520175224
+        },
+        "final_focus": {
+          "mean": 56.918,
+          "mc_se": 0.9516485227808169
+        },
+        "damage_dealt": {
+          "mean": 82.957,
+          "mc_se": 2.475417710982097
+        },
+        "damage_taken": {
+          "mean": 225.635,
+          "mc_se": 3.6117641971224552
+        },
+        "damage_mitigated": {
+          "mean": 28.093,
+          "mc_se": 0.44902335459636505
+        },
+        "healing_effective": {
+          "mean": 82.639,
+          "mc_se": 2.2767468579653856
+        },
+        "focus_spent": {
+          "mean": 33.082,
+          "mc_se": 0.9516485227808169
+        },
+        "damage_round3": {
+          "mean": 67.256,
+          "mc_se": 2.216405404459418
+        },
+        "damage_round5": {
+          "mean": 72.296,
+          "mc_se": 2.2913486558493585
+        },
+        "damage_round10": {
+          "mean": 82.796,
+          "mc_se": 2.468259850722912
+        }
+      },
+      "event_totals": {
+        "attacks": 1722,
+        "hits": 1540,
+        "fantastic_hits": 480,
+        "ripostes": 460,
+        "stuns_applied": 360,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_hammer",
+      "strategy": "shield_blade_fast",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 189,
+        "loss": 811,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.189,
+      "win_ci95_wilson": [
+        0.1659418620747839,
+        0.21443838170323143
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 3.886,
+          "mc_se": 0.03530226976060108
+        },
+        "turns": {
+          "mean": 7.889,
+          "mc_se": 0.06831797967114032
+        },
+        "final_health": {
+          "mean": -5.634,
+          "mc_se": 1.255911365247308
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 95.052,
+          "mc_se": 1.8870639380546455
+        },
+        "damage_taken": {
+          "mean": 171.379,
+          "mc_se": 1.2808520370991108
+        },
+        "damage_mitigated": {
+          "mean": 86.877,
+          "mc_se": 0.6786268528472814
+        },
+        "healing_effective": {
+          "mean": 15.745,
+          "mc_se": 0.17944965081375105
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 75.088,
+          "mc_se": 1.5025025024171406
+        },
+        "damage_round5": {
+          "mean": 93.315,
+          "mc_se": 1.829127519470002
+        },
+        "damage_round10": {
+          "mean": 95.052,
+          "mc_se": 1.8870639380546455
+        }
+      },
+      "event_totals": {
+        "attacks": 4371,
+        "hits": 3940,
+        "fantastic_hits": 1246,
+        "ripostes": 447,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 836
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_hammer",
+      "strategy": "hybrid",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 148,
+        "loss": 852,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.148,
+      "win_ci95_wilson": [
+        0.1273389886764658,
+        0.17135504929736503
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 4.957,
+          "mc_se": 0.07657032071249288
+        },
+        "turns": {
+          "mean": 9.987,
+          "mc_se": 0.15225640549091202
+        },
+        "final_health": {
+          "mean": -8.943,
+          "mc_se": 1.8707681642909484
+        },
+        "final_focus": {
+          "mean": 48.96,
+          "mc_se": 0.9669195071635143
+        },
+        "damage_dealt": {
+          "mean": 54.729,
+          "mc_se": 2.2726743294206515
+        },
+        "damage_taken": {
+          "mean": 260.689,
+          "mc_se": 3.231912365231539
+        },
+        "damage_mitigated": {
+          "mean": 32.313,
+          "mc_se": 0.399660805883889
+        },
+        "healing_effective": {
+          "mean": 101.746,
+          "mc_se": 2.3110262495969898
+        },
+        "focus_spent": {
+          "mean": 41.04,
+          "mc_se": 0.9669195071635144
+        },
+        "damage_round3": {
+          "mean": 36.205,
+          "mc_se": 1.7972994353363216
+        },
+        "damage_round5": {
+          "mean": 43.513,
+          "mc_se": 1.9496473927241191
+        },
+        "damage_round10": {
+          "mean": 54.372,
+          "mc_se": 2.2519940259896547
+        }
+      },
+      "event_totals": {
+        "attacks": 1109,
+        "hits": 991,
+        "fantastic_hits": 300,
+        "ripostes": 557,
+        "stuns_applied": 148,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_shield",
+      "strategy": "bare_attack",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 83,
+        "loss": 917,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.083,
+      "win_ci95_wilson": [
+        0.0674550214428993,
+        0.10173649513405367
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 3.173,
+          "mc_se": 0.033409387710450295
+        },
+        "turns": {
+          "mean": 6.509,
+          "mc_se": 0.06316572574512941
+        },
+        "final_health": {
+          "mean": -25.293,
+          "mc_se": 1.1674571114636747
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 79.158,
+          "mc_se": 1.6848369985585288
+        },
+        "damage_taken": {
+          "mean": 187.328,
+          "mc_se": 1.1694922522736648
+        },
+        "damage_mitigated": {
+          "mean": 23.636,
+          "mc_se": 0.15181090392508248
+        },
+        "healing_effective": {
+          "mean": 12.035,
+          "mc_se": 0.16419724643164918
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 69.606,
+          "mc_se": 1.3761128044061108
+        },
+        "damage_round5": {
+          "mean": 78.903,
+          "mc_se": 1.671397966422767
+        },
+        "damage_round10": {
+          "mean": 79.158,
+          "mc_se": 1.6848369985585288
+        }
+      },
+      "event_totals": {
+        "attacks": 3061,
+        "hits": 2718,
+        "fantastic_hits": 855,
+        "ripostes": 414,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_shield",
+      "strategy": "stance_bare",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 102,
+        "loss": 898,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.102,
+      "win_ci95_wilson": [
+        0.08473913518484719,
+        0.12230696456965467
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 3.308,
+          "mc_se": 0.03341036145048797
+        },
+        "turns": {
+          "mean": 6.701,
+          "mc_se": 0.06462023502568508
+        },
+        "final_health": {
+          "mean": -24.505,
+          "mc_se": 1.1783643398870816
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 64.569,
+          "mc_se": 1.9119431910404048
+        },
+        "damage_taken": {
+          "mean": 186.71,
+          "mc_se": 1.1638618794661475
+        },
+        "damage_mitigated": {
+          "mean": 23.352,
+          "mc_se": 0.15097976980672248
+        },
+        "healing_effective": {
+          "mean": 12.205,
+          "mc_se": 0.1674545192463196
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 51.705,
+          "mc_se": 1.477945295772918
+        },
+        "damage_round5": {
+          "mean": 64.116,
+          "mc_se": 1.8899011271149269
+        },
+        "damage_round10": {
+          "mean": 64.569,
+          "mc_se": 1.9119431910404048
+        }
+      },
+      "event_totals": {
+        "attacks": 2007,
+        "hits": 1788,
+        "fantastic_hits": 532,
+        "ripostes": 392,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_shield",
+      "strategy": "hammer",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 362,
+        "loss": 638,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.362,
+      "win_ci95_wilson": [
+        0.3327944128674734,
+        0.3922617724745398
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 3.061,
+          "mc_se": 0.031468544123763806
+        },
+        "turns": {
+          "mean": 6.163,
+          "mc_se": 0.058735686604319846
+        },
+        "final_health": {
+          "mean": 9.762,
+          "mc_se": 2.0721199378986337
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 108.762,
+          "mc_se": 2.214691900968669
+        },
+        "damage_taken": {
+          "mean": 151.408,
+          "mc_se": 2.094392039235734
+        },
+        "damage_mitigated": {
+          "mean": 19.21,
+          "mc_se": 0.2696193512984455
+        },
+        "healing_effective": {
+          "mean": 11.17,
+          "mc_se": 0.18497382332458645
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 97.336,
+          "mc_se": 1.9497288392354837
+        },
+        "damage_round5": {
+          "mean": 108.69,
+          "mc_se": 2.2124363888651746
+        },
+        "damage_round10": {
+          "mean": 108.762,
+          "mc_se": 2.214691900968669
+        }
+      },
+      "event_totals": {
+        "attacks": 2962,
+        "hits": 2632,
+        "fantastic_hits": 791,
+        "ripostes": 344,
+        "stuns_applied": 694,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_shield",
+      "strategy": "blade_hammer_fast",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 205,
+        "loss": 795,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.205,
+      "win_ci95_wilson": [
+        0.18113008647590156,
+        0.23112770103057595
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 3.644,
+          "mc_se": 0.043233472369601914
+        },
+        "turns": {
+          "mean": 7.378,
+          "mc_se": 0.0834390680561455
+        },
+        "final_health": {
+          "mean": -7.708,
+          "mc_se": 1.7645294841119261
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 88.518,
+          "mc_se": 2.0224381157236757
+        },
+        "damage_taken": {
+          "mean": 171.049,
+          "mc_se": 1.7789320386676377
+        },
+        "damage_mitigated": {
+          "mean": 21.697,
+          "mc_se": 0.2299131380566388
+        },
+        "healing_effective": {
+          "mean": 13.341,
+          "mc_se": 0.22371581921662978
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 71.085,
+          "mc_se": 1.5581693318335679
+        },
+        "damage_round5": {
+          "mean": 86.527,
+          "mc_se": 1.9491352953038943
+        },
+        "damage_round10": {
+          "mean": 88.518,
+          "mc_se": 2.0224381157236757
+        }
+      },
+      "event_totals": {
+        "attacks": 4406,
+        "hits": 3936,
+        "fantastic_hits": 1234,
+        "ripostes": 387,
+        "stuns_applied": 1125,
+        "blade_bonus_actions": 819
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_shield",
+      "strategy": "hammer_heal",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 146,
+        "loss": 854,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.146,
+      "win_ci95_wilson": [
+        0.12546927343040054,
+        0.16924007157737248
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 4.821,
+          "mc_se": 0.0793300211285252
+        },
+        "turns": {
+          "mean": 9.731,
+          "mc_se": 0.15733210858687552
+        },
+        "final_health": {
+          "mean": -9.906,
+          "mc_se": 1.8898546808457826
+        },
+        "final_focus": {
+          "mean": 52.287,
+          "mc_se": 0.9821513387723159
+        },
+        "damage_dealt": {
+          "mean": 68.15,
+          "mc_se": 2.1804040134024847
+        },
+        "damage_taken": {
+          "mean": 254.148,
+          "mc_se": 3.2681166874337095
+        },
+        "damage_mitigated": {
+          "mean": 31.654,
+          "mc_se": 0.40526599231186977
+        },
+        "healing_effective": {
+          "mean": 94.242,
+          "mc_se": 2.3535468167467197
+        },
+        "focus_spent": {
+          "mean": 37.713,
+          "mc_se": 0.9821513387723159
+        },
+        "damage_round3": {
+          "mean": 51.524,
+          "mc_se": 1.8214129045795653
+        },
+        "damage_round5": {
+          "mean": 56.818,
+          "mc_se": 1.9236094065971787
+        },
+        "damage_round10": {
+          "mean": 67.696,
+          "mc_se": 2.1535220549697747
+        }
+      },
+      "event_totals": {
+        "attacks": 1933,
+        "hits": 1735,
+        "fantastic_hits": 531,
+        "ripostes": 527,
+        "stuns_applied": 383,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_shield",
+      "strategy": "shield_blade_fast",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 52,
+        "loss": 948,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.052,
+      "win_ci95_wilson": [
+        0.03987303628377742,
+        0.06755573931927998
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 4.188,
+          "mc_se": 0.041113821840669945
+        },
+        "turns": {
+          "mean": 8.503,
+          "mc_se": 0.08051380920980865
+        },
+        "final_health": {
+          "mean": -18.206,
+          "mc_se": 0.8638007384320273
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 70.416,
+          "mc_se": 1.6046020353008692
+        },
+        "damage_taken": {
+          "mean": 185.251,
+          "mc_se": 0.8840631010095176
+        },
+        "damage_mitigated": {
+          "mean": 94.275,
+          "mc_se": 0.47541707625662377
+        },
+        "healing_effective": {
+          "mean": 17.045,
+          "mc_se": 0.20343146108544602
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 52.254,
+          "mc_se": 1.1226485753893887
+        },
+        "damage_round5": {
+          "mean": 67.339,
+          "mc_se": 1.4701514970996779
+        },
+        "damage_round10": {
+          "mean": 70.416,
+          "mc_se": 1.6046020353008692
+        }
+      },
+      "event_totals": {
+        "attacks": 4838,
+        "hits": 4290,
+        "fantastic_hits": 1369,
+        "ripostes": 538,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 950
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "mirror_shield",
+      "strategy": "hybrid",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 80,
+        "loss": 920,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "win_rate": 0.08,
+      "win_ci95_wilson": [
+        0.06474803809836388,
+        0.09846643902950242
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 4.967,
+          "mc_se": 0.0778200935939232
+        },
+        "turns": {
+          "mean": 10.0,
+          "mc_se": 0.15662225426334067
+        },
+        "final_health": {
+          "mean": -18.199,
+          "mc_se": 1.51045916392529
+        },
+        "final_focus": {
+          "mean": 50.263,
+          "mc_se": 0.9626372637195704
+        },
+        "damage_dealt": {
+          "mean": 41.417,
+          "mc_se": 1.9202777344898778
+        },
+        "damage_taken": {
+          "mean": 267.24,
+          "mc_se": 2.886203140558294
+        },
+        "damage_mitigated": {
+          "mean": 33.18,
+          "mc_se": 0.3584244244859272
+        },
+        "healing_effective": {
+          "mean": 99.041,
+          "mc_se": 2.3019970698307826
+        },
+        "focus_spent": {
+          "mean": 39.737,
+          "mc_se": 0.9626372637195703
+        },
+        "damage_round3": {
+          "mean": 26.927,
+          "mc_se": 1.4297355751378695
+        },
+        "damage_round5": {
+          "mean": 32.718,
+          "mc_se": 1.6247080205846687
+        },
+        "damage_round10": {
+          "mean": 40.732,
+          "mc_se": 1.8740593038306643
+        }
+      },
+      "event_totals": {
+        "attacks": 1130,
+        "hits": 1010,
+        "fantastic_hits": 298,
+        "ripostes": 557,
+        "stuns_applied": 149,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "gunner_kiter",
+      "strategy": "bare_attack",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 0,
+        "loss": 993,
+        "inconclusive": 7,
+        "draw": 0
+      },
+      "win_rate": 0.0,
+      "win_ci95_wilson": [
+        2.168404344971009e-19,
+        0.0038267584855551217
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 16.447,
+          "mc_se": 0.14733260975730353
+        },
+        "turns": {
+          "mean": 33.017,
+          "mc_se": 0.2952285061962526
+        },
+        "final_health": {
+          "mean": -8.424,
+          "mc_se": 0.2715805220923989
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 10.08,
+          "mc_se": 0.7245899741444334
+        },
+        "damage_taken": {
+          "mean": 234.364,
+          "mc_se": 0.7511802551823207
+        },
+        "damage_mitigated": {
+          "mean": 72.872,
+          "mc_se": 0.21088406314391914
+        },
+        "healing_effective": {
+          "mean": 75.94,
+          "mc_se": 0.7245269762675092
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 10.08,
+          "mc_se": 0.7245899741444334
+        },
+        "damage_round5": {
+          "mean": 10.08,
+          "mc_se": 0.7245899741444334
+        },
+        "damage_round10": {
+          "mean": 10.08,
+          "mc_se": 0.7245899741444334
+        }
+      },
+      "event_totals": {
+        "attacks": 199,
+        "hits": 197,
+        "fantastic_hits": 65,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "gunner_kiter",
+      "strategy": "stance_bare",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 0,
+        "loss": 985,
+        "inconclusive": 15,
+        "draw": 0
+      },
+      "win_rate": 0.0,
+      "win_ci95_wilson": [
+        2.168404344971009e-19,
+        0.0038267584855551217
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 16.642,
+          "mc_se": 0.15580793340556226
+        },
+        "turns": {
+          "mean": 33.402,
+          "mc_se": 0.3121503385130854
+        },
+        "final_health": {
+          "mean": -8.926,
+          "mc_se": 0.288565059897753
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 11.658,
+          "mc_se": 0.8320548968375532
+        },
+        "damage_taken": {
+          "mean": 235.692,
+          "mc_se": 0.7890092975825264
+        },
+        "damage_mitigated": {
+          "mean": 73.257,
+          "mc_se": 0.21889007255666776
+        },
+        "healing_effective": {
+          "mean": 76.766,
+          "mc_se": 0.7735215443538593
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 11.658,
+          "mc_se": 0.8320548968375532
+        },
+        "damage_round5": {
+          "mean": 11.658,
+          "mc_se": 0.8320548968375532
+        },
+        "damage_round10": {
+          "mean": 11.658,
+          "mc_se": 0.8320548968375532
+        }
+      },
+      "event_totals": {
+        "attacks": 198,
+        "hits": 197,
+        "fantastic_hits": 65,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "gunner_kiter",
+      "strategy": "hammer",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 77,
+        "loss": 912,
+        "inconclusive": 11,
+        "draw": 0
+      },
+      "win_rate": 0.077,
+      "win_ci95_wilson": [
+        0.0620479070606059,
+        0.09518953061817373
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 15.749,
+          "mc_se": 0.1964295893789517
+        },
+        "turns": {
+          "mean": 31.565,
+          "mc_se": 0.394168928435695
+        },
+        "final_health": {
+          "mean": 3.507,
+          "mc_se": 1.3668241142001991
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 18.76,
+          "mc_se": 1.4907705379423073
+        },
+        "damage_taken": {
+          "mean": 218.454,
+          "mc_se": 2.138611592492554
+        },
+        "damage_mitigated": {
+          "mean": 67.941,
+          "mc_se": 0.6573793932476634
+        },
+        "healing_effective": {
+          "mean": 71.961,
+          "mc_se": 0.9930758675341371
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 18.76,
+          "mc_se": 1.4907705379423073
+        },
+        "damage_round5": {
+          "mean": 18.76,
+          "mc_se": 1.4907705379423073
+        },
+        "damage_round10": {
+          "mean": 18.76,
+          "mc_se": 1.4907705379423073
+        }
+      },
+      "event_totals": {
+        "attacks": 281,
+        "hits": 280,
+        "fantastic_hits": 100,
+        "ripostes": 0,
+        "stuns_applied": 100,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "gunner_kiter",
+      "strategy": "blade_hammer_fast",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 90,
+        "loss": 878,
+        "inconclusive": 18,
+        "draw": 14
+      },
+      "win_rate": 0.09,
+      "win_ci95_wilson": [
+        0.0737961493150831,
+        0.10934179264307209
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 15.592,
+          "mc_se": 0.17512911296014205
+        },
+        "turns": {
+          "mean": 31.309,
+          "mc_se": 0.34926423307362076
+        },
+        "final_health": {
+          "mean": 0.71,
+          "mc_se": 1.0750970810739529
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 9.947,
+          "mc_se": 0.8761997015046952
+        },
+        "damage_taken": {
+          "mean": 220.622,
+          "mc_se": 1.7022463860319268
+        },
+        "damage_mitigated": {
+          "mean": 68.551,
+          "mc_se": 0.5203827410639187
+        },
+        "healing_effective": {
+          "mean": 71.332,
+          "mc_se": 0.8914473929820284
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 9.947,
+          "mc_se": 0.8761997015046952
+        },
+        "damage_round5": {
+          "mean": 9.947,
+          "mc_se": 0.8761997015046952
+        },
+        "damage_round10": {
+          "mean": 9.947,
+          "mc_se": 0.8761997015046952
+        }
+      },
+      "event_totals": {
+        "attacks": 326,
+        "hits": 325,
+        "fantastic_hits": 88,
+        "ripostes": 0,
+        "stuns_applied": 88,
+        "blade_bonus_actions": 60
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "gunner_kiter",
+      "strategy": "hammer_heal",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 60,
+        "loss": 251,
+        "inconclusive": 689,
+        "draw": 0
+      },
+      "win_rate": 0.06,
+      "win_ci95_wilson": [
+        0.04689647267593196,
+        0.07647107479135655
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 27.615,
+          "mc_se": 0.21264522800428187
+        },
+        "turns": {
+          "mean": 55.532,
+          "mc_se": 0.42887866922115997
+        },
+        "final_health": {
+          "mean": 51.374,
+          "mc_se": 1.5983750895603093
+        },
+        "final_focus": {
+          "mean": 6.608,
+          "mc_se": 0.6703220626442693
+        },
+        "damage_dealt": {
+          "mean": 17.46,
+          "mc_se": 1.4255569482179982
+        },
+        "damage_taken": {
+          "mean": 387.372,
+          "mc_se": 3.405893381438374
+        },
+        "damage_mitigated": {
+          "mean": 120.498,
+          "mc_se": 1.079447638008997
+        },
+        "healing_effective": {
+          "mean": 288.746,
+          "mc_se": 2.341148534472017
+        },
+        "focus_spent": {
+          "mean": 83.392,
+          "mc_se": 0.6703220626442694
+        },
+        "damage_round3": {
+          "mean": 17.46,
+          "mc_se": 1.4255569482179982
+        },
+        "damage_round5": {
+          "mean": 17.46,
+          "mc_se": 1.4255569482179982
+        },
+        "damage_round10": {
+          "mean": 17.46,
+          "mc_se": 1.4255569482179982
+        }
+      },
+      "event_totals": {
+        "attacks": 268,
+        "hits": 268,
+        "fantastic_hits": 86,
+        "ripostes": 0,
+        "stuns_applied": 86,
+        "blade_bonus_actions": 0
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "gunner_kiter",
+      "strategy": "shield_blade_fast",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 200,
+        "loss": 0,
+        "inconclusive": 800,
+        "draw": 0
+      },
+      "win_rate": 0.2,
+      "win_ci95_wilson": [
+        0.17637709044319852,
+        0.22591896464813463
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 27.61,
+          "mc_se": 0.16490935417706032
+        },
+        "turns": {
+          "mean": 55.687,
+          "mc_se": 0.3225167407252653
+        },
+        "final_health": {
+          "mean": 150.0,
+          "mc_se": 0.0
+        },
+        "final_focus": {
+          "mean": 90.0,
+          "mc_se": 0.0
+        },
+        "damage_dealt": {
+          "mean": 6.336,
+          "mc_se": 0.5230149602531926
+        },
+        "damage_taken": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_mitigated": {
+          "mean": 510.822,
+          "mc_se": 3.97818026668403
+        },
+        "healing_effective": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "focus_spent": {
+          "mean": 0.0,
+          "mc_se": 0.0
+        },
+        "damage_round3": {
+          "mean": 6.336,
+          "mc_se": 0.5230149602531926
+        },
+        "damage_round5": {
+          "mean": 6.336,
+          "mc_se": 0.5230149602531926
+        },
+        "damage_round10": {
+          "mean": 6.336,
+          "mc_se": 0.5230149602531926
+        }
+      },
+      "event_totals": {
+        "attacks": 260,
+        "hits": 259,
+        "fantastic_hits": 76,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 59
+      }
+    },
+    {
+      "stage": "dev",
+      "scenario": "gunner_kiter",
+      "strategy": "hybrid",
+      "n": 1000,
+      "stack_signature_edge": false,
+      "outcomes": {
+        "win": 63,
+        "loss": 253,
+        "inconclusive": 684,
+        "draw": 0
+      },
+      "win_rate": 0.063,
+      "win_ci95_wilson": [
+        0.04954966321172909,
+        0.0797949237046461
+      ],
+      "metrics_all_starts": {
+        "rounds": {
+          "mean": 27.474,
+          "mc_se": 0.22406590443333754
+        },
+        "turns": {
+          "mean": 55.24,
+          "mc_se": 0.45170835772701873
+        },
+        "final_health": {
+          "mean": 52.93,
+          "mc_se": 1.64202233155866
+        },
+        "final_focus": {
+          "mean": 7.147,
+          "mc_se": 0.6878957708778211
+        },
+        "damage_dealt": {
+          "mean": 14.84,
+          "mc_se": 1.0311341511353591
+        },
+        "damage_taken": {
+          "mean": 384.04,
+          "mc_se": 3.495442821806777
+        },
+        "damage_mitigated": {
+          "mean": 119.315,
+          "mc_se": 1.1071990176407605
+        },
+        "healing_effective": {
+          "mean": 286.97,
+          "mc_se": 2.395270009501729
+        },
+        "focus_spent": {
+          "mean": 82.853,
+          "mc_se": 0.6878957708778215
+        },
+        "damage_round3": {
+          "mean": 14.84,
+          "mc_se": 1.0311341511353591
+        },
+        "damage_round5": {
+          "mean": 14.84,
+          "mc_se": 1.0311341511353591
+        },
+        "damage_round10": {
+          "mean": 14.84,
+          "mc_se": 1.0311341511353591
+        }
+      },
+      "event_totals": {
+        "attacks": 211,
+        "hits": 209,
+        "fantastic_hits": 63,
+        "ripostes": 0,
+        "stuns_applied": 63,
+        "blade_bonus_actions": 0
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "scenario": "mirror_attack",
+      "strategy": "stance_bare",
+      "vs": "bare_attack",
+      "win_difference": -0.10199999999999998,
+      "simultaneous_ci_bonferroni": [
+        -0.15995945606624856,
+        -0.04404054393375139
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_attack",
+      "strategy": "hammer",
+      "vs": "bare_attack",
+      "win_difference": 0.272,
+      "simultaneous_ci_bonferroni": [
+        0.21670688567844315,
+        0.3272931143215569
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_attack",
+      "strategy": "blade_hammer_fast",
+      "vs": "bare_attack",
+      "win_difference": -0.0020000000000000018,
+      "simultaneous_ci_bonferroni": [
+        -0.06090053387078963,
+        0.056900533870789624
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_attack",
+      "strategy": "hammer_heal",
+      "vs": "bare_attack",
+      "win_difference": 0.123,
+      "simultaneous_ci_bonferroni": [
+        0.06459640825946389,
+        0.1814035917405361
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_attack",
+      "strategy": "shield_blade_fast",
+      "vs": "bare_attack",
+      "win_difference": 0.013000000000000012,
+      "simultaneous_ci_bonferroni": [
+        -0.045938632060758884,
+        0.0719386320607589
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_attack",
+      "strategy": "hybrid",
+      "vs": "bare_attack",
+      "win_difference": 0.02200000000000002,
+      "simultaneous_ci_bonferroni": [
+        -0.036948728381873804,
+        0.08094872838187384
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "stance_bare",
+      "vs": "bare_attack",
+      "win_difference": -0.05499999999999999,
+      "simultaneous_ci_bonferroni": [
+        -0.10681170548995764,
+        -0.00318829451004235
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "hammer",
+      "vs": "bare_attack",
+      "win_difference": 0.22600000000000003,
+      "simultaneous_ci_bonferroni": [
+        0.16968423707160543,
+        0.28231576292839466
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "blade_hammer_fast",
+      "vs": "bare_attack",
+      "win_difference": 0.03600000000000003,
+      "simultaneous_ci_bonferroni": [
+        -0.0184289803592418,
+        0.09042898035924186
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "hammer_heal",
+      "vs": "bare_attack",
+      "win_difference": -0.04899999999999999,
+      "simultaneous_ci_bonferroni": [
+        -0.10102245984100307,
+        0.0030224598410030917
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "shield_blade_fast",
+      "vs": "bare_attack",
+      "win_difference": -0.10099999999999998,
+      "simultaneous_ci_bonferroni": [
+        -0.1510003002910579,
+        -0.05099969970894205
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "hybrid",
+      "vs": "bare_attack",
+      "win_difference": -0.142,
+      "simultaneous_ci_bonferroni": [
+        -0.190071045722179,
+        -0.09392895427782097
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "stance_bare",
+      "vs": "bare_attack",
+      "win_difference": 0.01899999999999999,
+      "simultaneous_ci_bonferroni": [
+        -0.015165890072917361,
+        0.05316589007291734
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "hammer",
+      "vs": "bare_attack",
+      "win_difference": 0.27899999999999997,
+      "simultaneous_ci_bonferroni": [
+        0.2327689542698868,
+        0.32523104573011313
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "blade_hammer_fast",
+      "vs": "bare_attack",
+      "win_difference": 0.12199999999999998,
+      "simultaneous_ci_bonferroni": [
+        0.08120619484608485,
+        0.16279380515391512
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "hammer_heal",
+      "vs": "bare_attack",
+      "win_difference": 0.06299999999999999,
+      "simultaneous_ci_bonferroni": [
+        0.02561532657149144,
+        0.10038467342850854
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "shield_blade_fast",
+      "vs": "bare_attack",
+      "win_difference": -0.031000000000000007,
+      "simultaneous_ci_bonferroni": [
+        -0.0605445944889777,
+        -0.0014554055110223112
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "hybrid",
+      "vs": "bare_attack",
+      "win_difference": -0.0030000000000000027,
+      "simultaneous_ci_bonferroni": [
+        -0.03528077849342365,
+        0.029280778493423643
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "stance_bare",
+      "vs": "bare_attack",
+      "win_difference": 0.0,
+      "simultaneous_ci_bonferroni": [
+        0.0,
+        0.0
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "hammer",
+      "vs": "bare_attack",
+      "win_difference": 0.077,
+      "simultaneous_ci_bonferroni": [
+        0.05475853667545509,
+        0.0992414633245449
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "blade_hammer_fast",
+      "vs": "bare_attack",
+      "win_difference": 0.09,
+      "simultaneous_ci_bonferroni": [
+        0.06612413607799209,
+        0.11387586392200791
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "hammer_heal",
+      "vs": "bare_attack",
+      "win_difference": 0.06,
+      "simultaneous_ci_bonferroni": [
+        0.04018670544115926,
+        0.07981329455884073
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "shield_blade_fast",
+      "vs": "bare_attack",
+      "win_difference": 0.2,
+      "simultaneous_ci_bonferroni": [
+        0.16662839184923095,
+        0.23337160815076907
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "hybrid",
+      "vs": "bare_attack",
+      "win_difference": 0.063,
+      "simultaneous_ci_bonferroni": [
+        0.04272983824764098,
+        0.08327016175235902
+      ],
+      "method": "independent Bernoulli samples; Bonferroni within scenario"
+    }
+  ],
+  "limitations": [
+    "two-combatant open field",
+    "no numeric limb effect",
+    "no Focus damage/Karma",
+    "no multi-target Fast Strikes",
+    "shield assumed ready at combat start"
+  ]
+}

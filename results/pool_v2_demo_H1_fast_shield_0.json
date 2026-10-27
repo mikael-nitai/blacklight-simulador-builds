@@ -1,0 +1,966 @@
+{
+  "schema": "blacklight-finalist-full-trace-pool-v2",
+  "damage_model": "literal_marvel_pool_v2",
+  "stage": "holdout_v2",
+  "scenario": "H1_rank4_bruiser",
+  "strategy": "shield_blade_hammer_reactive",
+  "index": 0,
+  "seed": 7692110844026810928,
+  "source_sha256": {
+    "blacklight\\__init__.py": "661aacdbe8eec1dc9eb5af1fc4e6946742daf032dd96f95434dd541a1b650f03",
+    "blacklight\\audit.py": "5cd464490ea054c8a2eded0a3505e53f54ca44f6d6c57468013ffd5b5e986a82",
+    "blacklight\\damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight\\dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight\\engine.py": "d77b89649bc897c9bf8c2ccccc4b4122aa08623c7dccf4080cf9c7e2fca9134b",
+    "blacklight\\experiment.py": "b60afe1ee43b7225c9fb184748fde55afb8ac3124f0f14756f601fef9747263e",
+    "blacklight\\policies.py": "fbf6756e0023efdb3b7d91a4ee4fd7f2a1868ab3b919ab28b284243e70a17e66",
+    "blacklight\\pool_damage.py": "55a2d67b3bfe7165a4b9bdfbb2da44f2def9a4334a0138f338ccfac0921ebf32",
+    "blacklight\\search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight\\sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "DAMAGE_POOL_RULING.md": "c930574a5dde0c228865d4b305bb881c2992ff5f103adec272caed763464a4b3",
+    "DAMAGE_POOL_V2_SPEC.md": "92e1c71d767d075bc44ccc02e957b95bd904e20ff313f510fb8b315448b18387",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "FAST_STRIKES_RULING.md": "af2f21ac8c532d05fb7b9b39d6c64f299c9ee3dc0a748cc1ce98dd4e71c5ef74",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
+    "scripts\\pool_v2_replay.py": "0eb3dfdb3b7d690b6cb0159bf3c3fbadba89b71ad1bd8c5fd9cfb13d008e3711",
+    "scripts/pool_v2_confirm.py": "b20b26ffe7000035d8fb2a57bdddeb0a014a6b3cef99d50c89ea5ea1f3795902",
+    "POOL_V2_CONFIRM_SPEC.md": "6e75c7d7fa0b30457df73b87724856e0e6928fe67cba187b366893e7d2da422b"
+  },
+  "profiles": [
+    {
+      "name": "Blacklight",
+      "rank": 3,
+      "max_health": 150,
+      "max_focus": 90,
+      "melee": 6,
+      "agility": 1,
+      "resilience": 5,
+      "vigilance": 2,
+      "melee_defense": 16,
+      "agility_defense": 11,
+      "run_speed": 5,
+      "health_dr": 1,
+      "melee_bonus": 3,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": null,
+      "run_speed_exception": false,
+      "powers": [
+        "attack_stance",
+        "blazing_fast_fists",
+        "brawling",
+        "do_this_all_day",
+        "fast_strikes",
+        "healing_factor",
+        "mighty",
+        "riposte"
+      ],
+      "traits": [
+        "battle_ready",
+        "combat_reflexes",
+        "signature_fast_strikes",
+        "situational_awareness"
+      ],
+      "weapons": [
+        "blade",
+        "claw",
+        "hammer",
+        "shield"
+      ],
+      "shield_active": false,
+      "heroic": true
+    },
+    {
+      "name": "Rank4 Bruiser",
+      "rank": 4,
+      "max_health": 180,
+      "max_focus": 60,
+      "melee": 7,
+      "agility": 2,
+      "resilience": 6,
+      "vigilance": 3,
+      "melee_defense": 17,
+      "agility_defense": 12,
+      "run_speed": 5,
+      "health_dr": 0,
+      "melee_bonus": 2,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": null,
+      "run_speed_exception": false,
+      "powers": [
+        "mighty"
+      ],
+      "traits": [],
+      "weapons": [
+        "hammer"
+      ],
+      "shield_active": false,
+      "heroic": false
+    }
+  ],
+  "policies": [
+    {
+      "name": "shield_blade_hammer_reactive",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": true,
+      "weapon": "blade",
+      "offhand": "hammer",
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": false
+    },
+    {
+      "name": "hammer_attack",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "hammer",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false
+    }
+  ],
+  "result": {
+    "seed": 7692110844026810928,
+    "winner": "Blacklight",
+    "outcome": "win",
+    "rounds": 2,
+    "turns": 3,
+    "bonus_round_occurred": false,
+    "final_health": [
+      150,
+      -59
+    ],
+    "final_focus": [
+      90,
+      60
+    ],
+    "metrics": [
+      {
+        "damage_dealt": 234,
+        "damage_taken": 0,
+        "damage_mitigated": 0,
+        "healing_effective": 0,
+        "focus_spent": 0,
+        "attacks": 3,
+        "hits": 3,
+        "fantastic_hits": 3,
+        "ripostes": 0,
+        "stuns_applied": 3,
+        "blade_bonus_actions": 1,
+        "damage_round3": 234,
+        "damage_round5": 234,
+        "damage_round10": 234
+      },
+      {
+        "damage_dealt": 0,
+        "damage_taken": 239,
+        "damage_mitigated": 0,
+        "healing_effective": 0,
+        "focus_spent": 0,
+        "attacks": 0,
+        "hits": 0,
+        "fantastic_hits": 0,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 0,
+        "damage_round5": 0,
+        "damage_round10": 0
+      }
+    ],
+    "log": [
+      {
+        "seq": 1,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "roll": [
+          3,
+          5,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 5,
+            "kept": 5
+          }
+        ],
+        "total": 13,
+        "modifier": 2,
+        "fantastic": false
+      },
+      {
+        "seq": 2,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Rank4 Bruiser",
+        "roll": [
+          2,
+          4,
+          1
+        ],
+        "rerolls": [],
+        "total": 10,
+        "modifier": 3,
+        "fantastic": false
+      },
+      {
+        "seq": 3,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 4,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Rank4 Bruiser",
+        "reactions": 1
+      },
+      {
+        "seq": 5,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 6,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 7,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "COND-01",
+          "HR-03"
+        ],
+        "actor": "Rank4 Bruiser",
+        "condition": "bleeding",
+        "intensity": 5
+      },
+      {
+        "seq": 8,
+        "round": 1,
+        "bonus_round": false,
+        "type": "limb_effect",
+        "rules": [
+          "HR-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Rank4 Bruiser",
+        "stage": 1,
+        "mechanical_penalty": "unmodeled"
+      },
+      {
+        "seq": 9,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "HR-02",
+          "COND-02"
+        ],
+        "actor": "Rank4 Bruiser",
+        "condition": "stunned",
+        "expires_on_actor": "Blacklight",
+        "source_turn_count": 2
+      },
+      {
+        "seq": 10,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "HR-06",
+          "HR-03",
+          "POW-08",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Rank4 Bruiser",
+        "mode": "blade_fast",
+        "offhand": "hammer",
+        "reaction": false,
+        "trigger": 1,
+        "distance": 1,
+        "roll": [
+          4,
+          1,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 5,
+            "kept": 5
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 5,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "total": 21,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 17,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 0,
+            "dice_after_reduction": 7,
+            "dice_rolled": 7,
+            "ability_added": 6,
+            "faces": [
+              1,
+              6,
+              5,
+              3,
+              4,
+              2,
+              1
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": false,
+            "damage": 38,
+            "damage_without_reduction": 38
+          },
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 0,
+            "dice_after_reduction": 8,
+            "dice_rolled": 8,
+            "ability_added": 6,
+            "faces": [
+              6,
+              4,
+              1,
+              3,
+              6,
+              6,
+              1,
+              5
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": false,
+            "damage": 48,
+            "damage_without_reduction": 48
+          }
+        ],
+        "strike_weapons": [
+          "blade",
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 86,
+        "damage": 86,
+        "health_before": 180,
+        "health_after": 94
+      },
+      {
+        "seq": 11,
+        "round": 1,
+        "bonus_round": false,
+        "type": "blade_bonus",
+        "rules": [
+          "HR-03"
+        ],
+        "actor": "Blacklight",
+        "chosen": "blade_fast",
+        "offhand": "hammer"
+      },
+      {
+        "seq": 12,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "COND-01",
+          "HR-03"
+        ],
+        "actor": "Rank4 Bruiser",
+        "condition": "bleeding",
+        "intensity": 5
+      },
+      {
+        "seq": 13,
+        "round": 1,
+        "bonus_round": false,
+        "type": "limb_effect",
+        "rules": [
+          "HR-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Rank4 Bruiser",
+        "stage": 2,
+        "mechanical_penalty": "unmodeled"
+      },
+      {
+        "seq": 14,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "HR-02",
+          "COND-02"
+        ],
+        "actor": "Rank4 Bruiser",
+        "condition": "stunned",
+        "expires_on_actor": "Blacklight",
+        "source_turn_count": 2
+      },
+      {
+        "seq": 15,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "HR-06",
+          "HR-03",
+          "POW-08",
+          "HR-02",
+          "COND-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Rank4 Bruiser",
+        "mode": "blade_fast",
+        "offhand": "hammer",
+        "reaction": false,
+        "trigger": 2,
+        "distance": 1,
+        "roll": [
+          6,
+          1,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 1,
+            "kept": 1
+          },
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 1,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 23,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 17,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 0,
+            "dice_after_reduction": 7,
+            "dice_rolled": 7,
+            "ability_added": 6,
+            "faces": [
+              1,
+              2,
+              2,
+              6,
+              2,
+              5,
+              6
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": false,
+            "damage": 35,
+            "damage_without_reduction": 35
+          },
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 0,
+            "dice_after_reduction": 8,
+            "dice_rolled": 8,
+            "ability_added": 6,
+            "faces": [
+              3,
+              5,
+              2,
+              2,
+              1,
+              3,
+              3,
+              3
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": false,
+            "damage": 33,
+            "damage_without_reduction": 33
+          }
+        ],
+        "strike_weapons": [
+          "blade",
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 68,
+        "damage": 68,
+        "health_before": 94,
+        "health_after": 26
+      },
+      {
+        "seq": 16,
+        "round": 1,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 17,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 18,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Rank4 Bruiser",
+        "reactions": 1
+      },
+      {
+        "seq": 19,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_skipped",
+        "rules": [
+          "COND-02"
+        ],
+        "actor": "Rank4 Bruiser",
+        "reason": "stunned"
+      },
+      {
+        "seq": 20,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_tick",
+        "rules": [
+          "COND-01",
+          "POW-02"
+        ],
+        "actor": "Rank4 Bruiser",
+        "condition": "bleeding",
+        "intensity": 5,
+        "damage": 5,
+        "health_before": 26,
+        "health_after": 21
+      },
+      {
+        "seq": 21,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Rank4 Bruiser",
+        "health": 21,
+        "focus": 60
+      },
+      {
+        "seq": 22,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 23,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Rank4 Bruiser",
+        "reactions": 1
+      },
+      {
+        "seq": 24,
+        "round": 2,
+        "bonus_round": false,
+        "type": "condition_end",
+        "rules": [
+          "COND-02"
+        ],
+        "actor": "Rank4 Bruiser",
+        "condition": "stunned"
+      },
+      {
+        "seq": 25,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 26,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 27,
+        "round": 2,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "COND-01",
+          "HR-03"
+        ],
+        "actor": "Rank4 Bruiser",
+        "condition": "bleeding",
+        "intensity": 5
+      },
+      {
+        "seq": 28,
+        "round": 2,
+        "bonus_round": false,
+        "type": "limb_effect",
+        "rules": [
+          "HR-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Rank4 Bruiser",
+        "stage": 2,
+        "mechanical_penalty": "unmodeled"
+      },
+      {
+        "seq": 29,
+        "round": 2,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "HR-02",
+          "COND-02"
+        ],
+        "actor": "Rank4 Bruiser",
+        "condition": "stunned",
+        "expires_on_actor": "Blacklight",
+        "source_turn_count": 3
+      },
+      {
+        "seq": 30,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "HR-06",
+          "HR-03",
+          "POW-08",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Rank4 Bruiser",
+        "mode": "blade_fast",
+        "offhand": "hammer",
+        "reaction": false,
+        "trigger": 3,
+        "distance": 1,
+        "roll": [
+          6,
+          1,
+          2
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 3,
+            "rolled": 6,
+            "kept": 6
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "total": 20,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 17,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 0,
+            "dice_after_reduction": 7,
+            "dice_rolled": 7,
+            "ability_added": 6,
+            "faces": [
+              3,
+              6,
+              3,
+              4,
+              1,
+              3,
+              6
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": false,
+            "damage": 37,
+            "damage_without_reduction": 37
+          },
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 0,
+            "dice_after_reduction": 8,
+            "dice_rolled": 8,
+            "ability_added": 6,
+            "faces": [
+              6,
+              2,
+              5,
+              6,
+              3,
+              1,
+              3,
+              6
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": false,
+            "damage": 43,
+            "damage_without_reduction": 43
+          }
+        ],
+        "strike_weapons": [
+          "blade",
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 80,
+        "damage": 80,
+        "health_before": 21,
+        "health_after": -59
+      },
+      {
+        "seq": 31,
+        "round": 2,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 32,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      }
+    ]
+  },
+  "audit_issues": []
+}

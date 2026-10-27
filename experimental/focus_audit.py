@@ -90,16 +90,21 @@ def audit_focus_duel(result: object, profiles: tuple[object, object],
                 issues.append(f"event {seq}: attack target mismatch")
             attacker = by_name[actor]
             defender = by_name[event["target"]]
-            roll = check["roll"]
-            marvel = 6 if roll[1] == 1 else roll[1]
+            faces = event["damage_faces"]
+            if any(not 1 <= face <= 6 for face in faces):
+                issues.append(f"event {seq}: invalid damage die face")
+            def expected_pool(multiplier: int, reduction: int) -> int:
+                count = max(0, multiplier - reduction) if check["success"] else 0
+                if len(faces) != count:
+                    issues.append(f"event {seq}: damage dice count mismatch")
+                subtotal = (sum(6 if face == 1 else face for face in faces)
+                            + attacker.melee) if count else 0
+                return max(0, subtotal) * (2 if check["fantastic"] else 1)
             if event["kind"] == "hammer":
                 bonus = (attacker.melee_bonus + 2 if "mighty" in attacker.powers
                          else max(attacker.melee_bonus, 2))
                 reduction = defender.health_dr
-                multiplier = attacker.rank + bonus - reduction
-                calculated = (0 if not check["success"] or multiplier < 1 else
-                              (marvel * multiplier + attacker.melee) *
-                              (2 if check["fantastic"] else 1))
+                calculated = expected_pool(attacker.rank + bonus, reduction)
                 before = health[defender.name]
                 after = before - calculated
                 if attacker.heroic and after <= -defender.max_health:
@@ -111,10 +116,7 @@ def audit_focus_duel(result: object, profiles: tuple[object, object],
                 health[defender.name] = event["health_after"]
             elif event["kind"] == "mental_punch":
                 reduction = shield_focus_reduction if shield[defender.name] else 0
-                multiplier = attacker.rank - reduction
-                calculated = (0 if not check["success"] or multiplier < 1 else
-                              (marvel * multiplier + attacker.melee) *
-                              (2 if check["fantastic"] else 1))
+                calculated = expected_pool(attacker.rank, reduction)
                 before = focus[defender.name]
                 after = before - calculated
                 if attacker.heroic and after <= -defender.max_focus:

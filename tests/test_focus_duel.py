@@ -36,6 +36,7 @@ class TestFocusDuel(unittest.TestCase):
         protected.round = 1
         protected._reset_reactions()
         protected.rng = SequenceRNG([3, 4, 3])
+        protected.damage_rng = SequenceRNG([4] * 30)
         protected._mental_punch()
         self.assertEqual(protected.fighters[0].focus, 80)
         self.assertEqual(protected.fighters[0].reactions, 1)
@@ -47,6 +48,7 @@ class TestFocusDuel(unittest.TestCase):
         no_focus_protection.round = 1
         no_focus_protection._reset_reactions()
         no_focus_protection.rng = SequenceRNG([3, 4, 3])
+        no_focus_protection.damage_rng = SequenceRNG([4] * 30)
         no_focus_protection._mental_punch()
         self.assertEqual(no_focus_protection.fighters[0].focus, 72)
 
@@ -55,6 +57,7 @@ class TestFocusDuel(unittest.TestCase):
         battle.round = 1
         battle.turn_counts[1] = 1
         battle.rng = SequenceRNG([3, 1, 3, 4, 4, 4])
+        battle.damage_rng = SequenceRNG([1] * 30)
         battle._mental_punch()
         self.assertEqual(battle.fighters[0].focus, 42)
         self.assertEqual(battle.fighters[0].stunned_by, 1)
@@ -68,6 +71,7 @@ class TestFocusDuel(unittest.TestCase):
         battle.round = 1
         battle.fighters[0].focus = 0
         battle.rng = SequenceRNG([3, 4, 3])
+        battle.damage_rng = SequenceRNG([4] * 30)
         battle._hammer()
         check = next(e for e in battle.log if e["type"] == "attack_check")
         self.assertEqual((check["edges"], check["troubles"]), (1, 1))
@@ -82,6 +86,7 @@ class TestFocusDuel(unittest.TestCase):
         battle.round = 1
         battle._reset_reactions()
         battle.rng = SequenceRNG([1, 2, 1, 3, 4, 4])
+        battle.damage_rng = SequenceRNG([4] * 30)
         battle._mental_punch()
         self.assertEqual(battle.fighters[0].focus, 90)
         self.assertEqual(battle.fighters[0].reactions, 1)
@@ -117,6 +122,16 @@ class TestFocusDuel(unittest.TestCase):
         corrupted_final = replace(result, final_focus=(999, result.final_focus[1]))
         self.assertIn("final Focus mismatch",
                       audit_focus_duel(corrupted_final, profiles, 0))
+
+    def test_auditor_rejects_changed_focus_damage_die(self):
+        profiles = (blacklight_profile(), mentalist())
+        result = game(seed=3).run()
+        log = deepcopy(list(result.log))
+        target = next(e for e in log if e["type"] == "attack_target"
+                      and e["kind"] == "mental_punch" and e["damage_faces"])
+        target["damage_faces"][0] = 7
+        issues = audit_focus_duel(replace(result, log=tuple(log)), profiles, 0)
+        self.assertTrue(any("invalid damage die face" in x for x in issues))
 
 
 if __name__ == "__main__":

@@ -141,7 +141,12 @@ CLAW = RulePolicy("claw_attack", weapon="claw")
 BLADE = RulePolicy("blade_attack", weapon="blade")
 BLADE_FAST = RulePolicy("blade_fast_strikes", weapon="blade", prefer_fast=True)
 HAMMER = RulePolicy("hammer_attack", weapon="hammer")
+HAMMER_FAST = RulePolicy("hammer_fast_strikes", weapon="hammer", prefer_fast=True)
 BLADE_HAMMER_FAST = RulePolicy("blade_hammer_fast", weapon="blade", offhand="hammer", prefer_fast=True)
+CLAW_HAMMER_FAST = RulePolicy("claw_hammer_fast", weapon="claw", offhand="hammer", prefer_fast=True)
+SHIELD_BLADE_HAMMER_REACTIVE = RulePolicy(
+    "shield_blade_hammer_reactive", weapon="blade", offhand="hammer",
+    prefer_fast=True, shield_react=True)
 SHIELD_HAMMER_REACTIVE = RulePolicy("shield_hammer_reactive", weapon="hammer",
                                     shield_react=True)
 SHIELD_BLADE_REACTIVE = RulePolicy("shield_blade_reactive", weapon="blade",

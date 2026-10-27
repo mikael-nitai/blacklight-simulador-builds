@@ -40,7 +40,9 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
     if issues:
         raise RuntimeError(f"Trace failed audit: {issues[:5]}")
     data = {
-        "schema": "blacklight-full-trace-v1",
+        "schema": "blacklight-full-trace-pool-v2",
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
         "stage": stage, "scenario": scenario_id,
         "strategy": strategy_id, "index": index, "seed": seed,
         "source_sha256": source_hashes(),

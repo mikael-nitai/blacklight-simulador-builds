@@ -1,0 +1,1324 @@
+{
+  "schema": "blacklight-secondary-v1",
+  "n_per_cell": 1000,
+  "seed_formula": "first 8 bytes SHA-256 of blacklight-v1|secondary|scenario|strategy|index",
+  "source_sha256": {
+    "blacklight\\__init__.py": "30361ce63d1526dcee116dcf7b576b7a4e1162ba0c53376221f58a480b215491",
+    "blacklight\\audit.py": "d897afc6aad0aaea7b79b3a04cf1413acd915a62e8c5b95943d2873d86df8901",
+    "blacklight\\damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight\\dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight\\engine.py": "0cc35d055f340d6ce91dd714918ae3ba927c8f1e9af4cd7bcdb05e73fe8b9751",
+    "blacklight\\experiment.py": "ea231961a0b17de3072136d8ac6d60980b6eab7c33e859670a05038fa72fea49",
+    "blacklight\\policies.py": "c2ac709aab1beb288724b3561010b1ecc2e98d656ac0a94b2ee357eb2cc8b0a5",
+    "blacklight\\search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight\\sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d"
+  },
+  "script_sha256": "aa548a388dee3c95cb510340e4643ef01327c09d757380ed7a8620eb20b5eb5f",
+  "spec_sha256": "a7827cba713fb6e6359d3c1daf0d8bf902e6dba6ae7894abccb82a5ce9676f50",
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "rows": [
+    {
+      "scenario": "mirror_attack",
+      "strategy": "bare_attack",
+      "n": 1000,
+      "outcomes": {
+        "win": 504,
+        "loss": 496,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 682,
+          "rate": 0.682,
+          "ci95_wilson": [
+            0.6524865706462925,
+            0.7101204892649656
+          ]
+        },
+        "5": {
+          "count": 508,
+          "rate": 0.508,
+          "ci95_wilson": [
+            0.47704293049236535,
+            0.5388958413718659
+          ]
+        },
+        "10": {
+          "count": 504,
+          "rate": 0.504,
+          "ci95_wilson": [
+            0.47305527933504465,
+            0.5349141065970708
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 141.344,
+          "mc_se": 1.7248817005467014
+        },
+        "p10": 57.0,
+        "median": 160.0,
+        "p90": 206.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 45.05331666666667,
+          "mc_se": 0.5982291456637289
+        },
+        "median": 43.75
+      },
+      "own_turns": {
+        "mean": 3.219,
+        "mc_se": 0.03171821314395004
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 24.024,
+          "mc_se": 1.719200708199911
+        },
+        "median": 10.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_attack",
+      "strategy": "hammer",
+      "n": 1000,
+      "outcomes": {
+        "win": 723,
+        "loss": 277,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 788,
+          "rate": 0.788,
+          "ci95_wilson": [
+            0.7615898394196515,
+            0.8122059476926687
+          ]
+        },
+        "5": {
+          "count": 723,
+          "rate": 0.723,
+          "ci95_wilson": [
+            0.6944497560637553,
+            0.7498435096516871
+          ]
+        },
+        "10": {
+          "count": 723,
+          "rate": 0.723,
+          "ci95_wilson": [
+            0.6944497560637553,
+            0.7498435096516871
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 165.118,
+          "mc_se": 1.8208144994593605
+        },
+        "p10": 75.0,
+        "median": 178.0,
+        "p90": 233.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 58.049566666666664,
+          "mc_se": 0.820851064549034
+        },
+        "median": 57.0
+      },
+      "own_turns": {
+        "mean": 2.955,
+        "mc_se": 0.02799569178925141
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 60.02,
+          "mc_se": 1.9411939196880443
+        },
+        "median": 67.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_attack",
+      "strategy": "shield_hammer_reactive",
+      "n": 1000,
+      "outcomes": {
+        "win": 912,
+        "loss": 88,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 964,
+          "rate": 0.964,
+          "ci95_wilson": [
+            0.9505643395327922,
+            0.9738844285926126
+          ]
+        },
+        "5": {
+          "count": 915,
+          "rate": 0.915,
+          "ci95_wilson": [
+            0.8960871089966438,
+            0.9307366814603455
+          ]
+        },
+        "10": {
+          "count": 912,
+          "rate": 0.912,
+          "ci95_wilson": [
+            0.8928277489502235,
+            0.9280190020576792
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 186.926,
+          "mc_se": 1.2050280563607707
+        },
+        "p10": 164.0,
+        "median": 185.0,
+        "p90": 233.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 59.962,
+          "mc_se": 0.7224760471807082
+        },
+        "median": 57.0
+      },
+      "own_turns": {
+        "mean": 3.383,
+        "mc_se": 0.031421303255885144
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 85.8,
+          "mc_se": 1.5304954806912747
+        },
+        "median": 94.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_attack",
+      "strategy": "hammer_heal_t75_s15",
+      "n": 1000,
+      "outcomes": {
+        "win": 626,
+        "loss": 374,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 929,
+          "rate": 0.929,
+          "ci95_wilson": [
+            0.9113863365698452,
+            0.9433303046495486
+          ]
+        },
+        "5": {
+          "count": 815,
+          "rate": 0.815,
+          "ci95_wilson": [
+            0.7897439459386497,
+            0.8378451962154505
+          ]
+        },
+        "10": {
+          "count": 628,
+          "rate": 0.628,
+          "ci95_wilson": [
+            0.5976064637900358,
+            0.6574138860376622
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 154.068,
+          "mc_se": 2.1732428213065287
+        },
+        "p10": 41.0,
+        "median": 178.0,
+        "p90": 233.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 45.09001518759019,
+          "mc_se": 1.0254945833308595
+        },
+        "median": 42.575
+      },
+      "own_turns": {
+        "mean": 4.546,
+        "mc_se": 0.08120639432014254
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 57.628,
+          "mc_se": 2.0790863897914913
+        },
+        "median": 83.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_attack",
+      "strategy": "shield_hammer_endturn",
+      "n": 1000,
+      "outcomes": {
+        "win": 903,
+        "loss": 97,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 977,
+          "rate": 0.977,
+          "ci95_wilson": [
+            0.9657235493377733,
+            0.9846257230670071
+          ]
+        },
+        "5": {
+          "count": 909,
+          "rate": 0.909,
+          "ci95_wilson": [
+            0.88957441593046,
+            0.9252952956283559
+          ]
+        },
+        "10": {
+          "count": 903,
+          "rate": 0.903,
+          "ci95_wilson": [
+            0.8830847944509657,
+            0.9198308382096769
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 189.605,
+          "mc_se": 1.2087431633870924
+        },
+        "p10": 164.0,
+        "median": 191.0,
+        "p90": 239.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 61.25346666666667,
+          "mc_se": 0.7833438730106871
+        },
+        "median": 57.0
+      },
+      "own_turns": {
+        "mean": 3.388,
+        "mc_se": 0.03169322420424373
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 86.145,
+          "mc_se": 1.5845317023384908
+        },
+        "median": 93.5
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "bare_attack",
+      "n": 1000,
+      "outcomes": {
+        "win": 281,
+        "loss": 719,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 407,
+          "rate": 0.407,
+          "ci95_wilson": [
+            0.3769631485524506,
+            0.4377486285258626
+          ]
+        },
+        "5": {
+          "count": 281,
+          "rate": 0.281,
+          "ci95_wilson": [
+            0.25401977830646655,
+            0.3096563419102067
+          ]
+        },
+        "10": {
+          "count": 281,
+          "rate": 0.281,
+          "ci95_wilson": [
+            0.25401977830646655,
+            0.3096563419102067
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 105.377,
+          "mc_se": 1.9928598448865795
+        },
+        "p10": 26.0,
+        "median": 103.0,
+        "p90": 180.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 36.89525,
+          "mc_se": 0.7036076212871378
+        },
+        "median": 36.0
+      },
+      "own_turns": {
+        "mean": 2.744,
+        "mc_se": 0.03303869784897031
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": -4.03,
+          "mc_se": 1.7860910450537568
+        },
+        "median": -18.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "hammer",
+      "n": 1000,
+      "outcomes": {
+        "win": 478,
+        "loss": 522,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 553,
+          "rate": 0.553,
+          "ci95_wilson": [
+            0.5220403713020199,
+            0.5835539922985113
+          ]
+        },
+        "5": {
+          "count": 478,
+          "rate": 0.478,
+          "ci95_wilson": [
+            0.44718362950053253,
+            0.5089847478728318
+          ]
+        },
+        "10": {
+          "count": 478,
+          "rate": 0.478,
+          "ci95_wilson": [
+            0.44718362950053253,
+            0.5089847478728318
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 128.709,
+          "mc_se": 2.3130794745653804
+        },
+        "p10": 27.0,
+        "median": 157.0,
+        "p90": 212.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 48.071416666666664,
+          "mc_se": 0.9787754419414558
+        },
+        "median": 45.666666666666664
+      },
+      "own_turns": {
+        "mean": 2.614,
+        "mc_se": 0.03069113790568779
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 26.334,
+          "mc_se": 2.2882378539995525
+        },
+        "median": -4.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "shield_hammer_reactive",
+      "n": 1000,
+      "outcomes": {
+        "win": 626,
+        "loss": 374,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 769,
+          "rate": 0.769,
+          "ci95_wilson": [
+            0.7418776678486424,
+            0.7940635360861289
+          ]
+        },
+        "5": {
+          "count": 627,
+          "rate": 0.627,
+          "ci95_wilson": [
+            0.5965940413088956,
+            0.6564339620357734
+          ]
+        },
+        "10": {
+          "count": 626,
+          "rate": 0.626,
+          "ci95_wilson": [
+            0.5955817549893309,
+            0.6554539018723092
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 152.051,
+          "mc_se": 2.1315332117592805
+        },
+        "p10": 41.0,
+        "median": 178.0,
+        "p90": 226.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 50.5679,
+          "mc_se": 0.8981728658029269
+        },
+        "median": 48.0
+      },
+      "own_turns": {
+        "mean": 3.113,
+        "mc_se": 0.03025138254933394
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 49.589,
+          "mc_se": 2.0594740863901424
+        },
+        "median": 46.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "hammer_heal_t75_s15",
+      "n": 1000,
+      "outcomes": {
+        "win": 346,
+        "loss": 654,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 625,
+          "rate": 0.625,
+          "ci95_wilson": [
+            0.5945696046115923,
+            0.6544737057670189
+          ]
+        },
+        "5": {
+          "count": 444,
+          "rate": 0.444,
+          "ci95_wilson": [
+            0.4134777594602898,
+            0.4749508374900924
+          ]
+        },
+        "10": {
+          "count": 346,
+          "rate": 0.346,
+          "ci95_wilson": [
+            0.3171566601020642,
+            0.3760219815114867
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 103.416,
+          "mc_se": 2.500006995786008
+        },
+        "p10": 0.0,
+        "median": 96.0,
+        "p90": 192.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 35.81728311688312,
+          "mc_se": 1.1075643211191273
+        },
+        "median": 24.0
+      },
+      "own_turns": {
+        "mean": 3.22,
+        "mc_se": 0.0582494033702749
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 21.34,
+          "mc_se": 2.3422609988185745
+        },
+        "median": -9.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_hammer",
+      "strategy": "shield_hammer_endturn",
+      "n": 1000,
+      "outcomes": {
+        "win": 601,
+        "loss": 399,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 751,
+          "rate": 0.751,
+          "ci95_wilson": [
+            0.7232715438085464,
+            0.7768074234317048
+          ]
+        },
+        "5": {
+          "count": 601,
+          "rate": 0.601,
+          "ci95_wilson": [
+            0.5703182462412869,
+            0.6309087485446309
+          ]
+        },
+        "10": {
+          "count": 601,
+          "rate": 0.601,
+          "ci95_wilson": [
+            0.5703182462412869,
+            0.6309087485446309
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 146.95,
+          "mc_se": 2.1613576675245043
+        },
+        "p10": 34.0,
+        "median": 171.0,
+        "p90": 226.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 49.92926666666667,
+          "mc_se": 0.9677609919693899
+        },
+        "median": 48.0
+      },
+      "own_turns": {
+        "mean": 3.072,
+        "mc_se": 0.030524543366736018
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 47.644,
+          "mc_se": 2.1135004490532165
+        },
+        "median": 41.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "bare_attack",
+      "n": 1000,
+      "outcomes": {
+        "win": 92,
+        "loss": 908,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 352,
+          "rate": 0.352,
+          "ci95_wilson": [
+            0.32301658754166684,
+            0.3821161329700574
+          ]
+        },
+        "5": {
+          "count": 96,
+          "rate": 0.096,
+          "ci95_wilson": [
+            0.07925690009839677,
+            0.11583512075793177
+          ]
+        },
+        "10": {
+          "count": 92,
+          "rate": 0.092,
+          "ci95_wilson": [
+            0.07561389956796886,
+            0.1115087353562441
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 75.054,
+          "mc_se": 1.730020246717955
+        },
+        "p10": 0.0,
+        "median": 66.0,
+        "p90": 162.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 22.7286,
+          "mc_se": 0.4277318863571041
+        },
+        "median": 23.125
+      },
+      "own_turns": {
+        "mean": 2.961,
+        "mc_se": 0.04056012973505046
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": -25.958,
+          "mc_se": 1.188042794549793
+        },
+        "median": -25.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "hammer",
+      "n": 1000,
+      "outcomes": {
+        "win": 382,
+        "loss": 618,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 520,
+          "rate": 0.52,
+          "ci95_wilson": [
+            0.4890177246575191,
+            0.5508292050030588
+          ]
+        },
+        "5": {
+          "count": 382,
+          "rate": 0.382,
+          "ci95_wilson": [
+            0.35239145536552613,
+            0.4125116596370649
+          ]
+        },
+        "10": {
+          "count": 382,
+          "rate": 0.382,
+          "ci95_wilson": [
+            0.35239145536552613,
+            0.4125116596370649
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 112.397,
+          "mc_se": 2.2089646705902553
+        },
+        "p10": 21.0,
+        "median": 124.0,
+        "p90": 196.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 34.22528333333333,
+          "mc_se": 0.6356590872257493
+        },
+        "median": 33.5
+      },
+      "own_turns": {
+        "mean": 3.013,
+        "mc_se": 0.036471374544444594
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 11.194,
+          "mc_se": 2.1295317018699835
+        },
+        "median": -13.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "shield_hammer_reactive",
+      "n": 1000,
+      "outcomes": {
+        "win": 522,
+        "loss": 478,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 759,
+          "rate": 0.759,
+          "ci95_wilson": [
+            0.7315330470912915,
+            0.7844846920131909
+          ]
+        },
+        "5": {
+          "count": 531,
+          "rate": 0.531,
+          "ci95_wilson": [
+            0.5000102483912816,
+            0.5617524925826141
+          ]
+        },
+        "10": {
+          "count": 522,
+          "rate": 0.522,
+          "ci95_wilson": [
+            0.4910152521271681,
+            0.5528163704994674
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 135.022,
+          "mc_se": 2.007606535155731
+        },
+        "p10": 36.0,
+        "median": 165.0,
+        "p90": 206.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 36.88708333333334,
+          "mc_se": 0.6105757299455169
+        },
+        "median": 35.2
+      },
+      "own_turns": {
+        "mean": 3.65,
+        "mc_se": 0.03573201333225959
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 34.917,
+          "mc_se": 2.015642559067933
+        },
+        "median": 15.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "hammer_heal_t75_s15",
+      "n": 1000,
+      "outcomes": {
+        "win": 265,
+        "loss": 735,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 624,
+          "rate": 0.624,
+          "ci95_wilson": [
+            0.5935575899582508,
+            0.6534933739373314
+          ]
+        },
+        "5": {
+          "count": 388,
+          "rate": 0.388,
+          "ci95_wilson": [
+            0.3582811184771856,
+            0.4185760754235788
+          ]
+        },
+        "10": {
+          "count": 266,
+          "rate": 0.266,
+          "ci95_wilson": [
+            0.2395467232144317,
+            0.29424419975680804
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 90.324,
+          "mc_se": 2.2479582603643555
+        },
+        "p10": 0.0,
+        "median": 83.0,
+        "p90": 180.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 24.687351118326117,
+          "mc_se": 0.6852392381790842
+        },
+        "median": 18.6
+      },
+      "own_turns": {
+        "mean": 3.662,
+        "mc_se": 0.06128222834975496
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 8.074,
+          "mc_se": 2.1527240289328176
+        },
+        "median": -14.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "mirror_shield",
+      "strategy": "shield_hammer_endturn",
+      "n": 1000,
+      "outcomes": {
+        "win": 522,
+        "loss": 478,
+        "inconclusive": 0,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 767,
+          "rate": 0.767,
+          "ci95_wilson": [
+            0.7398071302206757,
+            0.792149380748038
+          ]
+        },
+        "5": {
+          "count": 535,
+          "rate": 0.535,
+          "ci95_wilson": [
+            0.5040112456567101,
+            0.5657208812493011
+          ]
+        },
+        "10": {
+          "count": 522,
+          "rate": 0.522,
+          "ci95_wilson": [
+            0.4910152521271681,
+            0.5528163704994674
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 133.588,
+          "mc_se": 2.0555397100273933
+        },
+        "p10": 31.0,
+        "median": 165.0,
+        "p90": 206.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 36.729909523809525,
+          "mc_se": 0.6244310964623135
+        },
+        "median": 36.0
+      },
+      "own_turns": {
+        "mean": 3.608,
+        "mc_se": 0.03563152544595313
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 35.434,
+          "mc_se": 2.0028357383956865
+        },
+        "median": 15.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "bare_attack",
+      "n": 1000,
+      "outcomes": {
+        "win": 0,
+        "loss": 994,
+        "inconclusive": 6,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "5": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "10": {
+          "count": 912,
+          "rate": 0.912,
+          "ci95_wilson": [
+            0.8928277489502235,
+            0.9280190020576792
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 9.588,
+          "mc_se": 0.7096350032501483
+        },
+        "p10": 0.0,
+        "median": 0.0,
+        "p90": 42.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 0.5797840895567139,
+          "mc_se": 0.04527302765908322
+        },
+        "median": 0.0
+      },
+      "own_turns": {
+        "mean": 16.557,
+        "mc_se": 0.15448176467018887
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": -8.363,
+          "mc_se": 0.2655593205909985
+        },
+        "median": -6.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "hammer",
+      "n": 1000,
+      "outcomes": {
+        "win": 67,
+        "loss": 917,
+        "inconclusive": 16,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "5": {
+          "count": 999,
+          "rate": 0.999,
+          "ci95_wilson": [
+            0.9943574414020421,
+            0.9998234536293739
+          ]
+        },
+        "10": {
+          "count": 911,
+          "rate": 0.911,
+          "ci95_wilson": [
+            0.8917426484378812,
+            0.9271117560869926
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 17.378,
+          "mc_se": 1.462002245746075
+        },
+        "p10": 0.0,
+        "median": 0.0,
+        "p90": 54.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 4.330284117313486,
+          "mc_se": 0.475369755501073
+        },
+        "median": 0.0
+      },
+      "own_turns": {
+        "mean": 15.711,
+        "mc_se": 0.18637654148313626
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 1.651,
+          "mc_se": 1.2895752026164287
+        },
+        "median": -6.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "shield_hammer_reactive",
+      "n": 1000,
+      "outcomes": {
+        "win": 65,
+        "loss": 0,
+        "inconclusive": 935,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "5": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "10": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 17.016,
+          "mc_se": 1.3515155708826807
+        },
+        "p10": 0.0,
+        "median": 0.0,
+        "p90": 54.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 3.78305376344086,
+          "mc_se": 0.43491453198601693
+        },
+        "median": 0.0
+      },
+      "own_turns": {
+        "mean": 28.505,
+        "mc_se": 0.21320279179792753
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 150.0,
+          "mc_se": 0.0
+        },
+        "median": 150.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "hammer_heal_t75_s15",
+      "n": 1000,
+      "outcomes": {
+        "win": 56,
+        "loss": 223,
+        "inconclusive": 721,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "5": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "10": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 15.732,
+          "mc_se": 1.316999112627895
+        },
+        "p10": 0.0,
+        "median": 0.0,
+        "p90": 54.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 3.3900399436084863,
+          "mc_se": 0.4206141735938913
+        },
+        "median": 0.0
+      },
+      "own_turns": {
+        "mean": 28.065,
+        "mc_se": 0.20146305458411565
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 51.649,
+          "mc_se": 1.4362090709557211
+        },
+        "median": 55.0
+      },
+      "audited_full_logs": 1000
+    },
+    {
+      "scenario": "gunner_kiter",
+      "strategy": "shield_hammer_endturn",
+      "n": 1000,
+      "outcomes": {
+        "win": 70,
+        "loss": 0,
+        "inconclusive": 930,
+        "draw": 0
+      },
+      "survival_through_round": {
+        "3": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "5": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "10": {
+          "count": 1000,
+          "rate": 1.0,
+          "ci95_wilson": [
+            0.996173241514445,
+            1.0
+          ]
+        }
+      },
+      "damage_total": {
+        "mean_se": {
+          "mean": 18.892,
+          "mc_se": 1.4328326299136775
+        },
+        "p10": 0.0,
+        "median": 0.0,
+        "p90": 54.0
+      },
+      "damage_per_own_turn": {
+        "mean_se": {
+          "mean": 4.184989247311828,
+          "mc_se": 0.4627287776254753
+        },
+        "median": 0.0
+      },
+      "own_turns": {
+        "mean": 28.371,
+        "mc_se": 0.22064914467326868
+      },
+      "final_health": {
+        "mean_se": {
+          "mean": 150.0,
+          "mc_se": 0.0
+        },
+        "median": 150.0
+      },
+      "audited_full_logs": 1000
+    }
+  ]
+}

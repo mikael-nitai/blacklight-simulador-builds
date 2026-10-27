@@ -1,0 +1,1617 @@
+{
+  "schema": "blacklight-corridor-full-trace-v1",
+  "stage": "description",
+  "length": 20,
+  "opponent": "C2_rank4_nonammo",
+  "policy": "hammer_attack",
+  "index": 91,
+  "seed": 7443016450889254037,
+  "source_sha256": {
+    "CORRIDOR_SPEC.md": "f86528b400d0fbfdc3c7eb3b6b151f9fd29c7f01134f02992e6dfa6d32bb7e8c",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "scripts/corridor_experiment.py": "8e7a5ab45c73e34f28cf8256a57f5c81d002e3940b8688d8e268236e59b92379",
+    "experimental/corridor.py": "2f59607a7338a85c969430e62c40e07febec6f09c60e0dadee381ef3300f1229",
+    "experimental/corridor_audit.py": "92f0f1a57ea05376a31ac79a5a2a41f40011e916c176dfb00170b6694482c2eb",
+    "blacklight/__init__.py": "30361ce63d1526dcee116dcf7b576b7a4e1162ba0c53376221f58a480b215491",
+    "blacklight/audit.py": "d897afc6aad0aaea7b79b3a04cf1413acd915a62e8c5b95943d2873d86df8901",
+    "blacklight/damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight/dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight/engine.py": "0cc35d055f340d6ce91dd714918ae3ba927c8f1e9af4cd7bcdb05e73fe8b9751",
+    "blacklight/experiment.py": "ea231961a0b17de3072136d8ac6d60980b6eab7c33e859670a05038fa72fea49",
+    "blacklight/policies.py": "c2ac709aab1beb288724b3561010b1ecc2e98d656ac0a94b2ee357eb2cc8b0a5",
+    "blacklight/search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight/sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f"
+  },
+  "profiles": [
+    {
+      "name": "Blacklight",
+      "rank": 3,
+      "max_health": 150,
+      "max_focus": 90,
+      "melee": 6,
+      "agility": 1,
+      "resilience": 5,
+      "vigilance": 2,
+      "melee_defense": 16,
+      "agility_defense": 11,
+      "run_speed": 5,
+      "health_dr": 1,
+      "melee_bonus": 3,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": null,
+      "run_speed_exception": false,
+      "powers": [
+        "attack_stance",
+        "blazing_fast_fists",
+        "brawling",
+        "do_this_all_day",
+        "fast_strikes",
+        "healing_factor",
+        "mighty",
+        "riposte"
+      ],
+      "traits": [
+        "battle_ready",
+        "combat_reflexes",
+        "signature_fast_strikes",
+        "situational_awareness"
+      ],
+      "weapons": [
+        "blade",
+        "claw",
+        "hammer",
+        "shield"
+      ],
+      "shield_active": false,
+      "heroic": true
+    },
+    {
+      "name": "Gunner",
+      "rank": 4,
+      "max_health": 120,
+      "max_focus": 60,
+      "melee": 2,
+      "agility": 6,
+      "resilience": 4,
+      "vigilance": 2,
+      "melee_defense": 12,
+      "agility_defense": 16,
+      "run_speed": 6,
+      "health_dr": 0,
+      "melee_bonus": 0,
+      "ranged_bonus": 0,
+      "ranged_range": 10,
+      "ranged_is_ammunition": false,
+      "logic": 2,
+      "initiative_modifier": null,
+      "run_speed_exception": false,
+      "powers": [],
+      "traits": [],
+      "weapons": [],
+      "shield_active": false,
+      "heroic": false
+    }
+  ],
+  "policies": [
+    {
+      "name": "hammer_attack",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "hammer",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false
+    },
+    {
+      "name": "ranged_kiter",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "bare",
+      "offhand": null,
+      "kite": true,
+      "riposte": true,
+      "move_after_attack": true,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": true,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false
+    }
+  ],
+  "initial_positions": [
+    0,
+    8
+  ],
+  "final_positions": [
+    19,
+    20
+  ],
+  "wall_reached": true,
+  "contact_occurred": true,
+  "victor_outcome": "loss",
+  "result": {
+    "seed": 7443016450889254037,
+    "winner": "Gunner",
+    "outcome": "win",
+    "rounds": 6,
+    "turns": 12,
+    "bonus_round_occurred": false,
+    "final_health": [
+      -8,
+      6
+    ],
+    "final_focus": [
+      90,
+      60
+    ],
+    "metrics": [
+      {
+        "damage_dealt": 114,
+        "damage_taken": 183,
+        "damage_mitigated": 45,
+        "healing_effective": 25,
+        "focus_spent": 0,
+        "attacks": 3,
+        "hits": 3,
+        "fantastic_hits": 0,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 0,
+        "damage_round5": 76,
+        "damage_round10": 114
+      },
+      {
+        "damage_dealt": 183,
+        "damage_taken": 114,
+        "damage_mitigated": 0,
+        "healing_effective": 0,
+        "focus_spent": 0,
+        "attacks": 6,
+        "hits": 6,
+        "fantastic_hits": 2,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 117,
+        "damage_round5": 159,
+        "damage_round10": 183
+      }
+    ],
+    "log": [
+      {
+        "seq": 1,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "roll": [
+          5,
+          5,
+          2
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 5,
+            "rolled": 3,
+            "kept": 5
+          }
+        ],
+        "total": 14,
+        "modifier": 2,
+        "fantastic": false
+      },
+      {
+        "seq": 2,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Gunner",
+        "roll": [
+          4,
+          2,
+          4
+        ],
+        "rerolls": [],
+        "total": 12,
+        "modifier": 2,
+        "fantastic": false
+      },
+      {
+        "seq": 3,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 4,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 5,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 6,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "actual_steps": 5,
+        "as_standard": false,
+        "positions_before": [
+          0,
+          8
+        ],
+        "positions_after": [
+          5,
+          8
+        ],
+        "corridor_length": 20,
+        "distance_before": 8,
+        "distance_after": 3
+      },
+      {
+        "seq": 7,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 2,
+        "actual_steps": 2,
+        "as_standard": true,
+        "positions_before": [
+          5,
+          8
+        ],
+        "positions_after": [
+          7,
+          8
+        ],
+        "corridor_length": 20,
+        "distance_before": 3,
+        "distance_after": 1
+      },
+      {
+        "seq": 8,
+        "round": 1,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 9,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 10,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 11,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04"
+        ],
+        "actor": "Gunner",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 1,
+        "distance": 1,
+        "roll": [
+          3,
+          5,
+          5
+        ],
+        "rerolls": [],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 1,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 21,
+        "damage": 21,
+        "health_before": 150,
+        "health_after": 129
+      },
+      {
+        "seq": 12,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Gunner",
+        "direction": "retreat",
+        "steps": 6,
+        "actual_steps": 6,
+        "as_standard": false,
+        "positions_before": [
+          7,
+          8
+        ],
+        "positions_after": [
+          7,
+          14
+        ],
+        "corridor_length": 20,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 13,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Gunner",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 14,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 15,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 16,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 17,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "actual_steps": 5,
+        "as_standard": false,
+        "positions_before": [
+          7,
+          14
+        ],
+        "positions_after": [
+          12,
+          14
+        ],
+        "corridor_length": 20,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 18,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "actual_steps": 1,
+        "as_standard": true,
+        "positions_before": [
+          12,
+          14
+        ],
+        "positions_after": [
+          13,
+          14
+        ],
+        "corridor_length": 20,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 19,
+        "round": 2,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 129,
+        "health_after": 134
+      },
+      {
+        "seq": 20,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 134,
+        "focus": 90
+      },
+      {
+        "seq": 21,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 22,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04"
+        ],
+        "actor": "Gunner",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 2,
+        "distance": 1,
+        "roll": [
+          6,
+          1,
+          3
+        ],
+        "rerolls": [],
+        "total": 21,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 1,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 48,
+        "damage": 48,
+        "health_before": 134,
+        "health_after": 86
+      },
+      {
+        "seq": 23,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Gunner",
+        "direction": "retreat",
+        "steps": 6,
+        "actual_steps": 6,
+        "as_standard": false,
+        "positions_before": [
+          13,
+          14
+        ],
+        "positions_after": [
+          13,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 24,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Gunner",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 25,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 26,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 27,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 28,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "actual_steps": 5,
+        "as_standard": false,
+        "positions_before": [
+          13,
+          20
+        ],
+        "positions_after": [
+          18,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 29,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "actual_steps": 1,
+        "as_standard": true,
+        "positions_before": [
+          18,
+          20
+        ],
+        "positions_after": [
+          19,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 30,
+        "round": 3,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 86,
+        "health_after": 91
+      },
+      {
+        "seq": 31,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 91,
+        "focus": 90
+      },
+      {
+        "seq": 32,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 33,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04"
+        ],
+        "actor": "Gunner",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 3,
+        "distance": 1,
+        "roll": [
+          6,
+          1,
+          4
+        ],
+        "rerolls": [],
+        "total": 22,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 1,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 48,
+        "damage": 48,
+        "health_before": 91,
+        "health_after": 43
+      },
+      {
+        "seq": 34,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Gunner",
+        "direction": "retreat",
+        "steps": 6,
+        "actual_steps": 0,
+        "as_standard": false,
+        "positions_before": [
+          19,
+          20
+        ],
+        "positions_after": [
+          19,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 35,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Gunner",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 36,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 37,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 38,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 39,
+        "round": 4,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "actual_steps": 0,
+        "as_standard": false,
+        "positions_before": [
+          19,
+          20
+        ],
+        "positions_after": [
+          19,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 40,
+        "round": 4,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Gunner",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 4,
+        "distance": 1,
+        "roll": [
+          1,
+          2,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 2,
+            "kept": 2
+          }
+        ],
+        "total": 12,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 12,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 22,
+        "damage": 22,
+        "health_before": 120,
+        "health_after": 98
+      },
+      {
+        "seq": 41,
+        "round": 4,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 43,
+        "health_after": 48
+      },
+      {
+        "seq": 42,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 48,
+        "focus": 90
+      },
+      {
+        "seq": 43,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 44,
+        "round": 4,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04"
+        ],
+        "actor": "Gunner",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 5,
+        "distance": 1,
+        "roll": [
+          1,
+          6,
+          3
+        ],
+        "rerolls": [],
+        "total": 16,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 1,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 24,
+        "damage": 24,
+        "health_before": 48,
+        "health_after": 24
+      },
+      {
+        "seq": 45,
+        "round": 4,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Gunner",
+        "direction": "retreat",
+        "steps": 6,
+        "actual_steps": 0,
+        "as_standard": false,
+        "positions_before": [
+          19,
+          20
+        ],
+        "positions_after": [
+          19,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 46,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Gunner",
+        "health": 98,
+        "focus": 60
+      },
+      {
+        "seq": 47,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 48,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 49,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 50,
+        "round": 5,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "actual_steps": 0,
+        "as_standard": false,
+        "positions_before": [
+          19,
+          20
+        ],
+        "positions_after": [
+          19,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 51,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Gunner",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 6,
+        "distance": 1,
+        "roll": [
+          1,
+          6,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 18,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 12,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 54,
+        "damage": 54,
+        "health_before": 98,
+        "health_after": 44
+      },
+      {
+        "seq": 52,
+        "round": 5,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 24,
+        "health_after": 29
+      },
+      {
+        "seq": 53,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 29,
+        "focus": 90
+      },
+      {
+        "seq": 54,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 55,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04"
+        ],
+        "actor": "Gunner",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 7,
+        "distance": 1,
+        "roll": [
+          5,
+          4,
+          4
+        ],
+        "rerolls": [],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 1,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 18,
+        "damage": 18,
+        "health_before": 29,
+        "health_after": 11
+      },
+      {
+        "seq": 56,
+        "round": 5,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Gunner",
+        "direction": "retreat",
+        "steps": 6,
+        "actual_steps": 0,
+        "as_standard": false,
+        "positions_before": [
+          19,
+          20
+        ],
+        "positions_after": [
+          19,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 57,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Gunner",
+        "health": 44,
+        "focus": 60
+      },
+      {
+        "seq": 58,
+        "round": 6,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 59,
+        "round": 6,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 60,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 61,
+        "round": 6,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "actual_steps": 0,
+        "as_standard": false,
+        "positions_before": [
+          19,
+          20
+        ],
+        "positions_after": [
+          19,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 62,
+        "round": 6,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Gunner",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 8,
+        "distance": 1,
+        "roll": [
+          3,
+          4,
+          1
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 2,
+            "kept": 4
+          }
+        ],
+        "total": 14,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 12,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 38,
+        "damage": 38,
+        "health_before": 44,
+        "health_after": 6
+      },
+      {
+        "seq": 63,
+        "round": 6,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 11,
+        "health_after": 16
+      },
+      {
+        "seq": 64,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 16,
+        "focus": 90
+      },
+      {
+        "seq": 65,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Gunner",
+        "reactions": 1
+      },
+      {
+        "seq": 66,
+        "round": 6,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04"
+        ],
+        "actor": "Gunner",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 9,
+        "distance": 1,
+        "roll": [
+          4,
+          6,
+          2
+        ],
+        "rerolls": [],
+        "total": 18,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 1,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 24,
+        "damage": 24,
+        "health_before": 16,
+        "health_after": -8
+      },
+      {
+        "seq": 67,
+        "round": 6,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06",
+          "MAP-01"
+        ],
+        "actor": "Gunner",
+        "direction": "retreat",
+        "steps": 6,
+        "actual_steps": 0,
+        "as_standard": false,
+        "positions_before": [
+          19,
+          20
+        ],
+        "positions_after": [
+          19,
+          20
+        ],
+        "corridor_length": 20,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 68,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Gunner",
+        "health": 6,
+        "focus": 60
+      }
+    ]
+  },
+  "audit_issues": []
+}

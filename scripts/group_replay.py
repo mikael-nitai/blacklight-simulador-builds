@@ -26,7 +26,8 @@ def replay(stage: str, scenario_id: str, policy_name: str,
     issues = audit_group_result(result, profiles)
     if issues:
         raise RuntimeError(f"Group replay failed audit: {issues}")
-    data = {"schema": "blacklight-group-full-trace-v1",
+    data = {"schema": "blacklight-group-full-trace-pool-v2",
+            "damage_model": "literal_marvel_pool_v2",
             "stage": stage, "scenario": scenario_id,
             "policy": policy_name, "index": index, "seed": seed,
             "source_sha256": hashes(),

@@ -6,12 +6,23 @@ from blacklight.dice import DieRoll
 from experimental.focus_primitives import resolve_mental_punch
 
 
+class SequenceRNG:
+    def __init__(self, values):
+        self.values = iter(values)
+
+    def randint(self, low, high):
+        value = next(self.values)
+        assert low <= value <= high
+        return value
+
+
 def strike(roll: tuple[int, int, int], *, focus: int = 90,
            max_focus: int = 90, shield: int = 0,
            focus_dr: int = 0, heroic: bool = False,
            defense: int = 16):
     return resolve_mental_punch(
-        DieRoll(*roll), attacker_rank=3, attacker_melee=6,
+        DieRoll(*roll), SequenceRNG([roll[1]] * 10),
+        attacker_rank=3, attacker_melee=6,
         target_melee_defense=defense, target_focus=focus,
         target_max_focus=max_focus, focus_reduction=focus_dr,
         shield_reduction=shield, attacker_heroic=heroic)

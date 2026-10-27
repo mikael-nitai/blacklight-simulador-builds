@@ -6,8 +6,8 @@ multiplier reduction applies to Focus damage; Sturdy is Health-only.
 
 from dataclasses import dataclass
 
-from blacklight.damage import calculate
 from blacklight.dice import DieRoll, classify
+from blacklight.pool_damage import DieSource, roll_damage_pool
 
 
 @dataclass(frozen=True)
@@ -22,10 +22,11 @@ class MentalPunchOutcome:
     demoralized: bool
     shattered: bool
     stunned: bool
+    damage_faces: tuple[int, ...]
 
 
 def resolve_mental_punch(
-    roll: DieRoll, *, attacker_rank: int, attacker_melee: int,
+    roll: DieRoll, damage_rng: DieSource, *, attacker_rank: int, attacker_melee: int,
     target_melee_defense: int, target_focus: int, target_max_focus: int,
     focus_reduction: int = 0, shield_reduction: int = 0,
     attacker_heroic: bool = False,
@@ -41,9 +42,12 @@ def resolve_mental_punch(
             target_focus > target_max_focus):
         raise ValueError("Invalid Mental Punch state or reduction")
     check = classify(roll, attacker_melee, target_melee_defense)
-    damage = (calculate(roll.marvel, attacker_rank, attacker_melee, (),
-                        focus_reduction + shield_reduction, check.fantastic)
-              if check.success else 0)
+    pool = (roll_damage_pool(damage_rng, full_multiplier=attacker_rank,
+                             ability=attacker_melee,
+                             reduction=focus_reduction + shield_reduction,
+                             fantastic=check.fantastic)
+            if check.success else None)
+    damage = pool.damage if pool is not None else 0
     after = target_focus - damage
     if attacker_heroic and after <= -target_max_focus:
         after = -target_max_focus + 1
@@ -51,4 +55,5 @@ def resolve_mental_punch(
                               damage, target_focus - after, target_focus,
                               after, after <= 0,
                               after <= -target_max_focus,
-                              check.success and check.fantastic)
+                              check.success and check.fantastic,
+                              pool.faces if pool is not None else ())

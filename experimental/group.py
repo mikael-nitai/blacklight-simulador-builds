@@ -9,9 +9,9 @@ from collections import deque
 from dataclasses import dataclass
 from random import Random
 
-from blacklight.damage import calculate
 from blacklight.dice import classify, resolve_check
 from blacklight.engine import Fighter, Profile
+from blacklight.pool_damage import roll_damage_pool
 from .group_policies import GroupAction, GroupPolicy, GroupView
 from .multi_target import Target, resolve_fast_strikes
 
@@ -47,6 +47,7 @@ class GroupBattle:
         self.policies = policies
         self.seed = seed
         self.rng = Random(seed)
+        self.damage_rng = Random(seed ^ 0xD6162026)
         self.max_rounds = max_rounds
         self.audit = audit
         self.log: list[dict] = []
@@ -146,7 +147,7 @@ class GroupBattle:
                             for t in action.targets)
         edges = int("blazing_fast_fists" in p.powers)
         if action.kind == "fast_strikes" and "signature_fast_strikes" in p.traits:
-            edges = max(1, edges)
+            edges += 1
         stunned_targets = [self.fighters[t].stunned_by is not None
                            for t in action.targets]
         if len(set(stunned_targets)) > 1:
@@ -179,17 +180,26 @@ class GroupBattle:
                                     self.fighters[t].profile.melee_defense,
                                     self.fighters[t].health, reductions[t])
                              for t in action.targets)
-            multi = resolve_fast_strikes(check.roll, melee_modifier=p.melee,
+            multi = resolve_fast_strikes(check.roll, self.damage_rng,
+                                         melee_modifier=p.melee,
                                          rank=p.rank, damage_ability=p.melee,
                                          bonus_candidates=bonuses,
                                          targets=prepared)
             damages = {t: result.damage for t, result in zip(action.targets, multi)}
+            faces_by_target = {t: [list(faces) for faces in result.damage_faces]
+                               for t, result in zip(action.targets, multi)}
         else:
-            damages = {
-                t: (calculate(check.roll.marvel, p.rank, p.melee, bonuses,
-                              reductions[t], individual.fantastic)
-                    if individual.success else 0)
-                for t, individual in target_checks}
+            damages = {}
+            faces_by_target = {}
+            for t, individual in target_checks:
+                pool = (roll_damage_pool(
+                    self.damage_rng,
+                    full_multiplier=p.rank + max(0, *bonuses),
+                    ability=p.melee, reduction=reductions[t],
+                    fantastic=individual.fantastic)
+                    if individual.success else None)
+                damages[t] = pool.damage if pool is not None else 0
+                faces_by_target[t] = [list(pool.faces)] if pool is not None else []
         self._record("attack_check", ("D616-01", "POW-05" if action.kind == "fast_strikes" else "ACT-05"),
                      actor=p.name, mode=action.kind, reaction=reaction,
                      trigger=trigger, targets=[self.fighters[t].profile.name
@@ -213,6 +223,7 @@ class GroupBattle:
                          fantastic=individual.fantastic,
                          defense=victim.profile.melee_defense,
                          reduction=reductions[target],
+                         damage_faces=faces_by_target[target],
                          calculated_damage=damages[target],
                          damage=applied, health_before=before,
                          health_after=victim.health)

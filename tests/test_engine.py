@@ -143,10 +143,14 @@ class TestDuel(unittest.TestCase):
         d._turn(0)
         self.assertTrue(d.fighters[0].stance)
         self.assertFalse(any(x["type"] == "attack" for x in d.log))
-        self.assertEqual(calculate(4, 3, 12, [3], 1, False), 32)
         d.rng = SequenceRNG([6, 4, 6])
+        d.damage_rng = SequenceRNG([4] * 100)
         d._turn(0)
         self.assertEqual(d.fighters[1].health, 118)
+        attack = next(x for x in d.log if x["type"] == "attack")
+        self.assertEqual((attack["damage_components"][0]["dice_rolled"],
+                          attack["damage_components"][0]["ability_added"]),
+                         (5, 12))
 
     def test_reaction_budget_never_negative(self):
         for seed in range(50):
@@ -182,6 +186,7 @@ class TestDuel(unittest.TestCase):
                            replace(HAMMER, edge_mode="decline",
                                    knockback_stance=False)), seed=1, audit=True)
         d.rng = SequenceRNG([1, 2, 1, 6, 1, 6])
+        d.damage_rng = SequenceRNG([1] * 100)
         d._attack(0, "melee")
         d._drain_events()
         reaction = [x for x in d.log if x["type"] == "attack" and x["reaction"]][0]
@@ -280,10 +285,12 @@ class TestDuel(unittest.TestCase):
         a, b = self.profiles()
         no_shield = Duel((a, b), (replace(ATTACK, edge_mode="decline"), ATTACK), seed=1)
         no_shield.rng = SequenceRNG([6, 4, 6])
+        no_shield.damage_rng = SequenceRNG([4] * 100)
         no_shield._attack(0, "melee")
         shield = Duel((a, replace(b, shield_active=True)),
                       (replace(ATTACK, edge_mode="decline"), ATTACK), seed=1)
         shield.rng = SequenceRNG([6, 4, 6])
+        shield.damage_rng = SequenceRNG([4] * 100)
         shield._attack(0, "melee")
         self.assertEqual((no_shield.fighters[1].health,
                           shield.fighters[1].health), (124, 132))
@@ -295,6 +302,7 @@ class TestDuel(unittest.TestCase):
                            riposte=False)
         d = Duel((a, b), (attacker, defender), seed=1, audit=True)
         d.rng = SequenceRNG([6, 4, 6])
+        d.damage_rng = SequenceRNG([4] * 100)
         d._attack(0, "hammer")
         self.assertEqual(d.fighters[1].health, 124)
         self.assertTrue(d.fighters[1].shield_active)
@@ -396,6 +404,7 @@ class TestDuel(unittest.TestCase):
         d = Duel((a, b), (policy, ATTACK), seed=1, audit=True)
         d.fighters[1].stance = True
         d.rng = SequenceRNG([6, 1, 6])
+        d.damage_rng = SequenceRNG([1] * 100)
         d._attack(0, "hammer")
         self.assertFalse(d.fighters[1].stance)
         self.assertEqual(d.fighters[1].stunned_by, 0)
@@ -414,11 +423,12 @@ class TestDuel(unittest.TestCase):
         d.active_actor = 0
         d.fighters[0].standard_available = True
         d.rng = SequenceRNG([6, 1, 6, 6, 1, 6])
+        d.damage_rng = SequenceRNG([2] * 100)
         d._act(0, Action("blade_fast", offhand="hammer"))
         self.assertEqual(sum(x["type"] == "blade_bonus" for x in d.log), 1)
         self.assertEqual(sum(x["type"] == "attack" for x in d.log), 2)
         self.assertEqual(d.fighters[1].limb_stage, 2)
-        self.assertEqual(d.fighters[1].health, 54)
+        self.assertEqual(d.fighters[1].health, 74)
         self.assertEqual(d.fighters[1].bleeding, 5)
 
     def test_blade_regular_hit_does_not_grant_second_action(self):

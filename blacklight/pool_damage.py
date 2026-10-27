@@ -23,12 +23,15 @@ class PoolDamage:
     ability_added: int
     faces: tuple[int, ...]
     damage: int
+    counterfactual_faces: tuple[int, ...] = ()
+    damage_without_reduction: int | None = None
 
 
 def roll_damage_pool(rng: DieSource, *, full_multiplier: int,
                      ability: int, reduction: int = 0,
                      fast_strikes: bool = False,
-                     fantastic: bool = False) -> PoolDamage:
+                     fantastic: bool = False,
+                     sample_counterfactual: bool = False) -> PoolDamage:
     """Roll one weapon's damage after DR; no hit check is performed here."""
     if full_multiplier < 0 or reduction < 0 or not isinstance(ability, int):
         raise ValueError("Invalid damage-pool inputs")
@@ -41,13 +44,26 @@ def roll_damage_pool(rng: DieSource, *, full_multiplier: int,
     else:
         count = after_dr
         added = ability
-    if count < 1:
-        return PoolDamage(full_multiplier, reduction, after_dr,
-                          0, 0, (), 0)
     faces = tuple(rng.randint(1, 6) for _ in range(count))
-    values = tuple(6 if face == 1 else face for face in faces)
-    total = max(0, sum(values) + added)
-    if fantastic and not fast_strikes:
-        total *= 2
+
+    def value(rolled: tuple[int, ...], bonus: int) -> int:
+        if not rolled:
+            return 0
+        total = max(0, sum(6 if face == 1 else face for face in rolled)
+                    + bonus)
+        return total * (2 if fantastic and not fast_strikes else 1)
+
+    total = value(faces, added)
+    extra: tuple[int, ...] = ()
+    without_reduction: int | None = None
+    if sample_counterfactual:
+        raw_count = (full_multiplier if fantastic or not fast_strikes
+                     else full_multiplier // 2)
+        extra = tuple(rng.randint(1, 6)
+                      for _ in range(max(0, raw_count - count)))
+        without_reduction = value(faces + extra,
+                                  ability if fantastic or not fast_strikes
+                                  else ability // 2)
     return PoolDamage(full_multiplier, reduction, after_dr,
-                      count, added, faces, total)
+                      count, added if count else 0, faces, total,
+                      extra, without_reduction)

@@ -1,0 +1,481 @@
+{
+  "schema": "blacklight-fixed-contact-group-v1",
+  "stage": "description",
+  "n_per_cell": 10000,
+  "seed_formula": "first 8 bytes SHA-256 of blacklight-group-v1|stage|scenario|policy|index",
+  "source_sha256": {
+    "GROUP_EXPERIMENT_SPEC.md": "f1e6a9d6308f652799697fd8460245f7a4d27e26fbbae0a30db496f55a248fc4",
+    "GROUP_SPEC.md": "8d1051b9bf7e538634f6b8baf97e17bfdd54653529df9f934d6c4054cca4ddd9",
+    "scripts/group_experiment.py": "f3312738a047b62177082fa4df13294b29f639a8133c3325ec0e723d1d8abec0",
+    "experimental/__init__.py": "3307fa7761d0644fa1bdd3c5a0d194e70d0bb626da8907afd18fb5f753c2bf62",
+    "experimental/group.py": "6b65752a5cc187cc93718fa5217b2073b6a54e621176f44fe06abc56d4e3756d",
+    "experimental/group_audit.py": "4e2c3ca5f7488ff518db0fc8ae2df3b1b9c807dc5262d2802375e4e8822dd0c0",
+    "experimental/group_policies.py": "22ee664e12f59f18e9bb2be92e2a70d4018e67a20a89ecd3e70fcc75c013b0a9",
+    "experimental/multi_target.py": "9785b9f098cb828d46d7f5d23706a3964bca89461e67d10309b478c3ddcc1f2e",
+    "blacklight/__init__.py": "30361ce63d1526dcee116dcf7b576b7a4e1162ba0c53376221f58a480b215491",
+    "blacklight/audit.py": "d897afc6aad0aaea7b79b3a04cf1413acd915a62e8c5b95943d2873d86df8901",
+    "blacklight/damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight/dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight/engine.py": "0cc35d055f340d6ce91dd714918ae3ba927c8f1e9af4cd7bcdb05e73fe8b9751",
+    "blacklight/experiment.py": "ea231961a0b17de3072136d8ac6d60980b6eab7c33e859670a05038fa72fea49",
+    "blacklight/policies.py": "c2ac709aab1beb288724b3561010b1ecc2e98d656ac0a94b2ee357eb2cc8b0a5",
+    "blacklight/search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight/sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff"
+  },
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "scenarios": [
+    {
+      "id": "G1_two_rank2_brawlers",
+      "profiles": [
+        {
+          "name": "Blacklight",
+          "rank": 3,
+          "max_health": 150,
+          "max_focus": 90,
+          "melee": 6,
+          "agility": 1,
+          "resilience": 5,
+          "vigilance": 2,
+          "melee_defense": 16,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 1,
+          "melee_bonus": 3,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [
+            "attack_stance",
+            "blazing_fast_fists",
+            "brawling",
+            "do_this_all_day",
+            "fast_strikes",
+            "healing_factor",
+            "mighty",
+            "riposte"
+          ],
+          "traits": [
+            "battle_ready",
+            "combat_reflexes",
+            "signature_fast_strikes",
+            "situational_awareness"
+          ],
+          "weapons": [
+            "blade",
+            "claw",
+            "hammer",
+            "shield"
+          ],
+          "shield_active": false,
+          "heroic": true
+        },
+        {
+          "name": "E1",
+          "rank": 2,
+          "max_health": 90,
+          "max_focus": 60,
+          "melee": 4,
+          "agility": 1,
+          "resilience": 3,
+          "vigilance": 2,
+          "melee_defense": 14,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 0,
+          "melee_bonus": 0,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [],
+          "traits": [],
+          "weapons": [],
+          "shield_active": false,
+          "heroic": false
+        },
+        {
+          "name": "E2",
+          "rank": 2,
+          "max_health": 90,
+          "max_focus": 60,
+          "melee": 4,
+          "agility": 1,
+          "resilience": 3,
+          "vigilance": 2,
+          "melee_defense": 14,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 0,
+          "melee_bonus": 0,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [],
+          "traits": [],
+          "weapons": [],
+          "shield_active": false,
+          "heroic": false
+        }
+      ]
+    },
+    {
+      "id": "G2_two_rank3_brawlers",
+      "profiles": [
+        {
+          "name": "Blacklight",
+          "rank": 3,
+          "max_health": 150,
+          "max_focus": 90,
+          "melee": 6,
+          "agility": 1,
+          "resilience": 5,
+          "vigilance": 2,
+          "melee_defense": 16,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 1,
+          "melee_bonus": 3,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [
+            "attack_stance",
+            "blazing_fast_fists",
+            "brawling",
+            "do_this_all_day",
+            "fast_strikes",
+            "healing_factor",
+            "mighty",
+            "riposte"
+          ],
+          "traits": [
+            "battle_ready",
+            "combat_reflexes",
+            "signature_fast_strikes",
+            "situational_awareness"
+          ],
+          "weapons": [
+            "blade",
+            "claw",
+            "hammer",
+            "shield"
+          ],
+          "shield_active": false,
+          "heroic": true
+        },
+        {
+          "name": "E1",
+          "rank": 3,
+          "max_health": 150,
+          "max_focus": 60,
+          "melee": 6,
+          "agility": 1,
+          "resilience": 5,
+          "vigilance": 2,
+          "melee_defense": 16,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 0,
+          "melee_bonus": 0,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [],
+          "traits": [],
+          "weapons": [],
+          "shield_active": false,
+          "heroic": false
+        },
+        {
+          "name": "E2",
+          "rank": 3,
+          "max_health": 150,
+          "max_focus": 60,
+          "melee": 6,
+          "agility": 1,
+          "resilience": 5,
+          "vigilance": 2,
+          "melee_defense": 16,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 0,
+          "melee_bonus": 0,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [],
+          "traits": [],
+          "weapons": [],
+          "shield_active": false,
+          "heroic": false
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "name": "group_hammer",
+      "preferred": "hammer",
+      "shield_react": false,
+      "shield_end_turn": false,
+      "riposte": true
+    },
+    {
+      "name": "group_hammer_shield",
+      "preferred": "hammer",
+      "shield_react": true,
+      "shield_end_turn": true,
+      "riposte": true
+    },
+    {
+      "name": "group_bare_fast",
+      "preferred": "fast_strikes",
+      "shield_react": false,
+      "shield_end_turn": false,
+      "riposte": true
+    }
+  ],
+  "rows": [
+    {
+      "stage": "description",
+      "scenario": "G1_two_rank2_brawlers",
+      "policy": "group_hammer",
+      "n": 10000,
+      "outcomes": {
+        "win": 10000,
+        "loss": 0,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.9996160016293234,
+            1.0
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        }
+      },
+      "mean_rounds": 2.2375,
+      "bonus_round_fraction": 0.511,
+      "full_logs_audited": 100
+    },
+    {
+      "stage": "description",
+      "scenario": "G1_two_rank2_brawlers",
+      "policy": "group_hammer_shield",
+      "n": 10000,
+      "outcomes": {
+        "win": 10000,
+        "loss": 0,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.9996160016293234,
+            1.0
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        }
+      },
+      "mean_rounds": 2.355,
+      "bonus_round_fraction": 0.5213,
+      "full_logs_audited": 100
+    },
+    {
+      "stage": "description",
+      "scenario": "G1_two_rank2_brawlers",
+      "policy": "group_bare_fast",
+      "n": 10000,
+      "outcomes": {
+        "win": 10000,
+        "loss": 0,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.9996160016293234,
+            1.0
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        }
+      },
+      "mean_rounds": 2.7627,
+      "bonus_round_fraction": 0.5228,
+      "full_logs_audited": 100
+    },
+    {
+      "stage": "description",
+      "scenario": "G2_two_rank3_brawlers",
+      "policy": "group_hammer",
+      "n": 10000,
+      "outcomes": {
+        "win": 9523,
+        "loss": 477,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.9523,
+          "wilson95": [
+            0.9479462242094645,
+            0.9563064108644215
+          ]
+        },
+        "loss": {
+          "estimate": 0.0477,
+          "wilson95": [
+            0.0436935891355785,
+            0.052053775790535536
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        }
+      },
+      "mean_rounds": 4.5974,
+      "bonus_round_fraction": 0.5248,
+      "full_logs_audited": 100
+    },
+    {
+      "stage": "description",
+      "scenario": "G2_two_rank3_brawlers",
+      "policy": "group_hammer_shield",
+      "n": 10000,
+      "outcomes": {
+        "win": 10000,
+        "loss": 0,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.9996160016293234,
+            1.0
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        }
+      },
+      "mean_rounds": 4.7883,
+      "bonus_round_fraction": 0.5199,
+      "full_logs_audited": 100
+    },
+    {
+      "stage": "description",
+      "scenario": "G2_two_rank3_brawlers",
+      "policy": "group_bare_fast",
+      "n": 10000,
+      "outcomes": {
+        "win": 7779,
+        "loss": 2221,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.7779,
+          "wilson95": [
+            0.7696474046565507,
+            0.7859391690490274
+          ]
+        },
+        "loss": {
+          "estimate": 0.2221,
+          "wilson95": [
+            0.2140608309509727,
+            0.23035259534344935
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            0.0,
+            0.00038399837067659573
+          ]
+        }
+      },
+      "mean_rounds": 5.2303,
+      "bonus_round_fraction": 0.5194,
+      "full_logs_audited": 100
+    }
+  ]
+}

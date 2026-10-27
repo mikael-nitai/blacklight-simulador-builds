@@ -38,7 +38,8 @@ def replay(stage: str, length: int, opponent_id: str, policy_name: str,
     victor_outcome = (result.outcome if result.outcome in
                       {"inconclusive", "draw"} else
                       "win" if result.winner == profiles[0].name else "loss")
-    data = {"schema": "blacklight-corridor-full-trace-v1",
+    data = {"schema": "blacklight-corridor-full-trace-pool-v2",
+            "damage_model": "literal_marvel_pool_v2",
             "stage": stage, "length": length,
             "opponent": opponent_id, "policy": policy_name,
             "index": index, "seed": seed,

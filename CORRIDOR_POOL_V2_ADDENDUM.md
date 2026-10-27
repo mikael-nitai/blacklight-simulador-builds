@@ -1,0 +1,5 @@
+# Emenda pré-experimento do corredor com dano da mesa
+
+Registrada antes das baterias v2 do corredor. As posições iniciais, comprimentos 12/20, dois atiradores e política de recuo são os mesmos da experiência histórica. O motor de dano agora usa tantos dados Marvel quantos restarem no multiplicador após DR; face 1 vale 6. Fast Strikes usa dois componentes contra o mesmo alvo e duas edges de Victor. A terceira política, `shield_blade_hammer_reactive`, é acrescentada para medir o combo da mesa diante de um atirador que recua e de outro sem munição. Marreta simples e Marreta com Escudo reativo continuam controles.
+
+Este corredor não contém cobertura, terreno 2D, flanqueamento nem colisão por knockback; a implementação rejeita knockback que altere a distância. Resultados são específicos desses limites. O prefixo de sementes é `blacklight-corridor-pool-v2`. Desenvolvimento: 1000 por célula. Descrição: 5000 por célula, com auditoria de dano e posição em 1 de cada 100 trilhas. Taxas antigas estão arquivadas em `results/legacy_scalar_v1/`.

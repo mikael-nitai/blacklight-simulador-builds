@@ -30,7 +30,7 @@ def profile_record(profile: Profile) -> dict:
 
 def seed_for(stage: str, scenario: str, variant: str,
              strategy: str, index: int) -> int:
-    value = f"blacklight-focus-v1|{stage}|{scenario}|{variant}|{strategy}|{index}"
+    value = f"blacklight-focus-pool-v2|{stage}|{scenario}|{variant}|{strategy}|{index}"
     return int.from_bytes(sha256(value.encode()).digest()[:8], "big")
 
 
@@ -46,7 +46,9 @@ def wilson(k: int, n: int) -> tuple[float, float]:
 def hashes() -> dict[str, str]:
     files = [ROOT / name for name in (
         "FOCUS_SPEC.md", "FOCUS_DUEL_SPEC.md", "RULES_AUDIT.md",
-        "CHARACTER_AUDIT.md", "scripts/focus_experiment.py")]
+        "CHARACTER_AUDIT.md", "FOCUS_RULING.md",
+        "DAMAGE_POOL_RULING.md", "DAMAGE_POOL_V2_SPEC.md",
+        "scripts/focus_experiment.py")]
     files.extend(sorted((ROOT / "experimental").glob("focus_*.py")))
     files.extend(sorted((ROOT / "blacklight").glob("*.py")))
     return {str(path.relative_to(ROOT)).replace("\\", "/"):
@@ -112,9 +114,11 @@ def main() -> None:
                       f"{row['outcomes']}, demoralized={row['ever_demoralized']}",
                       flush=True)
     payload = {
-        "schema": "blacklight-focus-fixed-contact-v1",
+        "schema": "blacklight-focus-fixed-contact-pool-v2",
+        "damage_model": "literal_marvel_pool_v2",
         "stage": args.stage, "n_per_cell": n,
-        "seed_formula": "first 8 bytes SHA-256 of blacklight-focus-v1|stage|scenario|variant|strategy|index",
+        "seed_formula": "first 8 bytes SHA-256 of blacklight-focus-pool-v2|stage|scenario|variant|strategy|index",
+        "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
         "source_sha256": hashes(), "python": sys.version,
         "scenarios": [{"id": name,
                        "profiles": [profile_record(p) for p in profiles]}
@@ -123,7 +127,7 @@ def main() -> None:
         "shield_variants": {"F0": 0, "F2": 2},
         "rows": rows,
     }
-    output = ROOT / "results" / f"focus_{args.stage}_summary.json"
+    output = ROOT / "results" / f"focus_pool_v2_{args.stage}_summary.json"
     output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
                       encoding="utf-8")
 

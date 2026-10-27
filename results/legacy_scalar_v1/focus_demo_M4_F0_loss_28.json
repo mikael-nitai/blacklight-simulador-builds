@@ -1,0 +1,1315 @@
+{
+  "schema": "blacklight-focus-full-trace-v1",
+  "stage": "description",
+  "scenario": "M4",
+  "variant": "F0",
+  "strategy": "shield_reactive",
+  "index": 28,
+  "seed": 14094473210662325762,
+  "source_sha256": {
+    "FOCUS_SPEC.md": "10babf385a90f9c8bba548db0ee699d51ebb91704e170aba21bb749e87c434b2",
+    "FOCUS_DUEL_SPEC.md": "55eb7385762596d86e0d59f4d0fcada1e259c411273c2669d589c1af52173a26",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "scripts/focus_experiment.py": "e94cfcc4839aecf5c8bd68ccbfcaf1634efde9003fa53d46dc293555f0b73539",
+    "experimental/focus_audit.py": "2f582c1f3b91742d944c6c3ee9ae3a05e523b20b3b93b0a4865c425b27923199",
+    "experimental/focus_duel.py": "a05e1be90624846dd149db7d74731c2c87265b82cfd6984c972fb2c643d56247",
+    "experimental/focus_primitives.py": "e55078f0df3bbc9db2e347b8e3bb2890c4c2cfdc29e4a9956e1eab2c03e23afa",
+    "blacklight/__init__.py": "30361ce63d1526dcee116dcf7b576b7a4e1162ba0c53376221f58a480b215491",
+    "blacklight/audit.py": "d897afc6aad0aaea7b79b3a04cf1413acd915a62e8c5b95943d2873d86df8901",
+    "blacklight/damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight/dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight/engine.py": "0cc35d055f340d6ce91dd714918ae3ba927c8f1e9af4cd7bcdb05e73fe8b9751",
+    "blacklight/experiment.py": "ea231961a0b17de3072136d8ac6d60980b6eab7c33e859670a05038fa72fea49",
+    "blacklight/policies.py": "c2ac709aab1beb288724b3561010b1ecc2e98d656ac0a94b2ee357eb2cc8b0a5",
+    "blacklight/search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight/sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f"
+  },
+  "profiles": [
+    {
+      "name": "Blacklight",
+      "rank": 3,
+      "max_health": 150,
+      "max_focus": 90,
+      "melee": 6,
+      "agility": 1,
+      "resilience": 5,
+      "vigilance": 2,
+      "melee_defense": 16,
+      "agility_defense": 11,
+      "run_speed": 5,
+      "health_dr": 1,
+      "melee_bonus": 3,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": null,
+      "run_speed_exception": false,
+      "powers": [
+        "attack_stance",
+        "blazing_fast_fists",
+        "brawling",
+        "do_this_all_day",
+        "fast_strikes",
+        "healing_factor",
+        "mighty",
+        "riposte"
+      ],
+      "traits": [
+        "battle_ready",
+        "combat_reflexes",
+        "signature_fast_strikes",
+        "situational_awareness"
+      ],
+      "weapons": [
+        "blade",
+        "claw",
+        "hammer",
+        "shield"
+      ],
+      "shield_active": false,
+      "heroic": true
+    },
+    {
+      "name": "Mentalist",
+      "rank": 4,
+      "max_health": 150,
+      "max_focus": 60,
+      "melee": 6,
+      "agility": 1,
+      "resilience": 5,
+      "vigilance": 2,
+      "melee_defense": 16,
+      "agility_defense": 11,
+      "run_speed": 5,
+      "health_dr": 0,
+      "melee_bonus": 0,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": null,
+      "run_speed_exception": false,
+      "powers": [
+        "mental_punch"
+      ],
+      "traits": [],
+      "weapons": [],
+      "shield_active": false,
+      "heroic": false
+    }
+  ],
+  "result": {
+    "seed": 14094473210662325762,
+    "outcome": "loss",
+    "rounds": 6,
+    "bonus_round_occurred": false,
+    "final_health": [
+      150,
+      66
+    ],
+    "final_focus": [
+      -130,
+      60
+    ],
+    "ever_demoralized": true,
+    "log": [
+      {
+        "seq": 1,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02"
+        ],
+        "actor": "Blacklight",
+        "roll": [
+          4,
+          4,
+          6
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 4,
+            "kept": 4
+          }
+        ],
+        "total": 16,
+        "fantastic": false
+      },
+      {
+        "seq": 2,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02"
+        ],
+        "actor": "Mentalist",
+        "roll": [
+          6,
+          5,
+          6
+        ],
+        "rerolls": [],
+        "total": 19,
+        "fantastic": false
+      },
+      {
+        "seq": 3,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 4,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1
+      },
+      {
+        "seq": 5,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1,
+        "focus": 60
+      },
+      {
+        "seq": 6,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "reaction": false,
+        "trigger": 1,
+        "roll": [
+          5,
+          1,
+          2
+        ],
+        "rerolls": [],
+        "edges": 0,
+        "troubles": 0,
+        "modifier": 6,
+        "defense": 16,
+        "total": 19,
+        "success": true,
+        "fantastic": true
+      },
+      {
+        "seq": 7,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 1,
+        "remaining": 1
+      },
+      {
+        "seq": 8,
+        "round": 1,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "timing": "after_hit",
+        "trigger": 1
+      },
+      {
+        "seq": 9,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-05",
+          "MENTAL-01"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "trigger": 1,
+        "calculated_damage": 60,
+        "applied": 60,
+        "reduction": 0,
+        "focus_before": 90,
+        "focus_after": 30,
+        "demoralized": false,
+        "shattered": false
+      },
+      {
+        "seq": 10,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "COND-02",
+          "MENTAL-01"
+        ],
+        "actor": "Blacklight",
+        "condition": "stunned",
+        "expires_on_actor": "Mentalist"
+      },
+      {
+        "seq": 11,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "health": 150,
+        "focus": 60
+      },
+      {
+        "seq": 12,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "reactions": 1,
+        "focus": 30
+      },
+      {
+        "seq": 13,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_skipped",
+        "rules": [
+          "COND-02"
+        ],
+        "actor": "Blacklight",
+        "reason": "stunned"
+      },
+      {
+        "seq": 14,
+        "round": 1,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 15,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 30
+      },
+      {
+        "seq": 16,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 17,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1
+      },
+      {
+        "seq": 18,
+        "round": 2,
+        "bonus_round": false,
+        "type": "condition_end",
+        "rules": [
+          "COND-02"
+        ],
+        "actor": "Blacklight",
+        "condition": "stunned"
+      },
+      {
+        "seq": 19,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1,
+        "focus": 60
+      },
+      {
+        "seq": 20,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "reaction": false,
+        "trigger": 2,
+        "roll": [
+          6,
+          2,
+          2
+        ],
+        "rerolls": [],
+        "edges": 0,
+        "troubles": 0,
+        "modifier": 6,
+        "defense": 16,
+        "total": 16,
+        "success": true,
+        "fantastic": false
+      },
+      {
+        "seq": 21,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-05",
+          "MENTAL-01"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "trigger": 2,
+        "calculated_damage": 14,
+        "applied": 14,
+        "reduction": 0,
+        "focus_before": 30,
+        "focus_after": 16,
+        "demoralized": false,
+        "shattered": false
+      },
+      {
+        "seq": 22,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "health": 150,
+        "focus": 60
+      },
+      {
+        "seq": 23,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2,
+        "focus": 16
+      },
+      {
+        "seq": 24,
+        "round": 2,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free"
+      },
+      {
+        "seq": 25,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Mentalist",
+        "kind": "hammer",
+        "reaction": false,
+        "trigger": 3,
+        "roll": [
+          1,
+          2,
+          6
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 2,
+            "kept": 2
+          }
+        ],
+        "edges": 1,
+        "troubles": 0,
+        "modifier": 6,
+        "defense": 16,
+        "total": 15,
+        "success": false,
+        "fantastic": false
+      },
+      {
+        "seq": 26,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-01",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Mentalist",
+        "kind": "hammer",
+        "trigger": 3,
+        "calculated_damage": 0,
+        "applied": 0,
+        "reduction": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 27,
+        "round": 2,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 28,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 16
+      },
+      {
+        "seq": 29,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 30,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1
+      },
+      {
+        "seq": 31,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1,
+        "focus": 60
+      },
+      {
+        "seq": 32,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "reaction": false,
+        "trigger": 4,
+        "roll": [
+          6,
+          5,
+          2
+        ],
+        "rerolls": [],
+        "edges": 0,
+        "troubles": 0,
+        "modifier": 6,
+        "defense": 16,
+        "total": 19,
+        "success": true,
+        "fantastic": false
+      },
+      {
+        "seq": 33,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 4,
+        "remaining": 1
+      },
+      {
+        "seq": 34,
+        "round": 3,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "timing": "after_hit",
+        "trigger": 4
+      },
+      {
+        "seq": 35,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-05",
+          "MENTAL-01"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "trigger": 4,
+        "calculated_damage": 26,
+        "applied": 26,
+        "reduction": 0,
+        "focus_before": 16,
+        "focus_after": -10,
+        "demoralized": true,
+        "shattered": false
+      },
+      {
+        "seq": 36,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "health": 150,
+        "focus": 60
+      },
+      {
+        "seq": 37,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "reactions": 1,
+        "focus": -10
+      },
+      {
+        "seq": 38,
+        "round": 3,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free"
+      },
+      {
+        "seq": 39,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Mentalist",
+        "kind": "hammer",
+        "reaction": false,
+        "trigger": 5,
+        "roll": [
+          6,
+          6,
+          4
+        ],
+        "rerolls": [],
+        "edges": 1,
+        "troubles": 1,
+        "modifier": 6,
+        "defense": 16,
+        "total": 22,
+        "success": true,
+        "fantastic": false
+      },
+      {
+        "seq": 40,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-01",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Mentalist",
+        "kind": "hammer",
+        "trigger": 5,
+        "calculated_damage": 54,
+        "applied": 54,
+        "reduction": 0,
+        "health_before": 150,
+        "health_after": 96
+      },
+      {
+        "seq": 41,
+        "round": 3,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 42,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": -10
+      },
+      {
+        "seq": 43,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 44,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1
+      },
+      {
+        "seq": 45,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1,
+        "focus": 60
+      },
+      {
+        "seq": 46,
+        "round": 4,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "reaction": false,
+        "trigger": 6,
+        "roll": [
+          6,
+          6,
+          5
+        ],
+        "rerolls": [],
+        "edges": 0,
+        "troubles": 0,
+        "modifier": 6,
+        "defense": 16,
+        "total": 23,
+        "success": true,
+        "fantastic": false
+      },
+      {
+        "seq": 47,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 6,
+        "remaining": 1
+      },
+      {
+        "seq": 48,
+        "round": 4,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "timing": "after_hit",
+        "trigger": 6
+      },
+      {
+        "seq": 49,
+        "round": 4,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-05",
+          "MENTAL-01"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "trigger": 6,
+        "calculated_damage": 30,
+        "applied": 30,
+        "reduction": 0,
+        "focus_before": -10,
+        "focus_after": -40,
+        "demoralized": true,
+        "shattered": false
+      },
+      {
+        "seq": 50,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "health": 96,
+        "focus": 60
+      },
+      {
+        "seq": 51,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "reactions": 1,
+        "focus": -40
+      },
+      {
+        "seq": 52,
+        "round": 4,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free"
+      },
+      {
+        "seq": 53,
+        "round": 4,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Mentalist",
+        "kind": "hammer",
+        "reaction": false,
+        "trigger": 7,
+        "roll": [
+          6,
+          3,
+          4
+        ],
+        "rerolls": [],
+        "edges": 1,
+        "troubles": 1,
+        "modifier": 6,
+        "defense": 16,
+        "total": 19,
+        "success": true,
+        "fantastic": false
+      },
+      {
+        "seq": 54,
+        "round": 4,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-01",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Mentalist",
+        "kind": "hammer",
+        "trigger": 7,
+        "calculated_damage": 30,
+        "applied": 30,
+        "reduction": 0,
+        "health_before": 96,
+        "health_after": 66
+      },
+      {
+        "seq": 55,
+        "round": 4,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 56,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": -40
+      },
+      {
+        "seq": 57,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 58,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1
+      },
+      {
+        "seq": 59,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1,
+        "focus": 60
+      },
+      {
+        "seq": 60,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "reaction": false,
+        "trigger": 8,
+        "roll": [
+          6,
+          6,
+          4
+        ],
+        "rerolls": [],
+        "edges": 0,
+        "troubles": 0,
+        "modifier": 6,
+        "defense": 16,
+        "total": 22,
+        "success": true,
+        "fantastic": false
+      },
+      {
+        "seq": 61,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 8,
+        "remaining": 1
+      },
+      {
+        "seq": 62,
+        "round": 5,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "timing": "after_hit",
+        "trigger": 8
+      },
+      {
+        "seq": 63,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-05",
+          "MENTAL-01"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "trigger": 8,
+        "calculated_damage": 30,
+        "applied": 30,
+        "reduction": 0,
+        "focus_before": -40,
+        "focus_after": -70,
+        "demoralized": true,
+        "shattered": false
+      },
+      {
+        "seq": 64,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "health": 66,
+        "focus": 60
+      },
+      {
+        "seq": 65,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "reactions": 1,
+        "focus": -70
+      },
+      {
+        "seq": 66,
+        "round": 5,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free"
+      },
+      {
+        "seq": 67,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Mentalist",
+        "kind": "hammer",
+        "reaction": false,
+        "trigger": 9,
+        "roll": [
+          5,
+          2,
+          2
+        ],
+        "rerolls": [],
+        "edges": 1,
+        "troubles": 1,
+        "modifier": 6,
+        "defense": 16,
+        "total": 15,
+        "success": false,
+        "fantastic": false
+      },
+      {
+        "seq": 68,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-01",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Mentalist",
+        "kind": "hammer",
+        "trigger": 9,
+        "calculated_damage": 0,
+        "applied": 0,
+        "reduction": 0,
+        "health_before": 66,
+        "health_after": 66
+      },
+      {
+        "seq": 69,
+        "round": 5,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 70,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": -70
+      },
+      {
+        "seq": 71,
+        "round": 6,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 72,
+        "round": 6,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1
+      },
+      {
+        "seq": 73,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "reactions": 1,
+        "focus": 60
+      },
+      {
+        "seq": 74,
+        "round": 6,
+        "bonus_round": false,
+        "type": "attack_check",
+        "rules": [
+          "D616-01",
+          "COND-03"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "reaction": false,
+        "trigger": 10,
+        "roll": [
+          1,
+          1,
+          5
+        ],
+        "rerolls": [],
+        "edges": 0,
+        "troubles": 0,
+        "modifier": 6,
+        "defense": 16,
+        "total": 18,
+        "success": true,
+        "fantastic": true
+      },
+      {
+        "seq": 75,
+        "round": 6,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 10,
+        "remaining": 1
+      },
+      {
+        "seq": 76,
+        "round": 6,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "timing": "after_hit",
+        "trigger": 10
+      },
+      {
+        "seq": 77,
+        "round": 6,
+        "bonus_round": false,
+        "type": "attack_target",
+        "rules": [
+          "DMG-05",
+          "MENTAL-01"
+        ],
+        "actor": "Mentalist",
+        "target": "Blacklight",
+        "kind": "mental_punch",
+        "trigger": 10,
+        "calculated_damage": 60,
+        "applied": 60,
+        "reduction": 0,
+        "focus_before": -70,
+        "focus_after": -130,
+        "demoralized": true,
+        "shattered": true
+      },
+      {
+        "seq": 78,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Mentalist",
+        "health": 66,
+        "focus": 60
+      }
+    ]
+  },
+  "audit_issues": []
+}

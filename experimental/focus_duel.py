@@ -7,9 +7,9 @@ attacker. No generic telepathy, movement, Karma, or concentration is modeled.
 from dataclasses import dataclass
 from random import Random
 
-from blacklight.damage import calculate
 from blacklight.dice import resolve_check
 from blacklight.engine import Fighter, Profile
+from blacklight.pool_damage import roll_damage_pool
 from .focus_primitives import resolve_mental_punch
 
 
@@ -45,6 +45,7 @@ class FocusDuel:
         self.shield_focus_reduction = shield_focus_reduction
         self.seed = seed
         self.rng = Random(seed)
+        self.damage_rng = Random(seed ^ 0xD6162026)
         self.max_rounds = max_rounds
         self.audit = audit
         self.log: list[dict] = []
@@ -139,10 +140,11 @@ class FocusDuel:
                                      "hammer", reaction=reaction)
         p = attacker.profile
         bonus = p.melee_bonus + 2 if "mighty" in p.powers else max(p.melee_bonus, 2)
-        calculated = (calculate(check.roll.marvel, p.rank, p.melee,
-                                (bonus,), target.profile.health_dr,
-                                check.fantastic)
-                      if check.success else 0)
+        pool = (roll_damage_pool(
+            self.damage_rng, full_multiplier=p.rank + bonus,
+            ability=p.melee, reduction=target.profile.health_dr,
+            fantastic=check.fantastic) if check.success else None)
+        calculated = pool.damage if pool is not None else 0
         before = target.health
         after = before - calculated
         if p.heroic and after <= -target.profile.max_health:
@@ -152,6 +154,7 @@ class FocusDuel:
                      target=target.profile.name, kind="hammer", trigger=trigger,
                      calculated_damage=calculated, applied=before - after,
                      reduction=target.profile.health_dr,
+                     damage_faces=list(pool.faces) if pool is not None else [],
                      health_before=before, health_after=after)
         if check.success and check.fantastic and target.conscious:
             target.stunned_by = 0
@@ -168,7 +171,7 @@ class FocusDuel:
             self._activate_shield(trigger=trigger, timing="after_hit")
         before = target.focus
         out = resolve_mental_punch(
-            check.roll, attacker_rank=attacker.profile.rank,
+            check.roll, self.damage_rng, attacker_rank=attacker.profile.rank,
             attacker_melee=attacker.profile.melee,
             target_melee_defense=target.profile.melee_defense,
             target_focus=before, target_max_focus=target.profile.max_focus,
@@ -181,6 +184,7 @@ class FocusDuel:
                      actor=attacker.profile.name, target=target.profile.name,
                      kind="mental_punch", trigger=trigger,
                      calculated_damage=out.damage, applied=out.applied,
+                     damage_faces=list(out.damage_faces),
                      reduction=(self.shield_focus_reduction
                                 if target.shield_active else 0),
                      focus_before=before, focus_after=out.focus_after,

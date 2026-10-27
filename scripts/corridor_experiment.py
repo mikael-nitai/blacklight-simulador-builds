@@ -11,13 +11,15 @@ from blacklight.audit import audit_log
 from blacklight.engine import Profile, blacklight_profile
 from blacklight.experiment import scenarios
 from blacklight.policies import (HAMMER, KITER,
-                                 SHIELD_HAMMER_REACTIVE)
+                                 SHIELD_HAMMER_REACTIVE,
+                                 SHIELD_BLADE_HAMMER_REACTIVE)
 from experimental.corridor import CorridorDuel
 from experimental.corridor_audit import audit_corridor
 
 
 ROOT = Path(__file__).resolve().parents[1]
-POLICIES = (HAMMER, SHIELD_HAMMER_REACTIVE)
+POLICIES = (HAMMER, SHIELD_HAMMER_REACTIVE,
+            SHIELD_BLADE_HAMMER_REACTIVE)
 STAGES = {"dev": 1000, "description": 5000}
 
 
@@ -37,7 +39,7 @@ def profile_record(profile: Profile) -> dict:
 
 def seed_for(stage: str, length: int, opponent: str,
              policy: str, index: int) -> int:
-    value = f"blacklight-corridor-v1|{stage}|{length}|{opponent}|{policy}|{index}"
+    value = f"blacklight-corridor-pool-v2|{stage}|{length}|{opponent}|{policy}|{index}"
     return int.from_bytes(sha256(value.encode()).digest()[:8], "big")
 
 
@@ -52,7 +54,9 @@ def wilson(k: int, n: int) -> tuple[float, float]:
 
 def hashes() -> dict[str, str]:
     files = [ROOT / name for name in (
-        "CORRIDOR_SPEC.md", "RULES_AUDIT.md", "CHARACTER_AUDIT.md",
+        "CORRIDOR_SPEC.md", "CORRIDOR_POOL_V2_ADDENDUM.md",
+        "DAMAGE_POOL_RULING.md", "FAST_STRIKES_RULING.md",
+        "RULES_AUDIT.md", "CHARACTER_AUDIT.md",
         "scripts/corridor_experiment.py", "experimental/corridor.py",
         "experimental/corridor_audit.py")]
     files.extend(sorted((ROOT / "blacklight").glob("*.py")))
@@ -133,9 +137,11 @@ def main() -> None:
                       f"{row['outcomes']}, wall={row['wall_reached']}",
                       flush=True)
     payload = {
-        "schema": "blacklight-bounded-corridor-v1",
+        "schema": "blacklight-bounded-corridor-pool-v2",
+        "damage_model": "literal_marvel_pool_v2",
         "stage": args.stage, "n_per_cell": n,
-        "seed_formula": "first 8 bytes SHA-256 of blacklight-corridor-v1|stage|length|opponent|policy|index",
+        "seed_formula": "first 8 bytes SHA-256 of blacklight-corridor-pool-v2|stage|length|opponent|policy|index",
+        "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
         "source_sha256": hashes(), "python": sys.version,
         "initial_positions": [0, 8], "lengths": [12, 20],
         "opponents": [{"id": name, "profile": profile_record(profile)}
@@ -143,7 +149,7 @@ def main() -> None:
         "policies": [asdict(p) for p in POLICIES],
         "opponent_policy": asdict(KITER), "rows": rows,
     }
-    output = ROOT / "results" / f"corridor_{args.stage}_summary.json"
+    output = ROOT / "results" / f"corridor_pool_v2_{args.stage}_summary.json"
     output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
                       encoding="utf-8")
 

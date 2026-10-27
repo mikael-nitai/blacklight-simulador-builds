@@ -136,6 +136,18 @@
     "split_fast_v3_rank4_integration_batch.json": {
       "result_sha256": "d166fe6ff916cb53606c531e4b236e31c3d9de088640bf4810d4c8a707421767",
       "source_commit": "00f06f90ba5cd89014fe021470456505d35948a1"
+    },
+    "current_corridor_v1_blade_effects_demo.json": {
+      "result_sha256": "3d9859eb82007ac6760efdcc54b07d30605e285ef49e2f71d8c030e43f9ced42",
+      "source_commit": "7d6517a75c862a2566f7ad22a4e81af37a9d7c7f"
+    },
+    "current_corridor_v1_hammer_effects_demo.json": {
+      "result_sha256": "820b6c74011a5a8fda983b8949a83e9c096164cdaca49bc5686e94aa7a82244f",
+      "source_commit": "7d6517a75c862a2566f7ad22a4e81af37a9d7c7f"
+    },
+    "current_corridor_v1_integration_batch.json": {
+      "result_sha256": "09d39cc61871438466d68b7d1780d8873a85a3b5ca97e1b9ba0ffbd7cf0b644a",
+      "source_commit": "7d6517a75c862a2566f7ad22a4e81af37a9d7c7f"
     }
   }
 }

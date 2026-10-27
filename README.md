@@ -22,6 +22,8 @@ Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidade
 
 ## Arquivos de evidência
 
+- [CURRENT_CORRIDOR_RESULTS.md](CURRENT_CORRIDOR_RESULTS.md): controles executados de fichas e Fast atual no corredor, com dois exemplos completos e 1.000 trilhas auditadas.
+
 - [CHARACTER_AUDIT.md](CHARACTER_AUDIT.md): inventário da ficha atual e conflitos com versão histórica.
 - [RULES_AUDIT.md](RULES_AUDIT.md): regras oficiais, decisões de mesa, ambiguidades e exemplos calculados.
 - [EXPERIMENT_SPEC.md](EXPERIMENT_SPEC.md): políticas, cenários, sementes, métricas e emendas declaradas antes da confirmação.

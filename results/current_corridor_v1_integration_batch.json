@@ -1,0 +1,5903 @@
+{
+  "schema": "blacklight-generic-character-batch-v1",
+  "damage_model": "literal_marvel_pool_v2",
+  "engine_version": "0.2.0-pool",
+  "execution_adapter": "split_fast_corridor_v1",
+  "table_ruleset": "split_fast_v3",
+  "fast_zero_dice_bonus": true,
+  "fast_strikes_contract": "two checks before effects; one preselected effect limb; Shield before damage; both effects before Riposte",
+  "lifecycle_scope": "Dodge and Stunned expiry at turn start; immutable timing plans",
+  "runtime": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "implementation": "cpython",
+    "combat_core_dependencies": "Python standard library",
+    "external_policy_dependency_scope": "Class source is hashed; transitive external dependencies need a separate manifest"
+  },
+  "registered_action_modules": [
+    {
+      "kind": "heal",
+      "required_power": "do_this_all_day",
+      "minimum_spend": 5,
+      "maximum_spend_per_rank": 5,
+      "minimum_focus_remaining": 1,
+      "health_per_focus": 2,
+      "cost_rules": [
+        "RES-01",
+        "POW-07"
+      ],
+      "healing_rule": "POW-07",
+      "sources": [
+        "Core Rulebook p.94",
+        "RULES_AUDIT.md POW-07/RES-01"
+      ],
+      "family": "FocusSelfHeal",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "do_this_all_day"
+        }
+      ]
+    },
+    {
+      "kind": "stance",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "attack_stance"
+        }
+      ],
+      "state": "stance",
+      "require_inactive": true,
+      "rules": [
+        "POW-09"
+      ],
+      "sources": [
+        "Core Rulebook p.83",
+        "RULES_AUDIT.md POW-09"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "shield",
+      "requirements": [
+        {
+          "kind": "weapon",
+          "id": "shield"
+        }
+      ],
+      "state": "shield_active",
+      "require_inactive": true,
+      "rules": [
+        "HR-04"
+      ],
+      "sources": [
+        "User table ruling HR-04: standard-action activation"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "dodge",
+      "requirements": [],
+      "state": "dodging",
+      "require_inactive": false,
+      "rules": [
+        "ACT-07"
+      ],
+      "sources": [
+        "Core Rulebook p.30",
+        "RULES_AUDIT.md ACT-07"
+      ],
+      "family": "StateActivation"
+    }
+  ],
+  "battlefield_scope": "One-row corridor; no cover, collisions or knockback",
+  "source_sha256": {
+    "blacklight\\__init__.py": "661aacdbe8eec1dc9eb5af1fc4e6946742daf032dd96f95434dd541a1b650f03",
+    "blacklight\\audit.py": "4c2fce1b083eb0edc740d4a792e21c66199079266d1b9e163001522ee61998b7",
+    "blacklight\\damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight\\dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight\\engine.py": "00fdf581d7d3912cf318720d55efa0946bb71935c9a44cdad2650330f54e8890",
+    "blacklight\\experiment.py": "dff23594f38dad6f55e1cc8a9141e759edffb93a2b84c93ec906020c1f543370",
+    "blacklight\\policies.py": "fbf6756e0023efdb3b7d91a4ee4fd7f2a1868ab3b919ab28b284243e70a17e66",
+    "blacklight\\pool_damage.py": "0b71361a4778d2f6e811357a854d7b67303b6c9ffaa5d2e7a61004b645f3e1d1",
+    "blacklight\\search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight\\sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f",
+    "blacklight\\split_audit.py": "3ecd401960b0f5b0d4ba2fe2c63dc41627608ba5259e60d14e416a2ed7a2209a",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "DAMAGE_POOL_RULING.md": "e09fcaea9bb1ce07f963b64980bcad5af1b144a855703678a78951d78de30c1c",
+    "DAMAGE_POOL_V2_SPEC.md": "92e1c71d767d075bc44ccc02e957b95bd904e20ff313f510fb8b315448b18387",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "FAST_STRIKES_RULING.md": "afd56fb42b4b48c62636ca38156fc9aa3eeffa11fcfb1814c3dcdcffa5810c5e",
+    "RULES_AUDIT.md": "549d1b394f34b38f5a9bc43241d60944d0507770cddd3f5e66c5fa03fa10a442",
+    "combatants\\__init__.py": "5978e1e5aedae6ee1105f87ed6d05850b786ffd4d345baa1109eefde35762d5e",
+    "combatants\\actions.py": "e6fd391755cdad6618cd1389938f844b35e8b3854d590510fc0f5db2071658a1",
+    "combatants\\battlefields.py": "9edc399643999d6f832dca07e4ff303c903fe07b81e2fa5285a6161821fec0bd",
+    "combatants\\condition_bridge.py": "e85b0c32e4beebe5302148f5c5d61658c821600a785355cc3a1c49c5325009d1",
+    "combatants\\duel_adapter.py": "5e8d8d77f00de3a0a5339a0ebe94819588ffcbebbd8b090204b11966feba4a59",
+    "combatants\\lifecycle.py": "820dfdee332cced95cd51c08ca47999d523e910514edc49beadfad5abb3adf82",
+    "combatants\\modular_duel.py": "158b569475ce20d158f7792e77ab38421c1ec68b348ff26ea43659982fe6b359",
+    "combatants\\pdf_draft.py": "cf651dcf3d2b90a26ef961ed18caba5c2321e2330e48427773549040da862add",
+    "combatants\\runner.py": "b85cb017260f57808cbdeafa3a8045ae5a87dca181367711ff2976349f307ae3",
+    "combatants\\sheets.py": "ca90287b1ab6d2877388b3ffce53fc7ab70f778b992c14d5749b6b5a6300ad60",
+    "combatants\\split_fast.py": "02338f74e519b7d3b01d835e4985aec47f483fc00b8b2d960e81cac91266df43",
+    "combatants\\terrain_policies.py": "781591fa9ecc9f26712f5c272be2478fc30ce9bd9bbf601134db0f57955a2db9",
+    "experimental\\__init__.py": "3307fa7761d0644fa1bdd3c5a0d194e70d0bb626da8907afd18fb5f753c2bf62",
+    "experimental\\corridor.py": "192509a0268c2838f884a7a38053281410f188e03e793cef0f8a359eb9e16e43",
+    "experimental\\corridor_audit.py": "d1c5ac8306b94ef0c4130dc1b30726ee7b09648e1e24df87eb07183d71e3d995",
+    "CORRIDOR_SPEC.md": "1c562fb0e22875121cf41c9c9ea4bf006f9f98fc42a5e02d44c895c9fe25e1fd",
+    "CURRENT_CORRIDOR.md": "91834b62265942612d66841eb64a9b4548f8be502fc8552a4731f6863fef6e70",
+    "characters\\victor_halle\\rank3_2026-10-27_split_fast.json": "194c63ac9746b88d6d466264173fb298426a05e07b37d52dd47c07151246d78d",
+    "characters\\examples\\synthetic_rank4_nonammo_gunner.json": "954c9d94829458d006b9c3b855587f56772559aaf0f3267a9f0042b4a9e803da",
+    "scripts\\current_corridor_demos.py": "3ed0ad978b9e7ceceea291bb2a84e7bb8cfc07ce35fedeb02acea36d6d97b0fe"
+  },
+  "policy_types": [
+    {
+      "module": "combatants.split_fast",
+      "class": "SplitFastPolicy"
+    },
+    {
+      "module": "combatants.terrain_policies",
+      "class": "WallAwarePolicy"
+    }
+  ],
+  "sheets": [
+    {
+      "schema": "blacklight.character.v1",
+      "id": "victor_halle",
+      "revision": "2026-10-27-split-fast",
+      "name": "Blacklight",
+      "rank": 3,
+      "ruleset": "split_fast_v3",
+      "abilities": {
+        "melee": 6,
+        "agility": 1,
+        "resilience": 5,
+        "vigilance": 2,
+        "ego": 1,
+        "logic": 0
+      },
+      "defenses": {
+        "melee": 16,
+        "agility": 11,
+        "resilience": 15,
+        "vigilance": 12,
+        "ego": 11,
+        "logic": 10
+      },
+      "resources": {
+        "health": 150,
+        "focus": 90,
+        "karma": 3
+      },
+      "movement": {
+        "run": 5,
+        "climb": 3,
+        "swim": 3
+      },
+      "initiative_modifier": 2,
+      "features": [
+        {
+          "id": "mighty",
+          "kind": "power",
+          "level": 3,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "id": "sturdy",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "id": "healing_factor",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "id": "brawling",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "id": "fast_strikes",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "attack_stance",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "riposte",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "disguise",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "do_this_all_day",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blazing_fast_fists",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "weird",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "battle_ready",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "connections_military",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "situational_awareness",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "combat_reflexes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "id": "signature_fast_strikes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "obligation",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "rich",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "signature_weapon",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "heroic",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blade",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "claw",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "hammer",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "id": "shield",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "pdf",
+          "path": "C:/Users/avada/Downloads/Ficha_victor Halle Rank 3.pdf",
+          "sha256": "6c907dfcaa2af39b904e6144466915bafc6b6f66f407aeb312dea112fd3200d1",
+          "page": 1
+        },
+        {
+          "kind": "audit",
+          "path": "CHARACTER_AUDIT.md",
+          "date": "2026-10-26"
+        },
+        {
+          "kind": "table_rulings",
+          "paths": [
+            "DAMAGE_POOL_RULING.md",
+            "FAST_STRIKES_RULING.md",
+            "FOCUS_RULING.md"
+          ],
+          "date": "2026-10-27"
+        }
+      ],
+      "notes": [
+        "Initiative 2 and Run 5 follow the audited Core-derived variant. The PDF prints 1 and 6; that disagreement is retained in CHARACTER_AUDIT.md.",
+        "Mighty 1/2/3 rows are stored as the highest level 3, without summing levels.",
+        "Extended Reach is absent from this primary sheet. Whip is unavailable at Rank 3.",
+        "This record preserves all listed powers, traits and tags. Read the adapter coverage report before simulation.",
+        "Same character attributes/resources as the preserved earlier record; table rules revised on 2026-10-27: one check per limb, preselected effects, both checks before effects/reactions, Shield before damage and both damage/effects before Riposte. No Rank progression invented."
+      ]
+    },
+    {
+      "schema": "blacklight.character.v1",
+      "id": "synthetic_rank4_nonammo_gunner",
+      "revision": "corridor-current-v1",
+      "name": "Atirador sintético Rank 4",
+      "rank": 4,
+      "ruleset": "split_fast_v3",
+      "abilities": {
+        "melee": 2,
+        "agility": 6,
+        "resilience": 4,
+        "vigilance": 2,
+        "ego": 4,
+        "logic": 2
+      },
+      "defenses": {
+        "melee": 12,
+        "agility": 16,
+        "resilience": 14,
+        "vigilance": 12,
+        "ego": 14,
+        "logic": 12
+      },
+      "resources": {
+        "health": 120,
+        "focus": 60,
+        "karma": 0
+      },
+      "movement": {
+        "run": 6,
+        "climb": 3,
+        "swim": 3
+      },
+      "initiative_modifier": 2,
+      "features": [
+        {
+          "id": "ranged_attack",
+          "kind": "equipment",
+          "level": 1,
+          "parameters": {
+            "range": 10,
+            "ammunition": false
+          },
+          "sources": [
+            "Synthetic corridor integration fixture; not an official energy power"
+          ]
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "synthetic",
+          "purpose": "Non-ammunition ranged equipment tests the current Fast/Shield corridor; no official character or future Victor progression is claimed"
+        }
+      ],
+      "notes": [
+        "Ficha sintética de integração. Os seis atributos são explícitos; legalidade de criação e repertório ótimo de poderes não são certificados.",
+        "O ataque à distância é um equipamento genérico não classificado como munição, para testar o limite da imunidade do Escudo. Não representa um poder oficial de energia.",
+        "A política de combate é registrada separadamente; conhecer a parede não concede bônus nas regras."
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "name": "corridor_hammer_effects",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": true,
+      "weapon": "blade",
+      "offhand": "hammer",
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": false,
+      "effect_limb": 1
+    },
+    {
+      "name": "wall_aware_ranged_control",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "bare",
+      "offhand": null,
+      "kite": true,
+      "riposte": true,
+      "move_after_attack": true,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": true,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false,
+      "effect_limb": 0
+    }
+  ],
+  "initial_distance": 8,
+  "max_rounds": 30,
+  "battlefield": {
+    "kind": "corridor",
+    "length": 12,
+    "initial_positions": [
+      0,
+      8
+    ]
+  },
+  "n": 1000,
+  "master_seed": 827,
+  "cell_sha256": "cc123666b3f2e2b11b742930c821eca3fa328e623541afa21b8d6f1ae8d47004",
+  "seed_formula": "first 8 SHA-256 bytes of character-batch-v2|master_seed|cell_sha256|index",
+  "pairing_note": "Seeds identify this cell; different cells are not assumed to be paired samples",
+  "coverage": [
+    {
+      "sheet_id": "victor_halle",
+      "revision": "2026-10-27-split-fast",
+      "engine": "split_fast_corridor_v1",
+      "build_legality": "not_certified_by_this_mechanics_adapter",
+      "ready_for_this_scope": true,
+      "blockers": [],
+      "features": [
+        {
+          "kind": "power",
+          "id": "mighty",
+          "level": 3,
+          "status": "implemented",
+          "detail": "Level becomes Melee damage bonus",
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "sturdy",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Level becomes Health DR",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "healing_factor",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "brawling",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "attack_stance",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "riposte",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "disguise",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No disguise/deception phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "do_this_all_day",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "blazing_fast_fists",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "weird",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No social phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "battle_ready",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "connections_military",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No contacts/reinforcements in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "situational_awareness",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "combat_reflexes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "signature_fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "obligation",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "rich",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "signature_weapon",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "heroic",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Nonlethal damage floor; Karma spending remains outside scope",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "blade",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "claw",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "hammer",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "shield",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "scope_limits": [
+        "two actors",
+        "direct physical combat",
+        "no Karma spending",
+        "no numeric limb penalties",
+        "no Focus attacks",
+        "no climbing/swimming phase",
+        "one-dimensional corridor; no cover, collision or knockback"
+      ],
+      "character_mechanics_adapter": "split_fast_physical_duel"
+    },
+    {
+      "sheet_id": "synthetic_rank4_nonammo_gunner",
+      "revision": "corridor-current-v1",
+      "engine": "split_fast_corridor_v1",
+      "build_legality": "not_certified_by_this_mechanics_adapter",
+      "ready_for_this_scope": true,
+      "blockers": [],
+      "features": [
+        {
+          "kind": "equipment",
+          "id": "ranged_attack",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Basic ranged attack with explicit range/ammunition",
+          "sources": [
+            "Synthetic corridor integration fixture; not an official energy power"
+          ]
+        }
+      ],
+      "scope_limits": [
+        "two actors",
+        "direct physical combat",
+        "no Karma spending",
+        "no numeric limb penalties",
+        "no Focus attacks",
+        "no climbing/swimming phase",
+        "one-dimensional corridor; no cover, collision or knockback"
+      ],
+      "character_mechanics_adapter": "split_fast_physical_duel"
+    }
+  ],
+  "outcomes": {
+    "win": 1000,
+    "loss": 0,
+    "draw": 0,
+    "inconclusive": 0
+  },
+  "rates": {
+    "win": {
+      "estimate": 1.0,
+      "wilson95": [
+        0.996173241514445,
+        1.0
+      ]
+    },
+    "loss": {
+      "estimate": 0.0,
+      "wilson95": [
+        2.168404344971009e-19,
+        0.0038267584855551217
+      ]
+    },
+    "draw": {
+      "estimate": 0.0,
+      "wilson95": [
+        2.168404344971009e-19,
+        0.0038267584855551217
+      ]
+    },
+    "inconclusive": {
+      "estimate": 0.0,
+      "wilson95": [
+        2.168404344971009e-19,
+        0.0038267584855551217
+      ]
+    }
+  },
+  "metrics_all_starts": {
+    "rounds": {
+      "mean": 3.469,
+      "mc_se": 0.02198914556144743
+    },
+    "hero_final_health": {
+      "mean": 140.629,
+      "mc_se": 0.33989246223752445
+    },
+    "hero_final_focus": {
+      "mean": 90.0,
+      "mc_se": 0.0
+    },
+    "hero_damage_dealt": {
+      "mean": 148.099,
+      "mc_se": 0.5942173788213319
+    },
+    "hero_damage_taken": {
+      "mean": 20.854,
+      "mc_se": 0.48459624174927063
+    }
+  },
+  "audited_traces": [
+    {
+      "index": 0,
+      "seed": 17684562584651741001,
+      "issues": []
+    },
+    {
+      "index": 1,
+      "seed": 744852893787530348,
+      "issues": []
+    },
+    {
+      "index": 2,
+      "seed": 17516428413975682243,
+      "issues": []
+    },
+    {
+      "index": 3,
+      "seed": 7113367522821794051,
+      "issues": []
+    },
+    {
+      "index": 4,
+      "seed": 8372464721709517065,
+      "issues": []
+    },
+    {
+      "index": 5,
+      "seed": 2179969388565601156,
+      "issues": []
+    },
+    {
+      "index": 6,
+      "seed": 16960349546609139167,
+      "issues": []
+    },
+    {
+      "index": 7,
+      "seed": 901848027912726844,
+      "issues": []
+    },
+    {
+      "index": 8,
+      "seed": 15138513558032589451,
+      "issues": []
+    },
+    {
+      "index": 9,
+      "seed": 9938241496479038325,
+      "issues": []
+    },
+    {
+      "index": 10,
+      "seed": 6651069412839609682,
+      "issues": []
+    },
+    {
+      "index": 11,
+      "seed": 1219541829805652645,
+      "issues": []
+    },
+    {
+      "index": 12,
+      "seed": 8202888315872534795,
+      "issues": []
+    },
+    {
+      "index": 13,
+      "seed": 1646846532648593188,
+      "issues": []
+    },
+    {
+      "index": 14,
+      "seed": 13005215295050557131,
+      "issues": []
+    },
+    {
+      "index": 15,
+      "seed": 5940332943993182597,
+      "issues": []
+    },
+    {
+      "index": 16,
+      "seed": 6584337810890567453,
+      "issues": []
+    },
+    {
+      "index": 17,
+      "seed": 11999450888077900307,
+      "issues": []
+    },
+    {
+      "index": 18,
+      "seed": 4115747848691044558,
+      "issues": []
+    },
+    {
+      "index": 19,
+      "seed": 11944609567799984951,
+      "issues": []
+    },
+    {
+      "index": 20,
+      "seed": 6067598884166663807,
+      "issues": []
+    },
+    {
+      "index": 21,
+      "seed": 6449034078513044792,
+      "issues": []
+    },
+    {
+      "index": 22,
+      "seed": 2179315625421889899,
+      "issues": []
+    },
+    {
+      "index": 23,
+      "seed": 12628926539556319107,
+      "issues": []
+    },
+    {
+      "index": 24,
+      "seed": 17572121317847068145,
+      "issues": []
+    },
+    {
+      "index": 25,
+      "seed": 5157284562739162770,
+      "issues": []
+    },
+    {
+      "index": 26,
+      "seed": 2123892766379783539,
+      "issues": []
+    },
+    {
+      "index": 27,
+      "seed": 6400635607293263371,
+      "issues": []
+    },
+    {
+      "index": 28,
+      "seed": 6339257529461292933,
+      "issues": []
+    },
+    {
+      "index": 29,
+      "seed": 9359205968937764464,
+      "issues": []
+    },
+    {
+      "index": 30,
+      "seed": 15007658557674446383,
+      "issues": []
+    },
+    {
+      "index": 31,
+      "seed": 15858185415117949576,
+      "issues": []
+    },
+    {
+      "index": 32,
+      "seed": 17211609926196773030,
+      "issues": []
+    },
+    {
+      "index": 33,
+      "seed": 6289896863947039297,
+      "issues": []
+    },
+    {
+      "index": 34,
+      "seed": 12133442050401957386,
+      "issues": []
+    },
+    {
+      "index": 35,
+      "seed": 1198725203488722649,
+      "issues": []
+    },
+    {
+      "index": 36,
+      "seed": 2211215366027710897,
+      "issues": []
+    },
+    {
+      "index": 37,
+      "seed": 13753255654723404759,
+      "issues": []
+    },
+    {
+      "index": 38,
+      "seed": 5477318059131216906,
+      "issues": []
+    },
+    {
+      "index": 39,
+      "seed": 116427217340442132,
+      "issues": []
+    },
+    {
+      "index": 40,
+      "seed": 14325030378654999172,
+      "issues": []
+    },
+    {
+      "index": 41,
+      "seed": 14269943748279369307,
+      "issues": []
+    },
+    {
+      "index": 42,
+      "seed": 3783868783748873098,
+      "issues": []
+    },
+    {
+      "index": 43,
+      "seed": 4788469361942702713,
+      "issues": []
+    },
+    {
+      "index": 44,
+      "seed": 9305373022130452214,
+      "issues": []
+    },
+    {
+      "index": 45,
+      "seed": 334456161617838922,
+      "issues": []
+    },
+    {
+      "index": 46,
+      "seed": 12990287671457404003,
+      "issues": []
+    },
+    {
+      "index": 47,
+      "seed": 11326960863879635904,
+      "issues": []
+    },
+    {
+      "index": 48,
+      "seed": 2382928607475059978,
+      "issues": []
+    },
+    {
+      "index": 49,
+      "seed": 5436222446348731116,
+      "issues": []
+    },
+    {
+      "index": 50,
+      "seed": 237502525667928924,
+      "issues": []
+    },
+    {
+      "index": 51,
+      "seed": 5857746259913286261,
+      "issues": []
+    },
+    {
+      "index": 52,
+      "seed": 7264354557979136257,
+      "issues": []
+    },
+    {
+      "index": 53,
+      "seed": 17454265644695926244,
+      "issues": []
+    },
+    {
+      "index": 54,
+      "seed": 119834665743659909,
+      "issues": []
+    },
+    {
+      "index": 55,
+      "seed": 6075927099786834240,
+      "issues": []
+    },
+    {
+      "index": 56,
+      "seed": 10822174067375173790,
+      "issues": []
+    },
+    {
+      "index": 57,
+      "seed": 926183937962110638,
+      "issues": []
+    },
+    {
+      "index": 58,
+      "seed": 12740190922313944318,
+      "issues": []
+    },
+    {
+      "index": 59,
+      "seed": 12699350790350876332,
+      "issues": []
+    },
+    {
+      "index": 60,
+      "seed": 13554487377288177464,
+      "issues": []
+    },
+    {
+      "index": 61,
+      "seed": 8227965888036364329,
+      "issues": []
+    },
+    {
+      "index": 62,
+      "seed": 12338264787959853907,
+      "issues": []
+    },
+    {
+      "index": 63,
+      "seed": 15886428272851467295,
+      "issues": []
+    },
+    {
+      "index": 64,
+      "seed": 16487136897895893022,
+      "issues": []
+    },
+    {
+      "index": 65,
+      "seed": 2247233052589296148,
+      "issues": []
+    },
+    {
+      "index": 66,
+      "seed": 171754237624872139,
+      "issues": []
+    },
+    {
+      "index": 67,
+      "seed": 5847367754626680728,
+      "issues": []
+    },
+    {
+      "index": 68,
+      "seed": 17584551887416179720,
+      "issues": []
+    },
+    {
+      "index": 69,
+      "seed": 3393350481293352978,
+      "issues": []
+    },
+    {
+      "index": 70,
+      "seed": 12083318185165773128,
+      "issues": []
+    },
+    {
+      "index": 71,
+      "seed": 14413739572090194814,
+      "issues": []
+    },
+    {
+      "index": 72,
+      "seed": 4213750420482643811,
+      "issues": []
+    },
+    {
+      "index": 73,
+      "seed": 8281184313519426757,
+      "issues": []
+    },
+    {
+      "index": 74,
+      "seed": 3490668343570958517,
+      "issues": []
+    },
+    {
+      "index": 75,
+      "seed": 15207658254836926388,
+      "issues": []
+    },
+    {
+      "index": 76,
+      "seed": 2733021360624482230,
+      "issues": []
+    },
+    {
+      "index": 77,
+      "seed": 7207299776997159867,
+      "issues": []
+    },
+    {
+      "index": 78,
+      "seed": 12548548628942375021,
+      "issues": []
+    },
+    {
+      "index": 79,
+      "seed": 11217949268311152367,
+      "issues": []
+    },
+    {
+      "index": 80,
+      "seed": 1174684529412822010,
+      "issues": []
+    },
+    {
+      "index": 81,
+      "seed": 4036258061405053056,
+      "issues": []
+    },
+    {
+      "index": 82,
+      "seed": 8055974615875143078,
+      "issues": []
+    },
+    {
+      "index": 83,
+      "seed": 11981658301969047099,
+      "issues": []
+    },
+    {
+      "index": 84,
+      "seed": 11133424165448171128,
+      "issues": []
+    },
+    {
+      "index": 85,
+      "seed": 16967680291276407018,
+      "issues": []
+    },
+    {
+      "index": 86,
+      "seed": 16467555007115516559,
+      "issues": []
+    },
+    {
+      "index": 87,
+      "seed": 5426929300870658121,
+      "issues": []
+    },
+    {
+      "index": 88,
+      "seed": 2415013882091772119,
+      "issues": []
+    },
+    {
+      "index": 89,
+      "seed": 15196481562550436045,
+      "issues": []
+    },
+    {
+      "index": 90,
+      "seed": 3308531085290773499,
+      "issues": []
+    },
+    {
+      "index": 91,
+      "seed": 6146627800502779114,
+      "issues": []
+    },
+    {
+      "index": 92,
+      "seed": 9811554073786481412,
+      "issues": []
+    },
+    {
+      "index": 93,
+      "seed": 16993764173100295630,
+      "issues": []
+    },
+    {
+      "index": 94,
+      "seed": 12170854990082899765,
+      "issues": []
+    },
+    {
+      "index": 95,
+      "seed": 7706621680687057070,
+      "issues": []
+    },
+    {
+      "index": 96,
+      "seed": 7123490363555648697,
+      "issues": []
+    },
+    {
+      "index": 97,
+      "seed": 10803215811311582938,
+      "issues": []
+    },
+    {
+      "index": 98,
+      "seed": 11918857596628067563,
+      "issues": []
+    },
+    {
+      "index": 99,
+      "seed": 2570490202721835893,
+      "issues": []
+    },
+    {
+      "index": 100,
+      "seed": 7008869316181159167,
+      "issues": []
+    },
+    {
+      "index": 101,
+      "seed": 8965424207148671660,
+      "issues": []
+    },
+    {
+      "index": 102,
+      "seed": 14852925376512840347,
+      "issues": []
+    },
+    {
+      "index": 103,
+      "seed": 13276619587866318227,
+      "issues": []
+    },
+    {
+      "index": 104,
+      "seed": 8504241472304777609,
+      "issues": []
+    },
+    {
+      "index": 105,
+      "seed": 10650399465593358017,
+      "issues": []
+    },
+    {
+      "index": 106,
+      "seed": 8757222112460896361,
+      "issues": []
+    },
+    {
+      "index": 107,
+      "seed": 1057501900385337891,
+      "issues": []
+    },
+    {
+      "index": 108,
+      "seed": 2774126874945182631,
+      "issues": []
+    },
+    {
+      "index": 109,
+      "seed": 14041801736696247075,
+      "issues": []
+    },
+    {
+      "index": 110,
+      "seed": 3801660964408093669,
+      "issues": []
+    },
+    {
+      "index": 111,
+      "seed": 15925286681450922385,
+      "issues": []
+    },
+    {
+      "index": 112,
+      "seed": 12641234862557356456,
+      "issues": []
+    },
+    {
+      "index": 113,
+      "seed": 4078572968577666573,
+      "issues": []
+    },
+    {
+      "index": 114,
+      "seed": 12638727600648936025,
+      "issues": []
+    },
+    {
+      "index": 115,
+      "seed": 8646875809156970827,
+      "issues": []
+    },
+    {
+      "index": 116,
+      "seed": 14876265454488917789,
+      "issues": []
+    },
+    {
+      "index": 117,
+      "seed": 4231671204342539453,
+      "issues": []
+    },
+    {
+      "index": 118,
+      "seed": 9489744530071099301,
+      "issues": []
+    },
+    {
+      "index": 119,
+      "seed": 9215278905254673352,
+      "issues": []
+    },
+    {
+      "index": 120,
+      "seed": 2473170845258859064,
+      "issues": []
+    },
+    {
+      "index": 121,
+      "seed": 9995903366571339658,
+      "issues": []
+    },
+    {
+      "index": 122,
+      "seed": 4602361555477065673,
+      "issues": []
+    },
+    {
+      "index": 123,
+      "seed": 8716994536593109057,
+      "issues": []
+    },
+    {
+      "index": 124,
+      "seed": 13994626125389284890,
+      "issues": []
+    },
+    {
+      "index": 125,
+      "seed": 4068409675386953958,
+      "issues": []
+    },
+    {
+      "index": 126,
+      "seed": 10604971876139475713,
+      "issues": []
+    },
+    {
+      "index": 127,
+      "seed": 10394437285433073215,
+      "issues": []
+    },
+    {
+      "index": 128,
+      "seed": 16915484462696457998,
+      "issues": []
+    },
+    {
+      "index": 129,
+      "seed": 5197627969525190252,
+      "issues": []
+    },
+    {
+      "index": 130,
+      "seed": 5940306427966790299,
+      "issues": []
+    },
+    {
+      "index": 131,
+      "seed": 7999187286125551525,
+      "issues": []
+    },
+    {
+      "index": 132,
+      "seed": 16055224489451600566,
+      "issues": []
+    },
+    {
+      "index": 133,
+      "seed": 489798347809286153,
+      "issues": []
+    },
+    {
+      "index": 134,
+      "seed": 15409459661598790053,
+      "issues": []
+    },
+    {
+      "index": 135,
+      "seed": 17250950977029347749,
+      "issues": []
+    },
+    {
+      "index": 136,
+      "seed": 12425531593662738274,
+      "issues": []
+    },
+    {
+      "index": 137,
+      "seed": 11878359843767549096,
+      "issues": []
+    },
+    {
+      "index": 138,
+      "seed": 8285756412540026282,
+      "issues": []
+    },
+    {
+      "index": 139,
+      "seed": 11516866554968471889,
+      "issues": []
+    },
+    {
+      "index": 140,
+      "seed": 8969456389284750848,
+      "issues": []
+    },
+    {
+      "index": 141,
+      "seed": 13689880376513742457,
+      "issues": []
+    },
+    {
+      "index": 142,
+      "seed": 13233092263048231760,
+      "issues": []
+    },
+    {
+      "index": 143,
+      "seed": 9162684895417110404,
+      "issues": []
+    },
+    {
+      "index": 144,
+      "seed": 11817539634368437,
+      "issues": []
+    },
+    {
+      "index": 145,
+      "seed": 12621673888052767740,
+      "issues": []
+    },
+    {
+      "index": 146,
+      "seed": 15310758059813775233,
+      "issues": []
+    },
+    {
+      "index": 147,
+      "seed": 2389419525707943988,
+      "issues": []
+    },
+    {
+      "index": 148,
+      "seed": 12057869134623654523,
+      "issues": []
+    },
+    {
+      "index": 149,
+      "seed": 10873368213420651530,
+      "issues": []
+    },
+    {
+      "index": 150,
+      "seed": 320058053655755768,
+      "issues": []
+    },
+    {
+      "index": 151,
+      "seed": 2157389159040422832,
+      "issues": []
+    },
+    {
+      "index": 152,
+      "seed": 17569743910394488423,
+      "issues": []
+    },
+    {
+      "index": 153,
+      "seed": 5591877559491283591,
+      "issues": []
+    },
+    {
+      "index": 154,
+      "seed": 648119113195693665,
+      "issues": []
+    },
+    {
+      "index": 155,
+      "seed": 18082155635052528560,
+      "issues": []
+    },
+    {
+      "index": 156,
+      "seed": 11388194909686346436,
+      "issues": []
+    },
+    {
+      "index": 157,
+      "seed": 15280838635620588868,
+      "issues": []
+    },
+    {
+      "index": 158,
+      "seed": 5238083113768340126,
+      "issues": []
+    },
+    {
+      "index": 159,
+      "seed": 17281108370137415538,
+      "issues": []
+    },
+    {
+      "index": 160,
+      "seed": 10345816817070692336,
+      "issues": []
+    },
+    {
+      "index": 161,
+      "seed": 7022850314456996220,
+      "issues": []
+    },
+    {
+      "index": 162,
+      "seed": 4533290617605821471,
+      "issues": []
+    },
+    {
+      "index": 163,
+      "seed": 1225548779066983229,
+      "issues": []
+    },
+    {
+      "index": 164,
+      "seed": 15782388640254587860,
+      "issues": []
+    },
+    {
+      "index": 165,
+      "seed": 12744426814834454648,
+      "issues": []
+    },
+    {
+      "index": 166,
+      "seed": 14581726902008446750,
+      "issues": []
+    },
+    {
+      "index": 167,
+      "seed": 2651576387357550526,
+      "issues": []
+    },
+    {
+      "index": 168,
+      "seed": 1675615836809014753,
+      "issues": []
+    },
+    {
+      "index": 169,
+      "seed": 8022846415510441609,
+      "issues": []
+    },
+    {
+      "index": 170,
+      "seed": 7867209516077865435,
+      "issues": []
+    },
+    {
+      "index": 171,
+      "seed": 3995246744399821086,
+      "issues": []
+    },
+    {
+      "index": 172,
+      "seed": 17249386472001682308,
+      "issues": []
+    },
+    {
+      "index": 173,
+      "seed": 7729397085176033380,
+      "issues": []
+    },
+    {
+      "index": 174,
+      "seed": 3541939211309911860,
+      "issues": []
+    },
+    {
+      "index": 175,
+      "seed": 9823434709979240317,
+      "issues": []
+    },
+    {
+      "index": 176,
+      "seed": 3766499027685077503,
+      "issues": []
+    },
+    {
+      "index": 177,
+      "seed": 7240960239080348734,
+      "issues": []
+    },
+    {
+      "index": 178,
+      "seed": 15139690992907385416,
+      "issues": []
+    },
+    {
+      "index": 179,
+      "seed": 15675501624265254274,
+      "issues": []
+    },
+    {
+      "index": 180,
+      "seed": 6806882713553855421,
+      "issues": []
+    },
+    {
+      "index": 181,
+      "seed": 14133684628077909825,
+      "issues": []
+    },
+    {
+      "index": 182,
+      "seed": 220170054611922748,
+      "issues": []
+    },
+    {
+      "index": 183,
+      "seed": 10583388984298674515,
+      "issues": []
+    },
+    {
+      "index": 184,
+      "seed": 10793388877150395275,
+      "issues": []
+    },
+    {
+      "index": 185,
+      "seed": 3760152764103917269,
+      "issues": []
+    },
+    {
+      "index": 186,
+      "seed": 8858099744548683104,
+      "issues": []
+    },
+    {
+      "index": 187,
+      "seed": 6857244296802852256,
+      "issues": []
+    },
+    {
+      "index": 188,
+      "seed": 2609499235884644690,
+      "issues": []
+    },
+    {
+      "index": 189,
+      "seed": 8968593560158707014,
+      "issues": []
+    },
+    {
+      "index": 190,
+      "seed": 14541161868751538556,
+      "issues": []
+    },
+    {
+      "index": 191,
+      "seed": 10615127086209083762,
+      "issues": []
+    },
+    {
+      "index": 192,
+      "seed": 10181563866494399020,
+      "issues": []
+    },
+    {
+      "index": 193,
+      "seed": 6859422709227350873,
+      "issues": []
+    },
+    {
+      "index": 194,
+      "seed": 5541053765142819629,
+      "issues": []
+    },
+    {
+      "index": 195,
+      "seed": 2526594790514358132,
+      "issues": []
+    },
+    {
+      "index": 196,
+      "seed": 3220029127264002784,
+      "issues": []
+    },
+    {
+      "index": 197,
+      "seed": 4264362195862126321,
+      "issues": []
+    },
+    {
+      "index": 198,
+      "seed": 62047906555757330,
+      "issues": []
+    },
+    {
+      "index": 199,
+      "seed": 17657992209013747592,
+      "issues": []
+    },
+    {
+      "index": 200,
+      "seed": 8217888791732036,
+      "issues": []
+    },
+    {
+      "index": 201,
+      "seed": 16824672791181441300,
+      "issues": []
+    },
+    {
+      "index": 202,
+      "seed": 515459154773259053,
+      "issues": []
+    },
+    {
+      "index": 203,
+      "seed": 10667564467311918294,
+      "issues": []
+    },
+    {
+      "index": 204,
+      "seed": 17475344148369196815,
+      "issues": []
+    },
+    {
+      "index": 205,
+      "seed": 156293196798934717,
+      "issues": []
+    },
+    {
+      "index": 206,
+      "seed": 15711641051111491509,
+      "issues": []
+    },
+    {
+      "index": 207,
+      "seed": 2779729424343017199,
+      "issues": []
+    },
+    {
+      "index": 208,
+      "seed": 10829361473796395252,
+      "issues": []
+    },
+    {
+      "index": 209,
+      "seed": 16604954798959965821,
+      "issues": []
+    },
+    {
+      "index": 210,
+      "seed": 2900183173926382036,
+      "issues": []
+    },
+    {
+      "index": 211,
+      "seed": 5938143376062812773,
+      "issues": []
+    },
+    {
+      "index": 212,
+      "seed": 7789181154951388372,
+      "issues": []
+    },
+    {
+      "index": 213,
+      "seed": 4775008245581888863,
+      "issues": []
+    },
+    {
+      "index": 214,
+      "seed": 14253451350830783460,
+      "issues": []
+    },
+    {
+      "index": 215,
+      "seed": 9437911065525178626,
+      "issues": []
+    },
+    {
+      "index": 216,
+      "seed": 9434744626983321347,
+      "issues": []
+    },
+    {
+      "index": 217,
+      "seed": 5676413553787709426,
+      "issues": []
+    },
+    {
+      "index": 218,
+      "seed": 8749089308939984698,
+      "issues": []
+    },
+    {
+      "index": 219,
+      "seed": 4410290475983717159,
+      "issues": []
+    },
+    {
+      "index": 220,
+      "seed": 14373448976970115066,
+      "issues": []
+    },
+    {
+      "index": 221,
+      "seed": 13179994344499710587,
+      "issues": []
+    },
+    {
+      "index": 222,
+      "seed": 17340749141497093823,
+      "issues": []
+    },
+    {
+      "index": 223,
+      "seed": 14132025338337979142,
+      "issues": []
+    },
+    {
+      "index": 224,
+      "seed": 5298431925166329385,
+      "issues": []
+    },
+    {
+      "index": 225,
+      "seed": 7589326251682039308,
+      "issues": []
+    },
+    {
+      "index": 226,
+      "seed": 18381792395444583308,
+      "issues": []
+    },
+    {
+      "index": 227,
+      "seed": 5104605879281147080,
+      "issues": []
+    },
+    {
+      "index": 228,
+      "seed": 7528056028285624619,
+      "issues": []
+    },
+    {
+      "index": 229,
+      "seed": 9684308996856203355,
+      "issues": []
+    },
+    {
+      "index": 230,
+      "seed": 10569387852577087836,
+      "issues": []
+    },
+    {
+      "index": 231,
+      "seed": 7104265388634883071,
+      "issues": []
+    },
+    {
+      "index": 232,
+      "seed": 5614165060893529064,
+      "issues": []
+    },
+    {
+      "index": 233,
+      "seed": 10675911264620556833,
+      "issues": []
+    },
+    {
+      "index": 234,
+      "seed": 8961168136352837280,
+      "issues": []
+    },
+    {
+      "index": 235,
+      "seed": 3990647422989688578,
+      "issues": []
+    },
+    {
+      "index": 236,
+      "seed": 17272514547846991627,
+      "issues": []
+    },
+    {
+      "index": 237,
+      "seed": 1540613144581835174,
+      "issues": []
+    },
+    {
+      "index": 238,
+      "seed": 12340975083956327970,
+      "issues": []
+    },
+    {
+      "index": 239,
+      "seed": 3421087144019816429,
+      "issues": []
+    },
+    {
+      "index": 240,
+      "seed": 11670400720899873141,
+      "issues": []
+    },
+    {
+      "index": 241,
+      "seed": 18095920592466553024,
+      "issues": []
+    },
+    {
+      "index": 242,
+      "seed": 7841986128667124109,
+      "issues": []
+    },
+    {
+      "index": 243,
+      "seed": 16572579110780324241,
+      "issues": []
+    },
+    {
+      "index": 244,
+      "seed": 5039298302924147585,
+      "issues": []
+    },
+    {
+      "index": 245,
+      "seed": 18234580587912450382,
+      "issues": []
+    },
+    {
+      "index": 246,
+      "seed": 1102147322644765436,
+      "issues": []
+    },
+    {
+      "index": 247,
+      "seed": 8312652650414073291,
+      "issues": []
+    },
+    {
+      "index": 248,
+      "seed": 4527893850811261026,
+      "issues": []
+    },
+    {
+      "index": 249,
+      "seed": 13070843727665510006,
+      "issues": []
+    },
+    {
+      "index": 250,
+      "seed": 1656579343647082590,
+      "issues": []
+    },
+    {
+      "index": 251,
+      "seed": 4043947810645108213,
+      "issues": []
+    },
+    {
+      "index": 252,
+      "seed": 12853165242214029384,
+      "issues": []
+    },
+    {
+      "index": 253,
+      "seed": 11873001007849225526,
+      "issues": []
+    },
+    {
+      "index": 254,
+      "seed": 7246962792665420448,
+      "issues": []
+    },
+    {
+      "index": 255,
+      "seed": 3296012900111991132,
+      "issues": []
+    },
+    {
+      "index": 256,
+      "seed": 9826178370977249936,
+      "issues": []
+    },
+    {
+      "index": 257,
+      "seed": 9941449930421646258,
+      "issues": []
+    },
+    {
+      "index": 258,
+      "seed": 7437120856115822338,
+      "issues": []
+    },
+    {
+      "index": 259,
+      "seed": 621223425130647248,
+      "issues": []
+    },
+    {
+      "index": 260,
+      "seed": 10565406093353706342,
+      "issues": []
+    },
+    {
+      "index": 261,
+      "seed": 17013009736923700539,
+      "issues": []
+    },
+    {
+      "index": 262,
+      "seed": 2239873913635161286,
+      "issues": []
+    },
+    {
+      "index": 263,
+      "seed": 16724357688083013693,
+      "issues": []
+    },
+    {
+      "index": 264,
+      "seed": 4914106916745952530,
+      "issues": []
+    },
+    {
+      "index": 265,
+      "seed": 8345131970909681181,
+      "issues": []
+    },
+    {
+      "index": 266,
+      "seed": 12672397803208812280,
+      "issues": []
+    },
+    {
+      "index": 267,
+      "seed": 320405202601799473,
+      "issues": []
+    },
+    {
+      "index": 268,
+      "seed": 15217432636575025252,
+      "issues": []
+    },
+    {
+      "index": 269,
+      "seed": 8751307429059469019,
+      "issues": []
+    },
+    {
+      "index": 270,
+      "seed": 14052216476536187911,
+      "issues": []
+    },
+    {
+      "index": 271,
+      "seed": 10867084307706241922,
+      "issues": []
+    },
+    {
+      "index": 272,
+      "seed": 9229332576516298817,
+      "issues": []
+    },
+    {
+      "index": 273,
+      "seed": 3776891784616139212,
+      "issues": []
+    },
+    {
+      "index": 274,
+      "seed": 17757159727308513558,
+      "issues": []
+    },
+    {
+      "index": 275,
+      "seed": 3731488066078352030,
+      "issues": []
+    },
+    {
+      "index": 276,
+      "seed": 9429646530771455813,
+      "issues": []
+    },
+    {
+      "index": 277,
+      "seed": 11137778510266278566,
+      "issues": []
+    },
+    {
+      "index": 278,
+      "seed": 7457503028365642989,
+      "issues": []
+    },
+    {
+      "index": 279,
+      "seed": 11536193726257047296,
+      "issues": []
+    },
+    {
+      "index": 280,
+      "seed": 9422179799197034364,
+      "issues": []
+    },
+    {
+      "index": 281,
+      "seed": 17615246465443565368,
+      "issues": []
+    },
+    {
+      "index": 282,
+      "seed": 1743989360000365427,
+      "issues": []
+    },
+    {
+      "index": 283,
+      "seed": 16629782143059634875,
+      "issues": []
+    },
+    {
+      "index": 284,
+      "seed": 742266235073308563,
+      "issues": []
+    },
+    {
+      "index": 285,
+      "seed": 2092143233899663494,
+      "issues": []
+    },
+    {
+      "index": 286,
+      "seed": 9496097345533256306,
+      "issues": []
+    },
+    {
+      "index": 287,
+      "seed": 1528393081489346016,
+      "issues": []
+    },
+    {
+      "index": 288,
+      "seed": 5779603609659788520,
+      "issues": []
+    },
+    {
+      "index": 289,
+      "seed": 15175931407174373365,
+      "issues": []
+    },
+    {
+      "index": 290,
+      "seed": 2873134050465378635,
+      "issues": []
+    },
+    {
+      "index": 291,
+      "seed": 18302017062285063096,
+      "issues": []
+    },
+    {
+      "index": 292,
+      "seed": 5551826540077722785,
+      "issues": []
+    },
+    {
+      "index": 293,
+      "seed": 12004610542541252977,
+      "issues": []
+    },
+    {
+      "index": 294,
+      "seed": 15752600012625927264,
+      "issues": []
+    },
+    {
+      "index": 295,
+      "seed": 449400310048704209,
+      "issues": []
+    },
+    {
+      "index": 296,
+      "seed": 5623817136407223385,
+      "issues": []
+    },
+    {
+      "index": 297,
+      "seed": 4075979628930295875,
+      "issues": []
+    },
+    {
+      "index": 298,
+      "seed": 10077577572674464953,
+      "issues": []
+    },
+    {
+      "index": 299,
+      "seed": 7419569573558655564,
+      "issues": []
+    },
+    {
+      "index": 300,
+      "seed": 8286411463684908339,
+      "issues": []
+    },
+    {
+      "index": 301,
+      "seed": 9096225797171709922,
+      "issues": []
+    },
+    {
+      "index": 302,
+      "seed": 4550581752570281419,
+      "issues": []
+    },
+    {
+      "index": 303,
+      "seed": 6628778964134887732,
+      "issues": []
+    },
+    {
+      "index": 304,
+      "seed": 251114428871995176,
+      "issues": []
+    },
+    {
+      "index": 305,
+      "seed": 10680150805205634166,
+      "issues": []
+    },
+    {
+      "index": 306,
+      "seed": 12059382437185302020,
+      "issues": []
+    },
+    {
+      "index": 307,
+      "seed": 4796283287810652510,
+      "issues": []
+    },
+    {
+      "index": 308,
+      "seed": 6837118555068569664,
+      "issues": []
+    },
+    {
+      "index": 309,
+      "seed": 11653674503638629876,
+      "issues": []
+    },
+    {
+      "index": 310,
+      "seed": 15241593497712368454,
+      "issues": []
+    },
+    {
+      "index": 311,
+      "seed": 7227927444245109581,
+      "issues": []
+    },
+    {
+      "index": 312,
+      "seed": 471602599051288179,
+      "issues": []
+    },
+    {
+      "index": 313,
+      "seed": 14512106045641142373,
+      "issues": []
+    },
+    {
+      "index": 314,
+      "seed": 940277518763662771,
+      "issues": []
+    },
+    {
+      "index": 315,
+      "seed": 8135044717788738312,
+      "issues": []
+    },
+    {
+      "index": 316,
+      "seed": 17493764111186130067,
+      "issues": []
+    },
+    {
+      "index": 317,
+      "seed": 7382795629593853582,
+      "issues": []
+    },
+    {
+      "index": 318,
+      "seed": 18029722663046623376,
+      "issues": []
+    },
+    {
+      "index": 319,
+      "seed": 619473404432875739,
+      "issues": []
+    },
+    {
+      "index": 320,
+      "seed": 5535277450583242972,
+      "issues": []
+    },
+    {
+      "index": 321,
+      "seed": 7232362438724997123,
+      "issues": []
+    },
+    {
+      "index": 322,
+      "seed": 5301038331046290350,
+      "issues": []
+    },
+    {
+      "index": 323,
+      "seed": 7243475932607349537,
+      "issues": []
+    },
+    {
+      "index": 324,
+      "seed": 15806806581163352873,
+      "issues": []
+    },
+    {
+      "index": 325,
+      "seed": 14110195801290820171,
+      "issues": []
+    },
+    {
+      "index": 326,
+      "seed": 1760062983234779738,
+      "issues": []
+    },
+    {
+      "index": 327,
+      "seed": 12091387776361057716,
+      "issues": []
+    },
+    {
+      "index": 328,
+      "seed": 3187078778118619538,
+      "issues": []
+    },
+    {
+      "index": 329,
+      "seed": 15427418822860101156,
+      "issues": []
+    },
+    {
+      "index": 330,
+      "seed": 2607867360929765792,
+      "issues": []
+    },
+    {
+      "index": 331,
+      "seed": 17644275864146105075,
+      "issues": []
+    },
+    {
+      "index": 332,
+      "seed": 14952561899037742867,
+      "issues": []
+    },
+    {
+      "index": 333,
+      "seed": 5522241652390578655,
+      "issues": []
+    },
+    {
+      "index": 334,
+      "seed": 17194373030955423317,
+      "issues": []
+    },
+    {
+      "index": 335,
+      "seed": 7710350915716203396,
+      "issues": []
+    },
+    {
+      "index": 336,
+      "seed": 15131168817840862482,
+      "issues": []
+    },
+    {
+      "index": 337,
+      "seed": 7271216268246030908,
+      "issues": []
+    },
+    {
+      "index": 338,
+      "seed": 2256128394808474205,
+      "issues": []
+    },
+    {
+      "index": 339,
+      "seed": 14651321881918445059,
+      "issues": []
+    },
+    {
+      "index": 340,
+      "seed": 17095485714666864478,
+      "issues": []
+    },
+    {
+      "index": 341,
+      "seed": 11042239772494664987,
+      "issues": []
+    },
+    {
+      "index": 342,
+      "seed": 9781962766022815708,
+      "issues": []
+    },
+    {
+      "index": 343,
+      "seed": 1974073016363747748,
+      "issues": []
+    },
+    {
+      "index": 344,
+      "seed": 9339341429038616164,
+      "issues": []
+    },
+    {
+      "index": 345,
+      "seed": 516435400307398727,
+      "issues": []
+    },
+    {
+      "index": 346,
+      "seed": 3427217583163076976,
+      "issues": []
+    },
+    {
+      "index": 347,
+      "seed": 8187151578711770205,
+      "issues": []
+    },
+    {
+      "index": 348,
+      "seed": 13681932693438308195,
+      "issues": []
+    },
+    {
+      "index": 349,
+      "seed": 16905747926189551991,
+      "issues": []
+    },
+    {
+      "index": 350,
+      "seed": 7682237242524184725,
+      "issues": []
+    },
+    {
+      "index": 351,
+      "seed": 9313107433613016233,
+      "issues": []
+    },
+    {
+      "index": 352,
+      "seed": 1733750286695986833,
+      "issues": []
+    },
+    {
+      "index": 353,
+      "seed": 8526074986913812929,
+      "issues": []
+    },
+    {
+      "index": 354,
+      "seed": 11562659647589226095,
+      "issues": []
+    },
+    {
+      "index": 355,
+      "seed": 3070234891367011469,
+      "issues": []
+    },
+    {
+      "index": 356,
+      "seed": 4797323065513371312,
+      "issues": []
+    },
+    {
+      "index": 357,
+      "seed": 6646429372977149400,
+      "issues": []
+    },
+    {
+      "index": 358,
+      "seed": 2385535504494995552,
+      "issues": []
+    },
+    {
+      "index": 359,
+      "seed": 2536953501633706317,
+      "issues": []
+    },
+    {
+      "index": 360,
+      "seed": 14514758156740597804,
+      "issues": []
+    },
+    {
+      "index": 361,
+      "seed": 15567449480492887598,
+      "issues": []
+    },
+    {
+      "index": 362,
+      "seed": 5082126098068341172,
+      "issues": []
+    },
+    {
+      "index": 363,
+      "seed": 15901084281137109105,
+      "issues": []
+    },
+    {
+      "index": 364,
+      "seed": 12177650257929136522,
+      "issues": []
+    },
+    {
+      "index": 365,
+      "seed": 10141498354324997770,
+      "issues": []
+    },
+    {
+      "index": 366,
+      "seed": 10757995064806616186,
+      "issues": []
+    },
+    {
+      "index": 367,
+      "seed": 16742339529384863102,
+      "issues": []
+    },
+    {
+      "index": 368,
+      "seed": 3231583941160348006,
+      "issues": []
+    },
+    {
+      "index": 369,
+      "seed": 11965801303808505825,
+      "issues": []
+    },
+    {
+      "index": 370,
+      "seed": 16020958535788867018,
+      "issues": []
+    },
+    {
+      "index": 371,
+      "seed": 15827627242441997289,
+      "issues": []
+    },
+    {
+      "index": 372,
+      "seed": 5763612918765987884,
+      "issues": []
+    },
+    {
+      "index": 373,
+      "seed": 7219232516602437250,
+      "issues": []
+    },
+    {
+      "index": 374,
+      "seed": 14883721416671303756,
+      "issues": []
+    },
+    {
+      "index": 375,
+      "seed": 1295706153939904,
+      "issues": []
+    },
+    {
+      "index": 376,
+      "seed": 17771769293594289683,
+      "issues": []
+    },
+    {
+      "index": 377,
+      "seed": 10453606228047477117,
+      "issues": []
+    },
+    {
+      "index": 378,
+      "seed": 12623905221257369916,
+      "issues": []
+    },
+    {
+      "index": 379,
+      "seed": 15530657663604302318,
+      "issues": []
+    },
+    {
+      "index": 380,
+      "seed": 8205948543288241820,
+      "issues": []
+    },
+    {
+      "index": 381,
+      "seed": 12490214315260424367,
+      "issues": []
+    },
+    {
+      "index": 382,
+      "seed": 6658726351602986692,
+      "issues": []
+    },
+    {
+      "index": 383,
+      "seed": 4049657540966769395,
+      "issues": []
+    },
+    {
+      "index": 384,
+      "seed": 10981559818029408859,
+      "issues": []
+    },
+    {
+      "index": 385,
+      "seed": 11731737153839948559,
+      "issues": []
+    },
+    {
+      "index": 386,
+      "seed": 8145324433635266858,
+      "issues": []
+    },
+    {
+      "index": 387,
+      "seed": 1363666910807343160,
+      "issues": []
+    },
+    {
+      "index": 388,
+      "seed": 10509248817012751185,
+      "issues": []
+    },
+    {
+      "index": 389,
+      "seed": 747685991722948725,
+      "issues": []
+    },
+    {
+      "index": 390,
+      "seed": 15756433259287233919,
+      "issues": []
+    },
+    {
+      "index": 391,
+      "seed": 14308944445595961288,
+      "issues": []
+    },
+    {
+      "index": 392,
+      "seed": 6026803839978549665,
+      "issues": []
+    },
+    {
+      "index": 393,
+      "seed": 2812348844928038679,
+      "issues": []
+    },
+    {
+      "index": 394,
+      "seed": 2751528836645693204,
+      "issues": []
+    },
+    {
+      "index": 395,
+      "seed": 5304263042563505430,
+      "issues": []
+    },
+    {
+      "index": 396,
+      "seed": 1429628571982017961,
+      "issues": []
+    },
+    {
+      "index": 397,
+      "seed": 7299564200699844534,
+      "issues": []
+    },
+    {
+      "index": 398,
+      "seed": 1354061413853539027,
+      "issues": []
+    },
+    {
+      "index": 399,
+      "seed": 7944458236389891836,
+      "issues": []
+    },
+    {
+      "index": 400,
+      "seed": 18304624649504944346,
+      "issues": []
+    },
+    {
+      "index": 401,
+      "seed": 3832345105203854343,
+      "issues": []
+    },
+    {
+      "index": 402,
+      "seed": 17736935209189423246,
+      "issues": []
+    },
+    {
+      "index": 403,
+      "seed": 85023529459139913,
+      "issues": []
+    },
+    {
+      "index": 404,
+      "seed": 5222950617630577125,
+      "issues": []
+    },
+    {
+      "index": 405,
+      "seed": 12184049755906621584,
+      "issues": []
+    },
+    {
+      "index": 406,
+      "seed": 16576455732069246096,
+      "issues": []
+    },
+    {
+      "index": 407,
+      "seed": 15929894218642382043,
+      "issues": []
+    },
+    {
+      "index": 408,
+      "seed": 13436644892903027704,
+      "issues": []
+    },
+    {
+      "index": 409,
+      "seed": 11323985489688351253,
+      "issues": []
+    },
+    {
+      "index": 410,
+      "seed": 17129455537450121284,
+      "issues": []
+    },
+    {
+      "index": 411,
+      "seed": 10441113803634672557,
+      "issues": []
+    },
+    {
+      "index": 412,
+      "seed": 2547502852632052335,
+      "issues": []
+    },
+    {
+      "index": 413,
+      "seed": 3923107729610655878,
+      "issues": []
+    },
+    {
+      "index": 414,
+      "seed": 1723214574148780809,
+      "issues": []
+    },
+    {
+      "index": 415,
+      "seed": 2649549321910415664,
+      "issues": []
+    },
+    {
+      "index": 416,
+      "seed": 6110480098919676758,
+      "issues": []
+    },
+    {
+      "index": 417,
+      "seed": 6804867034652103575,
+      "issues": []
+    },
+    {
+      "index": 418,
+      "seed": 942335101733787328,
+      "issues": []
+    },
+    {
+      "index": 419,
+      "seed": 8144704920827236875,
+      "issues": []
+    },
+    {
+      "index": 420,
+      "seed": 402488571377351649,
+      "issues": []
+    },
+    {
+      "index": 421,
+      "seed": 4657989498123371461,
+      "issues": []
+    },
+    {
+      "index": 422,
+      "seed": 7608763426409705069,
+      "issues": []
+    },
+    {
+      "index": 423,
+      "seed": 4801192047662804750,
+      "issues": []
+    },
+    {
+      "index": 424,
+      "seed": 8404040501296029883,
+      "issues": []
+    },
+    {
+      "index": 425,
+      "seed": 15235285875663741926,
+      "issues": []
+    },
+    {
+      "index": 426,
+      "seed": 5729960201416397163,
+      "issues": []
+    },
+    {
+      "index": 427,
+      "seed": 11822827326633698656,
+      "issues": []
+    },
+    {
+      "index": 428,
+      "seed": 12299408302686751455,
+      "issues": []
+    },
+    {
+      "index": 429,
+      "seed": 15430485657291697168,
+      "issues": []
+    },
+    {
+      "index": 430,
+      "seed": 16094651706029114438,
+      "issues": []
+    },
+    {
+      "index": 431,
+      "seed": 18113398653926509491,
+      "issues": []
+    },
+    {
+      "index": 432,
+      "seed": 13833728846491218431,
+      "issues": []
+    },
+    {
+      "index": 433,
+      "seed": 8744593684179250203,
+      "issues": []
+    },
+    {
+      "index": 434,
+      "seed": 1427890561822302346,
+      "issues": []
+    },
+    {
+      "index": 435,
+      "seed": 3841239952793301294,
+      "issues": []
+    },
+    {
+      "index": 436,
+      "seed": 9179082385653274520,
+      "issues": []
+    },
+    {
+      "index": 437,
+      "seed": 12119935294298825930,
+      "issues": []
+    },
+    {
+      "index": 438,
+      "seed": 11481719552363836236,
+      "issues": []
+    },
+    {
+      "index": 439,
+      "seed": 3024273472854256515,
+      "issues": []
+    },
+    {
+      "index": 440,
+      "seed": 7027546666550075200,
+      "issues": []
+    },
+    {
+      "index": 441,
+      "seed": 6123480283965064222,
+      "issues": []
+    },
+    {
+      "index": 442,
+      "seed": 18108963336217067793,
+      "issues": []
+    },
+    {
+      "index": 443,
+      "seed": 6940720252551459348,
+      "issues": []
+    },
+    {
+      "index": 444,
+      "seed": 11132823109720165917,
+      "issues": []
+    },
+    {
+      "index": 445,
+      "seed": 3231579972734260732,
+      "issues": []
+    },
+    {
+      "index": 446,
+      "seed": 8049457817616901211,
+      "issues": []
+    },
+    {
+      "index": 447,
+      "seed": 16185189439953425376,
+      "issues": []
+    },
+    {
+      "index": 448,
+      "seed": 3256779371978812446,
+      "issues": []
+    },
+    {
+      "index": 449,
+      "seed": 16757613472205662566,
+      "issues": []
+    },
+    {
+      "index": 450,
+      "seed": 4120203048030660873,
+      "issues": []
+    },
+    {
+      "index": 451,
+      "seed": 1607390408762134850,
+      "issues": []
+    },
+    {
+      "index": 452,
+      "seed": 11857989628161571398,
+      "issues": []
+    },
+    {
+      "index": 453,
+      "seed": 17395897542729272759,
+      "issues": []
+    },
+    {
+      "index": 454,
+      "seed": 270509606077126035,
+      "issues": []
+    },
+    {
+      "index": 455,
+      "seed": 17640861166576514700,
+      "issues": []
+    },
+    {
+      "index": 456,
+      "seed": 6123215962047481186,
+      "issues": []
+    },
+    {
+      "index": 457,
+      "seed": 18345803891259522125,
+      "issues": []
+    },
+    {
+      "index": 458,
+      "seed": 4620340829003807016,
+      "issues": []
+    },
+    {
+      "index": 459,
+      "seed": 1908385320332257491,
+      "issues": []
+    },
+    {
+      "index": 460,
+      "seed": 8464323946098336149,
+      "issues": []
+    },
+    {
+      "index": 461,
+      "seed": 3721549593028279040,
+      "issues": []
+    },
+    {
+      "index": 462,
+      "seed": 4552498496195292887,
+      "issues": []
+    },
+    {
+      "index": 463,
+      "seed": 10561595897615655785,
+      "issues": []
+    },
+    {
+      "index": 464,
+      "seed": 16475684698936100218,
+      "issues": []
+    },
+    {
+      "index": 465,
+      "seed": 5983498595271595467,
+      "issues": []
+    },
+    {
+      "index": 466,
+      "seed": 3348788577973656741,
+      "issues": []
+    },
+    {
+      "index": 467,
+      "seed": 12958684141656320998,
+      "issues": []
+    },
+    {
+      "index": 468,
+      "seed": 1926067913598225173,
+      "issues": []
+    },
+    {
+      "index": 469,
+      "seed": 4517013335449054442,
+      "issues": []
+    },
+    {
+      "index": 470,
+      "seed": 15757864974973318077,
+      "issues": []
+    },
+    {
+      "index": 471,
+      "seed": 3573525582998420188,
+      "issues": []
+    },
+    {
+      "index": 472,
+      "seed": 686755878074631920,
+      "issues": []
+    },
+    {
+      "index": 473,
+      "seed": 3699475691616903406,
+      "issues": []
+    },
+    {
+      "index": 474,
+      "seed": 1861140621256396366,
+      "issues": []
+    },
+    {
+      "index": 475,
+      "seed": 8725238223273611256,
+      "issues": []
+    },
+    {
+      "index": 476,
+      "seed": 11443367698437631423,
+      "issues": []
+    },
+    {
+      "index": 477,
+      "seed": 5996253562558727888,
+      "issues": []
+    },
+    {
+      "index": 478,
+      "seed": 17769528193096478856,
+      "issues": []
+    },
+    {
+      "index": 479,
+      "seed": 14721277414288837172,
+      "issues": []
+    },
+    {
+      "index": 480,
+      "seed": 7967635180156463535,
+      "issues": []
+    },
+    {
+      "index": 481,
+      "seed": 1751588782002604216,
+      "issues": []
+    },
+    {
+      "index": 482,
+      "seed": 15823398144992059060,
+      "issues": []
+    },
+    {
+      "index": 483,
+      "seed": 5946045532553881081,
+      "issues": []
+    },
+    {
+      "index": 484,
+      "seed": 10680916333083132307,
+      "issues": []
+    },
+    {
+      "index": 485,
+      "seed": 13879717054936873315,
+      "issues": []
+    },
+    {
+      "index": 486,
+      "seed": 2460887674249847121,
+      "issues": []
+    },
+    {
+      "index": 487,
+      "seed": 8265752066575351354,
+      "issues": []
+    },
+    {
+      "index": 488,
+      "seed": 5277477181730988387,
+      "issues": []
+    },
+    {
+      "index": 489,
+      "seed": 17011791616447485390,
+      "issues": []
+    },
+    {
+      "index": 490,
+      "seed": 7423965987603858894,
+      "issues": []
+    },
+    {
+      "index": 491,
+      "seed": 4586566253375041503,
+      "issues": []
+    },
+    {
+      "index": 492,
+      "seed": 15856238265520584824,
+      "issues": []
+    },
+    {
+      "index": 493,
+      "seed": 15169687445481794203,
+      "issues": []
+    },
+    {
+      "index": 494,
+      "seed": 12143880728338508352,
+      "issues": []
+    },
+    {
+      "index": 495,
+      "seed": 5233100639231541150,
+      "issues": []
+    },
+    {
+      "index": 496,
+      "seed": 7124953844251355697,
+      "issues": []
+    },
+    {
+      "index": 497,
+      "seed": 18432849888037809862,
+      "issues": []
+    },
+    {
+      "index": 498,
+      "seed": 15378409875841270985,
+      "issues": []
+    },
+    {
+      "index": 499,
+      "seed": 9624391650951365962,
+      "issues": []
+    },
+    {
+      "index": 500,
+      "seed": 11712899247115975590,
+      "issues": []
+    },
+    {
+      "index": 501,
+      "seed": 16957409064560428454,
+      "issues": []
+    },
+    {
+      "index": 502,
+      "seed": 11729657891693351811,
+      "issues": []
+    },
+    {
+      "index": 503,
+      "seed": 15834111114078875823,
+      "issues": []
+    },
+    {
+      "index": 504,
+      "seed": 15349003298279256981,
+      "issues": []
+    },
+    {
+      "index": 505,
+      "seed": 5406344783659655588,
+      "issues": []
+    },
+    {
+      "index": 506,
+      "seed": 5309584454288274460,
+      "issues": []
+    },
+    {
+      "index": 507,
+      "seed": 14892841939069940566,
+      "issues": []
+    },
+    {
+      "index": 508,
+      "seed": 13718768496984025897,
+      "issues": []
+    },
+    {
+      "index": 509,
+      "seed": 18166045659098781992,
+      "issues": []
+    },
+    {
+      "index": 510,
+      "seed": 995374369776050547,
+      "issues": []
+    },
+    {
+      "index": 511,
+      "seed": 3889457961654246767,
+      "issues": []
+    },
+    {
+      "index": 512,
+      "seed": 9555489670840399188,
+      "issues": []
+    },
+    {
+      "index": 513,
+      "seed": 6666288149938576337,
+      "issues": []
+    },
+    {
+      "index": 514,
+      "seed": 3462873805426776236,
+      "issues": []
+    },
+    {
+      "index": 515,
+      "seed": 16618094498441499711,
+      "issues": []
+    },
+    {
+      "index": 516,
+      "seed": 12613693467670972324,
+      "issues": []
+    },
+    {
+      "index": 517,
+      "seed": 4061965289616132759,
+      "issues": []
+    },
+    {
+      "index": 518,
+      "seed": 17116330820860931621,
+      "issues": []
+    },
+    {
+      "index": 519,
+      "seed": 5943696950963326986,
+      "issues": []
+    },
+    {
+      "index": 520,
+      "seed": 8020789967465134158,
+      "issues": []
+    },
+    {
+      "index": 521,
+      "seed": 7101767082541152469,
+      "issues": []
+    },
+    {
+      "index": 522,
+      "seed": 6259501759205059265,
+      "issues": []
+    },
+    {
+      "index": 523,
+      "seed": 10242603676200372420,
+      "issues": []
+    },
+    {
+      "index": 524,
+      "seed": 4294718346685275891,
+      "issues": []
+    },
+    {
+      "index": 525,
+      "seed": 16788130094309278560,
+      "issues": []
+    },
+    {
+      "index": 526,
+      "seed": 12314731126943398317,
+      "issues": []
+    },
+    {
+      "index": 527,
+      "seed": 1571461341946250990,
+      "issues": []
+    },
+    {
+      "index": 528,
+      "seed": 16386951352405737226,
+      "issues": []
+    },
+    {
+      "index": 529,
+      "seed": 2451684040880078592,
+      "issues": []
+    },
+    {
+      "index": 530,
+      "seed": 9069232254012986127,
+      "issues": []
+    },
+    {
+      "index": 531,
+      "seed": 13148778391689022051,
+      "issues": []
+    },
+    {
+      "index": 532,
+      "seed": 8720080173323047719,
+      "issues": []
+    },
+    {
+      "index": 533,
+      "seed": 10828351158105872256,
+      "issues": []
+    },
+    {
+      "index": 534,
+      "seed": 1883918253161902723,
+      "issues": []
+    },
+    {
+      "index": 535,
+      "seed": 14251979568545855525,
+      "issues": []
+    },
+    {
+      "index": 536,
+      "seed": 4776172215432677404,
+      "issues": []
+    },
+    {
+      "index": 537,
+      "seed": 288386548793403509,
+      "issues": []
+    },
+    {
+      "index": 538,
+      "seed": 13306181388150540298,
+      "issues": []
+    },
+    {
+      "index": 539,
+      "seed": 12366520195271258075,
+      "issues": []
+    },
+    {
+      "index": 540,
+      "seed": 4186924345303349568,
+      "issues": []
+    },
+    {
+      "index": 541,
+      "seed": 17657569296954410829,
+      "issues": []
+    },
+    {
+      "index": 542,
+      "seed": 14424841730798679113,
+      "issues": []
+    },
+    {
+      "index": 543,
+      "seed": 11196895661544251931,
+      "issues": []
+    },
+    {
+      "index": 544,
+      "seed": 7668573307072766848,
+      "issues": []
+    },
+    {
+      "index": 545,
+      "seed": 17833635490301652579,
+      "issues": []
+    },
+    {
+      "index": 546,
+      "seed": 12057415358057858276,
+      "issues": []
+    },
+    {
+      "index": 547,
+      "seed": 18299431686511935206,
+      "issues": []
+    },
+    {
+      "index": 548,
+      "seed": 15763506367822323865,
+      "issues": []
+    },
+    {
+      "index": 549,
+      "seed": 2248747241853001512,
+      "issues": []
+    },
+    {
+      "index": 550,
+      "seed": 13219145727485623140,
+      "issues": []
+    },
+    {
+      "index": 551,
+      "seed": 6177514126967588216,
+      "issues": []
+    },
+    {
+      "index": 552,
+      "seed": 524440359182195813,
+      "issues": []
+    },
+    {
+      "index": 553,
+      "seed": 607569434405362461,
+      "issues": []
+    },
+    {
+      "index": 554,
+      "seed": 12645650373547753452,
+      "issues": []
+    },
+    {
+      "index": 555,
+      "seed": 12428943162680934189,
+      "issues": []
+    },
+    {
+      "index": 556,
+      "seed": 11625251311527466134,
+      "issues": []
+    },
+    {
+      "index": 557,
+      "seed": 1627813497231903454,
+      "issues": []
+    },
+    {
+      "index": 558,
+      "seed": 11262176663388958176,
+      "issues": []
+    },
+    {
+      "index": 559,
+      "seed": 14895460209479611045,
+      "issues": []
+    },
+    {
+      "index": 560,
+      "seed": 16616890852428133727,
+      "issues": []
+    },
+    {
+      "index": 561,
+      "seed": 10305851517479614544,
+      "issues": []
+    },
+    {
+      "index": 562,
+      "seed": 2802326682609606915,
+      "issues": []
+    },
+    {
+      "index": 563,
+      "seed": 6750853602707922696,
+      "issues": []
+    },
+    {
+      "index": 564,
+      "seed": 17230259726700502645,
+      "issues": []
+    },
+    {
+      "index": 565,
+      "seed": 13977440423787085907,
+      "issues": []
+    },
+    {
+      "index": 566,
+      "seed": 17661112401297198408,
+      "issues": []
+    },
+    {
+      "index": 567,
+      "seed": 6195643170045699442,
+      "issues": []
+    },
+    {
+      "index": 568,
+      "seed": 13529235384454363519,
+      "issues": []
+    },
+    {
+      "index": 569,
+      "seed": 12668822626194334164,
+      "issues": []
+    },
+    {
+      "index": 570,
+      "seed": 17961390318278318477,
+      "issues": []
+    },
+    {
+      "index": 571,
+      "seed": 13506950745677153631,
+      "issues": []
+    },
+    {
+      "index": 572,
+      "seed": 398793252422146079,
+      "issues": []
+    },
+    {
+      "index": 573,
+      "seed": 17318264557872890388,
+      "issues": []
+    },
+    {
+      "index": 574,
+      "seed": 596698355594196713,
+      "issues": []
+    },
+    {
+      "index": 575,
+      "seed": 587977708723710051,
+      "issues": []
+    },
+    {
+      "index": 576,
+      "seed": 16010390198549553378,
+      "issues": []
+    },
+    {
+      "index": 577,
+      "seed": 1141251391352654331,
+      "issues": []
+    },
+    {
+      "index": 578,
+      "seed": 10594010502908525299,
+      "issues": []
+    },
+    {
+      "index": 579,
+      "seed": 12222542253619905681,
+      "issues": []
+    },
+    {
+      "index": 580,
+      "seed": 6229427163752938521,
+      "issues": []
+    },
+    {
+      "index": 581,
+      "seed": 14963803084115096740,
+      "issues": []
+    },
+    {
+      "index": 582,
+      "seed": 12238605882380288422,
+      "issues": []
+    },
+    {
+      "index": 583,
+      "seed": 6879073712193911863,
+      "issues": []
+    },
+    {
+      "index": 584,
+      "seed": 18080022321899273639,
+      "issues": []
+    },
+    {
+      "index": 585,
+      "seed": 2108182222690953407,
+      "issues": []
+    },
+    {
+      "index": 586,
+      "seed": 4149357300661635368,
+      "issues": []
+    },
+    {
+      "index": 587,
+      "seed": 10505084747463707788,
+      "issues": []
+    },
+    {
+      "index": 588,
+      "seed": 4271831607858357597,
+      "issues": []
+    },
+    {
+      "index": 589,
+      "seed": 2072406247257147952,
+      "issues": []
+    },
+    {
+      "index": 590,
+      "seed": 13025677026393535699,
+      "issues": []
+    },
+    {
+      "index": 591,
+      "seed": 3915238008749391143,
+      "issues": []
+    },
+    {
+      "index": 592,
+      "seed": 17208948642921576781,
+      "issues": []
+    },
+    {
+      "index": 593,
+      "seed": 18251987868461756128,
+      "issues": []
+    },
+    {
+      "index": 594,
+      "seed": 7787098085916700224,
+      "issues": []
+    },
+    {
+      "index": 595,
+      "seed": 3560211559900647861,
+      "issues": []
+    },
+    {
+      "index": 596,
+      "seed": 15056310695406309537,
+      "issues": []
+    },
+    {
+      "index": 597,
+      "seed": 4864657099143284551,
+      "issues": []
+    },
+    {
+      "index": 598,
+      "seed": 3810741604211346766,
+      "issues": []
+    },
+    {
+      "index": 599,
+      "seed": 8150343147163565104,
+      "issues": []
+    },
+    {
+      "index": 600,
+      "seed": 9384734005590646860,
+      "issues": []
+    },
+    {
+      "index": 601,
+      "seed": 10304369498577302131,
+      "issues": []
+    },
+    {
+      "index": 602,
+      "seed": 2069162870101272966,
+      "issues": []
+    },
+    {
+      "index": 603,
+      "seed": 6895640674151395718,
+      "issues": []
+    },
+    {
+      "index": 604,
+      "seed": 11107811602942791531,
+      "issues": []
+    },
+    {
+      "index": 605,
+      "seed": 13601826783346520532,
+      "issues": []
+    },
+    {
+      "index": 606,
+      "seed": 8302945614825407627,
+      "issues": []
+    },
+    {
+      "index": 607,
+      "seed": 13771602062810761124,
+      "issues": []
+    },
+    {
+      "index": 608,
+      "seed": 5765616385235907929,
+      "issues": []
+    },
+    {
+      "index": 609,
+      "seed": 1194699670310114762,
+      "issues": []
+    },
+    {
+      "index": 610,
+      "seed": 9250864797976797407,
+      "issues": []
+    },
+    {
+      "index": 611,
+      "seed": 15483033198274904321,
+      "issues": []
+    },
+    {
+      "index": 612,
+      "seed": 2327920581516741208,
+      "issues": []
+    },
+    {
+      "index": 613,
+      "seed": 14832808871759865923,
+      "issues": []
+    },
+    {
+      "index": 614,
+      "seed": 17339789286931004692,
+      "issues": []
+    },
+    {
+      "index": 615,
+      "seed": 2388354522725942367,
+      "issues": []
+    },
+    {
+      "index": 616,
+      "seed": 1877368203153825052,
+      "issues": []
+    },
+    {
+      "index": 617,
+      "seed": 12525222688990273526,
+      "issues": []
+    },
+    {
+      "index": 618,
+      "seed": 10332186114935319854,
+      "issues": []
+    },
+    {
+      "index": 619,
+      "seed": 28124747831636311,
+      "issues": []
+    },
+    {
+      "index": 620,
+      "seed": 44302322675424887,
+      "issues": []
+    },
+    {
+      "index": 621,
+      "seed": 15384165469418275856,
+      "issues": []
+    },
+    {
+      "index": 622,
+      "seed": 1657971472029817502,
+      "issues": []
+    },
+    {
+      "index": 623,
+      "seed": 8803197401472465881,
+      "issues": []
+    },
+    {
+      "index": 624,
+      "seed": 15947612766113421463,
+      "issues": []
+    },
+    {
+      "index": 625,
+      "seed": 11421226682623026877,
+      "issues": []
+    },
+    {
+      "index": 626,
+      "seed": 8413983605099391880,
+      "issues": []
+    },
+    {
+      "index": 627,
+      "seed": 10824920195128176030,
+      "issues": []
+    },
+    {
+      "index": 628,
+      "seed": 14317914410802868300,
+      "issues": []
+    },
+    {
+      "index": 629,
+      "seed": 6350974439807498228,
+      "issues": []
+    },
+    {
+      "index": 630,
+      "seed": 11428469968989834671,
+      "issues": []
+    },
+    {
+      "index": 631,
+      "seed": 11985016002202232375,
+      "issues": []
+    },
+    {
+      "index": 632,
+      "seed": 11041821177594939554,
+      "issues": []
+    },
+    {
+      "index": 633,
+      "seed": 13106314593109558800,
+      "issues": []
+    },
+    {
+      "index": 634,
+      "seed": 10011632754205805103,
+      "issues": []
+    },
+    {
+      "index": 635,
+      "seed": 2192087842255264725,
+      "issues": []
+    },
+    {
+      "index": 636,
+      "seed": 7146575624223521616,
+      "issues": []
+    },
+    {
+      "index": 637,
+      "seed": 15229793454678992464,
+      "issues": []
+    },
+    {
+      "index": 638,
+      "seed": 18026355106975280773,
+      "issues": []
+    },
+    {
+      "index": 639,
+      "seed": 4112467603402970676,
+      "issues": []
+    },
+    {
+      "index": 640,
+      "seed": 8221208365147691894,
+      "issues": []
+    },
+    {
+      "index": 641,
+      "seed": 9670665085722174339,
+      "issues": []
+    },
+    {
+      "index": 642,
+      "seed": 1041430001269361788,
+      "issues": []
+    },
+    {
+      "index": 643,
+      "seed": 2423298967044892716,
+      "issues": []
+    },
+    {
+      "index": 644,
+      "seed": 17891759460403724073,
+      "issues": []
+    },
+    {
+      "index": 645,
+      "seed": 9880068473336697723,
+      "issues": []
+    },
+    {
+      "index": 646,
+      "seed": 5003869117355048381,
+      "issues": []
+    },
+    {
+      "index": 647,
+      "seed": 10589032685734901566,
+      "issues": []
+    },
+    {
+      "index": 648,
+      "seed": 3677957838034792918,
+      "issues": []
+    },
+    {
+      "index": 649,
+      "seed": 12381671710201228080,
+      "issues": []
+    },
+    {
+      "index": 650,
+      "seed": 2312533643249411436,
+      "issues": []
+    },
+    {
+      "index": 651,
+      "seed": 3874204189965427562,
+      "issues": []
+    },
+    {
+      "index": 652,
+      "seed": 6549210276073940454,
+      "issues": []
+    },
+    {
+      "index": 653,
+      "seed": 9452699243420164784,
+      "issues": []
+    },
+    {
+      "index": 654,
+      "seed": 15389065542714706274,
+      "issues": []
+    },
+    {
+      "index": 655,
+      "seed": 6999713687469238513,
+      "issues": []
+    },
+    {
+      "index": 656,
+      "seed": 5992200450549634209,
+      "issues": []
+    },
+    {
+      "index": 657,
+      "seed": 991593489489546017,
+      "issues": []
+    },
+    {
+      "index": 658,
+      "seed": 14778769934063883953,
+      "issues": []
+    },
+    {
+      "index": 659,
+      "seed": 6079702380923738794,
+      "issues": []
+    },
+    {
+      "index": 660,
+      "seed": 18164603861369801925,
+      "issues": []
+    },
+    {
+      "index": 661,
+      "seed": 1820782439358387694,
+      "issues": []
+    },
+    {
+      "index": 662,
+      "seed": 1826240229451367118,
+      "issues": []
+    },
+    {
+      "index": 663,
+      "seed": 17410021518759239593,
+      "issues": []
+    },
+    {
+      "index": 664,
+      "seed": 7039582777783476375,
+      "issues": []
+    },
+    {
+      "index": 665,
+      "seed": 14323996724532358856,
+      "issues": []
+    },
+    {
+      "index": 666,
+      "seed": 2220725796993026657,
+      "issues": []
+    },
+    {
+      "index": 667,
+      "seed": 13135509691857698474,
+      "issues": []
+    },
+    {
+      "index": 668,
+      "seed": 8496235212254031716,
+      "issues": []
+    },
+    {
+      "index": 669,
+      "seed": 4363388504618889546,
+      "issues": []
+    },
+    {
+      "index": 670,
+      "seed": 8619511709460990240,
+      "issues": []
+    },
+    {
+      "index": 671,
+      "seed": 2486925811183955924,
+      "issues": []
+    },
+    {
+      "index": 672,
+      "seed": 6222351862190201624,
+      "issues": []
+    },
+    {
+      "index": 673,
+      "seed": 8605220087341310115,
+      "issues": []
+    },
+    {
+      "index": 674,
+      "seed": 9292200910362657207,
+      "issues": []
+    },
+    {
+      "index": 675,
+      "seed": 10698181412716875092,
+      "issues": []
+    },
+    {
+      "index": 676,
+      "seed": 18403342720991750224,
+      "issues": []
+    },
+    {
+      "index": 677,
+      "seed": 17311141106277704917,
+      "issues": []
+    },
+    {
+      "index": 678,
+      "seed": 13018652939685276347,
+      "issues": []
+    },
+    {
+      "index": 679,
+      "seed": 746882619333088944,
+      "issues": []
+    },
+    {
+      "index": 680,
+      "seed": 3136442856661717033,
+      "issues": []
+    },
+    {
+      "index": 681,
+      "seed": 7983319633385760922,
+      "issues": []
+    },
+    {
+      "index": 682,
+      "seed": 3354541691563462725,
+      "issues": []
+    },
+    {
+      "index": 683,
+      "seed": 6415327968416638331,
+      "issues": []
+    },
+    {
+      "index": 684,
+      "seed": 9986767128546458497,
+      "issues": []
+    },
+    {
+      "index": 685,
+      "seed": 6611047237754131021,
+      "issues": []
+    },
+    {
+      "index": 686,
+      "seed": 2075450025917080663,
+      "issues": []
+    },
+    {
+      "index": 687,
+      "seed": 12259718417593164750,
+      "issues": []
+    },
+    {
+      "index": 688,
+      "seed": 12562839147741096670,
+      "issues": []
+    },
+    {
+      "index": 689,
+      "seed": 3200489402577973725,
+      "issues": []
+    },
+    {
+      "index": 690,
+      "seed": 9509071363689921027,
+      "issues": []
+    },
+    {
+      "index": 691,
+      "seed": 463073521373968955,
+      "issues": []
+    },
+    {
+      "index": 692,
+      "seed": 16800322657334075583,
+      "issues": []
+    },
+    {
+      "index": 693,
+      "seed": 9714318300558564067,
+      "issues": []
+    },
+    {
+      "index": 694,
+      "seed": 12653813660542847525,
+      "issues": []
+    },
+    {
+      "index": 695,
+      "seed": 11829244462055509367,
+      "issues": []
+    },
+    {
+      "index": 696,
+      "seed": 2211038274909654893,
+      "issues": []
+    },
+    {
+      "index": 697,
+      "seed": 7159923001030456867,
+      "issues": []
+    },
+    {
+      "index": 698,
+      "seed": 6368001777668379145,
+      "issues": []
+    },
+    {
+      "index": 699,
+      "seed": 4009116769517234308,
+      "issues": []
+    },
+    {
+      "index": 700,
+      "seed": 11315097102777789726,
+      "issues": []
+    },
+    {
+      "index": 701,
+      "seed": 7506380565102430217,
+      "issues": []
+    },
+    {
+      "index": 702,
+      "seed": 3322779096633913712,
+      "issues": []
+    },
+    {
+      "index": 703,
+      "seed": 9776492622553350170,
+      "issues": []
+    },
+    {
+      "index": 704,
+      "seed": 6916036031578725462,
+      "issues": []
+    },
+    {
+      "index": 705,
+      "seed": 8667855758643293217,
+      "issues": []
+    },
+    {
+      "index": 706,
+      "seed": 1845162768949229142,
+      "issues": []
+    },
+    {
+      "index": 707,
+      "seed": 9249998059889117254,
+      "issues": []
+    },
+    {
+      "index": 708,
+      "seed": 6440032174233248749,
+      "issues": []
+    },
+    {
+      "index": 709,
+      "seed": 17649862241017953369,
+      "issues": []
+    },
+    {
+      "index": 710,
+      "seed": 13857504576607885886,
+      "issues": []
+    },
+    {
+      "index": 711,
+      "seed": 2813215282256343700,
+      "issues": []
+    },
+    {
+      "index": 712,
+      "seed": 13793789870200355654,
+      "issues": []
+    },
+    {
+      "index": 713,
+      "seed": 18439397304376826275,
+      "issues": []
+    },
+    {
+      "index": 714,
+      "seed": 18406000344807758523,
+      "issues": []
+    },
+    {
+      "index": 715,
+      "seed": 1288034598794059129,
+      "issues": []
+    },
+    {
+      "index": 716,
+      "seed": 10593450242978739905,
+      "issues": []
+    },
+    {
+      "index": 717,
+      "seed": 12769820104240126108,
+      "issues": []
+    },
+    {
+      "index": 718,
+      "seed": 8456407864486184544,
+      "issues": []
+    },
+    {
+      "index": 719,
+      "seed": 5415754805842300757,
+      "issues": []
+    },
+    {
+      "index": 720,
+      "seed": 7755760255019408998,
+      "issues": []
+    },
+    {
+      "index": 721,
+      "seed": 1025252368753654238,
+      "issues": []
+    },
+    {
+      "index": 722,
+      "seed": 40788711088231982,
+      "issues": []
+    },
+    {
+      "index": 723,
+      "seed": 1034350478635898718,
+      "issues": []
+    },
+    {
+      "index": 724,
+      "seed": 15798857388059364119,
+      "issues": []
+    },
+    {
+      "index": 725,
+      "seed": 10844515011066256537,
+      "issues": []
+    },
+    {
+      "index": 726,
+      "seed": 6059364098810254439,
+      "issues": []
+    },
+    {
+      "index": 727,
+      "seed": 5284209049780491076,
+      "issues": []
+    },
+    {
+      "index": 728,
+      "seed": 14033554867812925544,
+      "issues": []
+    },
+    {
+      "index": 729,
+      "seed": 1766123938814692153,
+      "issues": []
+    },
+    {
+      "index": 730,
+      "seed": 8869579087916709265,
+      "issues": []
+    },
+    {
+      "index": 731,
+      "seed": 13454703040797439725,
+      "issues": []
+    },
+    {
+      "index": 732,
+      "seed": 6143786149112285308,
+      "issues": []
+    },
+    {
+      "index": 733,
+      "seed": 10957555087582333671,
+      "issues": []
+    },
+    {
+      "index": 734,
+      "seed": 6491665879540329034,
+      "issues": []
+    },
+    {
+      "index": 735,
+      "seed": 13673280486671266522,
+      "issues": []
+    },
+    {
+      "index": 736,
+      "seed": 4306429123398724800,
+      "issues": []
+    },
+    {
+      "index": 737,
+      "seed": 17843920413160272190,
+      "issues": []
+    },
+    {
+      "index": 738,
+      "seed": 4732604507453299439,
+      "issues": []
+    },
+    {
+      "index": 739,
+      "seed": 3151327622761503402,
+      "issues": []
+    },
+    {
+      "index": 740,
+      "seed": 4214571837066160751,
+      "issues": []
+    },
+    {
+      "index": 741,
+      "seed": 5236649841170333298,
+      "issues": []
+    },
+    {
+      "index": 742,
+      "seed": 9709547391481417148,
+      "issues": []
+    },
+    {
+      "index": 743,
+      "seed": 3139699327957745882,
+      "issues": []
+    },
+    {
+      "index": 744,
+      "seed": 2525626888827414449,
+      "issues": []
+    },
+    {
+      "index": 745,
+      "seed": 8173180130856397716,
+      "issues": []
+    },
+    {
+      "index": 746,
+      "seed": 11711191110695767300,
+      "issues": []
+    },
+    {
+      "index": 747,
+      "seed": 16934371482656525238,
+      "issues": []
+    },
+    {
+      "index": 748,
+      "seed": 4821930514556265787,
+      "issues": []
+    },
+    {
+      "index": 749,
+      "seed": 2197363694260923250,
+      "issues": []
+    },
+    {
+      "index": 750,
+      "seed": 13839520897868740760,
+      "issues": []
+    },
+    {
+      "index": 751,
+      "seed": 16085091717745982873,
+      "issues": []
+    },
+    {
+      "index": 752,
+      "seed": 14244724937577812691,
+      "issues": []
+    },
+    {
+      "index": 753,
+      "seed": 14657442024561530555,
+      "issues": []
+    },
+    {
+      "index": 754,
+      "seed": 1132483759704933574,
+      "issues": []
+    },
+    {
+      "index": 755,
+      "seed": 11536888231731522511,
+      "issues": []
+    },
+    {
+      "index": 756,
+      "seed": 1973475028677501490,
+      "issues": []
+    },
+    {
+      "index": 757,
+      "seed": 4131178372363341456,
+      "issues": []
+    },
+    {
+      "index": 758,
+      "seed": 16684265362117886291,
+      "issues": []
+    },
+    {
+      "index": 759,
+      "seed": 13625332560373047787,
+      "issues": []
+    },
+    {
+      "index": 760,
+      "seed": 6974295073090406437,
+      "issues": []
+    },
+    {
+      "index": 761,
+      "seed": 6291627015370738052,
+      "issues": []
+    },
+    {
+      "index": 762,
+      "seed": 6023643038610202080,
+      "issues": []
+    },
+    {
+      "index": 763,
+      "seed": 16801272790430170278,
+      "issues": []
+    },
+    {
+      "index": 764,
+      "seed": 3367184964533807160,
+      "issues": []
+    },
+    {
+      "index": 765,
+      "seed": 16886640647810679189,
+      "issues": []
+    },
+    {
+      "index": 766,
+      "seed": 5271220505198566967,
+      "issues": []
+    },
+    {
+      "index": 767,
+      "seed": 2450197101215363017,
+      "issues": []
+    },
+    {
+      "index": 768,
+      "seed": 15384824123136748291,
+      "issues": []
+    },
+    {
+      "index": 769,
+      "seed": 12486910505473005621,
+      "issues": []
+    },
+    {
+      "index": 770,
+      "seed": 4220545351158050197,
+      "issues": []
+    },
+    {
+      "index": 771,
+      "seed": 17709832139405291724,
+      "issues": []
+    },
+    {
+      "index": 772,
+      "seed": 13465765119029923676,
+      "issues": []
+    },
+    {
+      "index": 773,
+      "seed": 4307969902203112987,
+      "issues": []
+    },
+    {
+      "index": 774,
+      "seed": 17455403414914007684,
+      "issues": []
+    },
+    {
+      "index": 775,
+      "seed": 6445683589405116272,
+      "issues": []
+    },
+    {
+      "index": 776,
+      "seed": 9177856666861987225,
+      "issues": []
+    },
+    {
+      "index": 777,
+      "seed": 9449235128584094942,
+      "issues": []
+    },
+    {
+      "index": 778,
+      "seed": 959310240073460456,
+      "issues": []
+    },
+    {
+      "index": 779,
+      "seed": 1247181842561723605,
+      "issues": []
+    },
+    {
+      "index": 780,
+      "seed": 2755082240238318050,
+      "issues": []
+    },
+    {
+      "index": 781,
+      "seed": 2335109626195018238,
+      "issues": []
+    },
+    {
+      "index": 782,
+      "seed": 2249901156977751321,
+      "issues": []
+    },
+    {
+      "index": 783,
+      "seed": 5646118871405441151,
+      "issues": []
+    },
+    {
+      "index": 784,
+      "seed": 12354004696397550930,
+      "issues": []
+    },
+    {
+      "index": 785,
+      "seed": 10724467292514066200,
+      "issues": []
+    },
+    {
+      "index": 786,
+      "seed": 11604707485297672916,
+      "issues": []
+    },
+    {
+      "index": 787,
+      "seed": 14699920877497853266,
+      "issues": []
+    },
+    {
+      "index": 788,
+      "seed": 14742221817273419147,
+      "issues": []
+    },
+    {
+      "index": 789,
+      "seed": 14730266653073572053,
+      "issues": []
+    },
+    {
+      "index": 790,
+      "seed": 13874563831959825256,
+      "issues": []
+    },
+    {
+      "index": 791,
+      "seed": 607244046045351523,
+      "issues": []
+    },
+    {
+      "index": 792,
+      "seed": 6341719717794027805,
+      "issues": []
+    },
+    {
+      "index": 793,
+      "seed": 14556653437161247531,
+      "issues": []
+    },
+    {
+      "index": 794,
+      "seed": 5688287656327202005,
+      "issues": []
+    },
+    {
+      "index": 795,
+      "seed": 1439579372355601058,
+      "issues": []
+    },
+    {
+      "index": 796,
+      "seed": 12024166881281675086,
+      "issues": []
+    },
+    {
+      "index": 797,
+      "seed": 7255727941048169998,
+      "issues": []
+    },
+    {
+      "index": 798,
+      "seed": 11697477691845363657,
+      "issues": []
+    },
+    {
+      "index": 799,
+      "seed": 3930558521542239048,
+      "issues": []
+    },
+    {
+      "index": 800,
+      "seed": 4666612965340298141,
+      "issues": []
+    },
+    {
+      "index": 801,
+      "seed": 3399556233280688552,
+      "issues": []
+    },
+    {
+      "index": 802,
+      "seed": 3886686749215909397,
+      "issues": []
+    },
+    {
+      "index": 803,
+      "seed": 15920618916988366879,
+      "issues": []
+    },
+    {
+      "index": 804,
+      "seed": 5738061541534004200,
+      "issues": []
+    },
+    {
+      "index": 805,
+      "seed": 713380714387937156,
+      "issues": []
+    },
+    {
+      "index": 806,
+      "seed": 8868990396024557770,
+      "issues": []
+    },
+    {
+      "index": 807,
+      "seed": 11694599495610741237,
+      "issues": []
+    },
+    {
+      "index": 808,
+      "seed": 8327044654539289918,
+      "issues": []
+    },
+    {
+      "index": 809,
+      "seed": 9673417830546933971,
+      "issues": []
+    },
+    {
+      "index": 810,
+      "seed": 8644620830324006336,
+      "issues": []
+    },
+    {
+      "index": 811,
+      "seed": 17248930538335755157,
+      "issues": []
+    },
+    {
+      "index": 812,
+      "seed": 7345775918120785171,
+      "issues": []
+    },
+    {
+      "index": 813,
+      "seed": 8333417665867044975,
+      "issues": []
+    },
+    {
+      "index": 814,
+      "seed": 1083064853970276834,
+      "issues": []
+    },
+    {
+      "index": 815,
+      "seed": 13317693614561247941,
+      "issues": []
+    },
+    {
+      "index": 816,
+      "seed": 15936914828739343070,
+      "issues": []
+    },
+    {
+      "index": 817,
+      "seed": 6703287685571992463,
+      "issues": []
+    },
+    {
+      "index": 818,
+      "seed": 16800182667490731547,
+      "issues": []
+    },
+    {
+      "index": 819,
+      "seed": 11549449166677404449,
+      "issues": []
+    },
+    {
+      "index": 820,
+      "seed": 11525809713756229536,
+      "issues": []
+    },
+    {
+      "index": 821,
+      "seed": 14680856327956006371,
+      "issues": []
+    },
+    {
+      "index": 822,
+      "seed": 3499087368702397764,
+      "issues": []
+    },
+    {
+      "index": 823,
+      "seed": 6039387106504152159,
+      "issues": []
+    },
+    {
+      "index": 824,
+      "seed": 14913127542898938682,
+      "issues": []
+    },
+    {
+      "index": 825,
+      "seed": 1555845103293835390,
+      "issues": []
+    },
+    {
+      "index": 826,
+      "seed": 17514353247808737335,
+      "issues": []
+    },
+    {
+      "index": 827,
+      "seed": 12983309928418651869,
+      "issues": []
+    },
+    {
+      "index": 828,
+      "seed": 3991708052803277812,
+      "issues": []
+    },
+    {
+      "index": 829,
+      "seed": 1755067941040234745,
+      "issues": []
+    },
+    {
+      "index": 830,
+      "seed": 399980488412725802,
+      "issues": []
+    },
+    {
+      "index": 831,
+      "seed": 13267062091638175972,
+      "issues": []
+    },
+    {
+      "index": 832,
+      "seed": 18106140252784127356,
+      "issues": []
+    },
+    {
+      "index": 833,
+      "seed": 15377209193381200659,
+      "issues": []
+    },
+    {
+      "index": 834,
+      "seed": 17856195656684297473,
+      "issues": []
+    },
+    {
+      "index": 835,
+      "seed": 9366489593994493162,
+      "issues": []
+    },
+    {
+      "index": 836,
+      "seed": 309164629201650498,
+      "issues": []
+    },
+    {
+      "index": 837,
+      "seed": 12655448148810535314,
+      "issues": []
+    },
+    {
+      "index": 838,
+      "seed": 17134137714877869569,
+      "issues": []
+    },
+    {
+      "index": 839,
+      "seed": 2452962109215159808,
+      "issues": []
+    },
+    {
+      "index": 840,
+      "seed": 12383629230635258000,
+      "issues": []
+    },
+    {
+      "index": 841,
+      "seed": 4252000033534814574,
+      "issues": []
+    },
+    {
+      "index": 842,
+      "seed": 8103064538844953746,
+      "issues": []
+    },
+    {
+      "index": 843,
+      "seed": 18397738865035964113,
+      "issues": []
+    },
+    {
+      "index": 844,
+      "seed": 6181177903548665946,
+      "issues": []
+    },
+    {
+      "index": 845,
+      "seed": 2006352976924073550,
+      "issues": []
+    },
+    {
+      "index": 846,
+      "seed": 134418060873859199,
+      "issues": []
+    },
+    {
+      "index": 847,
+      "seed": 9333576215253511276,
+      "issues": []
+    },
+    {
+      "index": 848,
+      "seed": 7227383757820271788,
+      "issues": []
+    },
+    {
+      "index": 849,
+      "seed": 6442959245237614634,
+      "issues": []
+    },
+    {
+      "index": 850,
+      "seed": 9832129466957824269,
+      "issues": []
+    },
+    {
+      "index": 851,
+      "seed": 16546733588149639820,
+      "issues": []
+    },
+    {
+      "index": 852,
+      "seed": 16521097603600330822,
+      "issues": []
+    },
+    {
+      "index": 853,
+      "seed": 7462057331337946311,
+      "issues": []
+    },
+    {
+      "index": 854,
+      "seed": 3896523815926481408,
+      "issues": []
+    },
+    {
+      "index": 855,
+      "seed": 10769366324067647587,
+      "issues": []
+    },
+    {
+      "index": 856,
+      "seed": 15663451094418348519,
+      "issues": []
+    },
+    {
+      "index": 857,
+      "seed": 6971445324142899997,
+      "issues": []
+    },
+    {
+      "index": 858,
+      "seed": 14466228001286730505,
+      "issues": []
+    },
+    {
+      "index": 859,
+      "seed": 6460046247231424493,
+      "issues": []
+    },
+    {
+      "index": 860,
+      "seed": 6996479714878448158,
+      "issues": []
+    },
+    {
+      "index": 861,
+      "seed": 17769814091359945776,
+      "issues": []
+    },
+    {
+      "index": 862,
+      "seed": 2649555137827083267,
+      "issues": []
+    },
+    {
+      "index": 863,
+      "seed": 11060188321138181148,
+      "issues": []
+    },
+    {
+      "index": 864,
+      "seed": 8196537305126100267,
+      "issues": []
+    },
+    {
+      "index": 865,
+      "seed": 355927823451235678,
+      "issues": []
+    },
+    {
+      "index": 866,
+      "seed": 8291714634306360773,
+      "issues": []
+    },
+    {
+      "index": 867,
+      "seed": 7746182738792323190,
+      "issues": []
+    },
+    {
+      "index": 868,
+      "seed": 15339253106156208615,
+      "issues": []
+    },
+    {
+      "index": 869,
+      "seed": 9375861833033109183,
+      "issues": []
+    },
+    {
+      "index": 870,
+      "seed": 992193498365595302,
+      "issues": []
+    },
+    {
+      "index": 871,
+      "seed": 11188162291169170142,
+      "issues": []
+    },
+    {
+      "index": 872,
+      "seed": 15795775072615149822,
+      "issues": []
+    },
+    {
+      "index": 873,
+      "seed": 12124628845439679718,
+      "issues": []
+    },
+    {
+      "index": 874,
+      "seed": 8445901221130261872,
+      "issues": []
+    },
+    {
+      "index": 875,
+      "seed": 2839321647661180816,
+      "issues": []
+    },
+    {
+      "index": 876,
+      "seed": 14771565237026060509,
+      "issues": []
+    },
+    {
+      "index": 877,
+      "seed": 1912752960938708960,
+      "issues": []
+    },
+    {
+      "index": 878,
+      "seed": 3235801123491226365,
+      "issues": []
+    },
+    {
+      "index": 879,
+      "seed": 86903608662912442,
+      "issues": []
+    },
+    {
+      "index": 880,
+      "seed": 8533007313804236439,
+      "issues": []
+    },
+    {
+      "index": 881,
+      "seed": 4282549249053296805,
+      "issues": []
+    },
+    {
+      "index": 882,
+      "seed": 9325486870009724699,
+      "issues": []
+    },
+    {
+      "index": 883,
+      "seed": 8868853641917768977,
+      "issues": []
+    },
+    {
+      "index": 884,
+      "seed": 638638548509298735,
+      "issues": []
+    },
+    {
+      "index": 885,
+      "seed": 14239972416854611610,
+      "issues": []
+    },
+    {
+      "index": 886,
+      "seed": 17161375197833796370,
+      "issues": []
+    },
+    {
+      "index": 887,
+      "seed": 11548267510451037214,
+      "issues": []
+    },
+    {
+      "index": 888,
+      "seed": 15262091835473951058,
+      "issues": []
+    },
+    {
+      "index": 889,
+      "seed": 7401740465914625264,
+      "issues": []
+    },
+    {
+      "index": 890,
+      "seed": 3832994234292741751,
+      "issues": []
+    },
+    {
+      "index": 891,
+      "seed": 6831221465645159728,
+      "issues": []
+    },
+    {
+      "index": 892,
+      "seed": 13136468244335056384,
+      "issues": []
+    },
+    {
+      "index": 893,
+      "seed": 4894648572171268353,
+      "issues": []
+    },
+    {
+      "index": 894,
+      "seed": 13666515166373070759,
+      "issues": []
+    },
+    {
+      "index": 895,
+      "seed": 10006566489376952834,
+      "issues": []
+    },
+    {
+      "index": 896,
+      "seed": 3164001678068552009,
+      "issues": []
+    },
+    {
+      "index": 897,
+      "seed": 13262271574451998935,
+      "issues": []
+    },
+    {
+      "index": 898,
+      "seed": 10806412444572791083,
+      "issues": []
+    },
+    {
+      "index": 899,
+      "seed": 14974688806235048620,
+      "issues": []
+    },
+    {
+      "index": 900,
+      "seed": 509442689530789525,
+      "issues": []
+    },
+    {
+      "index": 901,
+      "seed": 3601748332712808980,
+      "issues": []
+    },
+    {
+      "index": 902,
+      "seed": 9356255281227262560,
+      "issues": []
+    },
+    {
+      "index": 903,
+      "seed": 10292526420782288209,
+      "issues": []
+    },
+    {
+      "index": 904,
+      "seed": 11453989351099361675,
+      "issues": []
+    },
+    {
+      "index": 905,
+      "seed": 12724410438068388315,
+      "issues": []
+    },
+    {
+      "index": 906,
+      "seed": 16338973632578036367,
+      "issues": []
+    },
+    {
+      "index": 907,
+      "seed": 12315210559332138076,
+      "issues": []
+    },
+    {
+      "index": 908,
+      "seed": 17396132586678593465,
+      "issues": []
+    },
+    {
+      "index": 909,
+      "seed": 4467853312329885205,
+      "issues": []
+    },
+    {
+      "index": 910,
+      "seed": 7394769501714010122,
+      "issues": []
+    },
+    {
+      "index": 911,
+      "seed": 13751090496362823104,
+      "issues": []
+    },
+    {
+      "index": 912,
+      "seed": 5724336124350624169,
+      "issues": []
+    },
+    {
+      "index": 913,
+      "seed": 8428788188831020713,
+      "issues": []
+    },
+    {
+      "index": 914,
+      "seed": 5331196733375854934,
+      "issues": []
+    },
+    {
+      "index": 915,
+      "seed": 951559897493637952,
+      "issues": []
+    },
+    {
+      "index": 916,
+      "seed": 3003546671552088733,
+      "issues": []
+    },
+    {
+      "index": 917,
+      "seed": 1636373896795894045,
+      "issues": []
+    },
+    {
+      "index": 918,
+      "seed": 7613832588112564085,
+      "issues": []
+    },
+    {
+      "index": 919,
+      "seed": 1522919889218237882,
+      "issues": []
+    },
+    {
+      "index": 920,
+      "seed": 2957652705452913993,
+      "issues": []
+    },
+    {
+      "index": 921,
+      "seed": 4086856587777691011,
+      "issues": []
+    },
+    {
+      "index": 922,
+      "seed": 17072836462718495377,
+      "issues": []
+    },
+    {
+      "index": 923,
+      "seed": 14894075602369280189,
+      "issues": []
+    },
+    {
+      "index": 924,
+      "seed": 9271959077489058514,
+      "issues": []
+    },
+    {
+      "index": 925,
+      "seed": 1550214610873513343,
+      "issues": []
+    },
+    {
+      "index": 926,
+      "seed": 12640261354482334438,
+      "issues": []
+    },
+    {
+      "index": 927,
+      "seed": 5606549669317507346,
+      "issues": []
+    },
+    {
+      "index": 928,
+      "seed": 6160886925946512966,
+      "issues": []
+    },
+    {
+      "index": 929,
+      "seed": 9757319478825085186,
+      "issues": []
+    },
+    {
+      "index": 930,
+      "seed": 14091737915701627624,
+      "issues": []
+    },
+    {
+      "index": 931,
+      "seed": 2366916656577970405,
+      "issues": []
+    },
+    {
+      "index": 932,
+      "seed": 12415054150965598088,
+      "issues": []
+    },
+    {
+      "index": 933,
+      "seed": 757615521659878641,
+      "issues": []
+    },
+    {
+      "index": 934,
+      "seed": 9631341365177931715,
+      "issues": []
+    },
+    {
+      "index": 935,
+      "seed": 6941923610979461494,
+      "issues": []
+    },
+    {
+      "index": 936,
+      "seed": 2092818562085971626,
+      "issues": []
+    },
+    {
+      "index": 937,
+      "seed": 16631455268093590692,
+      "issues": []
+    },
+    {
+      "index": 938,
+      "seed": 12509804471710475308,
+      "issues": []
+    },
+    {
+      "index": 939,
+      "seed": 2204024065102152152,
+      "issues": []
+    },
+    {
+      "index": 940,
+      "seed": 6061094670948754092,
+      "issues": []
+    },
+    {
+      "index": 941,
+      "seed": 11537053122567329177,
+      "issues": []
+    },
+    {
+      "index": 942,
+      "seed": 7928660770417361865,
+      "issues": []
+    },
+    {
+      "index": 943,
+      "seed": 14518431514127569473,
+      "issues": []
+    },
+    {
+      "index": 944,
+      "seed": 17859630499274613297,
+      "issues": []
+    },
+    {
+      "index": 945,
+      "seed": 14425934763275301797,
+      "issues": []
+    },
+    {
+      "index": 946,
+      "seed": 11049018324744084134,
+      "issues": []
+    },
+    {
+      "index": 947,
+      "seed": 2003791019996839772,
+      "issues": []
+    },
+    {
+      "index": 948,
+      "seed": 2924924276754043913,
+      "issues": []
+    },
+    {
+      "index": 949,
+      "seed": 10971573320434900473,
+      "issues": []
+    },
+    {
+      "index": 950,
+      "seed": 6967438897364317601,
+      "issues": []
+    },
+    {
+      "index": 951,
+      "seed": 10781833032285703177,
+      "issues": []
+    },
+    {
+      "index": 952,
+      "seed": 16538483535290893124,
+      "issues": []
+    },
+    {
+      "index": 953,
+      "seed": 3298607173529244842,
+      "issues": []
+    },
+    {
+      "index": 954,
+      "seed": 6903345763790942832,
+      "issues": []
+    },
+    {
+      "index": 955,
+      "seed": 15002832782478375575,
+      "issues": []
+    },
+    {
+      "index": 956,
+      "seed": 5103925444762663580,
+      "issues": []
+    },
+    {
+      "index": 957,
+      "seed": 16352916986483279791,
+      "issues": []
+    },
+    {
+      "index": 958,
+      "seed": 11755094014026148631,
+      "issues": []
+    },
+    {
+      "index": 959,
+      "seed": 7473756221453351394,
+      "issues": []
+    },
+    {
+      "index": 960,
+      "seed": 1804397822628988636,
+      "issues": []
+    },
+    {
+      "index": 961,
+      "seed": 14434017759721670667,
+      "issues": []
+    },
+    {
+      "index": 962,
+      "seed": 9407450256155116832,
+      "issues": []
+    },
+    {
+      "index": 963,
+      "seed": 12963014805885748793,
+      "issues": []
+    },
+    {
+      "index": 964,
+      "seed": 572223503283437094,
+      "issues": []
+    },
+    {
+      "index": 965,
+      "seed": 9318481014352414569,
+      "issues": []
+    },
+    {
+      "index": 966,
+      "seed": 16042260009261500699,
+      "issues": []
+    },
+    {
+      "index": 967,
+      "seed": 12967812429759453927,
+      "issues": []
+    },
+    {
+      "index": 968,
+      "seed": 13907233553245829040,
+      "issues": []
+    },
+    {
+      "index": 969,
+      "seed": 10013901459475140187,
+      "issues": []
+    },
+    {
+      "index": 970,
+      "seed": 15329932803837229672,
+      "issues": []
+    },
+    {
+      "index": 971,
+      "seed": 4610886946403672755,
+      "issues": []
+    },
+    {
+      "index": 972,
+      "seed": 10620591459134387358,
+      "issues": []
+    },
+    {
+      "index": 973,
+      "seed": 3900474248156800908,
+      "issues": []
+    },
+    {
+      "index": 974,
+      "seed": 1819738212805374598,
+      "issues": []
+    },
+    {
+      "index": 975,
+      "seed": 218837231993062757,
+      "issues": []
+    },
+    {
+      "index": 976,
+      "seed": 7035892884134258445,
+      "issues": []
+    },
+    {
+      "index": 977,
+      "seed": 4828636878435107573,
+      "issues": []
+    },
+    {
+      "index": 978,
+      "seed": 672267821745678820,
+      "issues": []
+    },
+    {
+      "index": 979,
+      "seed": 14698336651348583030,
+      "issues": []
+    },
+    {
+      "index": 980,
+      "seed": 1122396808517564206,
+      "issues": []
+    },
+    {
+      "index": 981,
+      "seed": 827028466393749991,
+      "issues": []
+    },
+    {
+      "index": 982,
+      "seed": 4560873861992426421,
+      "issues": []
+    },
+    {
+      "index": 983,
+      "seed": 8383902010478114447,
+      "issues": []
+    },
+    {
+      "index": 984,
+      "seed": 2044592872845384614,
+      "issues": []
+    },
+    {
+      "index": 985,
+      "seed": 12592503023002294999,
+      "issues": []
+    },
+    {
+      "index": 986,
+      "seed": 6430813832746580283,
+      "issues": []
+    },
+    {
+      "index": 987,
+      "seed": 9121672342533081422,
+      "issues": []
+    },
+    {
+      "index": 988,
+      "seed": 6444982846987078302,
+      "issues": []
+    },
+    {
+      "index": 989,
+      "seed": 9444554507586451355,
+      "issues": []
+    },
+    {
+      "index": 990,
+      "seed": 7867457737251425244,
+      "issues": []
+    },
+    {
+      "index": 991,
+      "seed": 16727421076258795691,
+      "issues": []
+    },
+    {
+      "index": 992,
+      "seed": 8922618838696250071,
+      "issues": []
+    },
+    {
+      "index": 993,
+      "seed": 11987219365681700341,
+      "issues": []
+    },
+    {
+      "index": 994,
+      "seed": 3442624962930840976,
+      "issues": []
+    },
+    {
+      "index": 995,
+      "seed": 6403305126382995475,
+      "issues": []
+    },
+    {
+      "index": 996,
+      "seed": 1378198506851792020,
+      "issues": []
+    },
+    {
+      "index": 997,
+      "seed": 7272397492792466350,
+      "issues": []
+    },
+    {
+      "index": 998,
+      "seed": 15023915731744709841,
+      "issues": []
+    },
+    {
+      "index": 999,
+      "seed": 6149115828646951246,
+      "issues": []
+    }
+  ],
+  "spatial_counts_all_starts": {
+    "wall_reached": 943,
+    "contact_occurred": 1000
+  },
+  "demonstration_note": "Current corridor integration control; no strategy ranking inferred"
+}

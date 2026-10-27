@@ -204,7 +204,7 @@ def runner_smoke_oracle() -> int:
                       audit_every=1)
     for result in (duel, batch):
         if (result.get('audit_issues') or
-                result['execution_adapter'] != 'modular_physical_duel_v2' or
+                result['execution_adapter'] != 'modular_physical_duel_v3' or
                 {row['kind'] for row in result['registered_action_modules']} !=
                 STATE_KINDS | {'heal'}):
             raise AssertionError('runner did not use audited modular default registry')

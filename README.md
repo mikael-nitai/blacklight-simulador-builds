@@ -8,6 +8,8 @@ Projeto de pesquisa reproduzível para Victor Halle (Rank 3) em *Marvel Multiver
 
 A [camada de fichas versionadas](CHARACTER_PIPELINE.md) carrega Rank, seis atributos, recursos e habilidades graduadas de arquivos externos ao motor. Ela já executa duelos e baterias com outra ficha, conserva a origem do PDF e bloqueia poderes sem suporte. O objetivo final inclui fichas oficiais completas e evolução de Victor sem reescrever o motor; a cobertura atual continua limitada às mecânicas validadas do recorte físico.
 
+As famílias de cura, ativação de estados e [duração de Dodge/Stunned](MODULAR_LIFECYCLE.md) já usam módulos reutilizáveis. Os [resultados congelados](RESULT_VERSIONING.md) ficam ligados ao commit executado; a evolução do motor produz arquivos novos e preserva as medições anteriores.
+
 O motor determinístico cobre duelos de dois personagens em campo aberto, d616, edge/trouble, iniciativa, Health/Focus, ações e movimento, ataques Melee/Agility, Fast Strikes contra um alvo, Garra, Lâmina, Marreta, Escudo, Mighty, Sturdy, Healing Factor, Do This All Day, Attack Stance, Riposte, Bleeding e Stunned. As políticas só solicitam ações; o motor valida e resolve o estado. Cada experimento registra sementes e hashes de fontes.
 
 Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidades de membros inutilizados, Karma, dano de Focus, fogo e outras imunidades especiais, mapa/terreno e encontros sequenciais. Há **experimentos separados** de três participantes em contato fixo no [relatório de grupo](GROUP_REPORT.md), de Mental Punch no [relatório de Focus](FOCUS_REPORT.md) e de perseguição em [corredor limitado](CORRIDOR_REPORT.md). A ficha apresenta conflito entre Initiative/Run inscritos e derivados pelo Core; a variante literal está no [resultado atual de sensibilidade](results/sensitivity.json).
@@ -45,18 +47,20 @@ Abra PowerShell nesta pasta. Requer Python 3.11 ou mais recente; não há depend
 ```powershell
 python -m unittest discover -s tests -q
 python -m scripts.verify_sources
-python -m blacklight.experiment --stage dev --n 1000 --output results/pool_v2_dev_summary.json
-python -m scripts.pool_v2_confirm --stage confirm_v2 --n 10000 --output results/pool_v2_confirm_summary.json
-python -m scripts.pool_v2_confirm --stage holdout_v2 --n 10000 --output results/pool_v2_holdout_summary.json
-python -m scripts.group_experiment --stage description
-python -m scripts.focus_experiment --stage description
-python -m scripts.corridor_experiment --stage description
+python -m blacklight.experiment --stage dev --n 1000 --output results/reproduction_pool_v2_dev.json
+python -m scripts.pool_v2_confirm --stage confirm_v2 --n 10000 --output results/reproduction_pool_v2_confirm.json
+python -m scripts.pool_v2_confirm --stage holdout_v2 --n 10000 --output results/reproduction_pool_v2_holdout.json
+python -m scripts.group_experiment --stage description --output results/reproduction_group_pool_v2.json
+python -m scripts.focus_experiment --stage description --output results/reproduction_focus_pool_v2.json
+python -m scripts.corridor_experiment --stage description --output results/reproduction_corridor_pool_v2.json
 python -m scripts.replay --scenario mirror_hammer --strategy hammer --index 0 --output results\replay.json
 ```
 
 As sementes são derivadas de SHA-256 de fase, cenário, política e índice. Reexecutar uma fase com o mesmo código produz os mesmos resultados. Os resultados de confirmação usam sementes diferentes das de desenvolvimento. `source_sha256` em cada JSON permite detectar mudanças nas regras, ficha auditada, especificação e código do pacote.
 
-A suíte atual tem **142 testes** aprovados, incluindo oráculos do novo conjunto de dados, integração de duas armas, auditores independentes, troca de fichas e as [famílias modulares de cura e estado](MODULAR_STATES.md). A versão `pool_v2` tem 52.000 duelos de desenvolvimento, 240.000 de replicação, 120.000 de reserva e 60.000 combates descritivos em cada extensão de grupo, Focus e corredor. A camada genérica de fichas tem um teste de integração com 1.000 duelos adicionais. [PROJECT_STATUS.md](PROJECT_STATUS.md) separa o que ainda falta. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
+As reproduções acima usam as mesmas sementes e não contam como amostras novas. Os destinos precisam ser novos; os comandos recusam substituir um arquivo existente. A auditoria de versões usa Git, além do Python. Antes de congelar uma execução nova, as fontes precisam estar em um commit, conforme [RESULT_VERSIONING.md](RESULT_VERSIONING.md).
+
+A suíte atual tem **176 testes** aprovados, incluindo oráculos de dano, integração de duas armas, auditores independentes, troca de fichas, [famílias modulares de cura/estado](MODULAR_STATES.md), [duração](MODULAR_LIFECYCLE.md) e proveniência. A versão `pool_v2` tem 52.000 duelos de desenvolvimento, 240.000 de replicação, 120.000 de reserva e 60.000 combates descritivos em cada extensão de grupo, Focus e corredor. A camada genérica de fichas tem um teste de integração com 1.000 duelos adicionais. [PROJECT_STATUS.md](PROJECT_STATUS.md) separa o que ainda falta. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
 
 ## Leitura responsável
 

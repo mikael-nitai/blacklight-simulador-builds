@@ -123,7 +123,11 @@ def main() -> None:
     from argparse import ArgumentParser
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--stage", choices=STAGES, required=True)
+    parser.add_argument('--output', type=Path)
     args = parser.parse_args()
+    output = args.output or ROOT / 'results' / f'corridor_pool_v2_{args.stage}_summary.json'
+    if output.exists():
+        parser.error('Output already exists; use --output with a new versioned filename')
     n = STAGES[args.stage]
     rows = []
     configured = gunners()
@@ -149,7 +153,7 @@ def main() -> None:
         "policies": [asdict(p) for p in POLICIES],
         "opponent_policy": asdict(KITER), "rows": rows,
     }
-    output = ROOT / "results" / f"corridor_pool_v2_{args.stage}_summary.json"
+    output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
                       encoding="utf-8")
 

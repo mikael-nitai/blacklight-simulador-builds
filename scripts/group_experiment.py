@@ -104,7 +104,11 @@ def main() -> None:
     from argparse import ArgumentParser
     parser = ArgumentParser()
     parser.add_argument("--stage", choices=("dev", "description"), required=True)
+    parser.add_argument('--output', type=Path)
     args = parser.parse_args()
+    output = args.output or ROOT / 'results' / f'group_pool_v2_{args.stage}_summary.json'
+    if output.exists():
+        parser.error('Output already exists; use --output with a new versioned filename')
     n = dict(STAGES)[args.stage]
     rows = []
     configured = scenarios()
@@ -129,7 +133,7 @@ def main() -> None:
         "policies": [asdict(policy) for policy in POLICIES],
         "rows": rows,
     }
-    output = ROOT / "results" / f"group_pool_v2_{args.stage}_summary.json"
+    output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
                       encoding="utf-8")
 

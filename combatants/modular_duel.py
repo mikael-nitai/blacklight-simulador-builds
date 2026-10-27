@@ -1,12 +1,13 @@
 """Progressive action-module adapter around the validated physical Duel.
 
-Focus-paid self-healing and standard state activations are migrated. Duration,
-attack effects and reactions still use the existing resolver.
+Focus-paid self-healing, standard state activations and start-turn expiration
+are migrated. Attack effects and reactions still use the existing resolver.
 """
 
 from blacklight.engine import Action, Duel, IllegalAction
 from .actions import (ActionContext, ActionPlan, ActionRegistry, ActivateState,
                       CombatState, DEFAULT_ACTIONS, RestoreHealth, valid_references)
+from .lifecycle import Boundary, TimePoint, TimedEffect, expiration_plan
 
 
 class ModularDuel(Duel):
@@ -14,6 +15,40 @@ class ModularDuel(Duel):
                  **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.action_registry = action_registry
+
+    def _start_turn_effects(self, actor: int) -> None:
+        """Project existing flags into immutable expiry candidates at this boundary.
+
+        Dodge's flag means "until my next turn"; the hook is called only after
+        that owner's turn counter advances. Stunned already stores its source
+        and deadline. These fields remain the authoritative state during this
+        migration; there is no second mutable effect store to drift out of sync.
+        """
+        now = TimePoint(Boundary.TURN_START, self.turn_counts[actor], actor)
+        effects = []
+        if self.fighters[actor].dodging:
+            effects.append(TimedEffect(f'dodge:{actor}', 'dodge', actor, actor,
+                                       (now,), ('ACT-07',)))
+        for subject, fighter in enumerate(self.fighters):
+            if fighter.stunned_by is None:
+                continue
+            deadlines = (() if fighter.stun_expires_on_actor_turn is None else
+                         (TimePoint(Boundary.TURN_START,
+                                    fighter.stun_expires_on_actor_turn,
+                                    fighter.stunned_by),))
+            effects.append(TimedEffect(f'stunned:{subject}', 'stunned', subject,
+                                       fighter.stunned_by, deadlines, ('COND-02',)))
+        plan = expiration_plan(tuple(effects), now)
+        for effect in plan.expired:
+            fighter = self.fighters[effect.subject]
+            if effect.kind == 'dodge':
+                fighter.dodging = False
+                self._record('dodge_end', effect.rules, actor=fighter.profile.name)
+            else:
+                fighter.stunned_by = None
+                fighter.stun_expires_on_actor_turn = None
+                self._record('condition_end', effect.rules,
+                             actor=fighter.profile.name, condition='stunned')
 
     def _action_context(self, actor: int) -> ActionContext:
         fighter = self.fighters[actor]

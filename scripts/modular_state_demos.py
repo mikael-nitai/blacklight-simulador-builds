@@ -7,6 +7,7 @@ strategy-performance experiment.
 from hashlib import sha256
 import json
 from pathlib import Path
+from argparse import ArgumentParser
 
 from blacklight.policies import ATTACK, RulePolicy, STANCE
 from combatants import load_sheet
@@ -17,6 +18,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main() -> None:
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument('--output-prefix', default='generic_sheet_lifecycle_v3')
+    args = parser.parse_args()
+    if not args.output_prefix or any(char not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-' for char in args.output_prefix):
+        parser.error('Output prefix must contain only letters, digits, underscore or hyphen')
     hero = load_sheet(ROOT / 'characters/victor_halle/rank3_2026-10-26.json')
     opponent = load_sheet(ROOT / 'characters/examples/synthetic_rank4.json')
     cases = (
@@ -33,9 +39,11 @@ def main() -> None:
             raise RuntimeError(f'{name}: selected demonstration did not exercise the action')
         result['source_sha256']['scripts/modular_state_demos.py'] = sha256(script.read_bytes()).hexdigest()
         result['demonstration_note'] = 'Refactor control policy; no strategy recommendation inferred'
-        output = ROOT / 'results' / f'generic_sheet_{name}_demo.json'
-        output.write_text(json.dumps(result, ensure_ascii=False, indent=2),
-                          encoding='utf-8', newline='\n')
+        output = ROOT / 'results' / f'{args.output_prefix}_{name}_demo.json'
+        content = json.dumps(result, ensure_ascii=False, indent=2)
+        if output.exists() and output.read_bytes() != content.encode('utf-8'):
+            raise ValueError(f'{output.name}: existing result differs; use a new output prefix')
+        output.write_text(content, encoding='utf-8', newline='\n')
         print(f'{name}: {result["hero_outcome"]}, {count} activation events, audit=OK')
 
 

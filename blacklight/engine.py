@@ -683,14 +683,9 @@ class Duel:
                     choices.append(Action(f"{primary}_fast", offhand=other))
         return tuple(choices)
 
-    def _turn(self, actor: int) -> None:
+    def _start_turn_effects(self, actor: int) -> None:
+        """Reference lifecycle hook; adapters may replace expiration planning."""
         f = self.fighters[actor]
-        if not f.conscious:
-            return
-        if self.active_actor is not None:
-            raise RuntimeError("Nested turn")
-        self.active_actor = actor
-        self.turn_counts[actor] += 1
         if f.dodging:
             f.dodging = False
             self._record("dodge_end", ("ACT-07",), actor=f.profile.name)
@@ -702,6 +697,16 @@ class Duel:
                 other.stun_expires_on_actor_turn = None
                 self._record("condition_end", ("COND-02",),
                              actor=other.profile.name, condition="stunned")
+
+    def _turn(self, actor: int) -> None:
+        f = self.fighters[actor]
+        if not f.conscious:
+            return
+        if self.active_actor is not None:
+            raise RuntimeError("Nested turn")
+        self.active_actor = actor
+        self.turn_counts[actor] += 1
+        self._start_turn_effects(actor)
         f.standard_available = True
         f.movement_available = True
         self.turns += 1

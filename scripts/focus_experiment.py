@@ -98,7 +98,11 @@ def main() -> None:
     from argparse import ArgumentParser
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--stage", choices=STAGES, required=True)
+    parser.add_argument('--output', type=Path)
     args = parser.parse_args()
+    output = args.output or ROOT / 'results' / f'focus_pool_v2_{args.stage}_summary.json'
+    if output.exists():
+        parser.error('Output already exists; use --output with a new versioned filename')
     n = STAGES[args.stage]
     configured = tuple((f"M{rank}",
                         (blacklight_profile(), mentalist(rank)))
@@ -127,7 +131,7 @@ def main() -> None:
         "shield_variants": {"F0": 0, "F2": 2},
         "rows": rows,
     }
-    output = ROOT / "results" / f"focus_pool_v2_{args.stage}_summary.json"
+    output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
                       encoding="utf-8")
 

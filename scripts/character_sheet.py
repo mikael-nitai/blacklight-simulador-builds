@@ -52,6 +52,8 @@ def main() -> None:
         if not report['ready_for_this_scope']:
             raise SystemExit(2)
     else:
+        if args.output.exists():
+            parser.error('Output already exists; choose a new versioned filename')
         policies = {s.id: s.policy for s in strategies()}
         policies.update(attack=ATTACK, kiter=KITER)
         if args.policy not in policies or args.opponent_policy not in policies:

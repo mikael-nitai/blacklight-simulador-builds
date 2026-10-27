@@ -138,7 +138,7 @@ class TestCharacterSheets(unittest.TestCase):
     def test_direct_runner_binds_rule_parameters_and_source_hashes(self):
         from hashlib import sha256
         result = run_duel(load_sheet(RANK4), load_sheet(VICTOR), ATTACK, ATTACK, seed=402)
-        self.assertEqual(result['execution_adapter'], 'modular_physical_duel_v2')
+        self.assertEqual(result['execution_adapter'], 'modular_physical_duel_v3')
         self.assertTrue(result['runtime']['python'])
         self.assertTrue(result['runtime']['implementation'])
         modules = {row['kind']: row for row in result['registered_action_modules']}

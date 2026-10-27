@@ -1,5 +1,7 @@
 # Segunda família modular: ativação de estados
 
+Esta página registra a etapa `modular_physical_duel_v2`. A evolução atual da duração está em [MODULAR_LIFECYCLE.md](MODULAR_LIFECYCLE.md); os exemplos abaixo permanecem congelados e ligados à versão executada.
+
 27/10/2026. O executor genérico usa `modular_physical_duel_v2`. A autocura paga com Focus continua modular, e **Attack Stance, Dodge e a ativação padrão do Escudo** passaram a ser definições reutilizáveis da família `StateActivation`. Nenhum nome de personagem é usado para decidir esses efeitos.
 
 | Definição | Requisito | Custo de Focus | Efeito de ativação | Referência |

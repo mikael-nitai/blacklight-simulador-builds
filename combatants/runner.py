@@ -22,7 +22,8 @@ def _outcome(result, hero_name: str) -> str:
 
 
 def _engine_metadata() -> dict:
-    return {'execution_adapter': 'modular_physical_duel_v2',
+    return {'execution_adapter': 'modular_physical_duel_v3',
+            'lifecycle_scope': 'Dodge and Stunned expiry at turn start; immutable timing plans',
             'runtime': {'python': sys.version, 'implementation': sys.implementation.name,
                         'combat_core_dependencies': 'Python standard library',
                         'external_policy_dependency_scope':

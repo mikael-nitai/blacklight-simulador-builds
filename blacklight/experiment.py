@@ -230,6 +230,8 @@ def main() -> None:
     parser.add_argument("--one-edge-counterfactual", action="store_true",
                         help="Sensitivity run only; disables the confirmed second Fast Strikes edge")
     args = parser.parse_args()
+    if args.output.exists():
+        parser.error('Output already exists; choose a new versioned filename')
     execute(args.stage, args.n, args.output,
             stack_signature_edge=not args.one_edge_counterfactual)
 

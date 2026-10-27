@@ -92,6 +92,8 @@ def main() -> None:
     parser.add_argument("--n", type=int, default=10_000)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    if args.output.exists():
+        parser.error('Output already exists; choose a new versioned filename')
     execute(args.stage, args.n, args.output)
 
 

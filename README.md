@@ -1,5 +1,7 @@
 # Blacklight: simulador de duelos restritos
 
+**Novo balanceamento em 27/10/2026:** a mesa passou a exigir um teste por braço em Fast Strikes e a escolha prévia de um único braço para efeitos. As confirmações estão em [FAST_STRIKES_RULING.md](FAST_STRIKES_RULING.md). Essa versão está em implementação; os experimentos `pool_v2` abaixo preservam o contrato anterior e são históricos quanto ao novo Fast. Nenhuma taxa antiga deve ser apresentada como medição da regra nova.
+
 Projeto de pesquisa reproduzível para Victor Halle (Rank 3) em *Marvel Multiverse Role-Playing Game*. Usa a ficha PDF fornecida nesta conversa, o Core Rulebook e as decisões de mesa registradas em [RULES_AUDIT.md](RULES_AUDIT.md). **Chicote não está disponível no Rank 3** e não entra no motor, nas políticas ou nos experimentos.
 
 **Versão atual em validação:** o motor de duelos, Focus, grupo e corredor agora lança [vários d6 literais com face Marvel 1→6](DAMAGE_POOL_RULING.md). [Fast Strikes](FAST_STRIKES_RULING.md) usa duas edges e dois componentes de dano no mesmo alvo. As 42 saídas da fórmula antiga foram copiadas para [results/legacy_scalar_v1/](results/legacy_scalar_v1/); suas taxas são históricas para a mesa atual. As saídas com `pool_v2` no nome usam a regra nova. O [relatório v2](POOL_V2_REPORT.md) consolida a replicação, a reserva e as três extensões; a sensibilidade e os manuais completos ainda precisam ser atualizados.

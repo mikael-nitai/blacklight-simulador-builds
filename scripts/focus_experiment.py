@@ -51,6 +51,7 @@ def hashes() -> dict[str, str]:
         "scripts/focus_experiment.py")]
     files.extend(sorted((ROOT / "experimental").glob("focus_*.py")))
     files.extend(sorted((ROOT / "blacklight").glob("*.py")))
+    files.extend(sorted((ROOT / 'combatants').glob('*.py')))
     return {str(path.relative_to(ROOT)).replace("\\", "/"):
             sha256(path.read_bytes()).hexdigest() for path in files}
 

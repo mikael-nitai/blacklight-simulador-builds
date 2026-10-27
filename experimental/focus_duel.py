@@ -10,6 +10,7 @@ from random import Random
 from blacklight.dice import resolve_check
 from blacklight.engine import Fighter, Profile
 from blacklight.pool_damage import roll_damage_pool
+from combatants.condition_bridge import expire_at_turn_start
 from .focus_primitives import resolve_mental_punch
 
 
@@ -216,14 +217,8 @@ class FocusDuel:
         if not fighter.conscious or fighter.focus <= -fighter.profile.max_focus:
             return
         self.turn_counts[actor] += 1
-        other = self.fighters[1 - actor]
-        if (other.stunned_by == actor and
-                other.stun_expires_on_actor_turn is not None and
-                self.turn_counts[actor] >= other.stun_expires_on_actor_turn):
-            other.stunned_by = None
-            other.stun_expires_on_actor_turn = None
-            self._record("condition_end", ("COND-02",),
-                         actor=other.profile.name, condition="stunned")
+        expire_at_turn_start(self.fighters, self.turn_counts, actor, self._record,
+                              include_dodge=False, stun_subjects=(1 - actor,))
         self._record("turn_start", ("ACT-01",), actor=fighter.profile.name,
                      reactions=fighter.reactions, focus=fighter.focus)
         if fighter.stunned_by is not None:

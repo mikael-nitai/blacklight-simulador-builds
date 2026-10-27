@@ -7,7 +7,7 @@ are migrated. Attack effects and reactions still use the existing resolver.
 from blacklight.engine import Action, Duel, IllegalAction
 from .actions import (ActionContext, ActionPlan, ActionRegistry, ActivateState,
                       CombatState, DEFAULT_ACTIONS, RestoreHealth, valid_references)
-from .lifecycle import Boundary, TimePoint, TimedEffect, expiration_plan
+from .condition_bridge import expire_at_turn_start
 
 
 class ModularDuel(Duel):
@@ -24,31 +24,7 @@ class ModularDuel(Duel):
         and deadline. These fields remain the authoritative state during this
         migration; there is no second mutable effect store to drift out of sync.
         """
-        now = TimePoint(Boundary.TURN_START, self.turn_counts[actor], actor)
-        effects = []
-        if self.fighters[actor].dodging:
-            effects.append(TimedEffect(f'dodge:{actor}', 'dodge', actor, actor,
-                                       (now,), ('ACT-07',)))
-        for subject, fighter in enumerate(self.fighters):
-            if fighter.stunned_by is None:
-                continue
-            deadlines = (() if fighter.stun_expires_on_actor_turn is None else
-                         (TimePoint(Boundary.TURN_START,
-                                    fighter.stun_expires_on_actor_turn,
-                                    fighter.stunned_by),))
-            effects.append(TimedEffect(f'stunned:{subject}', 'stunned', subject,
-                                       fighter.stunned_by, deadlines, ('COND-02',)))
-        plan = expiration_plan(tuple(effects), now)
-        for effect in plan.expired:
-            fighter = self.fighters[effect.subject]
-            if effect.kind == 'dodge':
-                fighter.dodging = False
-                self._record('dodge_end', effect.rules, actor=fighter.profile.name)
-            else:
-                fighter.stunned_by = None
-                fighter.stun_expires_on_actor_turn = None
-                self._record('condition_end', effect.rules,
-                             actor=fighter.profile.name, condition='stunned')
+        expire_at_turn_start(self.fighters, self.turn_counts, actor, self._record)
 
     def _action_context(self, actor: int) -> ActionContext:
         fighter = self.fighters[actor]

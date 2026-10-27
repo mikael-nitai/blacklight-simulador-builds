@@ -12,6 +12,7 @@ from random import Random
 from blacklight.dice import classify, resolve_check
 from blacklight.engine import Fighter, Profile
 from blacklight.pool_damage import roll_damage_pool
+from combatants.condition_bridge import expire_at_turn_start
 from .group_policies import GroupAction, GroupPolicy, GroupView
 from .multi_target import Target, resolve_fast_strikes
 
@@ -275,14 +276,8 @@ class GroupBattle:
             raise RuntimeError("Nested group turn")
         self.active_actor = actor
         self.turn_counts[actor] += 1
-        for other in self.fighters:
-            if (other.stunned_by == actor and
-                    other.stun_expires_on_actor_turn is not None and
-                    self.turn_counts[actor] >= other.stun_expires_on_actor_turn):
-                other.stunned_by = None
-                other.stun_expires_on_actor_turn = None
-                self._record("condition_end", ("COND-02",),
-                             actor=other.profile.name, condition="stunned")
+        expire_at_turn_start(self.fighters, self.turn_counts, actor, self._record,
+                              include_dodge=False)
         f.standard_available = True
         self._record("turn_start", ("ACT-01",), actor=f.profile.name,
                      reactions=f.reactions)

@@ -1,9 +1,10 @@
 """One-cell-wide bounded corridor for the frozen two-actor Duel engine."""
 
-from blacklight.engine import Duel, IllegalAction, Move
+from blacklight.engine import IllegalAction, Move
+from combatants.modular_duel import ModularDuel
 
 
-class CorridorDuel(Duel):
+class CorridorDuel(ModularDuel):
     def __init__(self, *args, length: int, initial_positions: tuple[int, int],
                  **kwargs) -> None:
         left, right = initial_positions

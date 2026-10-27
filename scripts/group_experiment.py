@@ -66,6 +66,7 @@ def hashes() -> dict[str, str]:
         "__init__.py", "group.py", "group_audit.py",
         "group_policies.py", "multi_target.py"))
     files.extend(sorted((ROOT / "blacklight").glob("*.py")))
+    files.extend(sorted((ROOT / 'combatants').glob('*.py')))
     files.extend(ROOT / name for name in ("RULES_AUDIT.md", "CHARACTER_AUDIT.md"))
     return {str(path.relative_to(ROOT)).replace("\\", "/"):
             sha256(path.read_bytes()).hexdigest() for path in files}

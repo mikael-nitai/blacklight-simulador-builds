@@ -1,0 +1,64 @@
+"""Export one full fixed-contact group combat with independent audit."""
+
+from argparse import ArgumentParser
+from dataclasses import asdict
+import json
+from pathlib import Path
+
+from experimental.group import GroupBattle
+from experimental.group_audit import audit_group_result
+from experimental.group_policies import (GROUP_ENEMY, GROUP_FAST,
+                                         GROUP_HAMMER, GROUP_HAMMER_SHIELD)
+from .group_experiment import (hashes, profile_record, scenarios,
+                               seed_for)
+
+
+POLICIES = (GROUP_HAMMER, GROUP_HAMMER_SHIELD, GROUP_FAST)
+
+
+def replay(stage: str, scenario_id: str, policy_name: str,
+           index: int, output: Path) -> dict:
+    profiles = next(value for name, value in scenarios() if name == scenario_id)
+    policy = next(value for value in POLICIES if value.name == policy_name)
+    seed = seed_for(stage, scenario_id, policy_name, index)
+    result = GroupBattle(profiles, (policy, GROUP_ENEMY, GROUP_ENEMY),
+                         seed=seed, audit=True).run()
+    issues = audit_group_result(result, profiles)
+    if issues:
+        raise RuntimeError(f"Group replay failed audit: {issues}")
+    data = {"schema": "blacklight-group-full-trace-v1",
+            "stage": stage, "scenario": scenario_id,
+            "policy": policy_name, "index": index, "seed": seed,
+            "source_sha256": hashes(),
+            "profiles": [profile_record(p) for p in profiles],
+            "policies": [asdict(policy), asdict(GROUP_ENEMY),
+                         asdict(GROUP_ENEMY)],
+            "result": asdict(result), "audit_issues": issues}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(data, ensure_ascii=False, indent=2),
+                      encoding="utf-8")
+    return data
+
+
+def main() -> None:
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--stage", choices=("dev", "description"),
+                        default="description")
+    parser.add_argument("--scenario", choices=[s[0] for s in scenarios()],
+                        required=True)
+    parser.add_argument("--policy", choices=[p.name for p in POLICIES],
+                        required=True)
+    parser.add_argument("--index", type=int, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    if args.index < 0:
+        parser.error("index must be nonnegative")
+    data = replay(args.stage, args.scenario, args.policy,
+                  args.index, args.output)
+    result = data["result"]
+    print(f"{args.output}: {result['outcome']}, rounds={result['rounds']}, "
+          f"events={len(result['log'])}, audit=OK")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,132 @@
+"""Reproducible fixed-contact three-actor exploratory experiment."""
+
+from dataclasses import asdict
+from hashlib import sha256
+import json
+from math import sqrt
+from pathlib import Path
+import sys
+
+from blacklight.engine import Profile, blacklight_profile
+from experimental.group import GroupBattle
+from experimental.group_audit import audit_group_result
+from experimental.group_policies import (GROUP_ENEMY, GROUP_FAST,
+                                         GROUP_HAMMER, GROUP_HAMMER_SHIELD)
+
+
+ROOT = Path(__file__).resolve().parents[1]
+POLICIES = (GROUP_HAMMER, GROUP_HAMMER_SHIELD, GROUP_FAST)
+STAGES = (("dev", 1000), ("description", 10000))
+
+
+def enemy(name: str, *, rank: int, melee: int,
+          resilience: int) -> Profile:
+    return Profile(name, rank, 30 * resilience, 60, melee, 1,
+                   resilience, 2, 10 + melee, 11, 5)
+
+
+def scenarios() -> tuple[tuple[str, tuple[Profile, Profile, Profile]], ...]:
+    return (
+        ("G1_two_rank2_brawlers",
+         (blacklight_profile(), enemy("E1", rank=2, melee=4, resilience=3),
+          enemy("E2", rank=2, melee=4, resilience=3))),
+        ("G2_two_rank3_brawlers",
+         (blacklight_profile(), enemy("E1", rank=3, melee=6, resilience=5),
+          enemy("E2", rank=3, melee=6, resilience=5))),
+    )
+
+
+def seed_for(stage: str, scenario: str, policy: str, index: int) -> int:
+    value = f"blacklight-group-v1|{stage}|{scenario}|{policy}|{index}"
+    return int.from_bytes(sha256(value.encode()).digest()[:8], "big")
+
+
+def wilson(k: int, n: int) -> tuple[float, float]:
+    z = 1.959963984540054
+    p = k / n
+    scale = 1 + z * z / n
+    middle = (p + z * z / (2 * n)) / scale
+    width = z * sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / scale
+    return middle - width, middle + width
+
+
+def profile_record(profile: Profile) -> dict:
+    row = asdict(profile)
+    for name in ("powers", "traits", "weapons"):
+        row[name] = sorted(row[name])
+    return row
+
+
+def hashes() -> dict[str, str]:
+    files = [ROOT / "GROUP_EXPERIMENT_SPEC.md", ROOT / "GROUP_SPEC.md",
+             ROOT / "scripts" / "group_experiment.py"]
+    files.extend(sorted((ROOT / "experimental").glob("*.py")))
+    files.extend(sorted((ROOT / "blacklight").glob("*.py")))
+    files.extend(ROOT / name for name in ("RULES_AUDIT.md", "CHARACTER_AUDIT.md"))
+    return {str(path.relative_to(ROOT)).replace("\\", "/"):
+            sha256(path.read_bytes()).hexdigest() for path in files}
+
+
+def run_cell(stage: str, scenario_id: str, profiles: tuple[Profile, ...],
+             policy: object, n: int) -> dict:
+    counts = {"win": 0, "loss": 0, "inconclusive": 0}
+    rounds_sum = 0
+    bonus_count = 0
+    audited = 0
+    for index in range(n):
+        audit = stage == "description" and index % 100 == 0
+        result = GroupBattle(profiles, (policy, GROUP_ENEMY, GROUP_ENEMY),
+                             seed=seed_for(stage, scenario_id, policy.name, index),
+                             max_rounds=30, audit=audit).run()
+        if audit:
+            issues = audit_group_result(result, profiles)
+            if issues:
+                raise RuntimeError(f"Group audit failed: {scenario_id} {policy.name} {index}: {issues}")
+            audited += 1
+        counts[result.outcome] += 1
+        rounds_sum += result.rounds
+        bonus_count += result.bonus_round_occurred
+    return {"stage": stage, "scenario": scenario_id, "policy": policy.name,
+            "n": n, "outcomes": counts,
+            "rates": {key: {"estimate": value / n,
+                            "wilson95": wilson(value, n)}
+                      for key, value in counts.items()},
+            "mean_rounds": rounds_sum / n,
+            "bonus_round_fraction": bonus_count / n,
+            "full_logs_audited": audited}
+
+
+def main() -> None:
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument("--stage", choices=("dev", "description"), required=True)
+    args = parser.parse_args()
+    n = dict(STAGES)[args.stage]
+    rows = []
+    configured = scenarios()
+    for scenario_id, profiles in configured:
+        for policy in POLICIES:
+            row = run_cell(args.stage, scenario_id, profiles, policy, n)
+            rows.append(row)
+            print(f"{args.stage} {scenario_id} {policy.name}: {row['outcomes']}",
+                  flush=True)
+    payload = {
+        "schema": "blacklight-fixed-contact-group-v1",
+        "stage": args.stage,
+        "n_per_cell": n,
+        "seed_formula": "first 8 bytes SHA-256 of blacklight-group-v1|stage|scenario|policy|index",
+        "source_sha256": hashes(),
+        "python": sys.version,
+        "scenarios": [{"id": name,
+                       "profiles": [profile_record(p) for p in profiles]}
+                      for name, profiles in configured],
+        "policies": [asdict(policy) for policy in POLICIES],
+        "rows": rows,
+    }
+    output = ROOT / "results" / f"group_{args.stage}_summary.json"
+    output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
+                      encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()

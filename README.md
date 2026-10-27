@@ -6,7 +6,7 @@ Projeto de pesquisa reproduzível para Victor Halle (Rank 3) em *Marvel Multiver
 
 O motor determinístico cobre duelos de dois personagens em campo aberto, d616, edge/trouble, iniciativa, Health/Focus, ações e movimento, ataques Melee/Agility, Fast Strikes contra um alvo, Garra, Lâmina, Marreta, Escudo, Mighty, Sturdy, Healing Factor, Do This All Day, Attack Stance, Riposte, Bleeding e Stunned. As políticas só solicitam ações; o motor valida e resolve o estado. Cada experimento registra sementes e hashes de fontes.
 
-Ficam fora da inferência quantitativa: múltiplos alvos, penalidades de membros inutilizados, Karma, dano de Focus, fogo e outras imunidades especiais, mapa/terreno e encontros sequenciais. A ficha apresenta conflito entre Initiative/Run inscritos e derivados pelo Core; a variante literal está no [resultado atual de sensibilidade](results/sensitivity.json).
+Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidades de membros inutilizados, Karma, dano de Focus, fogo e outras imunidades especiais, mapa/terreno e encontros sequenciais. Há um **protótipo experimental separado** de três participantes em contato fixo, descrito no [relatório de grupo](GROUP_REPORT.md). A ficha apresenta conflito entre Initiative/Run inscritos e derivados pelo Core; a variante literal está no [resultado atual de sensibilidade](results/sensitivity.json).
 
 **Escudo atualizado:** a mesa esclareceu posteriormente que ele é uma ação defensiva separada e não usa Fast Strikes. As antigas P6/P8/S3 foram substituídas por políticas de ativação por reação; os JSONs anteriores foram renomeados com `pre_shield_action_clarification`. A proteção se aplica ao ataque que acertou e permanece até desativação gratuita antes de usar Marreta ou Lâmina.
 
@@ -17,6 +17,7 @@ Ficam fora da inferência quantitativa: múltiplos alvos, penalidades de membros
 - [EXPERIMENT_SPEC.md](EXPERIMENT_SPEC.md): políticas, cenários, sementes, métricas e emendas declaradas antes da confirmação.
 - [HOLDOUT_SPEC.md](HOLDOUT_SPEC.md) e [SECONDARY_SPEC.md](SECONDARY_SPEC.md): variações reservadas e métricas suplementares, com limites de inferência explícitos.
 - [ADVERSARIAL_SPEC.md](ADVERSARIAL_SPEC.md): Rank superior/inferior e atirador sem munição, como stress tests exploratórios após a confirmação.
+- [GROUP_SPEC.md](GROUP_SPEC.md), [GROUP_EXPERIMENT_SPEC.md](GROUP_EXPERIMENT_SPEC.md) e [GROUP_REPORT.md](GROUP_REPORT.md): protótipo e experimento exploratório de três participantes em contato fixo.
 - [VALIDATION_PLAN.md](VALIDATION_PLAN.md) e [REVIEW_FINDINGS.md](REVIEW_FINDINGS.md): oráculos independentes e revisão adversarial.
 - `blacklight/`: dado, dano, motor, políticas, auditor de logs, busca, experimentos e sensibilidade.
 - `tests/`: oráculos e 4.000 trilhas auditadas em dez políticas × quatro cenários × 100 sementes.
@@ -38,12 +39,13 @@ python -m blacklight.sensitivity
 python -m scripts.holdout
 python -m scripts.secondary_metrics
 python -m scripts.adversarial_scenarios
+python -m scripts.group_experiment --stage description
 python -m scripts.replay --scenario mirror_hammer --strategy hammer --index 0 --output results\replay.json
 ```
 
 As sementes são derivadas de SHA-256 de fase, cenário, política e índice. Reexecutar uma fase com o mesmo código produz os mesmos resultados. Os resultados de confirmação usam sementes diferentes das de desenvolvimento. `source_sha256` em cada JSON permite detectar mudanças nas regras, ficha auditada, especificação e código do pacote.
 
-A suíte atual tem **61 testes**: 58 do motor de duelos congelado e três da primitiva experimental de Fast Strikes contra dois alvos em `experimental/`. A confirmação contém 10 000 duelos por célula (400 000 no total), os cenários reservados 150 000 duelos e a amostra suplementar 20 000 trilhas completas auditadas. A primeira versão do cenário reservado H2 tinha Health incoerente com Resilience e foi arquivada como `invalid_holdout_pre_resilience_coherence.json`; H2 corrigido é exploratório, enquanto H1/H3 preservam a reserva original. Os PNG/SVG em `results/` são reproduzíveis com `python -m scripts.plot_results` após instalar opcionalmente Matplotlib; o simulador não depende dele.
+A suíte atual tem **71 testes**: 58 do motor de duelos congelado, três da primitiva experimental de Fast Strikes contra dois alvos e dez do protótipo de grupo/auditor. A confirmação contém 10 000 duelos por célula (400 000 no total), os cenários reservados 150 000 duelos e a amostra suplementar 20 000 trilhas completas auditadas. O experimento de grupo tem 60 000 combates **exploratórios separados** e 600 trilhas completas auditadas. A primeira versão do cenário reservado H2 tinha Health incoerente com Resilience e foi arquivada como `invalid_holdout_pre_resilience_coherence.json`; H2 corrigido é exploratório, enquanto H1/H3 preservam a reserva original. Os PNG/SVG em `results/` são reproduzíveis com `python -m scripts.plot_results` após instalar opcionalmente Matplotlib; o simulador não depende dele.
 
 ## Leitura responsável
 

@@ -56,7 +56,7 @@ python -m scripts.replay --scenario mirror_hammer --strategy hammer --index 0 --
 
 As sementes são derivadas de SHA-256 de fase, cenário, política e índice. Reexecutar uma fase com o mesmo código produz os mesmos resultados. Os resultados de confirmação usam sementes diferentes das de desenvolvimento. `source_sha256` em cada JSON permite detectar mudanças nas regras, ficha auditada, especificação e código do pacote.
 
-A suíte atual tem **129 testes** aprovados, incluindo oráculos do novo conjunto de dados, integração de duas armas, auditores independentes, troca de fichas e a [primeira família modular de ações](MODULAR_ACTIONS.md). A versão `pool_v2` tem 52.000 duelos de desenvolvimento, 240.000 de replicação, 120.000 de reserva e 60.000 combates descritivos em cada extensão de grupo, Focus e corredor. A camada genérica de fichas tem um teste de integração com 1.000 duelos adicionais. [PROJECT_STATUS.md](PROJECT_STATUS.md) separa o que ainda falta. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
+A suíte atual tem **142 testes** aprovados, incluindo oráculos do novo conjunto de dados, integração de duas armas, auditores independentes, troca de fichas e as [famílias modulares de cura e estado](MODULAR_STATES.md). A versão `pool_v2` tem 52.000 duelos de desenvolvimento, 240.000 de replicação, 120.000 de reserva e 60.000 combates descritivos em cada extensão de grupo, Focus e corredor. A camada genérica de fichas tem um teste de integração com 1.000 duelos adicionais. [PROJECT_STATUS.md](PROJECT_STATUS.md) separa o que ainda falta. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
 
 ## Leitura responsável
 

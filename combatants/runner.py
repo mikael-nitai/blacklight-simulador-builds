@@ -2,11 +2,14 @@
 
 from dataclasses import asdict
 from hashlib import sha256
+import inspect
 import json
+from pathlib import Path
+import sys
 
 from blacklight import __version__
 from blacklight.audit import audit_log
-from blacklight.experiment import Moment, wilson
+from blacklight.experiment import ROOT, Moment, source_hashes, wilson
 from .actions import DEFAULT_ACTIONS
 from .duel_adapter import compile_duel, coverage
 from .modular_duel import ModularDuel
@@ -19,31 +22,59 @@ def _outcome(result, hero_name: str) -> str:
 
 
 def _engine_metadata() -> dict:
-    return {'execution_adapter': 'modular_physical_duel_v1',
+    return {'execution_adapter': 'modular_physical_duel_v2',
+            'runtime': {'python': sys.version, 'implementation': sys.implementation.name,
+                        'combat_core_dependencies': 'Python standard library',
+                        'external_policy_dependency_scope':
+                            'Class source is hashed; transitive external dependencies need a separate manifest'},
             'registered_action_modules': [
-                {'kind': module.kind, 'required_power': module.required_power,
-                 'sources': list(module.sources)}
+                {**asdict(module), 'family': type(module).__name__,
+                 'requirements': [{'kind': item.kind, 'id': item.id}
+                                  for item in module.requirements]}
                 for module in DEFAULT_ACTIONS.modules.values()]}
+
+
+def _source_manifest(policies: tuple[object, object]) -> dict[str, str]:
+    sources = source_hashes()
+    for path in sorted((ROOT / 'combatants').glob('*.py')):
+        sources[str(path.relative_to(ROOT))] = sha256(path.read_bytes()).hexdigest()
+    for policy in policies:
+        source = inspect.getsourcefile(type(policy))
+        if source is None or not Path(source).is_file():
+            raise ValueError('Policy source file is unavailable for reproducible execution')
+        path = Path(source).resolve()
+        key = str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path)
+        sources[key] = sha256(path.read_bytes()).hexdigest()
+    return sources
+
+
+def _assert_sources_unchanged(sources: dict[str, str], policies: tuple[object, object]) -> None:
+    if sources != _source_manifest(policies):
+        raise RuntimeError('Simulation sources changed during execution; result is not publishable')
 
 
 def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
              hero_policy: object, opponent_policy: object, *, seed: int,
              initial_distance: int = 1, max_rounds: int = 30) -> dict:
     profiles = (compile_duel(hero), compile_duel(opponent))
+    policies = (hero_policy, opponent_policy)
+    sources = _source_manifest(policies)
     if profiles[0].name == profiles[1].name:
         raise ValueError("Combatants need distinct display names for the audit ledger")
     result = ModularDuel(profiles, (hero_policy, opponent_policy), seed=seed,
                   initial_distance=initial_distance, max_rounds=max_rounds,
-                  audit=True).run()
+                  audit=True, action_registry=DEFAULT_ACTIONS).run()
     issues = audit_log(result.log,
                        {p.name: p.max_health for p in profiles},
                        {p.name: p.max_focus for p in profiles})
     if issues:
         raise RuntimeError(f"Generic character duel failed audit: {issues}")
+    _assert_sources_unchanged(sources, policies)
     return {'schema': 'blacklight-generic-character-duel-v1',
             'damage_model': 'literal_marvel_pool_v2',
             'engine_version': __version__, 'seed': seed,
             **_engine_metadata(),
+            'source_sha256': sources,
             'initial_distance': initial_distance, 'max_rounds': max_rounds,
             'sheets': [sheet_record(hero), sheet_record(opponent)],
             'policies': [asdict(hero_policy), asdict(opponent_policy)],
@@ -61,6 +92,8 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
     if n < 1 or audit_every < 1:
         raise ValueError('Positive sample count and audit interval required')
     profiles = (compile_duel(hero), compile_duel(opponent))
+    policies = (hero_policy, opponent_policy)
+    sources = _source_manifest(policies)
     if profiles[0].name == profiles[1].name:
         raise ValueError('Combatants need distinct display names')
     cell = {'sheets': [sheet_record(hero), sheet_record(opponent)],
@@ -75,11 +108,11 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
     for index in range(n):
         key = f'character-batch-v1|{master_seed}|{cell_hash}|{index}'
         seed = int.from_bytes(sha256(key.encode()).digest()[:8], 'big')
-        inspect = index % audit_every == 0
+        audit_this = index % audit_every == 0
         result = ModularDuel(profiles, (hero_policy, opponent_policy), seed=seed,
                       initial_distance=initial_distance, max_rounds=max_rounds,
-                      audit=inspect).run()
-        if inspect:
+                      audit=audit_this, action_registry=DEFAULT_ACTIONS).run()
+        if audit_this:
             issues = audit_log(result.log,
                                {p.name: p.max_health for p in profiles},
                                {p.name: p.max_focus for p in profiles})
@@ -94,9 +127,11 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
             ('hero_damage_taken', result.metrics[0]['damage_taken']),
         ):
             moments[name].add(value)
+    _assert_sources_unchanged(sources, policies)
     return {'schema': 'blacklight-generic-character-batch-v1',
             'damage_model': 'literal_marvel_pool_v2', 'engine_version': __version__,
             **_engine_metadata(),
+            'source_sha256': sources,
             **cell, 'n': n, 'master_seed': master_seed, 'cell_sha256': cell_hash,
             'seed_formula': 'first 8 SHA-256 bytes of character-batch-v1|master_seed|cell_sha256|index',
             'pairing_note': 'Seeds identify this cell; different cells are not assumed to be paired samples',

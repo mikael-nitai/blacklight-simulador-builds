@@ -1,5 +1,7 @@
 # Revisão independente da primeira migração modular
 
+Este relatório preserva o snapshot do commit `b1e4d19`. A revisão da evolução atual com estados está em [MODULAR_STATES_REVIEW.md](MODULAR_STATES_REVIEW.md).
+
 **Escopo:** `combatants/actions.py` e `combatants/modular_duel.py`, migração de Do This All Day (ação padrão; Focus de 5 até `5 × Rank`, mantendo ao menos 1; cura 2 por Focus). O `blacklight/engine.py` foi tratado como referência congelada de equivalência, não como prova independente de correção das regras. Nenhum módulo de produção ou teste existente foi alterado nesta revisão.
 
 ## Resultado do snapshot revisado

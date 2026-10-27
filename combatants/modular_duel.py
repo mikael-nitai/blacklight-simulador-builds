@@ -1,12 +1,12 @@
 """Progressive action-module adapter around the validated physical Duel.
 
-Only Focus-paid self-healing is migrated so far. Other mechanics keep using
-the existing resolver and are explicitly listed as pending migrations.
+Focus-paid self-healing and standard state activations are migrated. Duration,
+attack effects and reactions still use the existing resolver.
 """
 
 from blacklight.engine import Action, Duel, IllegalAction
-from .actions import (ActionContext, ActionPlan, ActionRegistry, DEFAULT_ACTIONS,
-                      RestoreHealth)
+from .actions import (ActionContext, ActionPlan, ActionRegistry, ActivateState,
+                      CombatState, DEFAULT_ACTIONS, RestoreHealth, valid_references)
 
 
 class ModularDuel(Duel):
@@ -19,7 +19,10 @@ class ModularDuel(Duel):
         fighter = self.fighters[actor]
         profile = fighter.profile
         return ActionContext(profile.rank, fighter.health, profile.max_health,
-                             fighter.focus, profile.powers)
+                             fighter.focus, profile.powers, profile.traits,
+                             profile.weapons,
+                             frozenset(state for state in CombatState
+                                       if getattr(fighter, state.value)))
 
     @staticmethod
     def _module_actions(module, context: ActionContext) -> tuple[Action, ...]:
@@ -28,7 +31,7 @@ class ModularDuel(Duel):
                 or any(not isinstance(request, Action) or request.kind != module.kind
                        or type(request.focus) is not int
                        or not 0 <= request.focus <= 5 * context.rank
-                       or context.focus - request.focus < 1
+                       or request.focus > 0 and context.focus - request.focus < 1
                        or request.offhand is not None or request.move is not None
                        for request in requests)):
             raise IllegalAction('Action module emitted requests outside its declared contract')
@@ -50,16 +53,19 @@ class ModularDuel(Duel):
             if module is None:
                 result.append(action)
             elif action.kind not in emitted:
-                if module.required_power in context.powers:
+                if context.meets(module.requirements):
                     result.extend(self._module_actions(module, context))
                 emitted.add(action.kind)
         for kind, module in self.action_registry.modules.items():
             if kind not in emitted:
-                if module.required_power in context.powers:
+                if context.meets(module.requirements):
                     result.extend(self._module_actions(module, context))
         return tuple(result)
 
     def _act(self, actor: int, action: Action) -> None:
+        if (not isinstance(action, Action) or not isinstance(action.kind, str)
+                or not action.kind.strip() or type(action.focus) is not int):
+            raise IllegalAction('Action request has invalid field types')
         module = self.action_registry.get(action.kind)
         if module is None:
             super()._act(actor, action)
@@ -77,26 +83,51 @@ class ModularDuel(Duel):
                 or plan.focus_cost != action.focus
                 or not 0 <= plan.focus_cost <= 5 * context.rank
                 or type(plan.minimum_focus_remaining) is not int
-                or plan.minimum_focus_remaining < 1
-                or not isinstance(plan.cost_rules, tuple) or not plan.cost_rules
-                or any(not isinstance(rule, str) or not rule for rule in plan.cost_rules)
-                or context.focus - plan.focus_cost < plan.minimum_focus_remaining):
+                or plan.minimum_focus_remaining < 0
+                or plan.focus_cost == 0 and plan.minimum_focus_remaining != 0
+                or plan.focus_cost > 0 and plan.minimum_focus_remaining < 1
+                or not valid_references(plan.cost_rules)
+                or plan.focus_cost > 0 and
+                context.focus - plan.focus_cost < plan.minimum_focus_remaining):
             raise IllegalAction('Invalid registered action cost plan')
-        if (not isinstance(plan.effects, tuple) or not plan.effects
-                or any(not isinstance(effect, RestoreHealth) or
-                       type(effect.amount) is not int or effect.amount < 0
-                       or not isinstance(effect.rule, str) or not effect.rule
-                       for effect in plan.effects)):
+        if (not isinstance(plan.effects, tuple) or len(plan.effects) != 1
+                or any(not self._valid_effect(effect) for effect in plan.effects)):
             raise IllegalAction('Unsupported or invalid registered effect plan')
+        if ((isinstance(plan.effects[0], RestoreHealth) and plan.focus_cost == 0)
+                or (isinstance(plan.effects[0], ActivateState) and plan.focus_cost != 0)):
+            raise IllegalAction('Cost/effect combination has no validated action family')
         fighter = self.fighters[actor]
         fighter.standard_available = False
         before = fighter.focus
         fighter.focus -= plan.focus_cost
         fighter.focus_spent += plan.focus_cost
-        self._record('focus_spent', plan.cost_rules, actor=fighter.profile.name,
-                     amount=plan.focus_cost, focus_before=before,
-                     focus_after=fighter.focus)
+        if plan.focus_cost:
+            self._record('focus_spent', plan.cost_rules, actor=fighter.profile.name,
+                         amount=plan.focus_cost, focus_before=before,
+                         focus_after=fighter.focus)
         for effect in plan.effects:
-            # Core healing helper retains effective-healing cap, Bleeding
-            # removal and log order while this family is migrated.
-            self._heal(actor, effect.amount, effect.rule)
+            if isinstance(effect, RestoreHealth):
+                self._heal(actor, effect.amount, effect.rule)
+            else:
+                self._activate_state(actor, effect)
+
+    @staticmethod
+    def _valid_effect(effect) -> bool:
+        if isinstance(effect, RestoreHealth):
+            return (type(effect.amount) is int and effect.amount >= 0
+                    and isinstance(effect.rule, str) and bool(effect.rule.strip()))
+        if isinstance(effect, ActivateState):
+            return (isinstance(effect.state, CombatState)
+                    and valid_references(effect.rules))
+        return False
+
+    def _activate_state(self, actor: int, effect: ActivateState) -> None:
+        fighter = self.fighters[actor]
+        bindings = {
+            CombatState.ATTACK_STANCE: ('stance', {'active': True}),
+            CombatState.SHIELD: ('shield_activate', {'cost': 'standard'}),
+            CombatState.DODGE: ('dodge', {'active_until_next_turn': True}),
+        }
+        event_type, data = bindings[effect.state]
+        setattr(fighter, effect.state.value, True)
+        self._record(event_type, effect.rules, actor=fighter.profile.name, **data)

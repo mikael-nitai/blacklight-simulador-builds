@@ -13,7 +13,7 @@ from pathlib import Path
 
 from blacklight.engine import Action, Duel, IllegalAction, Profile, blacklight_profile
 from blacklight.policies import RulePolicy
-from combatants.actions import ActionPlan, ActionRegistry, RestoreHealth
+from combatants.actions import ActionPlan, ActionRegistry, CapabilityRequirement, RestoreHealth
 from combatants.modular_duel import ModularDuel
 
 
@@ -94,7 +94,7 @@ def complete_replay_oracle() -> int:
 
 class FixtureModule:
     kind = 'fixture'
-    required_power = 'do_this_all_day'
+    requirements = (CapabilityRequirement('power', 'do_this_all_day'),)
     sources = ('AUDIT-ONLY',)
 
     def __init__(self, requests, plan_factory):

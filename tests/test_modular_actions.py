@@ -7,7 +7,8 @@ from blacklight.engine import Action, Duel, IllegalAction, blacklight_profile
 from blacklight.experiment import scenarios, strategies, seed_for
 from blacklight.policies import ATTACK
 from combatants.actions import (ActionContext, ActionPlan, ActionRegistry,
-                                DO_THIS_ALL_DAY, FocusSelfHeal, RestoreHealth)
+                                CapabilityRequirement, DO_THIS_ALL_DAY,
+                                FocusSelfHeal, RestoreHealth)
 from combatants.modular_duel import ModularDuel
 
 
@@ -105,7 +106,7 @@ class TestModularActions(unittest.TestCase):
 
         class BadPlan:
             kind = 'bad_plan'
-            required_power = 'do_this_all_day'
+            requirements = (CapabilityRequirement('power', 'do_this_all_day'),)
             sources = ('Test malformed-module rejection',)
 
             def available(self, context):
@@ -124,7 +125,7 @@ class TestModularActions(unittest.TestCase):
     def test_missing_power_is_rejected_even_if_module_forgets_prerequisite(self):
         class MissingPower:
             kind = 'unowned'
-            required_power = 'absent_power'
+            requirements = (CapabilityRequirement('power', 'absent_power'),)
             sources = ('Test prerequisite guard',)
 
             def available(self, context):
@@ -156,7 +157,7 @@ class TestModularActions(unittest.TestCase):
         for factory in factories:
             class Malformed:
                 kind = 'fixture'
-                required_power = 'do_this_all_day'
+                requirements = (CapabilityRequirement('power', 'do_this_all_day'),)
                 sources = ('Malformed extension test',)
 
                 def available(self, context):
@@ -181,7 +182,7 @@ class TestModularActions(unittest.TestCase):
                                ((Action('fixture', 5), Action('fixture', 5)), 90)):
             class BadAvailable:
                 kind = 'fixture'
-                required_power = 'do_this_all_day'
+                requirements = (CapabilityRequirement('power', 'do_this_all_day'),)
                 sources = ('Malformed request test',)
 
                 def available(self, context):

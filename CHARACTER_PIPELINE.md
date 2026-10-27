@@ -17,7 +17,7 @@ O importador de PDF produz **evidência para revisão**; a extração de campos 
 - `characters/victor_halle/rank3_2026-10-26.json` contém o inventário atual e as escolhas auditadas de iniciativa/Run, com a divergência da inscrição original registrada em notas.
 - `combatants/duel_adapter.py` transforma uma ficha compatível em um combatente do motor físico existente. Mighty, Sturdy e Accuracy usam o nível da ficha; atributos, Rank, recursos e nome são carregados do registro.
 - `combatants/runner.py` executa um duelo completo ou uma bateria entre duas fichas arbitrárias. O resultado é contado pela identidade do combatente escolhido, sem depender do nome Blacklight. Cada célula tem sementes, políticas, fichas, cobertura e fontes registradas.
-- A [primeira família modular de ações](MODULAR_ACTIONS.md) já resolve Do This All Day por uma definição de custo/efeito dependente do Rank. O executor genérico usa essa camada, com equivalência de replay e revisão independente; as outras famílias ainda estão no resolvedor anterior.
+- As [famílias modulares de cura e ativação de estado](MODULAR_STATES.md) resolvem Do This All Day, Attack Stance, Dodge e a ativação padrão do Escudo por definições reutilizáveis. O executor genérico usa essa camada, com equivalência de replay e revisão independente. Ataques, duração de estados e reações ainda passam pelo resolvedor anterior.
 - Os testes reproduzem o comportamento anterior de Victor em 20 sementes, trocam por outro personagem Rank 4, verificam que a versão anterior permanece intacta e rejeitam poderes/variantes sem suporte. O exemplo Rank 4 é **sintético**, criado para testar substituição; não é uma ficha futura de Victor nem um perfil oficial.
 
 Comandos a partir da pasta do projeto:

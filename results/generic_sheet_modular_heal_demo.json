@@ -3,17 +3,118 @@
   "damage_model": "literal_marvel_pool_v2",
   "engine_version": "0.2.0-pool",
   "seed": 57,
-  "execution_adapter": "modular_physical_duel_v1",
+  "execution_adapter": "modular_physical_duel_v2",
+  "runtime": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "implementation": "cpython",
+    "combat_core_dependencies": "Python standard library",
+    "external_policy_dependency_scope": "Class source is hashed; transitive external dependencies need a separate manifest"
+  },
   "registered_action_modules": [
     {
       "kind": "heal",
       "required_power": "do_this_all_day",
+      "minimum_spend": 5,
+      "maximum_spend_per_rank": 5,
+      "minimum_focus_remaining": 1,
+      "health_per_focus": 2,
+      "cost_rules": [
+        "RES-01",
+        "POW-07"
+      ],
+      "healing_rule": "POW-07",
       "sources": [
         "Core Rulebook p.94",
         "RULES_AUDIT.md POW-07/RES-01"
+      ],
+      "family": "FocusSelfHeal",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "do_this_all_day"
+        }
       ]
+    },
+    {
+      "kind": "stance",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "attack_stance"
+        }
+      ],
+      "state": "stance",
+      "require_inactive": true,
+      "rules": [
+        "POW-09"
+      ],
+      "sources": [
+        "Core Rulebook p.83",
+        "RULES_AUDIT.md POW-09"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "shield",
+      "requirements": [
+        {
+          "kind": "weapon",
+          "id": "shield"
+        }
+      ],
+      "state": "shield_active",
+      "require_inactive": true,
+      "rules": [
+        "HR-04"
+      ],
+      "sources": [
+        "User table ruling HR-04: standard-action activation"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "dodge",
+      "requirements": [],
+      "state": "dodging",
+      "require_inactive": false,
+      "rules": [
+        "ACT-07"
+      ],
+      "sources": [
+        "Core Rulebook p.30",
+        "RULES_AUDIT.md ACT-07"
+      ],
+      "family": "StateActivation"
     }
   ],
+  "source_sha256": {
+    "blacklight\\__init__.py": "661aacdbe8eec1dc9eb5af1fc4e6946742daf032dd96f95434dd541a1b650f03",
+    "blacklight\\audit.py": "5cd464490ea054c8a2eded0a3505e53f54ca44f6d6c57468013ffd5b5e986a82",
+    "blacklight\\damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight\\dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight\\engine.py": "d77b89649bc897c9bf8c2ccccc4b4122aa08623c7dccf4080cf9c7e2fca9134b",
+    "blacklight\\experiment.py": "b60afe1ee43b7225c9fb184748fde55afb8ac3124f0f14756f601fef9747263e",
+    "blacklight\\policies.py": "fbf6756e0023efdb3b7d91a4ee4fd7f2a1868ab3b919ab28b284243e70a17e66",
+    "blacklight\\pool_damage.py": "55a2d67b3bfe7165a4b9bdfbb2da44f2def9a4334a0138f338ccfac0921ebf32",
+    "blacklight\\search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight\\sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "DAMAGE_POOL_RULING.md": "c930574a5dde0c228865d4b305bb881c2992ff5f103adec272caed763464a4b3",
+    "DAMAGE_POOL_V2_SPEC.md": "92e1c71d767d075bc44ccc02e957b95bd904e20ff313f510fb8b315448b18387",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "FAST_STRIKES_RULING.md": "af2f21ac8c532d05fb7b9b39d6c64f299c9ee3dc0a748cc1ce98dd4e71c5ef74",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
+    "combatants\\__init__.py": "5978e1e5aedae6ee1105f87ed6d05850b786ffd4d345baa1109eefde35762d5e",
+    "combatants\\actions.py": "e6fd391755cdad6618cd1389938f844b35e8b3854d590510fc0f5db2071658a1",
+    "combatants\\duel_adapter.py": "e7b401dcda6c8cad9ed4cf4c02335e8294d8b5c5c70648e1f7af4d10ff67f85d",
+    "combatants\\modular_duel.py": "27de4c4f1ee3e3846bcdc4877e625442d8b46d3f1a99854e4474bddd0b4dd342",
+    "combatants\\pdf_draft.py": "cf651dcf3d2b90a26ef961ed18caba5c2321e2330e48427773549040da862add",
+    "combatants\\runner.py": "55070655b5af64707d320c1eb1df5aa86f14824cc013f4f4e6d5867485b935a5",
+    "combatants\\sheets.py": "ca90287b1ab6d2877388b3ffce53fc7ab70f778b992c14d5749b6b5a6300ad60",
+    "scripts/character_sheet.py": "8ba3657276eb547c8365b2f1d7f7fc1b5ef498cc2b1c3eb052dfbba2c819ef53",
+    "C:\\Users\\avada\\Documents\\ChatGPT\\Simulador Builds\\characters\\victor_halle\\rank3_2026-10-26.json": "d8a0687d2ef1b8a18061741e4498fa471f04e166b652cdecd30c3dca152d0732",
+    "C:\\Users\\avada\\Documents\\ChatGPT\\Simulador Builds\\characters\\examples\\synthetic_rank4.json": "8a9c104c17a326ca6a483db159719629aadb973043467eb6f7cf50927a3e0be7"
+  },
   "initial_distance": 1,
   "max_rounds": 30,
   "sheets": [
@@ -3510,33 +3611,5 @@
       }
     ]
   },
-  "audit_issues": [],
-  "source_sha256": {
-    "blacklight\\__init__.py": "661aacdbe8eec1dc9eb5af1fc4e6946742daf032dd96f95434dd541a1b650f03",
-    "blacklight\\audit.py": "5cd464490ea054c8a2eded0a3505e53f54ca44f6d6c57468013ffd5b5e986a82",
-    "blacklight\\damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
-    "blacklight\\dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
-    "blacklight\\engine.py": "d77b89649bc897c9bf8c2ccccc4b4122aa08623c7dccf4080cf9c7e2fca9134b",
-    "blacklight\\experiment.py": "b60afe1ee43b7225c9fb184748fde55afb8ac3124f0f14756f601fef9747263e",
-    "blacklight\\policies.py": "fbf6756e0023efdb3b7d91a4ee4fd7f2a1868ab3b919ab28b284243e70a17e66",
-    "blacklight\\pool_damage.py": "55a2d67b3bfe7165a4b9bdfbb2da44f2def9a4334a0138f338ccfac0921ebf32",
-    "blacklight\\search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
-    "blacklight\\sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f",
-    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
-    "DAMAGE_POOL_RULING.md": "c930574a5dde0c228865d4b305bb881c2992ff5f103adec272caed763464a4b3",
-    "DAMAGE_POOL_V2_SPEC.md": "92e1c71d767d075bc44ccc02e957b95bd904e20ff313f510fb8b315448b18387",
-    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
-    "FAST_STRIKES_RULING.md": "af2f21ac8c532d05fb7b9b39d6c64f299c9ee3dc0a748cc1ce98dd4e71c5ef74",
-    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
-    "combatants\\__init__.py": "5978e1e5aedae6ee1105f87ed6d05850b786ffd4d345baa1109eefde35762d5e",
-    "combatants\\actions.py": "12038c313381afceefe73ee43f51ca626f121b6dc4bb8512e88af3777da9de50",
-    "combatants\\duel_adapter.py": "e7b401dcda6c8cad9ed4cf4c02335e8294d8b5c5c70648e1f7af4d10ff67f85d",
-    "combatants\\modular_duel.py": "63da414053ed47112b40889b04e56727cdce59a0a69df69ab95310f9b9349f8e",
-    "combatants\\pdf_draft.py": "cf651dcf3d2b90a26ef961ed18caba5c2321e2330e48427773549040da862add",
-    "combatants\\runner.py": "ad6e659eb70662d78ce4d6e0e08a8680437a2b80f116b68527a2914d1ad115b7",
-    "combatants\\sheets.py": "ca90287b1ab6d2877388b3ffce53fc7ab70f778b992c14d5749b6b5a6300ad60",
-    "scripts/character_sheet.py": "2fb1a24e3855cd8fbb23d21645d837e98828968d7bdc4ab7e9735427f1ebcf38",
-    "C:\\Users\\avada\\Documents\\ChatGPT\\Simulador Builds\\characters\\victor_halle\\rank3_2026-10-26.json": "d8a0687d2ef1b8a18061741e4498fa471f04e166b652cdecd30c3dca152d0732",
-    "C:\\Users\\avada\\Documents\\ChatGPT\\Simulador Builds\\characters\\examples\\synthetic_rank4.json": "8a9c104c17a326ca6a483db159719629aadb973043467eb6f7cf50927a3e0be7"
-  }
+  "audit_issues": []
 }

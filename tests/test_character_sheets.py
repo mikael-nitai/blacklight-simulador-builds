@@ -5,6 +5,7 @@ from dataclasses import replace
 import json
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 from blacklight.engine import Duel, blacklight_profile
 from blacklight.policies import ATTACK, SHIELD_BLADE_HAMMER_REACTIVE
@@ -133,6 +134,29 @@ class TestCharacterSheets(unittest.TestCase):
         data['rank'] = 1
         with self.assertRaisesRegex(CoverageError, 'requires Rank 2'):
             compile_duel(parse_sheet(data))
+
+    def test_direct_runner_binds_rule_parameters_and_source_hashes(self):
+        from hashlib import sha256
+        result = run_duel(load_sheet(RANK4), load_sheet(VICTOR), ATTACK, ATTACK, seed=402)
+        self.assertEqual(result['execution_adapter'], 'modular_physical_duel_v2')
+        self.assertTrue(result['runtime']['python'])
+        self.assertTrue(result['runtime']['implementation'])
+        modules = {row['kind']: row for row in result['registered_action_modules']}
+        self.assertEqual((modules['heal']['minimum_spend'],
+                          modules['heal']['maximum_spend_per_rank'],
+                          modules['heal']['health_per_focus']), (5, 5, 2))
+        self.assertEqual(modules['shield']['requirements'], [{'kind': 'weapon', 'id': 'shield'}])
+        for name in ('combatants/actions.py', 'combatants/modular_duel.py', 'combatants/runner.py'):
+            # Windows manifests use native separators for project-relative paths.
+            key = str(Path(name))
+            self.assertEqual(result['source_sha256'][key],
+                             sha256((ROOT / name).read_bytes()).hexdigest())
+
+    def test_direct_runner_rejects_source_changes_during_execution(self):
+        with patch('combatants.runner._source_manifest',
+                   side_effect=[{'source': 'before'}, {'source': 'after'}]):
+            with self.assertRaisesRegex(RuntimeError, 'sources changed'):
+                run_duel(load_sheet(RANK4), load_sheet(VICTOR), ATTACK, ATTACK, seed=402)
 
 
 if __name__ == '__main__':

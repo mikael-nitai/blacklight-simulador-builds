@@ -1,5 +1,7 @@
 # Primeira família de ações modularizada
 
+**Snapshot da etapa inicial, commit `b1e4d19`.** A evolução atual, com ações de estado e proveniência ampliada, está em [MODULAR_STATES.md](MODULAR_STATES.md). Os números e hashes desta primeira etapa permanecem históricos.
+
 27/10/2026. O executor de fichas genéricas passou a usar `combatants/modular_duel.py`. A primeira ação migrada é **Do This All Day**. O motor físico de referência em `blacklight/engine.py` permanece congelado, preservando os experimentos v2. A nova camada executa a mesma regra por um módulo reutilizável; as demais ações ainda passam pelo resolvedor anterior.
 
 ```mermaid
@@ -27,7 +29,7 @@ Uma nova habilidade da mesma família pode ser registrada como definição de re
 - A revisão encontrou e fez reproduzir quatro falhas de extensão: gerador de efeitos consumido sem cura, custos ilegais anunciados como ações legais, erro de tipo em pedido não hashable e gasto registrado sem IDs de regras. As reproduções foram corrigidas e estão nos testes de regressão.
 - A bateria de integração de outra ficha Rank 4 teve as mesmas contagens anteriores: 2 vitórias e 998 derrotas em 1.000 duelos, com dez trilhas completas auditadas. Isso demonstra equivalência da integração, não qualidade estratégica dessa ficha sintética.
 
-O [exemplo completo de autocura](results/generic_sheet_modular_heal_demo.json) carrega a ficha atual de Victor e o oponente Rank 4 sintético, usa a política `hammer_heal`, semente 57 e registra `execution_adapter=modular_physical_duel_v1`. Ele inclui gastos de 15 Focus para recuperar até 30 Health; o último gasto é 14, deixando Focus 1 e recuperando 28 Health. O auditor de ledger e dano aprovou a trilha.
+O [exemplo completo de autocura](results/modular_v1/generic_sheet_modular_heal_demo.json) carrega a ficha atual de Victor e o oponente Rank 4 sintético, usa a política `hammer_heal`, semente 57 e registra `execution_adapter=modular_physical_duel_v1`. Ele inclui gastos de 15 Focus para recuperar até 30 Health; o último gasto é 14, deixando Focus 1 e recuperando 28 Health. O auditor de ledger e dano aprovou a trilha.
 
 Reprodução:
 

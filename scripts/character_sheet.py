@@ -5,7 +5,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from blacklight.experiment import ROOT, source_hashes, strategies
+from blacklight.experiment import strategies
 from blacklight.policies import ATTACK, KITER
 from combatants import load_sheet, coverage
 from combatants.pdf_draft import extract_draft
@@ -65,9 +65,7 @@ def main() -> None:
             payload = run_batch(*sheets, *selected_policies, n=args.n,
                                 master_seed=args.master_seed,
                                 initial_distance=args.distance)
-        sources = source_hashes()
-        for path in sorted((ROOT / 'combatants').glob('*.py')):
-            sources[str(path.relative_to(ROOT))] = sha256(path.read_bytes()).hexdigest()
+        sources = dict(payload['source_sha256'])
         sources['scripts/character_sheet.py'] = sha256(Path(__file__).read_bytes()).hexdigest()
         for name in (args.hero, args.opponent):
             resolved = name.resolve()

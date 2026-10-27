@@ -1,0 +1,149 @@
+{
+  "schema": "blacklight.historical_inventory.v1",
+  "files": {
+    "adversarial_summary.json": {
+      "sha256": "51d31b23dc32242deaf64eed9e499192f32b7e9d47a6a791deb3612b558876d2",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "confirm_summary.json": {
+      "sha256": "5e1e45672bf09648757f45982cbc943820776638d5f79383622d0e7bcc9c1488",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "corridor_demo_C1_shield_win_0.json": {
+      "sha256": "7b16868caa1d68ddca1bef7fcb0e01a058b619d23538c0a7f233bd3b0f88d9ee",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "corridor_demo_C2_hammer_loss_91.json": {
+      "sha256": "3f8701dcc150beb1fd7091061f606cc6501ee5fc07cc2133a3ad55f2a17e9c78",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "corridor_description_summary.json": {
+      "sha256": "6b3b1293ac81b76c31f13a0f71c774a65d0e67d20c50eed77cecf260718faf7f",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "corridor_dev_summary.json": {
+      "sha256": "b593963fbe3c0b3181efc7492db167701981822190e0202dc8f3d3226a6bfa5b",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "demo_blade_bonus_1.json": {
+      "sha256": "7a9241ff6022966b80d73b5facec9a48a85981cd7bda865fa098f8ed73338d1b",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "demo_gunner_stalemate_126.json": {
+      "sha256": "05f6200bea9fd72ae079589eb90b23c7185ee9c73fddd06f5fe355d5bf3d6cb2",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "demo_mirror_hammer_0.json": {
+      "sha256": "bec8b08f70cb91dc679c00e31cdccf2ffd95a561166388f0e61e2ca000148e1b",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "demo_shield_reaction_0.json": {
+      "sha256": "67b079deb7f4835cd9e3b646b2e135096d5368eb085d44a058b9249e76be302f",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "dev_pre_docstring_cleanup.json": {
+      "sha256": "fe4d9dc2fd55105054a8d4979519d5788e3a96fc0074c06f82a6831a0dfc60ac",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "dev_pre_heal_kiter_fix.json": {
+      "sha256": "172a2bc2ed26905cb1a33e4c9725f1aefc4e810a329f9d6b58b40911f28ca24e",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "dev_pre_knockback_fix.json": {
+      "sha256": "b5cd3bdc9f38766e8ff7694469d81ea91c79c92a30ce4845d64199af68ddd1aa",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "dev_pre_shield_action_clarification.json": {
+      "sha256": "4e3f0d978172403cff9d9921a89c8a300b53984481fe098c27377fe14d4b06a2",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "dev_pre_shield_legality_fix.json": {
+      "sha256": "c1ee9fe86af12c9ef117062b0acefe902dbb9c81811fd15b593d6de219981b87",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "dev_summary.json": {
+      "sha256": "ac2e9052b936c458a127f3f8164ec93a5363e9d34f988459ae76bee8295446c2",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "figures_manifest.json": {
+      "sha256": "e28de8d4842f2c44654c4652a1bc2e12f5f5e7dfaeda77b577b19299ca236056",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "focus_demo_M4_F0_loss_28.json": {
+      "sha256": "be8a82ed6a9d452ca1d969798d52820ecaf5b2dadb35d3e6ae28a9b391d5b0e1",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "focus_demo_M4_F2_win_28.json": {
+      "sha256": "325328e1866ad04998ad9976fa20bce78a1c39dc8916b419fdc6aa298bae82bd",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "focus_description_summary.json": {
+      "sha256": "b61bae08e9cce01ed0f8eb7d9e174f9c9f8ade229f6305b7fcd9a67e8eb03a14",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "focus_dev_summary.json": {
+      "sha256": "a4f4bb945e1396c152dd3bf6370bf426e3329e0a33f715c53ee9d052cb950de0",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "group_demo_fast_loss_8.json": {
+      "sha256": "bdc5a5ca8cf0684cda4decaf6b8c7a6ae057fa56cd0f15fac5d295802cbbde21",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "group_demo_shield_win_0.json": {
+      "sha256": "39e5bb19668e98f660845a3a70a53202ef54f0603b83671c855e238aac918fd8",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "group_description_summary.json": {
+      "sha256": "9ecf8a29a8c9c246f8f5448ac8548661b859ffc19ec0dd450893c50b5c50e5da",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "group_dev_summary.json": {
+      "sha256": "b59a6c58cf96c1bc5b11ec9d41b8de223b0a934c42b7b2746b1abfe3ac4398e9",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "heal_search.json": {
+      "sha256": "32dce384a12b027f0c4bbc81c640dade7bd449b4e584ce8d4de3852acb41569d",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "heal_search_pre_shield_action_clarification.json": {
+      "sha256": "1ef6ff4d7fdc2fbea28fcb3f549fab9d1883ed30771be81207525cfcffb5aac3",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "holdout_summary.json": {
+      "sha256": "0523888424bd680811c71ce295e54c35abba7d8784a53d6370610a4d076a36b1",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "invalid_holdout_pre_resilience_coherence.json": {
+      "sha256": "d409a3f47d420ca5e14049df6b620551bb4951e9ac7fcc23ee796e829d42d74f",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "invalid_pre_shield_action_demo_shield_duel_0.json": {
+      "sha256": "d3762d83cbcf821b4a2ef9fdcea78e1be9c710f0e6ef6fac8a6d7e6bdb5507de",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "pre_core_corrections_smoke_summary.json": {
+      "sha256": "8066acc2ef2ed3d1b20d75fd9c9426b72375c9d15bf45c3d5e59625d3ef302bb",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "secondary_summary.json": {
+      "sha256": "d2fda723784fe9370b1f440264443230f7be97570ad56d99f3b7a91ada0df65a",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "sensitivity.json": {
+      "sha256": "ae8f9cbc8bbeca2ce2b0472f5857a88734d135e3e44444af18c0406bda6ed651",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "sensitivity_pre_docstring_cleanup.json": {
+      "sha256": "1f0ef138aabdd1afbecc10ba66fdb1c785839aabc0a662c222d000e397ef05cd",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "sensitivity_pre_kiter_escape_fix.json": {
+      "sha256": "97f040b122707c027c690b5b8be045682fceae584657c6279b1671c3559cda60",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    },
+    "sensitivity_pre_shield_action_clarification.json": {
+      "sha256": "d54cbc7c45777a8084c9ad6792bf043e0e32cd35c03aa61fb5a443e43ec1a35f",
+      "reason": "Historical scalar-v1 artifact; identical preserved copy in results/legacy_scalar_v1/; excluded from current pool comparisons"
+    }
+  }
+}

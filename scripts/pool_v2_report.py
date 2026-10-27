@@ -1,11 +1,10 @@
 """Build a local report from validated v2 result JSONs, without resimulation."""
 
-from hashlib import sha256
 import json
 from math import sqrt
-from pathlib import Path
 
 from blacklight.experiment import ROOT, wilson
+from .verify_sources import verify_result
 
 
 LABELS = {
@@ -23,15 +22,14 @@ SCENARIOS = {'mirror_attack': 'Espelho com ataque comum',
              'H2_rank4_energy_kiter': 'Reserva: atirador de energia Rank 4'}
 
 
-def read_current(name: str) -> dict:
+def read_verified(name: str) -> dict:
     path = ROOT / 'results' / name
     data = json.loads(path.read_text(encoding='utf-8'))
     if data.get('damage_model') != 'literal_marvel_pool_v2':
         raise ValueError(f'{name}: wrong damage model')
-    for source, expected in data['source_sha256'].items():
-        source_path = ROOT / source
-        if sha256(source_path.read_bytes()).hexdigest() != expected:
-            raise ValueError(f'{name}: changed source {source}')
+    _, issues = verify_result(path)
+    if issues:
+        raise ValueError(f'{name}: {issues}')
     for row in data.get('rows', []):
         n = row['n']
         counts = row['outcomes']
@@ -61,11 +59,11 @@ def difference(a: dict, b: dict, *, comparisons: int) -> tuple[float, float, flo
 
 
 def main() -> None:
-    confirm = read_current('pool_v2_confirm_summary.json')
-    holdout = read_current('pool_v2_holdout_summary.json')
-    group = read_current('group_pool_v2_description_summary.json')
-    focus = read_current('focus_pool_v2_description_summary.json')
-    corridor = read_current('corridor_pool_v2_description_summary.json')
+    confirm = read_verified('pool_v2_confirm_summary.json')
+    holdout = read_verified('pool_v2_holdout_summary.json')
+    group = read_verified('group_pool_v2_description_summary.json')
+    focus = read_verified('focus_pool_v2_description_summary.json')
+    corridor = read_verified('corridor_pool_v2_description_summary.json')
     lines = ['# Resultados da versão de dano literal da mesa', '',
              '27/10/2026. As tabelas desta versão usam vários dados Marvel de dano: cada face 1 vale 6. '
              'A replicação contém 240.000 duelos e a reserva 120.000, além de 52.000 duelos de desenvolvimento. '
@@ -80,6 +78,9 @@ def main() -> None:
              'Os quatro cenários da replicação já eram conhecidos; os dois perfis reservados foram definidos antes de observar seus resultados. '
              'Os adversários são sintéticos e usam políticas explícitas. As frequências dos encontros da campanha são desconhecidas, '
              'portanto não se calcula uma média global de vitória.', '',
+             'Os hashes dos JSONs e suas fontes estão vinculados a commits imutáveis em '
+             '[results/source_snapshots.json](results/source_snapshots.json). A verificação usa essa versão declarada '
+             'quando o código atual evolui; não atribui taxas antigas automaticamente ao motor novo.', '',
              'Marreta usa oito dados de dano antes de DR, Lâmina e Garra sete. Fast Strikes faz um teste com duas edges '
              'e aplica dois componentes. No acerto comum, DR reduz a quantidade de dados de cada componente antes da metade, '
              'com piso nos dados ímpares e metade do bônus +6. Sem DR, Lâmina + Marreta usa `3d6+3 + 4d6+3`; '

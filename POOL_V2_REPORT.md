@@ -8,6 +8,8 @@ Entre as políticas testadas, **Lâmina + Marreta em Fast Strikes com Escudo rea
 
 As seis finalistas foram escolhidas no desenvolvimento e fixadas em [POOL_V2_CONFIRM_SPEC.md](POOL_V2_CONFIRM_SPEC.md) antes da replicação e da reserva. Cada célula abaixo tem 10.000 sementes novas e independentes por política. Os quatro cenários da replicação já eram conhecidos; os dois perfis reservados foram definidos antes de observar seus resultados. Os adversários são sintéticos e usam políticas explícitas. As frequências dos encontros da campanha são desconhecidas, portanto não se calcula uma média global de vitória.
 
+Os hashes dos JSONs e suas fontes estão vinculados a commits imutáveis em [results/source_snapshots.json](results/source_snapshots.json). A verificação usa essa versão declarada quando o código atual evolui; não atribui taxas antigas automaticamente ao motor novo.
+
 Marreta usa oito dados de dano antes de DR, Lâmina e Garra sete. Fast Strikes faz um teste com duas edges e aplica dois componentes. No acerto comum, DR reduz a quantidade de dados de cada componente antes da metade, com piso nos dados ímpares e metade do bônus +6. Sem DR, Lâmina + Marreta usa `3d6+3 + 4d6+3`; no fantástico usa `7d6+6 + 8d6+6`, sem dobro adicional. Um ataque normal fantástico dobra seu total rolado. Bleeding não acumula; o fantástico da Marreta aplica Stunned; o da Lâmina pode conceder apenas uma segunda ação no próprio turno, com nova rolagem. O Escudo é uma ação defensiva separada.
 
 ## Replicação e reserva

@@ -1,0 +1,105 @@
+{
+  "schema": "blacklight.source_snapshots.v1",
+  "results": {
+    "corridor_pool_v2_demo_L20_C2_fast_0.json": {
+      "result_sha256": "07f5be3118fe20c9af08c80e5a89119c835c03970775567976822065766e27a9",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "corridor_pool_v2_description_summary.json": {
+      "result_sha256": "9ed96f69fe208cf906937e5b8943e81b8b41f605f1bdf81e5222c9ddcc1eb6a4",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "corridor_pool_v2_dev_summary.json": {
+      "result_sha256": "631d3fee3db97b9ad1b9e5aa7a2bc228d68c38be7eb841f103d116d5b1958039",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "focus_pool_v2_demo_M4_F0_shield_0.json": {
+      "result_sha256": "053b8a58f687664937953dedbb0a4658d320cd3bf0c1d9275a5d31f05cfd1f71",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "focus_pool_v2_description_summary.json": {
+      "result_sha256": "2353041854cb7b961b2b76ef034b46cb2be38a65d729dd7e672e89b50cf9df8a",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "focus_pool_v2_dev_summary.json": {
+      "result_sha256": "2f2cb95614e7ce30f868262967c6e9bebff2df43040732ce75b5daa34fabb851",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "generic_sheet_dodge_demo.json": {
+      "result_sha256": "abd4cf3ef33f412c122d52e777a2ae66df44cbb1ed1ab248cd329e095ed50784",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "generic_sheet_modular_heal_demo.json": {
+      "result_sha256": "46c60732d8ab42500b7a067ebf970289ed6c9eed9195c3a73453a0a1bcfbaadd",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "generic_sheet_rank4_batch.json": {
+      "result_sha256": "1912d3894c04bb1a0ec89b56c4b6bbb8b7e4c6716b12197ea66853aa30900b58",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "generic_sheet_rank4_demo.json": {
+      "result_sha256": "394d897278de7a59fa0ac29ed19ba414a4892b3c0aad429254be624067861de9",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "generic_sheet_stance_demo.json": {
+      "result_sha256": "b5a121dfc9bc65eb626a07598280ce4c78f0fe1b2d4c214ea7cd141018dd295e",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "generic_sheet_standard_shield_demo.json": {
+      "result_sha256": "59fc7262792dbddc5762555fc1c0d7e5896ac62796c64a19ca145bb402e9e92d",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "group_pool_v2_demo_G2_shield_0.json": {
+      "result_sha256": "21d0476b9642afb6934acf6fc745877a4ac92156c07e9c19d3cb6696027d3308",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "group_pool_v2_description_summary.json": {
+      "result_sha256": "dcc62a8e41249c8975f06a896eb2477a570b7b633caedcff491e1aa6742f936f",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "group_pool_v2_dev_summary.json": {
+      "result_sha256": "aa450930118e73e9481bdce0543a3f9e1abda14419eb6637995c83c3eb4a6932",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_confirm_summary.json": {
+      "result_sha256": "814d5eb9c6ee91bb26a01b442846bfe98a63235a340d46316141b1c21dbebfc9",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_demo_fast_mirror_shield_0.json": {
+      "result_sha256": "46213c9dbd501e562b2dbae4d80e81b8636e3ae71a2b9dac4c27a41caafd2905",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_demo_gunner_confirm_fast_shield_0.json": {
+      "result_sha256": "54a17122df0a1c77b807f43ad41b34f49a83b5368c3f26bb89e24f564c0638ad",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_demo_gunner_fast_0.json": {
+      "result_sha256": "c730d979520e38d54deca57e3e6664cbecfa13a12eea52a8ca095e2d7595d453",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_demo_H1_fast_shield_0.json": {
+      "result_sha256": "4bbc6f5795de712fe94c67b08f17103a4fd61dd66529d9d643ea0c91debef6c7",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_demo_H2_fast_shield_0.json": {
+      "result_sha256": "3773f4bdba5a7368f0622d5b37631395223130a885de052921850f6704dda5f2",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_demo_shield_fast_mirror_hammer_0.json": {
+      "result_sha256": "e498348ed66f4a09743e230bb5fa9d8c75b92397c1b451c90c844037631a6891",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_dev_summary.json": {
+      "result_sha256": "990b37e1182727864ce6cfb26e1bed4d972a5dd4b4be52cc1a3a4476690df08f",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_holdout_summary.json": {
+      "result_sha256": "0591f4500dcc17efb244e064843934fc3826d0a080c4376bdfda06db0f31fec5",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "pool_v2_smoke_summary.json": {
+      "result_sha256": "e423887df8e88f87fb05afe4fe32501287a2da0d34d254aef3c77487b9ce6cd7",
+      "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    }
+  }
+}

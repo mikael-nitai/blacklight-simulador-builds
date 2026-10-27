@@ -4,7 +4,7 @@
 
 ## A decisão de mesa que muda o resultado
 
-O Escudo Rank 3 reduz o multiplicador de ataques Melee/Agility em 2 conforme a decisão do usuário. **F0** interpreta que essa redução não se aplica ao dano de Focus do Mental Punch; **F2** aplica −2 porque Mental Punch é ataque Melee. A resposta do mestre sobre esse tipo de dano ainda é necessária para escolher uma única variante como recomendação de mesa. As sementes de F0 e F2 são independentes; o mesmo índice de amostra não forma um par causal.
+Após este experimento, o usuário [esclareceu a regra da mesa](FOCUS_RULING.md): o Escudo reduz **somente dano de Health**. Portanto, **F0** é a variante aplicável a Mental Punch; **F2** permanece na tabela apenas como análise contrafactual da hipótese investigada antes do esclarecimento. A decisão posterior não altera as amostras nem torna F2 legal na mesa. As sementes de F0 e F2 são independentes; o mesmo índice de amostra não forma um par causal.
 
 Victor usa Marreta em todas as políticas. `hammer` não ativa Escudo; `shield_reactive` o ativa após ver um acerto; `shield_endturn` o ativa ao fim do turno e após acerto se ainda estava desativado. Riposte é usado quando há reação. Dois perfis sintéticos foram testados: M3, Mental Punch Rank 3; M4, Rank 4. Ambos têm Melee 6, defesa Melee 16 e Health 150. Cada célula teve 1000 combates de desenvolvimento e 5000 novos para a tabela. O recorte não tem movimento, terreno, Karma, cura de Focus, aliados ou opções alternativas para o telepata.
 
@@ -23,7 +23,7 @@ Victor usa Marreta em todas as políticas. `hammer` não ativa Escudo; `shield_r
 | M4 | F2 | Escudo reativo | 4.975; 99,50% [99,26; 99,66] | 6,32% | 59,8 |
 | M4 | F2 | Escudo no fim do turno | 4.967; 99,34% [99,07; 99,53] | 6,58% | 59,9 |
 
-Não houve inconclusões; as lutas restantes terminaram em Shattered. A política Marreta foi amostrada de novo em F0 e F2 mesmo sendo mecanicamente idêntica nessas variantes, pois as sementes são diferentes. Os resultados **não** mostram benefício claro do Escudo sob F0. Sob F2, o Escudo reduz com força o risco de Shattered e de Demoralized. O inimigo só dispõe de um poder e permanece em contato, então essas taxas não se transportam para telepatas que recuam, usam controle, trazem aliados ou atacam outros recursos.
+Não houve inconclusões; as lutas restantes terminaram em Shattered. A política Marreta foi amostrada de novo em F0 e F2 mesmo sendo mecanicamente idêntica nessas variantes, pois as sementes são diferentes. Na variante **F0 válida para a mesa**, os resultados **não** mostram benefício claro do Escudo contra este dano de Focus. Sob F2, agora **contrafactual**, o Escudo reduziria o risco de Shattered e Demoralized. O inimigo só dispõe de um poder e permanece em contato, então essas taxas não se transportam para telepatas que recuam, usam controle, trazem aliados ou atacam outros recursos.
 
 ## Auditoria e demonstrações
 
@@ -38,4 +38,4 @@ python -m scripts.focus_experiment --stage description
 python -m scripts.focus_replay --scenario M4 --variant F0 --strategy shield_reactive --index 28 --output results/focus_demo_M4_F0_loss_28.json
 ```
 
-Até a decisão do mestre sobre Escudo × Focus, a orientação prática segura é reconhecer a ameaça de Mental Punch e **não presumir** que Sturdy 1 a reduz. As recomendações físicas do guia principal continuam restritas aos adversários físicos testados.
+Contra Mental Punch na mesa atual, **não conte com a redução do Escudo nem de Sturdy 1 para proteger Focus**. Ativar o Escudo ainda pode ser útil contra dano de Health de outras fontes, mas contra esse telepata isolado as três políticas F0 tiveram resultados próximos dentro da incerteza. As recomendações físicas do guia principal continuam restritas aos adversários físicos testados.

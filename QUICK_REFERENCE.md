@@ -1,5 +1,7 @@
 # Blacklight Rank 3 — consulta rápida na mesa
 
+**Fast Strikes:** a [regra posterior da mesa](FAST_STRIKES_RULING.md) confirmou duas edges, um teste de acerto e dois danos separados por arma. A conta antiga de um único dano abaixo está sendo substituída; não a use para Fast Strikes.
+
 **Plano em duelo próximo:** ataque com **Marreta** (`Melee +6` contra defesa Melee). Depois, ative **Escudo** com uma reação ao fim do turno **ou** espere um ataque inimigo acertar e ative como reação antes do dano. O Escudo fica ativo até desativação gratuita. **Desative antes de usar Marreta ou Lâmina.** Escudo é defesa separada, nunca um braço de Fast Strikes.
 
 | Decisão rápida | Ação |
@@ -7,12 +9,12 @@
 | Alvo a 1 espaço | Marreta normal: `dM×8+6` antes da DR. Fantastic: dobro do dano e **Stunned**; se escolher knockback de Mighty no modelo, substitui o efeito especial. |
 | Ataque próximo inimigo errou | Se houver reação e alcance, **Riposte** com arma legal. |
 | Ataque inimigo acertou | Pode ativar Escudo com reação **agora**; a proteção já vale neste dano. |
-| Escudo ativo | Melee/Agility inimigos: `−2 Escudo −1 Sturdy = −3` no multiplicador de dano. No Rank 3, imunidade a fogo e munição conforme a mesa. |
+| Escudo ativo | Contra **dano de Health** Melee/Agility inimigo: `−2 Escudo −1 Sturdy = −3` no multiplicador. **Nenhuma dessas reduções protege Focus**, mesmo contra Mental Punch Melee. No Rank 3, imunidade a fogo e munição conforme a mesa. |
 | Alvo longe | Movimento até 5 espaços; se ainda não alcançar, ação padrão pode virar outro movimento. Não há Extended Reach na ficha atual. |
 | Faltam muitos Health e há segurança | Do This All Day: ação padrão, 5–15 Focus, mantém pelo menos 1; cura `2×Focus gasto`. Healing Factor recupera até 5 no fim do turno. |
-| Inimigo recua continuamente | Evite perseguir indefinidamente em campo aberto. Busque terreno/objetivo/aliados; o simulador não testou essas saídas. |
+| Inimigo recua continuamente | Evite perseguir indefinidamente em campo aberto. Um corredor **sem saída** permitiu alcançar o atirador sintético no teste exploratório; confira se o mapa real impede a fuga. Cobertura, rotas e aliados não foram modelados. |
 
-**Lâmina + Marreta com Fast Strikes:** uma rolagem de acerto para a ação. Acerto comum causa **metade** do dano após DR, arredondada para cima. Fantastic causa dano **integral**, aplica Bleeding (não acumula), Stunned e o efeito de membro da Lâmina. O primeiro Fantastic **no próprio turno** dá uma segunda ação com Lâmina e **nova** rolagem; ela também pode ser Fast Strikes. Não há terceira ação, e Fantastic em Riposte não dá a segunda ação. Contra um alvo, um uso de Fast Strikes aplica dano uma vez.
+**Lâmina + Marreta com Fast Strikes:** a mesa confirmou **duas edges**, **um teste de acerto** e **duas contas de dano**, uma por arma. Em acerto comum, cada componente causa metade; em Fantastic, cada componente causa dano integral, além dos efeitos especiais aplicáveis. A Lâmina aplica Bleeding sem acúmulo. O primeiro Fantastic **no próprio turno** dá uma segunda ação com Lâmina e **nova** rolagem; ela também pode ser Fast Strikes. Não há terceira ação, e Fantastic em Riposte não dá a segunda ação. A conta exata das duas parcelas ainda está sendo esclarecida e revalidada.
 
 **Reações:** duas por rodada com Combat Reflexes na interpretação conservadora do simulador, compartilhadas entre Escudo e Riposte; nunca duas no mesmo gatilho. O Core também menciona renovação no início do próximo turno, então confirme a contagem exata com o mestre se isso decidir a cena. Chicote indisponível no Rank 3.
 

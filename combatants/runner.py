@@ -6,9 +6,10 @@ import json
 
 from blacklight import __version__
 from blacklight.audit import audit_log
-from blacklight.engine import Duel
 from blacklight.experiment import Moment, wilson
+from .actions import DEFAULT_ACTIONS
 from .duel_adapter import compile_duel, coverage
+from .modular_duel import ModularDuel
 from .sheets import CharacterSheet, sheet_record
 
 
@@ -17,13 +18,21 @@ def _outcome(result, hero_name: str) -> str:
             else 'win' if result.winner == hero_name else 'loss')
 
 
+def _engine_metadata() -> dict:
+    return {'execution_adapter': 'modular_physical_duel_v1',
+            'registered_action_modules': [
+                {'kind': module.kind, 'required_power': module.required_power,
+                 'sources': list(module.sources)}
+                for module in DEFAULT_ACTIONS.modules.values()]}
+
+
 def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
              hero_policy: object, opponent_policy: object, *, seed: int,
              initial_distance: int = 1, max_rounds: int = 30) -> dict:
     profiles = (compile_duel(hero), compile_duel(opponent))
     if profiles[0].name == profiles[1].name:
         raise ValueError("Combatants need distinct display names for the audit ledger")
-    result = Duel(profiles, (hero_policy, opponent_policy), seed=seed,
+    result = ModularDuel(profiles, (hero_policy, opponent_policy), seed=seed,
                   initial_distance=initial_distance, max_rounds=max_rounds,
                   audit=True).run()
     issues = audit_log(result.log,
@@ -34,6 +43,7 @@ def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
     return {'schema': 'blacklight-generic-character-duel-v1',
             'damage_model': 'literal_marvel_pool_v2',
             'engine_version': __version__, 'seed': seed,
+            **_engine_metadata(),
             'initial_distance': initial_distance, 'max_rounds': max_rounds,
             'sheets': [sheet_record(hero), sheet_record(opponent)],
             'policies': [asdict(hero_policy), asdict(opponent_policy)],
@@ -66,7 +76,7 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
         key = f'character-batch-v1|{master_seed}|{cell_hash}|{index}'
         seed = int.from_bytes(sha256(key.encode()).digest()[:8], 'big')
         inspect = index % audit_every == 0
-        result = Duel(profiles, (hero_policy, opponent_policy), seed=seed,
+        result = ModularDuel(profiles, (hero_policy, opponent_policy), seed=seed,
                       initial_distance=initial_distance, max_rounds=max_rounds,
                       audit=inspect).run()
         if inspect:
@@ -86,6 +96,7 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
             moments[name].add(value)
     return {'schema': 'blacklight-generic-character-batch-v1',
             'damage_model': 'literal_marvel_pool_v2', 'engine_version': __version__,
+            **_engine_metadata(),
             **cell, 'n': n, 'master_seed': master_seed, 'cell_sha256': cell_hash,
             'seed_formula': 'first 8 SHA-256 bytes of character-batch-v1|master_seed|cell_sha256|index',
             'pairing_note': 'Seeds identify this cell; different cells are not assumed to be paired samples',

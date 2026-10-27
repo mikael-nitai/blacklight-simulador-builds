@@ -2,6 +2,17 @@
   "schema": "blacklight-generic-character-batch-v1",
   "damage_model": "literal_marvel_pool_v2",
   "engine_version": "0.2.0-pool",
+  "execution_adapter": "modular_physical_duel_v1",
+  "registered_action_modules": [
+    {
+      "kind": "heal",
+      "required_power": "do_this_all_day",
+      "sources": [
+        "Core Rulebook p.94",
+        "RULES_AUDIT.md POW-07/RES-01"
+      ]
+    }
+  ],
   "sheets": [
     {
       "schema": "blacklight.character.v1",
@@ -826,9 +837,11 @@
     "FAST_STRIKES_RULING.md": "af2f21ac8c532d05fb7b9b39d6c64f299c9ee3dc0a748cc1ce98dd4e71c5ef74",
     "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
     "combatants\\__init__.py": "5978e1e5aedae6ee1105f87ed6d05850b786ffd4d345baa1109eefde35762d5e",
+    "combatants\\actions.py": "12038c313381afceefe73ee43f51ca626f121b6dc4bb8512e88af3777da9de50",
     "combatants\\duel_adapter.py": "e7b401dcda6c8cad9ed4cf4c02335e8294d8b5c5c70648e1f7af4d10ff67f85d",
+    "combatants\\modular_duel.py": "63da414053ed47112b40889b04e56727cdce59a0a69df69ab95310f9b9349f8e",
     "combatants\\pdf_draft.py": "cf651dcf3d2b90a26ef961ed18caba5c2321e2330e48427773549040da862add",
-    "combatants\\runner.py": "60ba9ed551af38d3d9f0ae6b4c22f4ed53cb6323a8099faf40f8e2193bfb8d8a",
+    "combatants\\runner.py": "ad6e659eb70662d78ce4d6e0e08a8680437a2b80f116b68527a2914d1ad115b7",
     "combatants\\sheets.py": "ca90287b1ab6d2877388b3ffce53fc7ab70f778b992c14d5749b6b5a6300ad60",
     "scripts/character_sheet.py": "2fb1a24e3855cd8fbb23d21645d837e98828968d7bdc4ab7e9735427f1ebcf38",
     "C:\\Users\\avada\\Documents\\ChatGPT\\Simulador Builds\\characters\\examples\\synthetic_rank4.json": "8a9c104c17a326ca6a483db159719629aadb973043467eb6f7cf50927a3e0be7",

@@ -138,7 +138,7 @@ def main() -> None:
         lines.append(f"| {r['length']} | {r['opponent']} | {r['policy']} | {ci(r['outcomes']['win'],r['n'])} |")
     lines += ['', '## Auditoria e limites', '',
               'O motor foi salvo no commit `dbce72f`. A camada genérica de fichas foi acrescentada em `3af6672`, preservando '
-              'os replays anteriores. A suíte atual tem 119 testes aprovados. O teste cruzado recalcula 100 trilhas por célula '
+              'os replays anteriores. Ao consolidar a versão v2, a suíte tinha 119 testes aprovados; etapas posteriores estão no README. O teste cruzado recalcula 100 trilhas por célula '
               'de 13 políticas × quatro cenários. Os auditores recalculam dano pelas faces registradas sem importar a função '
               'de dano de produção. Os JSONs registram hashes, sementes e políticas; `python -m scripts.verify_sources` verifica suas fontes.', '',
               'O contador de dano mitigado usa faces contrafactuais adicionais para estimar a diferença acoplada sem DR; '

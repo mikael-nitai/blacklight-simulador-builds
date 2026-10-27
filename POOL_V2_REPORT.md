@@ -127,7 +127,7 @@ Comprimentos de 12 e 20 espaços, sem cobertura ou caminhos alternativos. C1 usa
 
 ## Auditoria e limites
 
-O motor foi salvo no commit `dbce72f`. A camada genérica de fichas foi acrescentada em `3af6672`, preservando os replays anteriores. A suíte atual tem 119 testes aprovados. O teste cruzado recalcula 100 trilhas por célula de 13 políticas × quatro cenários. Os auditores recalculam dano pelas faces registradas sem importar a função de dano de produção. Os JSONs registram hashes, sementes e políticas; `python -m scripts.verify_sources` verifica suas fontes.
+O motor foi salvo no commit `dbce72f`. A camada genérica de fichas foi acrescentada em `3af6672`, preservando os replays anteriores. Ao consolidar a versão v2, a suíte tinha 119 testes aprovados; etapas posteriores estão no README. O teste cruzado recalcula 100 trilhas por célula de 13 políticas × quatro cenários. Os auditores recalculam dano pelas faces registradas sem importar a função de dano de produção. Os JSONs registram hashes, sementes e políticas; `python -m scripts.verify_sources` verifica suas fontes.
 
 O contador de dano mitigado usa faces contrafactuais adicionais para estimar a diferença acoplada sem DR; esse valor não é dano efetivamente recebido. As rolagens de acerto e dano usam fontes aleatórias separadas. A recomendação acima se apoia em resultados de combate, e não em tratar mitigação amostrada como observação causal direta.
 

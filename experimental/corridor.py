@@ -1,15 +1,18 @@
-"""One-cell-wide bounded corridor for the frozen two-actor Duel engine."""
+"""One corridor geometry shared by historical and current combat resolvers."""
 
-from blacklight.engine import IllegalAction, Move
+from dataclasses import replace
+
+from blacklight.engine import IllegalAction, Move, TerrainView
+from combatants.battlefields import CorridorMap
 from combatants.modular_duel import ModularDuel
+from combatants.split_fast import SplitFastDuel
 
 
-class CorridorDuel(ModularDuel):
+class CorridorGeometry:
     def __init__(self, *args, length: int, initial_positions: tuple[int, int],
                  **kwargs) -> None:
-        left, right = initial_positions
-        if not (0 <= left < right <= length):
-            raise ValueError("Characters must start in order inside corridor")
+        layout = CorridorMap(length, tuple(initial_positions))
+        left, right = layout.initial_positions
         if "initial_distance" in kwargs:
             raise ValueError("Initial distance is derived from positions")
         super().__init__(*args, initial_distance=right - left, **kwargs)
@@ -18,7 +21,30 @@ class CorridorDuel(ModularDuel):
         self.wall_reached = right == length
         self.contact_occurred = right - left <= 1
 
+    def observe(self, actor: int):
+        self._assert_geometry()
+        observation = super().observe(actor)
+        return replace(observation, terrain=TerrainView(
+            'corridor', (self.length + 1, 1), (self.positions[actor], 0),
+            (self.positions[1 - actor], 0)))
+
+    def _assert_geometry(self) -> None:
+        if (len(self.positions) != 2 or any(type(value) is not int for value in self.positions)
+                or type(self.distance) is not int
+                or not 0 <= self.positions[0] < self.positions[1] <= self.length
+                or self.distance != self.positions[1] - self.positions[0]):
+            raise RuntimeError('Corridor positions and distance are inconsistent')
+
+    def _attack_check_spec(self, actor: int, kind: str):
+        self._assert_geometry()
+        return super()._attack_check_spec(actor, kind)
+
     def _move(self, actor: int, move: Move, *, as_standard: bool = False) -> None:
+        if (type(actor) is not int or actor not in (0, 1)
+                or not isinstance(move, Move) or type(move.steps) is not int
+                or type(as_standard) is not bool):
+            raise IllegalAction('Corridor movement requires an actor and integer grid steps')
+        self._assert_geometry()
         fighter = self.fighters[actor]
         if (self.active_actor != actor or not fighter.conscious or
                 fighter.stunned_by is not None):
@@ -61,11 +87,25 @@ class CorridorDuel(ModularDuel):
                      distance_after=self.distance)
 
     def _attack(self, actor: int, kind: str, *, reaction: bool = False,
-                offhand: str | None = None):
+                offhand: str | None = None, **attack_context):
+        self._assert_geometry()
         before = self.distance
         result = super()._attack(actor, kind, reaction=reaction,
-                                 offhand=offhand)
+                                 offhand=offhand, **attack_context)
         if self.distance != before:
             raise NotImplementedError(
                 "Knockback in a corridor needs explicit wall/collision rules")
         return result
+
+    def _validate_knockback(self, actor: int, spaces: int) -> None:
+        if spaces > 0:
+            raise NotImplementedError('Corridor knockback/collision is not modeled; damage was not applied')
+        return super()._validate_knockback(actor, spaces)
+
+
+class CorridorDuel(CorridorGeometry, ModularDuel):
+    """Historical single-check Fast contract, retained for reproducibility."""
+
+
+class SplitFastCorridorDuel(CorridorGeometry, SplitFastDuel):
+    """Current two-check Fast contract with exactly the same movement geometry."""

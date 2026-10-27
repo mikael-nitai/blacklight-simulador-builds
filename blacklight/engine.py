@@ -144,12 +144,32 @@ class FighterView:
 
 
 @dataclass(frozen=True)
+class TerrainView:
+    """Visible map facts only, with no mutable battle state or future dice."""
+    kind: str
+    size: tuple[int, int]
+    me: tuple[int, int]
+    foe: tuple[int, int]
+
+    def __post_init__(self) -> None:
+        if (not isinstance(self.kind, str) or not self.kind
+                or any(not isinstance(pair, tuple) or len(pair) != 2
+                       or any(type(value) is not int for value in pair)
+                       for pair in (self.size, self.me, self.foe))
+                or any(value < 1 for value in self.size)
+                or any(not 0 <= point[axis] < self.size[axis]
+                       for point in (self.me, self.foe) for axis in (0, 1))):
+            raise ValueError('Invalid visible terrain facts')
+
+
+@dataclass(frozen=True)
 class Observation:
     me: FighterView
     foe: FighterView
     distance: int
     round: int
     bonus_round: bool
+    terrain: TerrainView | None = None
 
 
 @dataclass(frozen=True)
@@ -456,6 +476,9 @@ class Duel:
             self._record('shield_activate', ('HR-04',), actor=q.name, cost='reaction',
                          trigger=check.trigger, after_hit=True)
 
+    def _validate_knockback(self, actor: int, spaces: int) -> None:
+        """A terrain host rejects unsupported displacement before damage is applied."""
+
     def _attack(self, actor: int, kind: str, *, reaction: bool = False,
                 offhand: str | None = None,
                 fast_strike: FastStrikeContext | None = None,
@@ -542,6 +565,10 @@ class Duel:
                                   and "mighty" in p.powers)
         knockback_selected = (self.policies[actor].choose_knockback(
             self.observe(actor), kind) if knockback_eligible else False)
+        knockback_spaces = (5 * max(0, p.rank + max(0, *bonuses) - reduction)
+                            if knockback_selected else 0)
+        if knockback_spaces:
+            self._validate_knockback(actor, knockback_spaces)
         attacker.attacks += 1
         before = defender.health
         damage = 0
@@ -637,8 +664,7 @@ class Duel:
                         if fast_strike is not None else {}))
         if knockback_eligible:
             if knockback_selected:
-                effective_multiplier = max(0, p.rank + max(0, *bonuses) - reduction)
-                spaces = 5 * effective_multiplier
+                spaces = knockback_spaces
                 if spaces:
                     prior_distance = self.distance
                     self.distance += spaces

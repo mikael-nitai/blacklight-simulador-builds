@@ -34,6 +34,8 @@ Cada execução nova recebe outro nome e os [resultados anteriores preservam sua
 
 A revisão `split_fast_v3` seleciona o [novo Fast por braço](SPLIT_FAST_SPEC.md). Misturar revisões de regras entre as duas fichas é recusado antes do combate. O teste de seleção de Rank 4 usa o mesmo motor e outra ficha; as regras não são escolhidas pelo nome do personagem.
 
+O mesmo runner aceita um [corredor opcional](CURRENT_CORRIDOR.md), escolhido como dado de ambiente, sem reescrever os ataques da ficha. O mapa e as classes das políticas entram na identidade das células atuais; geometria, fontes e posições são registradas e auditadas. Os valores e as sementes de células históricas v1 permanecem preservados. A política nova pode observar a parede por um snapshot imutável, sem acessar o estado mutável ou dados futuros.
+
 ## O que a arquitetura ainda precisa receber
 
 O catálogo atual é um adaptador para o duelo físico já validado. Ele não implementa todos os poderes do Core. O resolvedor atual ainda concentra casos específicos de arma/ação; antes de expandir para muitas fichas, esses casos precisam convergir para módulos compartilhados por duelo, grupo, Focus e terreno.

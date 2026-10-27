@@ -1,0 +1,60 @@
+{
+  "schema": "blacklight.character.v1",
+  "id": "synthetic_rank4_nonammo_gunner",
+  "revision": "corridor-current-v1",
+  "name": "Atirador sintético Rank 4",
+  "rank": 4,
+  "ruleset": "split_fast_v3",
+  "abilities": {
+    "melee": 2,
+    "agility": 6,
+    "resilience": 4,
+    "vigilance": 2,
+    "ego": 4,
+    "logic": 2
+  },
+  "defenses": {
+    "melee": 12,
+    "agility": 16,
+    "resilience": 14,
+    "vigilance": 12,
+    "ego": 14,
+    "logic": 12
+  },
+  "resources": {
+    "health": 120,
+    "focus": 60,
+    "karma": 0
+  },
+  "movement": {
+    "run": 6,
+    "climb": 3,
+    "swim": 3
+  },
+  "initiative_modifier": 2,
+  "features": [
+    {
+      "id": "ranged_attack",
+      "kind": "equipment",
+      "level": 1,
+      "parameters": {
+        "range": 10,
+        "ammunition": false
+      },
+      "sources": [
+        "Synthetic corridor integration fixture; not an official energy power"
+      ]
+    }
+  ],
+  "provenance": [
+    {
+      "kind": "synthetic",
+      "purpose": "Non-ammunition ranged equipment tests the current Fast/Shield corridor; no official character or future Victor progression is claimed"
+    }
+  ],
+  "notes": [
+    "Ficha sintética de integração. Os seis atributos são explícitos; legalidade de criação e repertório ótimo de poderes não são certificados.",
+    "O ataque à distância é um equipamento genérico não classificado como munição, para testar o limite da imunidade do Escudo. Não representa um poder oficial de energia.",
+    "A política de combate é registrada separadamente; conhecer a parede não concede bônus nas regras."
+  ]
+}

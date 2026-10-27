@@ -13,6 +13,8 @@ from combatants.pdf_draft import extract_draft
 from combatants.runner import run_duel, run_batch
 from combatants.duel_adapter import CURRENT_RULESET, LEGACY_RULESET
 from combatants.split_fast import SplitFastPolicy
+from combatants.battlefields import CorridorMap
+from combatants.terrain_policies import WallAwarePolicy
 
 
 def write_json(path: Path, payload: dict) -> None:
@@ -35,7 +37,11 @@ def main() -> None:
         sub.add_argument('--opponent', type=Path, required=True)
         sub.add_argument('--policy', default='attack')
         sub.add_argument('--opponent-policy', default='attack')
-        sub.add_argument('--distance', type=int, default=1)
+        sub.add_argument('--distance', type=int)
+        sub.add_argument('--corridor-length', type=int)
+        sub.add_argument('--positions', type=int, nargs=2)
+        sub.add_argument('--wall-aware', action='store_true')
+        sub.add_argument('--opponent-wall-aware', action='store_true')
         sub.add_argument('--output', type=Path, required=True)
         sub.add_argument('--effect-limb', type=int, choices=(0, 1), default=0,
                          help='For current Fast rules: limb0 is the primary, limb1 the offhand')
@@ -70,17 +76,29 @@ def main() -> None:
         if sheets[0].ruleset == LEGACY_RULESET and not args.historical_rules:
             parser.error('This sheet uses historical table rules; use the current sheet revision or --historical-rules')
         selected_policies = (policies[args.policy], policies[args.opponent_policy])
+        if args.positions is not None and args.corridor_length is None:
+            parser.error('--positions requires --corridor-length')
+        battlefield = None
+        if args.corridor_length is not None:
+            try:
+                battlefield = CorridorMap(args.corridor_length, tuple(args.positions or (0, 8)))
+            except ValueError as exc:
+                parser.error(str(exc))
+        if (args.wall_aware or args.opponent_wall_aware) and sheets[0].ruleset != CURRENT_RULESET:
+            parser.error('The new wall-aware policy requires the current table ruleset')
         if sheets[0].ruleset == CURRENT_RULESET:
-            selected_policies = tuple(SplitFastPolicy(**asdict(policy), effect_limb=limb)
-                                      for policy, limb in zip(selected_policies,
-                                                              (args.effect_limb, args.opponent_effect_limb)))
+            selected_policies = tuple(
+                (WallAwarePolicy if aware else SplitFastPolicy)(**asdict(policy), effect_limb=limb)
+                for policy, limb, aware in zip(selected_policies,
+                                               (args.effect_limb, args.opponent_effect_limb),
+                                               (args.wall_aware, args.opponent_wall_aware)))
         if args.command == 'duel':
             payload = run_duel(*sheets, *selected_policies,
-                               seed=args.seed, initial_distance=args.distance)
+                               seed=args.seed, initial_distance=args.distance, battlefield=battlefield)
         else:
             payload = run_batch(*sheets, *selected_policies, n=args.n,
                                 master_seed=args.master_seed,
-                                initial_distance=args.distance)
+                                initial_distance=args.distance, battlefield=battlefield)
         sources = dict(payload['source_sha256'])
         sources['scripts/character_sheet.py'] = sha256(Path(__file__).read_bytes()).hexdigest()
         for name in (args.hero, args.opponent):

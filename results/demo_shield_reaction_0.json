@@ -1,0 +1,1503 @@
+{
+  "schema": "blacklight-full-trace-v1",
+  "stage": "demo",
+  "scenario": "mirror_shield",
+  "strategy": "shield_hammer_reactive",
+  "index": 0,
+  "seed": 7382822477084913011,
+  "source_sha256": {
+    "blacklight\\__init__.py": "30361ce63d1526dcee116dcf7b576b7a4e1162ba0c53376221f58a480b215491",
+    "blacklight\\audit.py": "d897afc6aad0aaea7b79b3a04cf1413acd915a62e8c5b95943d2873d86df8901",
+    "blacklight\\damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight\\dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight\\engine.py": "0cc35d055f340d6ce91dd714918ae3ba927c8f1e9af4cd7bcdb05e73fe8b9751",
+    "blacklight\\experiment.py": "ea231961a0b17de3072136d8ac6d60980b6eab7c33e859670a05038fa72fea49",
+    "blacklight\\policies.py": "c2ac709aab1beb288724b3561010b1ecc2e98d656ac0a94b2ee357eb2cc8b0a5",
+    "blacklight\\search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight\\sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d"
+  },
+  "initial_distance": 1,
+  "profiles": [
+    {
+      "name": "Blacklight",
+      "rank": 3,
+      "max_health": 150,
+      "max_focus": 90,
+      "melee": 6,
+      "agility": 1,
+      "resilience": 5,
+      "vigilance": 2,
+      "melee_defense": 16,
+      "agility_defense": 11,
+      "run_speed": 5,
+      "health_dr": 1,
+      "melee_bonus": 3,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": null,
+      "run_speed_exception": false,
+      "powers": [
+        "attack_stance",
+        "blazing_fast_fists",
+        "brawling",
+        "do_this_all_day",
+        "fast_strikes",
+        "healing_factor",
+        "mighty",
+        "riposte"
+      ],
+      "traits": [
+        "battle_ready",
+        "combat_reflexes",
+        "signature_fast_strikes",
+        "situational_awareness"
+      ],
+      "weapons": [
+        "blade",
+        "claw",
+        "hammer",
+        "shield"
+      ],
+      "shield_active": false,
+      "heroic": true
+    },
+    {
+      "name": "Enemy",
+      "rank": 3,
+      "max_health": 150,
+      "max_focus": 90,
+      "melee": 6,
+      "agility": 1,
+      "resilience": 5,
+      "vigilance": 2,
+      "melee_defense": 16,
+      "agility_defense": 11,
+      "run_speed": 5,
+      "health_dr": 1,
+      "melee_bonus": 3,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": null,
+      "run_speed_exception": false,
+      "powers": [
+        "attack_stance",
+        "blazing_fast_fists",
+        "brawling",
+        "do_this_all_day",
+        "fast_strikes",
+        "healing_factor",
+        "mighty",
+        "riposte"
+      ],
+      "traits": [
+        "battle_ready",
+        "combat_reflexes",
+        "signature_fast_strikes",
+        "situational_awareness"
+      ],
+      "weapons": [
+        "blade",
+        "claw",
+        "hammer",
+        "shield"
+      ],
+      "shield_active": false,
+      "heroic": true
+    }
+  ],
+  "policies": [
+    {
+      "name": "shield_hammer_reactive",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "hammer",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": false
+    },
+    {
+      "name": "shield_hammer_reactive",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "hammer",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": false
+    }
+  ],
+  "result": {
+    "seed": 7382822477084913011,
+    "winner": "Blacklight",
+    "outcome": "win",
+    "rounds": 4,
+    "turns": 9,
+    "bonus_round_occurred": true,
+    "final_health": [
+      36,
+      0
+    ],
+    "final_focus": [
+      90,
+      90
+    ],
+    "metrics": [
+      {
+        "damage_dealt": 170,
+        "damage_taken": 134,
+        "damage_mitigated": 66,
+        "healing_effective": 20,
+        "focus_spent": 0,
+        "attacks": 4,
+        "hits": 4,
+        "fantastic_hits": 1,
+        "ripostes": 0,
+        "stuns_applied": 1,
+        "blade_bonus_actions": 0,
+        "damage_round3": 144,
+        "damage_round5": 170,
+        "damage_round10": 170
+      },
+      {
+        "damage_dealt": 134,
+        "damage_taken": 170,
+        "damage_mitigated": 84,
+        "healing_effective": 20,
+        "focus_spent": 0,
+        "attacks": 3,
+        "hits": 3,
+        "fantastic_hits": 1,
+        "ripostes": 0,
+        "stuns_applied": 1,
+        "blade_bonus_actions": 0,
+        "damage_round3": 134,
+        "damage_round5": 134,
+        "damage_round10": 134
+      }
+    ],
+    "log": [
+      {
+        "seq": 1,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "roll": [
+          6,
+          1,
+          6
+        ],
+        "rerolls": [],
+        "total": 20,
+        "modifier": 2,
+        "fantastic": true
+      },
+      {
+        "seq": 2,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Enemy",
+        "roll": [
+          3,
+          1,
+          1
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "total": 12,
+        "modifier": 2,
+        "fantastic": true
+      },
+      {
+        "seq": 3,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 4,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Enemy",
+        "reactions": 2
+      },
+      {
+        "seq": 5,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 6,
+        "round": 0,
+        "bonus_round": true,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 7,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "trigger": 1,
+        "remaining": 1
+      },
+      {
+        "seq": 8,
+        "round": 0,
+        "bonus_round": true,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "cost": "reaction",
+        "trigger": 1,
+        "after_hit": true
+      },
+      {
+        "seq": 9,
+        "round": 0,
+        "bonus_round": true,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Enemy",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 1,
+        "distance": 1,
+        "roll": [
+          5,
+          6,
+          1
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 5,
+            "kept": 6
+          }
+        ],
+        "total": 18,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 36,
+        "damage": 36,
+        "health_before": 150,
+        "health_after": 114
+      },
+      {
+        "seq": 10,
+        "round": 0,
+        "bonus_round": true,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 11,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 12,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Enemy",
+        "reactions": 1
+      },
+      {
+        "seq": 13,
+        "round": 0,
+        "bonus_round": true,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Enemy",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 14,
+        "round": 0,
+        "bonus_round": true,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 15,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 2,
+        "remaining": 1
+      },
+      {
+        "seq": 16,
+        "round": 0,
+        "bonus_round": true,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 2,
+        "after_hit": true
+      },
+      {
+        "seq": 17,
+        "round": 0,
+        "bonus_round": true,
+        "type": "condition_start",
+        "rules": [
+          "HR-02",
+          "COND-02"
+        ],
+        "actor": "Blacklight",
+        "condition": "stunned",
+        "expires_on_actor": "Enemy",
+        "source_turn_count": 2
+      },
+      {
+        "seq": 18,
+        "round": 0,
+        "bonus_round": true,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02",
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "target": "Blacklight",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 2,
+        "distance": 1,
+        "roll": [
+          2,
+          1,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 5,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 72,
+        "damage": 72,
+        "health_before": 150,
+        "health_after": 78
+      },
+      {
+        "seq": 19,
+        "round": 0,
+        "bonus_round": true,
+        "type": "knockback_declined",
+        "rules": [
+          "POW-01"
+        ],
+        "actor": "Enemy",
+        "target": "Blacklight"
+      },
+      {
+        "seq": 20,
+        "round": 0,
+        "bonus_round": true,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Enemy",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 114,
+        "health_after": 119
+      },
+      {
+        "seq": 21,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Enemy",
+        "health": 119,
+        "focus": 90
+      },
+      {
+        "seq": 22,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 23,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Enemy",
+        "reactions": 2
+      },
+      {
+        "seq": 24,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 25,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_skipped",
+        "rules": [
+          "COND-02"
+        ],
+        "actor": "Blacklight",
+        "reason": "stunned"
+      },
+      {
+        "seq": 26,
+        "round": 1,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 78,
+        "health_after": 83
+      },
+      {
+        "seq": 27,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 83,
+        "focus": 90
+      },
+      {
+        "seq": 28,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_end",
+        "rules": [
+          "COND-02"
+        ],
+        "actor": "Blacklight",
+        "condition": "stunned"
+      },
+      {
+        "seq": 29,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Enemy",
+        "reactions": 2
+      },
+      {
+        "seq": 30,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Enemy",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 31,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02",
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "target": "Blacklight",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 3,
+        "distance": 1,
+        "roll": [
+          5,
+          4,
+          2
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 3,
+            "rolled": 4,
+            "kept": 4
+          }
+        ],
+        "total": 17,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 26,
+        "damage": 26,
+        "health_before": 83,
+        "health_after": 57
+      },
+      {
+        "seq": 32,
+        "round": 1,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Enemy",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 119,
+        "health_after": 124
+      },
+      {
+        "seq": 33,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Enemy",
+        "health": 124,
+        "focus": 90
+      },
+      {
+        "seq": 34,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 35,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Enemy",
+        "reactions": 2
+      },
+      {
+        "seq": 36,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 37,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 38,
+        "round": 2,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 39,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "trigger": 4,
+        "remaining": 1
+      },
+      {
+        "seq": 40,
+        "round": 2,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "cost": "reaction",
+        "trigger": 4,
+        "after_hit": true
+      },
+      {
+        "seq": 41,
+        "round": 2,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "HR-02",
+          "COND-02"
+        ],
+        "actor": "Enemy",
+        "condition": "stunned",
+        "expires_on_actor": "Blacklight",
+        "source_turn_count": 4
+      },
+      {
+        "seq": 42,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Enemy",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 4,
+        "distance": 1,
+        "roll": [
+          6,
+          1,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 3,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 21,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 72,
+        "damage": 72,
+        "health_before": 124,
+        "health_after": 52
+      },
+      {
+        "seq": 43,
+        "round": 2,
+        "bonus_round": false,
+        "type": "knockback_declined",
+        "rules": [
+          "POW-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Enemy"
+      },
+      {
+        "seq": 44,
+        "round": 2,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 57,
+        "health_after": 62
+      },
+      {
+        "seq": 45,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 62,
+        "focus": 90
+      },
+      {
+        "seq": 46,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Enemy",
+        "reactions": 1
+      },
+      {
+        "seq": 47,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_skipped",
+        "rules": [
+          "COND-02"
+        ],
+        "actor": "Enemy",
+        "reason": "stunned"
+      },
+      {
+        "seq": 48,
+        "round": 2,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Enemy",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 52,
+        "health_after": 57
+      },
+      {
+        "seq": 49,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Enemy",
+        "health": 57,
+        "focus": 90
+      },
+      {
+        "seq": 50,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 51,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Enemy",
+        "reactions": 2
+      },
+      {
+        "seq": 52,
+        "round": 3,
+        "bonus_round": false,
+        "type": "condition_end",
+        "rules": [
+          "COND-02"
+        ],
+        "actor": "Enemy",
+        "condition": "stunned"
+      },
+      {
+        "seq": 53,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 54,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 55,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Enemy",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 5,
+        "distance": 1,
+        "roll": [
+          4,
+          6,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 5,
+            "kept": 6
+          }
+        ],
+        "total": 21,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 36,
+        "damage": 36,
+        "health_before": 57,
+        "health_after": 21
+      },
+      {
+        "seq": 56,
+        "round": 3,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 62,
+        "health_after": 67
+      },
+      {
+        "seq": 57,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 67,
+        "focus": 90
+      },
+      {
+        "seq": 58,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Enemy",
+        "reactions": 2
+      },
+      {
+        "seq": 59,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Enemy",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 60,
+        "round": 3,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 61,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 6,
+        "remaining": 1
+      },
+      {
+        "seq": 62,
+        "round": 3,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 6,
+        "after_hit": true
+      },
+      {
+        "seq": 63,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02",
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "target": "Blacklight",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 6,
+        "distance": 1,
+        "roll": [
+          4,
+          6,
+          6
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 5,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 22,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 36,
+        "damage": 36,
+        "health_before": 67,
+        "health_after": 31
+      },
+      {
+        "seq": 64,
+        "round": 3,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Enemy",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 21,
+        "health_after": 26
+      },
+      {
+        "seq": 65,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Enemy",
+        "health": 26,
+        "focus": 90
+      },
+      {
+        "seq": 66,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 67,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Enemy",
+        "reactions": 2
+      },
+      {
+        "seq": 68,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 69,
+        "round": 4,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 70,
+        "round": 4,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 71,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "trigger": 7,
+        "remaining": 1
+      },
+      {
+        "seq": 72,
+        "round": 4,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Enemy",
+        "cost": "reaction",
+        "trigger": 7,
+        "after_hit": true
+      },
+      {
+        "seq": 73,
+        "round": 4,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Enemy",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 7,
+        "distance": 1,
+        "roll": [
+          3,
+          4,
+          6
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 2,
+            "original": 1,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 26,
+        "damage": 26,
+        "health_before": 26,
+        "health_after": 0
+      },
+      {
+        "seq": 74,
+        "round": 4,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 31,
+        "health_after": 36
+      },
+      {
+        "seq": 75,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 36,
+        "focus": 90
+      }
+    ]
+  },
+  "audit_issues": []
+}

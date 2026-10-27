@@ -1,0 +1,33 @@
+# Histórico de correções relevantes
+
+## 2026-10-26 — revisão adversarial inicial
+
+- O primeiro motor passou 25 testes, mas a revisão independente em `REVIEW_FINDINGS.md` identificou ausência de knockback de Mighty, movimento pós-ataque/duplo, rerrolagem de edge decidida pelo motor, reações recursivas, Dodge e condições. Estes achados bloquearam inferências táticas.
+- O motor passou a oferecer knockback, movimento antes/depois ou com ação padrão, escolha de edge na política, fila explícita de Riposte, Dodge, bleeding, Stunned, Escudo e regras de Lâmina/Marreta. Adicionamos oráculos forçados e verificação separada de logs.
+- A primeira bateria exploratória de 1000 duelos por célula foi preservada em `results/dev_pre_knockback_fix.json`. Ela **não é evidência válida** para comparar as políticas atuais: a revisão detectou que knockback de Mighty só estava disponível para ataque sem arma, apesar de Marreta e outras armas também serem ataques próximos. A opção entre knockback e efeito fantástico da arma também não estava representada.
+- Corrigimos ataques próximos com arma: o jogador escolhe knockback ou efeito fantástico específico; Marreta usa o multiplicador de dano correto para a distância de knockback. Separou-se ainda a variante de acúmulo de edge de Signature Attack da edge contra alvo Stunned, que antes compartilhavam a mesma configuração.
+- A política agora escolhe qual arma usar em Riposte, permitindo efeitos confirmados da Marreta/Lâmina/Garra na reação. A dúvida sobre uma ação adicional da Lâmina após um Riposte fantástico fora do próprio turno permanece fora do modelo.
+
+Qualquer resultado anterior à correção é mantido apenas para auditoria de desenvolvimento. A bateria exploratória e a confirmação devem ser executadas novamente com hashes de código novos.
+
+## 2026-10-26 — revisão de simultaneidade do Escudo
+
+- Uma segunda revisão mostrou que o adversário de `mirror_shield` mantinha Escudo enquanto usava Marreta num ataque comum. A autorização confirmada para aplicar efeitos de armas nos dois braços refere-se a Fast Strikes. `mirror_shield` passou a usar Fast Strikes com Escudo e Marreta; adicionamos a mesma combinação como política candidata P8.
+- A bateria imediatamente anterior foi preservada em `results/dev_pre_shield_legality_fix.json`, sem ser usada como evidência da nova configuração. O experimento exploratório será refeito após esta correção.
+- A revisão adversarial demonstrou que o atirador anterior nunca tratava bleeding. Inserimos Logic no perfil, a ação padrão de tratamento (TN10) e política de recuo/tratamento; S4 antigo favorecia Lâmina e também fica excluído das conclusões.
+- A primeira sensibilidade de Run mostrou 100% de vitórias com Run 6 contra S4; inspeção tática revelou que o atirador não usava sua ação padrão para uma segunda movimentação quando alcançado. Corrigimos essa fuga adversarial e preservamos o resultado refutado em `results/sensitivity_pre_kiter_escape_fix.json`.
+- A bateria `dev_summary.json` da etapa anterior foi preservada como `results/dev_pre_heal_kiter_fix.json` após duas mudanças materiais: ordem favorável à vítima entre Healing Factor e bleeding no fim do turno, e recuo duplo adversarial do atirador. Nenhum número anterior entra na confirmação.
+
+## 2026-10-26 — decisão posterior sobre Escudo e Riposte
+
+- A mesa confirmou que Chicote está indisponível no Rank 3; ele permanece apenas no registro de eventual evolução futura.
+- A mesa confirmou que um Riposte fantástico com Lâmina **não** concede a ação extra. O motor já limitava o gatilho à ação no próprio turno; acrescentamos teste específico, elevando a suíte para 50 testes.
+- A mesa esclareceu que Escudo é uma ação defensiva separada e **não** participa de Fast Strikes. Isso invalida P6, P8 e S3 da exploração anterior. A confirmação iniciada com essas células foi interrompida antes da gravação de um JSON final. O exemplo antigo foi arquivado como `results/invalid_pre_shield_action_demo_shield_duel_0.json`.
+- A mesa esclareceu a ativação do Escudo por ação padrão ou reação, inclusive ao fim do próprio turno após atacar ou depois de observar um acerto inimigo. A defesa protege esse acerto, permanece até desativação gratuita, e deve ser desativada antes de usar Marreta/Lâmina. O motor passou a representar esse estado e o orçamento de reações compartilhado com Riposte.
+- P6/P8/S3 agora são políticas/cenário de Escudo **defensivo**, com P10 adicional para a reação ao fim do turno. A busca de cura foi refeita, preservando a antiga. A suíte passou 54 testes, incluindo 4.000 trilhas auditadas em dez políticas × quatro cenários × 100 sementes. A bateria `dev` e a confirmação serão refeitas com os hashes atuais.
+- Antes da confirmação, uma nova auditoria identificou que o orçamento de reações era renovado no início do turno próprio, podendo conceder reações extras se o inimigo agisse primeiro na mesma rodada. O motor agora renova uma vez no início de cada rodada (inclusive bônus), registra o evento e conserva o saldo quando o turno próprio começa. Um teste forçado detecta a regressão; a suíte passou 57/57.
+- O verificador independente passou a rejeitar uma segunda renovação na mesma rodada ou a ausência de renovação antes de um turno. A suíte passou 58/58. O Core p.29 usa tanto “por rodada” quanto “início do próximo turno”; a escolha conservadora do motor está documentada como interpretação, não como regra inequívoca.
+- Corrigimos o metadado que dizia incorretamente que o Escudo começava ativo: em S1–S4 ele começa desativado, e ativá-lo custa ação padrão ou reação. Atualizamos `CHARACTER_AUDIT.md` com as decisões de mesa recebidas depois da leitura da ficha.
+- Reexecutamos busca de cura, desenvolvimento e sensibilidade com os hashes finais. Criamos três variações reservadas em `HOLDOUT_SPEC.md` e uma amostra suplementar de distribuições e sobrevivência em `SECONDARY_SPEC.md`, cada uma com scripts e hashes próprios. Os resultados anteriores permanecem arquivados como histórico, sem inclusão nas conclusões atuais.
+- O primeiro H2 reservado alterou Health sem Resilience correspondente, contrariando `Health = 30×Resilience` do Core. Arquivamos JSON, script e especificação originais com prefixo `invalid_holdout_pre_resilience_coherence`/`pre_resilience_coherence`, corrigimos para Resilience 6/Health 180 e repetimos toda a bateria. H2 corrigido é exploratório por ter havido exposição ao resultado inválido; H1/H3 continuam reservados.
+- A confirmação fechou 400.000 duelos com hashes válidos; os três cenários reservados válidos/corrigidos somaram 150.000, a amostra suplementar auditou 20.000 trilhas completas, e novos stress tests adversariais somaram 75.000 duelos após a confirmação. Nenhuma dessas baterias modificou as políticas confirmadas.

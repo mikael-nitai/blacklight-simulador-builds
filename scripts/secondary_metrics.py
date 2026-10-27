@@ -1,0 +1,107 @@
+"""Supplemental distributions, survival horizons, and own-turn damage."""
+
+from hashlib import sha256
+import json
+from math import sqrt
+from pathlib import Path
+import sys
+
+from blacklight.audit import audit_log
+from blacklight.engine import Duel, blacklight_profile
+from blacklight.experiment import ROOT, scenarios, seed_for, source_hashes, strategies, wilson
+
+
+def quantile(values: list[float], probability: float) -> float:
+    ordered = sorted(values)
+    at = (len(ordered) - 1) * probability
+    lo = int(at)
+    hi = min(lo + 1, len(ordered) - 1)
+    return ordered[lo] + (ordered[hi] - ordered[lo]) * (at - lo)
+
+
+def mean_se(values: list[float]) -> dict[str, float]:
+    n = len(values)
+    avg = sum(values) / n
+    variance = sum((x - avg) ** 2 for x in values) / (n - 1)
+    return {"mean": avg, "mc_se": sqrt(variance / n)}
+
+
+def main() -> None:
+    chosen = {"bare_attack", "hammer", "shield_hammer_reactive",
+              "hammer_heal_t75_s15", "shield_hammer_endturn"}
+    selected = tuple(s for s in strategies() if s.id in chosen)
+    n = 1000
+    rows = []
+    for scenario in scenarios():
+        for strategy in selected:
+            damages: list[float] = []
+            per_turn: list[float] = []
+            own_turns: list[float] = []
+            final_health: list[float] = []
+            survived = {3: 0, 5: 0, 10: 0}
+            outcomes = {"win": 0, "loss": 0, "inconclusive": 0, "draw": 0}
+            for index in range(n):
+                profile = blacklight_profile()
+                seed = seed_for("secondary", scenario.id, strategy.id, index)
+                result = Duel((profile, scenario.opponent),
+                              (strategy.policy, scenario.policy), seed=seed,
+                              initial_distance=scenario.distance, max_rounds=30,
+                              audit=True).run()
+                issues = audit_log(result.log,
+                                   {profile.name: profile.max_health,
+                                    scenario.opponent.name: scenario.opponent.max_health},
+                                   {profile.name: profile.max_focus,
+                                    scenario.opponent.name: scenario.opponent.max_focus})
+                if issues:
+                    raise RuntimeError(f"{scenario.id}/{strategy.id}/{index}: {issues[:3]}")
+                blacklight_won = result.winner == profile.name
+                outcome = ("inconclusive" if result.outcome == "inconclusive"
+                           else "draw" if result.outcome == "draw"
+                           else "win" if blacklight_won else "loss")
+                outcomes[outcome] += 1
+                for horizon in survived:
+                    if blacklight_won or result.rounds > horizon or outcome == "inconclusive":
+                        survived[horizon] += 1
+                turns = sum(e["type"] == "turn_start" and e["actor"] == profile.name
+                            for e in result.log)
+                damage = result.metrics[0]["damage_dealt"]
+                damages.append(float(damage))
+                own_turns.append(float(turns))
+                per_turn.append(damage / turns if turns else 0.0)
+                final_health.append(float(result.final_health[0]))
+            rows.append({
+                "scenario": scenario.id, "strategy": strategy.id, "n": n,
+                "outcomes": outcomes,
+                "survival_through_round": {
+                    str(h): {"count": count, "rate": count / n,
+                             "ci95_wilson": wilson(count, n)}
+                    for h, count in survived.items()},
+                "damage_total": {"mean_se": mean_se(damages),
+                                 "p10": quantile(damages, .1),
+                                 "median": quantile(damages, .5),
+                                 "p90": quantile(damages, .9)},
+                "damage_per_own_turn": {"mean_se": mean_se(per_turn),
+                                        "median": quantile(per_turn, .5)},
+                "own_turns": mean_se(own_turns),
+                "final_health": {"mean_se": mean_se(final_health),
+                                 "median": quantile(final_health, .5)},
+                "audited_full_logs": n,
+            })
+            print(f"secondary {scenario.id} {strategy.id}: {n} audited", flush=True)
+    script = Path(__file__)
+    spec = ROOT / "SECONDARY_SPEC.md"
+    payload = {
+        "schema": "blacklight-secondary-v1", "n_per_cell": n,
+        "seed_formula": "first 8 bytes SHA-256 of blacklight-v1|secondary|scenario|strategy|index",
+        "source_sha256": source_hashes(),
+        "script_sha256": sha256(script.read_bytes()).hexdigest(),
+        "spec_sha256": sha256(spec.read_bytes()).hexdigest(),
+        "python": sys.version, "rows": rows,
+    }
+    output = ROOT / "results" / "secondary_summary.json"
+    output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
+                      encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()

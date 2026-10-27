@@ -2,9 +2,11 @@
 
 Projeto de pesquisa reproduzível para Victor Halle (Rank 3) em *Marvel Multiverse Role-Playing Game*. Usa a ficha PDF fornecida nesta conversa, o Core Rulebook e as decisões de mesa registradas em [RULES_AUDIT.md](RULES_AUDIT.md). **Chicote não está disponível no Rank 3** e não entra no motor, nas políticas ou nos experimentos.
 
-**Versão atual em validação:** o motor de duelos, Focus, grupo e corredor agora lança [vários d6 literais com face Marvel 1→6](DAMAGE_POOL_RULING.md). [Fast Strikes](FAST_STRIKES_RULING.md) usa duas edges e dois componentes de dano no mesmo alvo. As 42 saídas da fórmula antiga foram copiadas para [results/legacy_scalar_v1/](results/legacy_scalar_v1/); suas taxas são históricas para a mesa atual. As saídas com `pool_v2` no nome usam a regra nova. A seleção final da estratégia ainda depende da replicação e dos cenários reservados descritos em [POOL_V2_CONFIRM_SPEC.md](POOL_V2_CONFIRM_SPEC.md).
+**Versão atual em validação:** o motor de duelos, Focus, grupo e corredor agora lança [vários d6 literais com face Marvel 1→6](DAMAGE_POOL_RULING.md). [Fast Strikes](FAST_STRIKES_RULING.md) usa duas edges e dois componentes de dano no mesmo alvo. As 42 saídas da fórmula antiga foram copiadas para [results/legacy_scalar_v1/](results/legacy_scalar_v1/); suas taxas são históricas para a mesa atual. As saídas com `pool_v2` no nome usam a regra nova. A replicação e a reserva descritas em [POOL_V2_CONFIRM_SPEC.md](POOL_V2_CONFIRM_SPEC.md) terminaram; a análise e os manuais ainda precisam incorporar seus resultados.
 
 ## O que está implementado
+
+A [camada de fichas versionadas](CHARACTER_PIPELINE.md) carrega Rank, seis atributos, recursos e habilidades graduadas de arquivos externos ao motor. Ela já executa duelos e baterias com outra ficha, conserva a origem do PDF e bloqueia poderes sem suporte. O objetivo final inclui fichas oficiais completas e evolução de Victor sem reescrever o motor; a cobertura atual continua limitada às mecânicas validadas do recorte físico.
 
 O motor determinístico cobre duelos de dois personagens em campo aberto, d616, edge/trouble, iniciativa, Health/Focus, ações e movimento, ataques Melee/Agility, Fast Strikes contra um alvo, Garra, Lâmina, Marreta, Escudo, Mighty, Sturdy, Healing Factor, Do This All Day, Attack Stance, Riposte, Bleeding e Stunned. As políticas só solicitam ações; o motor valida e resolve o estado. Cada experimento registra sementes e hashes de fontes.
 
@@ -54,7 +56,7 @@ python -m scripts.replay --scenario mirror_hammer --strategy hammer --index 0 --
 
 As sementes são derivadas de SHA-256 de fase, cenário, política e índice. Reexecutar uma fase com o mesmo código produz os mesmos resultados. Os resultados de confirmação usam sementes diferentes das de desenvolvimento. `source_sha256` em cada JSON permite detectar mudanças nas regras, ficha auditada, especificação e código do pacote.
 
-A suíte atual tem **106 testes** aprovados, incluindo oráculos do novo conjunto de dados, integração de duas armas e auditores independentes de duelos, Focus e grupo. A versão `pool_v2` já tem 52.000 duelos de desenvolvimento, 60.000 combates descritivos de grupo, 60.000 de Focus e 60.000 de corredor. A replicação confirmatória e a reserva v2 estão em execução; [PROJECT_STATUS.md](PROJECT_STATUS.md) separa o que ainda falta. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
+A suíte atual tem **119 testes** aprovados, incluindo oráculos do novo conjunto de dados, integração de duas armas, auditores independentes e troca de fichas. A versão `pool_v2` tem 52.000 duelos de desenvolvimento, 240.000 de replicação, 120.000 de reserva e 60.000 combates descritivos em cada extensão de grupo, Focus e corredor. A camada genérica de fichas tem um teste de integração com 1.000 duelos adicionais. [PROJECT_STATUS.md](PROJECT_STATUS.md) separa o que ainda falta. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
 
 ## Leitura responsável
 

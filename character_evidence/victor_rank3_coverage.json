@@ -1,0 +1,259 @@
+{
+  "sheet_id": "victor_halle",
+  "revision": "rank3_2026-10-26_table_2026-10-27",
+  "engine": "restricted_physical_duel_pool_v2",
+  "build_legality": "not_certified_by_this_mechanics_adapter",
+  "ready_for_this_scope": true,
+  "blockers": [],
+  "features": [
+    {
+      "kind": "power",
+      "id": "mighty",
+      "level": 3,
+      "status": "implemented",
+      "detail": "Level becomes Melee damage bonus",
+      "sources": [
+        "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+      ]
+    },
+    {
+      "kind": "power",
+      "id": "sturdy",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Level becomes Health DR",
+      "sources": [
+        "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+      ]
+    },
+    {
+      "kind": "power",
+      "id": "healing_factor",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Physical duel action/passive",
+      "sources": [
+        "CHARACTER_AUDIT.md; Core p.103"
+      ]
+    },
+    {
+      "kind": "power",
+      "id": "brawling",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Physical duel action/passive",
+      "sources": [
+        "CHARACTER_AUDIT.md; Core p.86"
+      ]
+    },
+    {
+      "kind": "power",
+      "id": "fast_strikes",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Physical duel action/passive",
+      "sources": [
+        "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+      ]
+    },
+    {
+      "kind": "power",
+      "id": "attack_stance",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Physical duel action/passive",
+      "sources": [
+        "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "power",
+      "id": "riposte",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Physical duel action/passive",
+      "sources": [
+        "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "power",
+      "id": "disguise",
+      "level": 1,
+      "status": "contextual",
+      "detail": "No disguise/deception phase in this direct duel",
+      "sources": [
+        "CHARACTER_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "power",
+      "id": "do_this_all_day",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Physical duel action/passive",
+      "sources": [
+        "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "power",
+      "id": "blazing_fast_fists",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Physical duel action/passive",
+      "sources": [
+        "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "trait",
+      "id": "weird",
+      "level": 1,
+      "status": "contextual",
+      "detail": "No social phase in this direct duel",
+      "sources": [
+        "CHARACTER_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "trait",
+      "id": "battle_ready",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Initiative/reaction/check resource trait",
+      "sources": [
+        "CHARACTER_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "trait",
+      "id": "connections_military",
+      "level": 1,
+      "status": "contextual",
+      "detail": "No contacts/reinforcements in this direct duel",
+      "sources": [
+        "CHARACTER_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "trait",
+      "id": "situational_awareness",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Initiative/reaction/check resource trait",
+      "sources": [
+        "CHARACTER_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "trait",
+      "id": "combat_reflexes",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Initiative/reaction/check resource trait",
+      "sources": [
+        "CHARACTER_AUDIT.md; official errata: per round"
+      ]
+    },
+    {
+      "kind": "trait",
+      "id": "signature_fast_strikes",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Initiative/reaction/check resource trait",
+      "sources": [
+        "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+      ]
+    },
+    {
+      "kind": "tag",
+      "id": "obligation",
+      "level": 1,
+      "status": "contextual",
+      "detail": "No narrative phase in this direct duel",
+      "sources": [
+        "CHARACTER_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "tag",
+      "id": "rich",
+      "level": 1,
+      "status": "contextual",
+      "detail": "No narrative phase in this direct duel",
+      "sources": [
+        "CHARACTER_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "tag",
+      "id": "signature_weapon",
+      "level": 1,
+      "status": "contextual",
+      "detail": "No narrative phase in this direct duel",
+      "sources": [
+        "CHARACTER_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "tag",
+      "id": "heroic",
+      "level": 1,
+      "status": "implemented",
+      "detail": "Nonlethal damage floor; Karma spending remains outside scope",
+      "sources": [
+        "CHARACTER_AUDIT.md"
+      ]
+    },
+    {
+      "kind": "house_weapon",
+      "id": "blade",
+      "level": 1,
+      "status": "implemented",
+      "detail": "User-confirmed Rank 3 biological weapon",
+      "sources": [
+        "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+      ]
+    },
+    {
+      "kind": "house_weapon",
+      "id": "claw",
+      "level": 1,
+      "status": "implemented",
+      "detail": "User-confirmed Rank 3 biological weapon",
+      "sources": [
+        "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+      ]
+    },
+    {
+      "kind": "house_weapon",
+      "id": "hammer",
+      "level": 1,
+      "status": "implemented",
+      "detail": "User-confirmed Rank 3 biological weapon",
+      "sources": [
+        "RULES_AUDIT.md HR-02"
+      ]
+    },
+    {
+      "kind": "house_weapon",
+      "id": "shield",
+      "level": 1,
+      "status": "implemented",
+      "detail": "User-confirmed Rank 3 biological weapon",
+      "sources": [
+        "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+      ]
+    }
+  ],
+  "scope_limits": [
+    "two actors",
+    "direct physical combat",
+    "open field",
+    "no Karma spending",
+    "no numeric limb penalties",
+    "no Focus attacks",
+    "no climbing/swimming phase"
+  ]
+}

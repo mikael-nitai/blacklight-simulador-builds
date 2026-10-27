@@ -1,0 +1,50 @@
+{
+  "schema": "blacklight.character.v1",
+  "id": "victor_halle",
+  "revision": "rank3_2026-10-26_table_2026-10-27",
+  "name": "Blacklight",
+  "rank": 3,
+  "ruleset": "literal_marvel_pool_v2",
+  "abilities": {"melee": 6, "agility": 1, "resilience": 5, "vigilance": 2, "ego": 1, "logic": 0},
+  "defenses": {"melee": 16, "agility": 11, "resilience": 15, "vigilance": 12, "ego": 11, "logic": 10},
+  "resources": {"health": 150, "focus": 90, "karma": 3},
+  "movement": {"run": 5, "climb": 3, "swim": 3},
+  "initiative_modifier": 2,
+  "features": [
+    {"id": "mighty", "kind": "power", "level": 3, "parameters": {}, "sources": ["CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"]},
+    {"id": "sturdy", "kind": "power", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"]},
+    {"id": "healing_factor", "kind": "power", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; Core p.103"]},
+    {"id": "brawling", "kind": "power", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; Core p.86"]},
+    {"id": "fast_strikes", "kind": "power", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"]},
+    {"id": "attack_stance", "kind": "power", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; RULES_AUDIT.md"]},
+    {"id": "riposte", "kind": "power", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; RULES_AUDIT.md"]},
+    {"id": "disguise", "kind": "power", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md"]},
+    {"id": "do_this_all_day", "kind": "power", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; RULES_AUDIT.md"]},
+    {"id": "blazing_fast_fists", "kind": "power", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; RULES_AUDIT.md"]},
+    {"id": "weird", "kind": "trait", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md"]},
+    {"id": "battle_ready", "kind": "trait", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md"]},
+    {"id": "connections_military", "kind": "trait", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md"]},
+    {"id": "situational_awareness", "kind": "trait", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md"]},
+    {"id": "combat_reflexes", "kind": "trait", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; official errata: per round"]},
+    {"id": "signature_fast_strikes", "kind": "trait", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"]},
+    {"id": "obligation", "kind": "tag", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md"]},
+    {"id": "rich", "kind": "tag", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md"]},
+    {"id": "signature_weapon", "kind": "tag", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md"]},
+    {"id": "heroic", "kind": "tag", "level": 1, "parameters": {}, "sources": ["CHARACTER_AUDIT.md"]},
+    {"id": "blade", "kind": "house_weapon", "level": 1, "parameters": {}, "sources": ["RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"]},
+    {"id": "claw", "kind": "house_weapon", "level": 1, "parameters": {}, "sources": ["RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"]},
+    {"id": "hammer", "kind": "house_weapon", "level": 1, "parameters": {}, "sources": ["RULES_AUDIT.md HR-02"]},
+    {"id": "shield", "kind": "house_weapon", "level": 1, "parameters": {}, "sources": ["RULES_AUDIT.md HR-04; FOCUS_RULING.md"]}
+  ],
+  "provenance": [
+    {"kind": "pdf", "path": "C:/Users/avada/Downloads/Ficha_victor Halle Rank 3.pdf", "sha256": "6c907dfcaa2af39b904e6144466915bafc6b6f66f407aeb312dea112fd3200d1", "page": 1},
+    {"kind": "audit", "path": "CHARACTER_AUDIT.md", "date": "2026-10-26"},
+    {"kind": "table_rulings", "paths": ["DAMAGE_POOL_RULING.md", "FAST_STRIKES_RULING.md", "FOCUS_RULING.md"], "date": "2026-10-27"}
+  ],
+  "notes": [
+    "Initiative 2 and Run 5 follow the audited Core-derived variant. The PDF prints 1 and 6; that disagreement is retained in CHARACTER_AUDIT.md.",
+    "Mighty 1/2/3 rows are stored as the highest level 3, without summing levels.",
+    "Extended Reach is absent from this primary sheet. Whip is unavailable at Rank 3.",
+    "This record preserves all listed powers, traits and tags. Read the adapter coverage report before simulation."
+  ]
+}

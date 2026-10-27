@@ -1,0 +1,1742 @@
+{
+  "schema": "blacklight.pdf-sheet-draft.v1",
+  "status": "requires_field_mapping_and_visual_review",
+  "source": {
+    "path": "C:\\Users\\avada\\Downloads\\Ficha_victor Halle Rank 3.pdf",
+    "sha256": "6c907dfcaa2af39b904e6144466915bafc6b6f66f407aeb312dea112fd3200d1",
+    "pages": 2
+  },
+  "form_fields": [
+    {
+      "name": "Real Name",
+      "value": "Victor Halle"
+    },
+    {
+      "name": "Height",
+      "value": "1.88m"
+    },
+    {
+      "name": "Weight",
+      "value": "102kg"
+    },
+    {
+      "name": "Gender",
+      "value": "Masculino"
+    },
+    {
+      "name": "Eyes",
+      "value": "Marrom"
+    },
+    {
+      "name": "Hair",
+      "value": "Peto"
+    },
+    {
+      "name": "Size",
+      "value": "Grande/musculoso"
+    },
+    {
+      "name": "Teams",
+      "value": "Arca"
+    },
+    {
+      "name": "Base",
+      "value": "San Diego"
+    },
+    {
+      "name": "Origin",
+      "value": "Weird Science"
+    },
+    {
+      "name": "Profession",
+      "value": "Military"
+    },
+    {
+      "name": "NOTES 1",
+      "value": ""
+    },
+    {
+      "name": "Power",
+      "value": "Mighty 1"
+    },
+    {
+      "name": "Set",
+      "value": "Superforça"
+    },
+    {
+      "name": "Cost",
+      "value": "none"
+    },
+    {
+      "name": "Page",
+      "value": "109"
+    },
+    {
+      "name": "Summary",
+      "value": "+1 multiplicador melle"
+    },
+    {
+      "name": "Power_2",
+      "value": "Sturdy l"
+    },
+    {
+      "name": "Set_2",
+      "value": "none"
+    },
+    {
+      "name": "Cost_2",
+      "value": "none"
+    },
+    {
+      "name": "Page_2",
+      "value": "123"
+    },
+    {
+      "name": "Summary_2",
+      "value": "- 1 multiplicador do inimigo"
+    },
+    {
+      "name": "Power_3",
+      "value": "Healing Factor"
+    },
+    {
+      "name": "Set_3",
+      "value": "none"
+    },
+    {
+      "name": "Cost_3",
+      "value": "none"
+    },
+    {
+      "name": "Page_3",
+      "value": "103"
+    },
+    {
+      "name": "Summary_3",
+      "value": "Ao fim do turno regenera (resilencia) de Health"
+    },
+    {
+      "name": "Power_4",
+      "value": "Brawling"
+    },
+    {
+      "name": "Set_4",
+      "value": "none"
+    },
+    {
+      "name": "Cost_4",
+      "value": "none"
+    },
+    {
+      "name": "Page_4",
+      "value": "86"
+    },
+    {
+      "name": "Summary_4",
+      "value": "Usa Melle para defender ataques de agilidade"
+    },
+    {
+      "name": "Power_5",
+      "value": "Fast strikes"
+    },
+    {
+      "name": "Set_5",
+      "value": "Artes maciais"
+    },
+    {
+      "name": "Cost_5",
+      "value": "none"
+    },
+    {
+      "name": "Page_5",
+      "value": ""
+    },
+    {
+      "name": "Summary_5",
+      "value": "faz dois ataques alvo sofre metade do dano "
+    },
+    {
+      "name": "Power_6",
+      "value": "Attack Stance"
+    },
+    {
+      "name": "Set_6",
+      "value": "Artes maciais"
+    },
+    {
+      "name": "Cost_6",
+      "value": "none"
+    },
+    {
+      "name": "Page_6",
+      "value": ""
+    },
+    {
+      "name": "Summary_6",
+      "value": "Dobra o bônus de dano de Melee ( concentration)"
+    },
+    {
+      "name": "Power_7",
+      "value": "Riposte"
+    },
+    {
+      "name": "Set_7",
+      "value": "corpo a corpo"
+    },
+    {
+      "name": "Cost_7",
+      "value": "none"
+    },
+    {
+      "name": "Page_7",
+      "value": ""
+    },
+    {
+      "name": "Summary_7",
+      "value": "contra ataque caso errem um ataque"
+    },
+    {
+      "name": "Power_8",
+      "value": "Disguise"
+    },
+    {
+      "name": "Set_8",
+      "value": "none"
+    },
+    {
+      "name": "Cost_8",
+      "value": "none"
+    },
+    {
+      "name": "Page_8",
+      "value": ""
+    },
+    {
+      "name": "Summary_8",
+      "value": "muda a aparencia do victor"
+    },
+    {
+      "name": "Power_9",
+      "value": "Mighty 2"
+    },
+    {
+      "name": "Set_9",
+      "value": ""
+    },
+    {
+      "name": "Cost_9",
+      "value": ""
+    },
+    {
+      "name": "Page_9",
+      "value": ""
+    },
+    {
+      "name": "Summary_9",
+      "value": ""
+    },
+    {
+      "name": "Power_10",
+      "value": "Mighty 3"
+    },
+    {
+      "name": "Set_10",
+      "value": ""
+    },
+    {
+      "name": "Cost_10",
+      "value": ""
+    },
+    {
+      "name": "Page_10",
+      "value": ""
+    },
+    {
+      "name": "Summary_10",
+      "value": "Eleva o bônus para +3. Seu ataque comum fica dMarvel × 6 + 6"
+    },
+    {
+      "name": "Power_11",
+      "value": "Do This all day"
+    },
+    {
+      "name": "Set_11",
+      "value": ""
+    },
+    {
+      "name": "Cost_11",
+      "value": ""
+    },
+    {
+      "name": "Page_11",
+      "value": ""
+    },
+    {
+      "name": "Summary_11",
+      "value": "heals 2 points of Health for everypoint of Focus"
+    },
+    {
+      "name": "Power_12",
+      "value": "Blazing-Fast Fists"
+    },
+    {
+      "name": "Set_12",
+      "value": ""
+    },
+    {
+      "name": "Cost_12",
+      "value": ""
+    },
+    {
+      "name": "Page_12",
+      "value": ""
+    },
+    {
+      "name": "Summary_12",
+      "value": "edge on all Melee attacks"
+    },
+    {
+      "name": "Power_13",
+      "value": ""
+    },
+    {
+      "name": "Set_13",
+      "value": ""
+    },
+    {
+      "name": "Cost_13",
+      "value": ""
+    },
+    {
+      "name": "Page_13",
+      "value": ""
+    },
+    {
+      "name": "Summary_13",
+      "value": ""
+    },
+    {
+      "name": "Power_14",
+      "value": ""
+    },
+    {
+      "name": "Set_14",
+      "value": ""
+    },
+    {
+      "name": "Cost_14",
+      "value": ""
+    },
+    {
+      "name": "Page_14",
+      "value": ""
+    },
+    {
+      "name": "Summary_14",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 1_2",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 2_2",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 3_2",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 4_2",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 5_2",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 6_2",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 7_2",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 8_2",
+      "value": ""
+    },
+    {
+      "name": "HISTORY 1",
+      "value": ""
+    },
+    {
+      "name": "HISTORY 2",
+      "value": ""
+    },
+    {
+      "name": "HISTORY 3",
+      "value": ""
+    },
+    {
+      "name": "HISTORY 4",
+      "value": ""
+    },
+    {
+      "name": "HISTORY 5",
+      "value": ""
+    },
+    {
+      "name": "HISTORY 6",
+      "value": ""
+    },
+    {
+      "name": "HISTORY 7",
+      "value": ""
+    },
+    {
+      "name": "HISTORY 8",
+      "value": ""
+    },
+    {
+      "name": "HISTORY 9",
+      "value": ""
+    },
+    {
+      "name": "Set_15",
+      "value": ""
+    },
+    {
+      "name": "Power_15",
+      "value": ""
+    },
+    {
+      "name": "Cost_15",
+      "value": ""
+    },
+    {
+      "name": "Page_15",
+      "value": ""
+    },
+    {
+      "name": "Summary_15",
+      "value": ""
+    },
+    {
+      "name": "Power_16",
+      "value": ""
+    },
+    {
+      "name": "Set_16",
+      "value": ""
+    },
+    {
+      "name": "Cost_16",
+      "value": ""
+    },
+    {
+      "name": "Page_16",
+      "value": ""
+    },
+    {
+      "name": "Summary_16",
+      "value": ""
+    },
+    {
+      "name": "Power_17",
+      "value": ""
+    },
+    {
+      "name": "Set_17",
+      "value": ""
+    },
+    {
+      "name": "Cost_17",
+      "value": ""
+    },
+    {
+      "name": "Page_17",
+      "value": ""
+    },
+    {
+      "name": "Summary_17",
+      "value": ""
+    },
+    {
+      "name": "Power_18",
+      "value": ""
+    },
+    {
+      "name": "Set_18",
+      "value": ""
+    },
+    {
+      "name": "Cost_18",
+      "value": ""
+    },
+    {
+      "name": "Page_18",
+      "value": ""
+    },
+    {
+      "name": "Summary_18",
+      "value": ""
+    },
+    {
+      "name": "Power_19",
+      "value": ""
+    },
+    {
+      "name": "Set_19",
+      "value": ""
+    },
+    {
+      "name": "Cost_19",
+      "value": ""
+    },
+    {
+      "name": "Page_19",
+      "value": ""
+    },
+    {
+      "name": "Summary_19",
+      "value": ""
+    },
+    {
+      "name": "Power_20",
+      "value": ""
+    },
+    {
+      "name": "Set_20",
+      "value": ""
+    },
+    {
+      "name": "Cost_20",
+      "value": ""
+    },
+    {
+      "name": "Page_20",
+      "value": ""
+    },
+    {
+      "name": "Summary_20",
+      "value": ""
+    },
+    {
+      "name": "Power_21",
+      "value": ""
+    },
+    {
+      "name": "Set_21",
+      "value": ""
+    },
+    {
+      "name": "Cost_21",
+      "value": ""
+    },
+    {
+      "name": "Page_21",
+      "value": ""
+    },
+    {
+      "name": "Summary_21",
+      "value": ""
+    },
+    {
+      "name": "Power_22",
+      "value": ""
+    },
+    {
+      "name": "Set_22",
+      "value": ""
+    },
+    {
+      "name": "Cost_22",
+      "value": ""
+    },
+    {
+      "name": "Page_22",
+      "value": ""
+    },
+    {
+      "name": "Summary_22",
+      "value": ""
+    },
+    {
+      "name": "Power_23",
+      "value": ""
+    },
+    {
+      "name": "Set_23",
+      "value": ""
+    },
+    {
+      "name": "Cost_23",
+      "value": ""
+    },
+    {
+      "name": "Page_23",
+      "value": ""
+    },
+    {
+      "name": "Summary_23",
+      "value": ""
+    },
+    {
+      "name": "Power_24",
+      "value": ""
+    },
+    {
+      "name": "Set_24",
+      "value": ""
+    },
+    {
+      "name": "Cost_24",
+      "value": ""
+    },
+    {
+      "name": "Page_24",
+      "value": ""
+    },
+    {
+      "name": "Summary_24",
+      "value": ""
+    },
+    {
+      "name": "NOTES 2",
+      "value": ""
+    },
+    {
+      "name": "NOTES 3",
+      "value": ""
+    },
+    {
+      "name": "NOTES 4",
+      "value": ""
+    },
+    {
+      "name": "NOTES 5",
+      "value": ""
+    },
+    {
+      "name": "NOTES 6",
+      "value": ""
+    },
+    {
+      "name": "NOTES 7",
+      "value": ""
+    },
+    {
+      "name": "NOTES 8",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent.1",
+      "value": "/Yes"
+    },
+    {
+      "name": "Duration Permanent.2",
+      "value": "/Yes"
+    },
+    {
+      "name": "Duration Permanent.3",
+      "value": "/Yes"
+    },
+    {
+      "name": "Duration Permanent.4",
+      "value": "/Off"
+    },
+    {
+      "name": "Duration Permanent.5",
+      "value": "/Yes"
+    },
+    {
+      "name": "Duration Permanent.6",
+      "value": "/Yes"
+    },
+    {
+      "name": "Duration Permanent.7",
+      "value": "/Yes"
+    },
+    {
+      "name": "Duration Permanent.8",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent.9",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent.10",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent.11",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent.12",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent.13",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent.0",
+      "value": "/Yes"
+    },
+    {
+      "name": "Duration Instant",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.1",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.2",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.3",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.4",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.5",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.6",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.7",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.8",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.9",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.10",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.11",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.12",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.13",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant.0",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.1",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.2",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.3",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.4",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.5",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.6",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.7",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.8",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.9",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.10",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.11",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.12",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.13",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round.0",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.1",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.2",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.3",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.4",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.5",
+      "value": "/Yes"
+    },
+    {
+      "name": "Duration Concentration.6",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.7",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.8",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.9",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.10",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.11",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.12",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.13",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration.0",
+      "value": ""
+    },
+    {
+      "name": "Action Standard",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.1",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.2",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.3",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.4",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.5",
+      "value": "/Yes"
+    },
+    {
+      "name": "Action Standard.6",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.7",
+      "value": "/Yes"
+    },
+    {
+      "name": "Action Standard.8",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.9",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.10",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.11",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.12",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.13",
+      "value": ""
+    },
+    {
+      "name": "Action Standard.0",
+      "value": ""
+    },
+    {
+      "name": "Action Move",
+      "value": ""
+    },
+    {
+      "name": "Action Move.1",
+      "value": ""
+    },
+    {
+      "name": "Action Move.2",
+      "value": ""
+    },
+    {
+      "name": "Action Move.3",
+      "value": ""
+    },
+    {
+      "name": "Action Move.4",
+      "value": ""
+    },
+    {
+      "name": "Action Move.5",
+      "value": ""
+    },
+    {
+      "name": "Action Move.6",
+      "value": ""
+    },
+    {
+      "name": "Action Move.7",
+      "value": ""
+    },
+    {
+      "name": "Action Move.8",
+      "value": ""
+    },
+    {
+      "name": "Action Move.9",
+      "value": ""
+    },
+    {
+      "name": "Action Move.10",
+      "value": ""
+    },
+    {
+      "name": "Action Move.11",
+      "value": ""
+    },
+    {
+      "name": "Action Move.12",
+      "value": ""
+    },
+    {
+      "name": "Action Move.13",
+      "value": ""
+    },
+    {
+      "name": "Action Move.0",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.1",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.2",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.3",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.4",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.5",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.6",
+      "value": "/Yes"
+    },
+    {
+      "name": "Action Reaction.7",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.8",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.9",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.10",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.11",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.12",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.13",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction.0",
+      "value": ""
+    },
+    {
+      "name": "Run Speed",
+      "value": "6m"
+    },
+    {
+      "name": "Climb Speed",
+      "value": "3m"
+    },
+    {
+      "name": "Swim Speed",
+      "value": "3m"
+    },
+    {
+      "name": "Other Speed 1",
+      "value": ""
+    },
+    {
+      "name": "Other Speed 2",
+      "value": ""
+    },
+    {
+      "name": "Deffensive TM Level",
+      "value": ""
+    },
+    {
+      "name": "Deffensive TM Cost",
+      "value": ""
+    },
+    {
+      "name": "Offensive TM",
+      "value": ""
+    },
+    {
+      "name": "Defensive TM",
+      "value": ""
+    },
+    {
+      "name": "Rally TM",
+      "value": ""
+    },
+    {
+      "name": "Codename",
+      "value": "Blacklight"
+    },
+    {
+      "name": "Rank",
+      "value": "3"
+    },
+    {
+      "name": "Health",
+      "value": "150"
+    },
+    {
+      "name": "Health DR",
+      "value": "1"
+    },
+    {
+      "name": "Focus",
+      "value": "90"
+    },
+    {
+      "name": "Focus DR",
+      "value": ""
+    },
+    {
+      "name": "Karma",
+      "value": "3"
+    },
+    {
+      "name": "Initiative Modifier",
+      "value": "1"
+    },
+    {
+      "name": "TRAITS 1",
+      "value": "Weird"
+    },
+    {
+      "name": "TRAITS 2",
+      "value": "Battle Ready(+30 em focus)"
+    },
+    {
+      "name": "TRAITS 3",
+      "value": "Connections: Military"
+    },
+    {
+      "name": "TRAITS 4",
+      "value": "Situational Awareness (vantagem em iniciativa)"
+    },
+    {
+      "name": "TRAITS 5",
+      "value": "Combat Reflexes (reação adicional por turno)"
+    },
+    {
+      "name": "TRAITS 6",
+      "value": "Signature Attack(Fast Strikes)"
+    },
+    {
+      "name": "TRAITS 7",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 8",
+      "value": ""
+    },
+    {
+      "name": "TAGS 6",
+      "value": ""
+    },
+    {
+      "name": "TAGS 7",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 9",
+      "value": ""
+    },
+    {
+      "name": "TRAITS 9_2",
+      "value": ""
+    },
+    {
+      "name": "TAGS 4",
+      "value": "Heróic"
+    },
+    {
+      "name": "TAGS 5",
+      "value": ""
+    },
+    {
+      "name": "TAGS 1",
+      "value": "Obligation"
+    },
+    {
+      "name": "TAGS 2",
+      "value": "Rich"
+    },
+    {
+      "name": "TAGS 3",
+      "value": "Signature Weapon"
+    },
+    {
+      "name": "Melee Score",
+      "value": "6"
+    },
+    {
+      "name": "Melee Defense",
+      "value": "16"
+    },
+    {
+      "name": "Melee Non-Combat",
+      "value": "7"
+    },
+    {
+      "name": "Agility Score",
+      "value": "1"
+    },
+    {
+      "name": "Agility Defense",
+      "value": "11"
+    },
+    {
+      "name": "Agility Non-Combat",
+      "value": "2"
+    },
+    {
+      "name": "Resilience Score",
+      "value": "5"
+    },
+    {
+      "name": "Resilience Defense",
+      "value": "15"
+    },
+    {
+      "name": "Resilience Non-Combat",
+      "value": "6"
+    },
+    {
+      "name": "Vigilance Score",
+      "value": "2"
+    },
+    {
+      "name": "Vigilance Defense",
+      "value": "12"
+    },
+    {
+      "name": "Vigilance Non-Combat",
+      "value": "3"
+    },
+    {
+      "name": "Ego Score",
+      "value": "1"
+    },
+    {
+      "name": "Ego Defense",
+      "value": "11"
+    },
+    {
+      "name": "Ego Non-Combat",
+      "value": "2"
+    },
+    {
+      "name": "Logic Score",
+      "value": "0"
+    },
+    {
+      "name": "Logic Defense",
+      "value": "10"
+    },
+    {
+      "name": "Melee DMG Multiplier",
+      "value": "6"
+    },
+    {
+      "name": "Melee DMG Ability Score",
+      "value": "6"
+    },
+    {
+      "name": "Agility DMG Multiplier",
+      "value": "3"
+    },
+    {
+      "name": "Agility DMG Ability Score",
+      "value": "2"
+    },
+    {
+      "name": "Ego DMG Multiplier",
+      "value": "3"
+    },
+    {
+      "name": "Ego DMG Ability Score",
+      "value": "1"
+    },
+    {
+      "name": "Logic DMG Multiplier",
+      "value": "3"
+    },
+    {
+      "name": "Logic DMG Ability Score",
+      "value": "1"
+    },
+    {
+      "name": "Logic Non-Combat",
+      "value": "1"
+    },
+    {
+      "name": "Portrait",
+      "value": ""
+    },
+    {
+      "name": "TAGS 2_1",
+      "value": ""
+    },
+    {
+      "name": "TAGS 2_2",
+      "value": ""
+    },
+    {
+      "name": "TAGS 2_3",
+      "value": ""
+    },
+    {
+      "name": "TAGS 2_4",
+      "value": ""
+    },
+    {
+      "name": "TAGS 2_5",
+      "value": ""
+    },
+    {
+      "name": "TAGS 2_6",
+      "value": ""
+    },
+    {
+      "name": "TAGS 2_7",
+      "value": ""
+    },
+    {
+      "name": "TAGS 2_8",
+      "value": ""
+    },
+    {
+      "name": "PERSONALITY_1",
+      "value": ""
+    },
+    {
+      "name": "PERSONALITY_2",
+      "value": ""
+    },
+    {
+      "name": "PERSONALITY_3",
+      "value": ""
+    },
+    {
+      "name": "PERSONALITY_4",
+      "value": ""
+    },
+    {
+      "name": "PERSONALITY_5",
+      "value": ""
+    },
+    {
+      "name": "PERSONALITY_6",
+      "value": ""
+    },
+    {
+      "name": "PERSONALITY_7",
+      "value": ""
+    },
+    {
+      "name": "PERSONALITY_8",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.0",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.1",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.2",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.3",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.4",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.5",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.6",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.7",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.8",
+      "value": ""
+    },
+    {
+      "name": "Duration Permanent 2.9",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.0",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.1",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.2",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.3",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.4",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.5",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.6",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.7",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.8",
+      "value": ""
+    },
+    {
+      "name": "Duration Instant 2.9",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.0",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.1",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.2",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.3",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.4",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.5",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.6",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.7",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.8",
+      "value": ""
+    },
+    {
+      "name": "Duration 1 Round 2.9",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.0",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.1",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.2",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.3",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.4",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.5",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.6",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.7",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.8",
+      "value": ""
+    },
+    {
+      "name": "Duration Concentration 2.9",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.0",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.1",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.2",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.3",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.4",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.5",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.6",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.7",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.8",
+      "value": ""
+    },
+    {
+      "name": "Action Standard 2.9",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.0",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.1",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.2",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.3",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.4",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.5",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.6",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.7",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.8",
+      "value": ""
+    },
+    {
+      "name": "Action Move 2.9",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.0",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.1",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.2",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.3",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.4",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.5",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.6",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.7",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.8",
+      "value": ""
+    },
+    {
+      "name": "Action Reaction 2.9",
+      "value": ""
+    },
+    {
+      "name": "Summary_15 2",
+      "value": ""
+    },
+    {
+      "name": "Summary_16 2",
+      "value": ""
+    },
+    {
+      "name": "Summary_17 2",
+      "value": ""
+    },
+    {
+      "name": "Summary_18 2",
+      "value": ""
+    },
+    {
+      "name": "Summary_19 2",
+      "value": ""
+    },
+    {
+      "name": "Summary_20 2",
+      "value": ""
+    },
+    {
+      "name": "Summary_21 2",
+      "value": ""
+    },
+    {
+      "name": "Summary_22 2",
+      "value": ""
+    },
+    {
+      "name": "Summary_23 2",
+      "value": ""
+    },
+    {
+      "name": "Summary_24 2",
+      "value": ""
+    },
+    {
+      "name": "Distinguishing Features 2",
+      "value": "partes presentam brilho avermelhado durante o uso dos poderes"
+    },
+    {
+      "name": "Distinguishing Features 1",
+      "value": "Tatuagem nas costas, após a infecção, "
+    },
+    {
+      "name": "Offensive TM Cost",
+      "value": ""
+    },
+    {
+      "name": "Offensive TM Level",
+      "value": ""
+    },
+    {
+      "name": "Rally TM Cost",
+      "value": ""
+    },
+    {
+      "name": "Rally TM Level",
+      "value": ""
+    }
+  ],
+  "text_pages": [],
+  "text_page_limit": 12,
+  "note": "This evidence draft cannot be executed as a character sheet."
+}

@@ -1,0 +1,97 @@
+"""One full audited duel from two arbitrary versioned character sheets."""
+
+from dataclasses import asdict
+from hashlib import sha256
+import json
+
+from blacklight import __version__
+from blacklight.audit import audit_log
+from blacklight.engine import Duel
+from blacklight.experiment import Moment, wilson
+from .duel_adapter import compile_duel, coverage
+from .sheets import CharacterSheet, sheet_record
+
+
+def _outcome(result, hero_name: str) -> str:
+    return (result.outcome if result.outcome in ('draw', 'inconclusive')
+            else 'win' if result.winner == hero_name else 'loss')
+
+
+def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
+             hero_policy: object, opponent_policy: object, *, seed: int,
+             initial_distance: int = 1, max_rounds: int = 30) -> dict:
+    profiles = (compile_duel(hero), compile_duel(opponent))
+    if profiles[0].name == profiles[1].name:
+        raise ValueError("Combatants need distinct display names for the audit ledger")
+    result = Duel(profiles, (hero_policy, opponent_policy), seed=seed,
+                  initial_distance=initial_distance, max_rounds=max_rounds,
+                  audit=True).run()
+    issues = audit_log(result.log,
+                       {p.name: p.max_health for p in profiles},
+                       {p.name: p.max_focus for p in profiles})
+    if issues:
+        raise RuntimeError(f"Generic character duel failed audit: {issues}")
+    return {'schema': 'blacklight-generic-character-duel-v1',
+            'damage_model': 'literal_marvel_pool_v2',
+            'engine_version': __version__, 'seed': seed,
+            'initial_distance': initial_distance, 'max_rounds': max_rounds,
+            'sheets': [sheet_record(hero), sheet_record(opponent)],
+            'policies': [asdict(hero_policy), asdict(opponent_policy)],
+            'hero_id': hero.id, 'hero_revision': hero.revision,
+            'opponent_id': opponent.id, 'opponent_revision': opponent.revision,
+            'hero_outcome': _outcome(result, profiles[0].name),
+            'coverage': [coverage(hero), coverage(opponent)],
+            'result': asdict(result), 'audit_issues': issues}
+
+
+def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
+              hero_policy: object, opponent_policy: object, *, n: int,
+              master_seed: int, initial_distance: int = 1,
+              max_rounds: int = 30, audit_every: int = 100) -> dict:
+    if n < 1 or audit_every < 1:
+        raise ValueError('Positive sample count and audit interval required')
+    profiles = (compile_duel(hero), compile_duel(opponent))
+    if profiles[0].name == profiles[1].name:
+        raise ValueError('Combatants need distinct display names')
+    cell = {'sheets': [sheet_record(hero), sheet_record(opponent)],
+            'policies': [asdict(hero_policy), asdict(opponent_policy)],
+            'initial_distance': initial_distance, 'max_rounds': max_rounds}
+    cell_hash = sha256(json.dumps(cell, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    outcomes = dict.fromkeys(('win', 'loss', 'draw', 'inconclusive'), 0)
+    moments = {name: Moment() for name in ('rounds', 'hero_final_health',
+                                         'hero_final_focus', 'hero_damage_dealt',
+                                         'hero_damage_taken')}
+    audited = []
+    for index in range(n):
+        key = f'character-batch-v1|{master_seed}|{cell_hash}|{index}'
+        seed = int.from_bytes(sha256(key.encode()).digest()[:8], 'big')
+        inspect = index % audit_every == 0
+        result = Duel(profiles, (hero_policy, opponent_policy), seed=seed,
+                      initial_distance=initial_distance, max_rounds=max_rounds,
+                      audit=inspect).run()
+        if inspect:
+            issues = audit_log(result.log,
+                               {p.name: p.max_health for p in profiles},
+                               {p.name: p.max_focus for p in profiles})
+            if issues:
+                raise RuntimeError(f'Batch trace {index} failed audit: {issues}')
+            audited.append({'index': index, 'seed': seed, 'issues': []})
+        outcomes[_outcome(result, profiles[0].name)] += 1
+        for name, value in (
+            ('rounds', result.rounds), ('hero_final_health', result.final_health[0]),
+            ('hero_final_focus', result.final_focus[0]),
+            ('hero_damage_dealt', result.metrics[0]['damage_dealt']),
+            ('hero_damage_taken', result.metrics[0]['damage_taken']),
+        ):
+            moments[name].add(value)
+    return {'schema': 'blacklight-generic-character-batch-v1',
+            'damage_model': 'literal_marvel_pool_v2', 'engine_version': __version__,
+            **cell, 'n': n, 'master_seed': master_seed, 'cell_sha256': cell_hash,
+            'seed_formula': 'first 8 SHA-256 bytes of character-batch-v1|master_seed|cell_sha256|index',
+            'pairing_note': 'Seeds identify this cell; different cells are not assumed to be paired samples',
+            'coverage': [coverage(hero), coverage(opponent)],
+            'outcomes': outcomes,
+            'rates': {name: {'estimate': count / n, 'wilson95': wilson(count, n)}
+                      for name, count in outcomes.items()},
+            'metrics_all_starts': {name: moment.summary() for name, moment in moments.items()},
+            'audited_traces': audited}

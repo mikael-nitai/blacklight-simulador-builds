@@ -2,7 +2,7 @@
 
 **27/10/2026.** Esta expansão é separada do [relatório confirmatório de duelos](REPORT.md). O [pré-registro específico](GROUP_EXPERIMENT_SPEC.md) fixou dois inimigos sintéticos que atacam Victor em conjunto, todos sempre ao alcance corpo a corpo. [GROUP_SPEC.md](GROUP_SPEC.md) delimita as regras implementadas e as que ainda faltam. O motor de grupo fica em `experimental/`; não foi usado nos 400.000 duelos confirmatórios.
 
-**Regra posterior da mesa:** [todo dano usa vários d6 literais](DAMAGE_POOL_RULING.md), ao contrário do motor desta bateria. **Todas as taxas abaixo são históricas para a mesa atual**, inclusive Marreta. [Fast Strikes](FAST_STRIKES_RULING.md) também passou a ter duas edges e dois componentes de dano. O estudo deve ser refeito antes de comparar suas políticas.
+**Bateria histórica:** as taxas abaixo usam a fórmula anterior. O estudo foi refeito com dano literal, duas edges e os componentes de Fast Strikes da mesa; os resultados atuais estão no [relatório v2](POOL_V2_REPORT.md), com os limites da extensão de dois alvos declarados.
 
 ## O que foi testado
 

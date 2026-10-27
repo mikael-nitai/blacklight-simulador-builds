@@ -10,6 +10,10 @@ from blacklight.engine import Profile
 from .sheets import CharacterSheet
 
 
+LEGACY_RULESET = 'literal_marvel_pool_v2'
+CURRENT_RULESET = 'split_fast_v3'
+
+
 @dataclass(frozen=True)
 class Mechanic:
     kind: str
@@ -54,8 +58,8 @@ class CoverageError(ValueError):
 def coverage(sheet: CharacterSheet) -> dict:
     blockers = []
     rows = []
-    if sheet.ruleset != 'literal_marvel_pool_v2':
-        blockers.append(f"ruleset {sheet.ruleset!r} is not implemented by the pool-v2 adapter")
+    if sheet.ruleset not in (LEGACY_RULESET, CURRENT_RULESET):
+        blockers.append(f"ruleset {sheet.ruleset!r} is not implemented by the physical-duel adapters")
     if sheet.level('fast_strikes') and sheet.abilities['melee'] % 2:
         blockers.append('Fast Strikes with odd Melee damage bonus needs a table rounding ruling')
     for feature in sheet.features:
@@ -91,7 +95,8 @@ def coverage(sheet: CharacterSheet) -> dict:
     if unsupported_modes:
         blockers.append(f"Unsupported movement modes: {sorted(unsupported_modes)}")
     return {'sheet_id': sheet.id, 'revision': sheet.revision,
-            'engine': 'restricted_physical_duel_pool_v2',
+            'engine': ('split_fast_physical_duel' if sheet.ruleset == CURRENT_RULESET
+                       else 'restricted_physical_duel_pool_v2'),
             'build_legality': 'not_certified_by_this_mechanics_adapter',
             'ready_for_this_scope': not blockers, 'blockers': blockers,
             'features': rows,

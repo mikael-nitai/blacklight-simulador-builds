@@ -14,7 +14,7 @@ O importador de PDF produz **evidência para revisão**; a extração de campos 
 
 ## O que já funciona
 
-- `characters/victor_halle/rank3_2026-10-26.json` contém o inventário atual e as escolhas auditadas de iniciativa/Run, com a divergência da inscrição original registrada em notas.
+- `characters/victor_halle/rank3_2026-10-27_split_fast.json` contém a revisão atual da mesa. Conserva os valores e o PDF da versão `rank3_2026-10-26.json`, que permanece histórica; não inventa evolução de Rank. Iniciativa/Run continuam com suas divergências registradas em notas.
 - `combatants/duel_adapter.py` transforma uma ficha compatível em um combatente do motor físico existente. Mighty, Sturdy e Accuracy usam o nível da ficha; atributos, Rank, recursos e nome são carregados do registro.
 - `combatants/runner.py` executa um duelo completo ou uma bateria entre duas fichas arbitrárias. O resultado é contado pela identidade do combatente escolhido, sem depender do nome Blacklight. Cada célula tem sementes, políticas, fichas, cobertura e fontes registradas.
 - As [famílias modulares de cura e ativação de estado](MODULAR_STATES.md) resolvem Do This All Day, Attack Stance, Dodge e a ativação padrão do Escudo por definições reutilizáveis. A [duração modular](MODULAR_LIFECYCLE.md) planeja a expiração de Dodge/Stunned no início do turno. O executor genérico usa essas camadas, com equivalência de replay e revisão independente. Ataques, demais durações e reações ainda passam pelo resolvedor anterior.
@@ -24,13 +24,15 @@ Comandos a partir da pasta do projeto:
 
 ```powershell
 python -m scripts.character_sheet extract-pdf "C:\caminho\ficha.pdf" --output character_evidence/nova_ficha_draft.json
-python -m scripts.character_sheet validate characters/victor_halle/rank3_2026-10-26.json
-python -m scripts.character_sheet batch --hero characters/examples/synthetic_rank4.json --opponent characters/victor_halle/rank3_2026-10-26.json --policy attack --opponent-policy shield_blade_hammer_reactive --master-seed 731 --n 1000 --output results/new_character_rank4_batch.json
+python -m scripts.character_sheet validate characters/victor_halle/rank3_2026-10-27_split_fast.json
+python -m scripts.character_sheet batch --hero characters/examples/synthetic_rank4_split_fast.json --opponent characters/victor_halle/rank3_2026-10-27_split_fast.json --policy attack --opponent-policy shield_blade_hammer_reactive --opponent-effect-limb 1 --master-seed 731 --n 1000 --output results/new_character_rank4_batch.json
 ```
 
 O usuário não precisa editar esses arquivos manualmente ao enviar uma nova ficha pela conversa. O processo de importação e conferência gera o registro apropriado.
 
 Cada execução nova recebe outro nome e os [resultados anteriores preservam suas fontes](RESULT_VERSIONING.md). A troca de Rank ou de ficha muda os dados da célula; a migração do motor é conferida contra combates completos congelados, sem apresentar esses replays como novas amostras estatísticas.
+
+A revisão `split_fast_v3` seleciona o [novo Fast por braço](SPLIT_FAST_SPEC.md). Misturar revisões de regras entre as duas fichas é recusado antes do combate. O teste de seleção de Rank 4 usa o mesmo motor e outra ficha; as regras não são escolhidas pelo nome do personagem.
 
 ## O que a arquitetura ainda precisa receber
 

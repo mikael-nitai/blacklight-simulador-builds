@@ -35,7 +35,8 @@ class GroupResult:
 class GroupBattle:
     def __init__(self, profiles: tuple[Profile, Profile, Profile],
                  policies: tuple[GroupPolicy, GroupPolicy, GroupPolicy],
-                 *, seed: int, max_rounds: int = 30, audit: bool = False) -> None:
+                 *, seed: int, max_rounds: int = 30, audit: bool = False,
+                 fast_zero_dice_bonus: bool = False) -> None:
         if len(profiles) != 3 or len(policies) != 3 or max_rounds < 1:
             raise ValueError("Three profiles/policies and positive horizon required")
         if len({p.name for p in profiles}) != 3:
@@ -51,6 +52,9 @@ class GroupBattle:
         self.damage_rng = Random(seed ^ 0xD6162026)
         self.max_rounds = max_rounds
         self.audit = audit
+        if type(fast_zero_dice_bonus) is not bool:
+            raise ValueError('Damage convention must be explicit boolean')
+        self.fast_zero_dice_bonus = fast_zero_dice_bonus
         self.log: list[dict] = []
         self.seq = 0
         self.round = 0
@@ -185,7 +189,8 @@ class GroupBattle:
                                          melee_modifier=p.melee,
                                          rank=p.rank, damage_ability=p.melee,
                                          bonus_candidates=bonuses,
-                                         targets=prepared)
+                                         targets=prepared,
+                                         fast_zero_dice_bonus=self.fast_zero_dice_bonus)
             damages = {t: result.damage for t, result in zip(action.targets, multi)}
             faces_by_target = {t: [list(faces) for faces in result.damage_faces]
                                for t, result in zip(action.targets, multi)}
@@ -227,7 +232,8 @@ class GroupBattle:
                          damage_faces=faces_by_target[target],
                          calculated_damage=damages[target],
                          damage=applied, health_before=before,
-                         health_after=victim.health)
+                         health_after=victim.health,
+                         **({'fast_zero_dice_bonus': True} if self.fast_zero_dice_bonus else {}))
             if (action.kind == "hammer" and individual.success
                     and individual.fantastic and victim.conscious):
                 victim.stunned_by = actor

@@ -6,6 +6,7 @@ This intentionally does not import the damage or dice implementation.
 from __future__ import annotations
 
 from math import ceil
+from .split_audit import audit_split_fast
 
 
 def _audit_pool_attack(event: dict, seq: int) -> tuple[int, list[str]]:
@@ -16,7 +17,8 @@ def _audit_pool_attack(event: dict, seq: int) -> tuple[int, list[str]]:
                else event["mode"])
     first = ("ranged" if primary == "ranged" else
              primary if primary in {"blade", "claw", "hammer"} else "bare")
-    expected_weapons = [first, event["offhand"] or first] if fast else [first]
+    expected_weapons = ([first, event["offhand"] or first]
+                        if fast and 'fast_use_id' not in event else [first])
     if event["strike_weapons"] != expected_weapons:
         issues.append(f"event {seq}: strike weapon ledger mismatch")
     components = event["damage_components"]
@@ -50,7 +52,8 @@ def _audit_pool_attack(event: dict, seq: int) -> tuple[int, list[str]]:
             if ability % 2:
                 issues.append(f"event {seq}: unresolved odd ability half")
             ability //= 2
-        if count < 1:
+        bonus_survives = (after_dr > 0 and (count > 0 or event.get('fast_zero_dice_bonus', False)))
+        if not bonus_survives:
             ability = 0
         faces = component["faces"]
         if (len(faces) != count or component["dice_rolled"] != count or
@@ -58,7 +61,7 @@ def _audit_pool_attack(event: dict, seq: int) -> tuple[int, list[str]]:
                 any(not 1 <= face <= 6 for face in faces)):
             issues.append(f"event {seq}: component dice ledger mismatch")
         rolled = (max(0, sum(6 if face == 1 else face for face in faces)
-                      + ability) if count else 0)
+                      + ability) if bonus_survives else 0)
         if event["fantastic"] and not fast:
             rolled *= 2
         applied = 0 if immunity else rolled
@@ -77,7 +80,8 @@ def _audit_pool_attack(event: dict, seq: int) -> tuple[int, list[str]]:
                        if event["fantastic"] or not fast else
                        event["ability_for_damage"] // 2)
         raw = (max(0, sum(6 if face == 1 else face for face in raw_faces)
-                   + raw_ability) if raw_faces else 0)
+                   + raw_ability) if multiplier > 0 and
+               (raw_count > 0 or event.get('fast_zero_dice_bonus', False)) else 0)
         if event["fantastic"] and not fast:
             raw *= 2
         if component["damage_without_reduction"] != raw:
@@ -131,6 +135,8 @@ def audit_log(log: tuple[dict, ...] | list[dict],
                 if key in reacted_triggers:
                     issues.append(f"event {seq}: duplicate reaction to one trigger")
                 reacted_triggers.add(key)
+        if kind == 'fast_use_start':
+            standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
         if kind == "attack":
             left, marvel, right = event["roll"]
             if not all(1 <= x <= 6 for x in (left, marvel, right)):
@@ -167,7 +173,7 @@ def audit_log(log: tuple[dict, ...] | list[dict],
             if not 0 <= event["damage"] <= calculated:
                 issues.append(f"event {seq}: applied damage outside allowed range")
             health[event["target"]] = after
-            if not event["reaction"]:
+            if not event["reaction"] and 'fast_use_id' not in event:
                 standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
         elif kind == "movement" and event["as_standard"]:
             standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
@@ -216,4 +222,5 @@ def audit_log(log: tuple[dict, ...] | list[dict],
     for key, count in bonus_actions.items():
         if count > 1:
             issues.append(f"{key}: more than one blade bonus")
+    issues.extend(audit_split_fast(log))
     return issues

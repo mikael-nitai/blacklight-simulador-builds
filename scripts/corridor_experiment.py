@@ -125,7 +125,10 @@ def main() -> None:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--stage", choices=STAGES, required=True)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--historical-rules', action='store_true')
     args = parser.parse_args()
+    if not args.historical_rules:
+        parser.error('Corridor Fast Strikes still uses the historical contract; pass --historical-rules explicitly')
     output = args.output or ROOT / 'results' / f'corridor_pool_v2_{args.stage}_summary.json'
     if output.exists():
         parser.error('Output already exists; use --output with a new versioned filename')

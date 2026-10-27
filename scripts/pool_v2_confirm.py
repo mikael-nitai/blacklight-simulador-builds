@@ -91,7 +91,10 @@ def main() -> None:
                         required=True)
     parser.add_argument("--n", type=int, default=10_000)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument('--historical-rules', action='store_true')
     args = parser.parse_args()
+    if not args.historical_rules:
+        parser.error('This experiment uses the historical single-check Fast rules; pass --historical-rules explicitly')
     if args.output.exists():
         parser.error('Output already exists; choose a new versioned filename')
     execute(args.stage, args.n, args.output)

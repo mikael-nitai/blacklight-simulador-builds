@@ -78,6 +78,36 @@ class TestPoolDamage(unittest.TestCase):
             roll_damage_pool(SequenceRNG([]), full_multiplier=8,
                              ability=5, fast_strikes=True)
 
+    def test_fast_halving_zero_dice_keeps_ability_after_positive_dr_remainder(self):
+        result = roll_damage_pool(SequenceRNG([]), full_multiplier=3,
+                                  ability=6, reduction=2, fast_strikes=True)
+        self.assertEqual((result.dice_after_reduction, result.dice_rolled,
+                          result.ability_added, result.faces, result.damage),
+                         (1, 0, 3, (), 3))
+
+    def test_fast_dr_zero_still_removes_ability(self):
+        for reduction in (3, 4):
+            result = roll_damage_pool(SequenceRNG([]), full_multiplier=3,
+                                      ability=6, reduction=reduction, fast_strikes=True)
+            self.assertEqual((result.dice_rolled, result.ability_added, result.damage), (0, 0, 0))
+
+    def test_zero_dice_counterfactual_keeps_bonus_without_reusing_hit_die(self):
+        result = roll_damage_pool(SequenceRNG([]), full_multiplier=1,
+                                  ability=6, fast_strikes=True,
+                                  sample_counterfactual=True)
+        self.assertEqual((result.damage, result.damage_without_reduction,
+                          result.faces, result.counterfactual_faces), (3, 3, (), ()))
+        prevented = roll_damage_pool(SequenceRNG([]), full_multiplier=1,
+                                     ability=6, reduction=1, fast_strikes=True,
+                                     sample_counterfactual=True)
+        self.assertEqual((prevented.damage, prevented.damage_without_reduction), (0, 3))
+
+    def test_historical_damage_convention_remains_reproducible(self):
+        result = roll_damage_pool(SequenceRNG([]), full_multiplier=1, ability=6,
+                                  fast_strikes=True, sample_counterfactual=True,
+                                  fast_zero_dice_bonus=False)
+        self.assertEqual((result.damage, result.ability_added, result.damage_without_reduction), (0, 0, 0))
+
     def test_exact_two_die_distribution_matches_enumeration(self):
         observed = Counter()
         expected = Counter()

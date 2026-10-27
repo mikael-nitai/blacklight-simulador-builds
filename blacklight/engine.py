@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from random import Random
 from typing import Protocol
 
-from .dice import DieRoll, Result, resolve_check
+from .dice import DieRoll, Result, RerollTrace, resolve_check
 from .pool_damage import roll_damage_pool
 
 
@@ -166,6 +166,59 @@ class Action:
     offhand: str | None = None
 
 
+@dataclass(frozen=True)
+class FastStrikeContext:
+    """One predeclared limb of the newer two-check Fast Strikes contract."""
+    use_id: int
+    limb: int
+    effect_limb: int
+    shield_handled: bool = False
+
+    def __post_init__(self) -> None:
+        if (type(self.use_id) is not int or self.use_id < 1
+                or type(self.limb) is not int or self.limb not in (0, 1)
+                or type(self.effect_limb) is not int or self.effect_limb not in (0, 1)
+                or type(self.shield_handled) is not bool):
+            raise ValueError('Invalid predeclared Fast Strikes limb')
+
+
+@dataclass(frozen=True)
+class AttackCheckSpec:
+    modifier: int
+    target: int
+    edges: int
+    troubles: int
+    power_edges: int
+    target_stunned: bool
+    target_dodging: bool
+
+    def __post_init__(self) -> None:
+        if (any(type(value) is not int for value in
+                (self.modifier, self.target, self.edges, self.troubles, self.power_edges))
+                or min(self.edges, self.troubles, self.power_edges) < 0
+                or type(self.target_stunned) is not bool or type(self.target_dodging) is not bool):
+            raise ValueError('Invalid immutable attack check specification')
+
+
+@dataclass(frozen=True)
+class PreparedAttackCheck:
+    actor: int
+    kind: str
+    spec: AttackCheckSpec
+    result: Result
+    rerolls: tuple
+    trigger: int
+
+    def __post_init__(self) -> None:
+        if (type(self.actor) is not int or self.actor not in (0, 1)
+                or not isinstance(self.kind, str) or not self.kind
+                or not isinstance(self.spec, AttackCheckSpec) or not isinstance(self.result, Result)
+                or not isinstance(self.rerolls, tuple)
+                or any(not isinstance(trace, RerollTrace) for trace in self.rerolls)
+                or type(self.trigger) is not int or self.trigger < 1):
+            raise ValueError('Invalid immutable prepared attack check')
+
+
 class Policy(Protocol):
     def choose_move(self, observation: Observation) -> Move | None: ...
     def choose_post_move(self, observation: Observation) -> Move: ...
@@ -220,6 +273,7 @@ class Duel:
         stack_signature_edge: bool = True,
         stack_stunned_edge: bool = False,
         end_turn_healing_first: bool = True,
+        fast_zero_dice_bonus: bool = False,
         audit: bool = False,
     ) -> None:
         if initial_distance < 1 or max_rounds < 1:
@@ -235,6 +289,9 @@ class Duel:
         self.stack_signature_edge = stack_signature_edge
         self.stack_stunned_edge = stack_stunned_edge
         self.end_turn_healing_first = end_turn_healing_first
+        if type(fast_zero_dice_bonus) is not bool:
+            raise ValueError('Damage convention must be explicit boolean')
+        self.fast_zero_dice_bonus = fast_zero_dice_bonus
         self.audit = audit
         self.log: list[dict] = []
         self.seq = 0
@@ -346,21 +403,86 @@ class Duel:
                      proposed=amount, effective=effective,
                      health_before=before, health_after=f.health)
 
+    def _attack_check_spec(self, actor: int, kind: str) -> AttackCheckSpec:
+        attacker, defender = self.fighters[actor], self.fighters[1 - actor]
+        p, q = attacker.profile, defender.profile
+        ranged = kind == 'ranged'
+        fast = kind == 'fast_strikes' or kind.endswith('_fast')
+        if ranged:
+            if not p.ranged_range or self.distance > p.ranged_range * 2:
+                raise IllegalAction('Ranged target outside permitted range')
+            modifier = p.agility
+            target = q.melee_defense if 'brawling' in q.powers else q.agility_defense
+            power_edges, troubles = 0, int(self.distance > p.ranged_range)
+        else:
+            if self.distance > 1:
+                raise IllegalAction('Close target out of reach')
+            modifier, target, troubles = p.melee, q.melee_defense, 0
+            power_edges = int('blazing_fast_fists' in p.powers)
+            if fast and 'signature_fast_strikes' in p.traits:
+                power_edges = power_edges + 1 if self.stack_signature_edge else max(1, power_edges)
+        edges = power_edges
+        if defender.stunned_by is not None:
+            edges = edges + 1 if self.stack_stunned_edge else max(1, edges)
+        if defender.dodging:
+            troubles += 1
+        return AttackCheckSpec(modifier, target, edges, troubles, power_edges,
+                                defender.stunned_by is not None, defender.dodging)
+
+    def _prepare_attack_check(self, actor: int, kind: str,
+                              spec: AttackCheckSpec | None = None) -> PreparedAttackCheck:
+        spec = self._attack_check_spec(actor, kind) if spec is None else spec
+        result, rerolls = resolve_check(
+            self.rng, spec.modifier, spec.target, edges=spec.edges, troubles=spec.troubles,
+            chooser=lambda roll, mod, tn: self.policies[actor].choose_edge_die(
+                roll, mod, tn, kind))
+        self.trigger_seq += 1
+        return PreparedAttackCheck(actor, kind, spec, result, tuple(rerolls), self.trigger_seq)
+
+    def _shield_reaction_after_check(self, actor: int, check: PreparedAttackCheck) -> None:
+        defender = self.fighters[1 - actor]
+        q = defender.profile
+        if (check.result.success and not defender.shield_active
+                and 'shield' in q.weapons and defender.conscious
+                and defender.stunned_by is None and defender.reactions > 0
+                and check.trigger not in defender.reacted_to
+                and self.policies[1 - actor].use_shield_reaction(
+                    self.observe(1 - actor), check.kind)):
+            defender.reactions -= 1
+            defender.reacted_to.add(check.trigger)
+            defender.shield_active = True
+            self._record('reaction_spent', ('ACT-03', 'ACT-04', 'HR-04'),
+                         actor=q.name, trigger=check.trigger, remaining=defender.reactions)
+            self._record('shield_activate', ('HR-04',), actor=q.name, cost='reaction',
+                         trigger=check.trigger, after_hit=True)
+
     def _attack(self, actor: int, kind: str, *, reaction: bool = False,
-                offhand: str | None = None) -> Result:
+                offhand: str | None = None,
+                fast_strike: FastStrikeContext | None = None,
+                prepared_check: PreparedAttackCheck | None = None) -> Result:
         attacker, defender = self.fighters[actor], self.fighters[1 - actor]
         p, q = attacker.profile, defender.profile
         ranged = kind == "ranged"
         fast = kind == "fast_strikes" or kind.endswith("_fast")
+        if fast_strike is not None and (not isinstance(fast_strike, FastStrikeContext)
+                                        or not fast or reaction or offhand is not None):
+            raise IllegalAction('A limb context requires one standard Fast component')
+        if prepared_check is not None and (not isinstance(prepared_check, PreparedAttackCheck)
+                                           or prepared_check.actor != actor or prepared_check.kind != kind):
+            raise IllegalAction('Prepared check does not match this attack')
+        spec = (prepared_check.spec if prepared_check is not None else
+                self._attack_check_spec(actor, kind))
+        modifier, target, edges, troubles = spec.modifier, spec.target, spec.edges, spec.troubles
         primary = kind[:-5] if kind.endswith("_fast") else kind
         weapons_used = ({primary} if primary in {"blade", "claw", "hammer"} else set())
         if offhand:
             if offhand == "shield":
                 raise IllegalAction("Shield is a separate defensive action, not a Fast Strikes weapon")
             weapons_used.add(offhand)
-        blade = "blade" in weapons_used
-        claw = "claw" in weapons_used
-        hammer = "hammer" in weapons_used
+        effects_enabled = fast_strike is None or fast_strike.limb == fast_strike.effect_limb
+        blade = "blade" in weapons_used and effects_enabled
+        claw = "claw" in weapons_used and effects_enabled
+        hammer = "hammer" in weapons_used and effects_enabled
         if offhand and not fast:
             raise IllegalAction("Two offensive weapons require Fast Strikes")
         if attacker.shield_active:
@@ -368,44 +490,31 @@ class Duel:
             self._record("shield_deactivate", ("HR-04",), actor=p.name,
                          cost="free", reason="attack")
         if ranged:
-            if not p.ranged_range or self.distance > p.ranged_range * 2:
-                raise IllegalAction("Ranged target outside permitted range")
-            modifier = p.agility
-            target = q.melee_defense if "brawling" in q.powers else q.agility_defense
-            edges = 0
-            troubles = int(self.distance > p.ranged_range)
             bonus = p.ranged_bonus
             rules = ("ACT-05", "DMG-01", "POW-04") if "brawling" in q.powers else ("ACT-05", "DMG-01")
         else:
-            if self.distance > 1:
-                raise IllegalAction("Close target out of reach")
-            modifier, target = p.melee, q.melee_defense
-            edges = int("blazing_fast_fists" in p.powers)
-            if fast and "signature_fast_strikes" in p.traits:
-                edges = edges + 1 if self.stack_signature_edge else max(1, edges)
-            troubles = 0
             bonus = p.melee_bonus
             rules = ("ACT-05", "DMG-01", "POW-05", "HR-06") if fast and offhand else (("ACT-05", "DMG-01", "POW-05") if fast else ("ACT-05", "DMG-01"))
             if blade:
                 rules += ("HR-03",)
             if claw:
                 rules += ("HR-01",)
-            if edges:
+            if spec.power_edges:
                 rules += ("POW-08",)
             if hammer:
                 rules += ("HR-02",)
-        if defender.stunned_by is not None:
-            edges = edges + 1 if self.stack_stunned_edge else max(1, edges)
+        if spec.target_stunned:
             rules += ("COND-02",)
-        if defender.dodging:
-            troubles += 1
+        if spec.target_dodging:
             rules += ("ACT-07",)
+        if fast_strike is not None:
+            rules += ('HR-09',)
         ability_for_damage = modifier * (2 if attacker.stance and not ranged else 1)
         first_weapon = ("ranged" if ranged else
                         primary if primary in {"blade", "claw", "hammer"}
                         else "bare")
         strike_weapons = ([first_weapon, offhand or first_weapon]
-                          if fast else [first_weapon])
+                          if fast and fast_strike is None else [first_weapon])
 
         def component_bonuses(weapon: str) -> list[int]:
             if weapon == "hammer":
@@ -418,27 +527,10 @@ class Duel:
         component_specs = [(weapon, component_bonuses(weapon))
                            for weapon in strike_weapons]
         bonuses = component_specs[0][1]
-        result, rerolls = resolve_check(
-            self.rng, modifier, target, edges=edges, troubles=troubles,
-            chooser=lambda roll, mod, tn: self.policies[actor].choose_edge_die(
-                roll, mod, tn, kind))
-        self.trigger_seq += 1
-        trigger = self.trigger_seq
-        if (result.success and not defender.shield_active
-                and "shield" in q.weapons and defender.conscious
-                and defender.stunned_by is None and defender.reactions > 0
-                and trigger not in defender.reacted_to
-                and self.policies[1 - actor].use_shield_reaction(
-                    self.observe(1 - actor), kind)):
-            defender.reactions -= 1
-            defender.reacted_to.add(trigger)
-            defender.shield_active = True
-            self._record("reaction_spent", ("ACT-03", "ACT-04", "HR-04"),
-                         actor=q.name, trigger=trigger,
-                         remaining=defender.reactions)
-            self._record("shield_activate", ("HR-04",),
-                         actor=q.name, cost="reaction", trigger=trigger,
-                         after_hit=True)
+        check = prepared_check or self._prepare_attack_check(actor, kind, spec)
+        result, rerolls, trigger = check.result, check.rerolls, check.trigger
+        if fast_strike is None or not fast_strike.shield_handled:
+            self._shield_reaction_after_check(actor, check)
         shield_applies = defender.shield_active and (not ranged or q.rank >= 2)
         reduction = q.health_dr + (2 if shield_applies else 0)
         if shield_applies:
@@ -468,7 +560,8 @@ class Duel:
                     ability=ability_for_damage,
                     reduction=0 if ammo_immunity else reduction,
                     fast_strikes=fast, fantastic=result.fantastic,
-                    sample_counterfactual=not ammo_immunity)
+                    sample_counterfactual=not ammo_immunity,
+                    fast_zero_dice_bonus=self.fast_zero_dice_bonus)
                 applied_component = 0 if ammo_immunity else pool.damage
                 raw_component = (pool.damage if ammo_immunity else
                                  pool.damage_without_reduction)
@@ -535,7 +628,13 @@ class Duel:
                      ammunition_immunity=ammo_immunity,
                      knockback_selected=knockback_selected,
                      calculated_damage=damage, damage=before - defender.health,
-                     health_before=before, health_after=defender.health)
+                     health_before=before, health_after=defender.health,
+                     **({'fast_zero_dice_bonus': True} if self.fast_zero_dice_bonus else {}),
+                     **({'fast_use_id': fast_strike.use_id,
+                         'limb': fast_strike.limb,
+                         'effect_limb': fast_strike.effect_limb,
+                         'effects_enabled': effects_enabled}
+                        if fast_strike is not None else {}))
         if knockback_eligible:
             if knockback_selected:
                 effective_multiplier = max(0, p.rank + max(0, *bonuses) - reduction)

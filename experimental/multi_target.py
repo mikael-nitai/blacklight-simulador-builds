@@ -47,6 +47,7 @@ def resolve_fast_strikes(
     damage_ability: int,
     bonus_candidates: tuple[int, ...],
     targets: tuple[Target, ...],
+    fast_zero_dice_bonus: bool = False,
 ) -> tuple[TargetOutcome, ...]:
     """Apply one finalized Melee roll separately to one or two distinct targets.
 
@@ -65,7 +66,8 @@ def resolve_fast_strikes(
             pools = tuple(roll_damage_pool(
                 damage_rng, full_multiplier=rank + max(0, *bonus_candidates),
                 ability=damage_ability, reduction=target.reduction,
-                fast_strikes=True, fantastic=check.fantastic)
+                fast_strikes=True, fantastic=check.fantastic,
+                fast_zero_dice_bonus=fast_zero_dice_bonus)
                 for _ in range(2 if len(targets) == 1 else 1))
             faces = tuple(pool.faces for pool in pools)
             damage = sum(pool.damage for pool in pools)

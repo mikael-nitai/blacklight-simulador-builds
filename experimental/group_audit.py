@@ -125,7 +125,8 @@ def audit_group_log(log: tuple[dict, ...] | list[dict],
                 if len(faces) != dice_count or any(not 1 <= face <= 6 for face in faces):
                     issues.append(f"event {seq}: damage dice ledger mismatch")
                 part = (max(0, sum(6 if face == 1 else face for face in faces)
-                               + ability) if dice_count else 0)
+                               + ability) if after_dr > 0 and
+                        (dice_count > 0 or event.get('fast_zero_dice_bonus', False)) else 0)
                 calculated += part * (2 if fantastic and not fast else 1)
             if calculated != event["calculated_damage"]:
                 issues.append(f"event {seq}: damage arithmetic mismatch")

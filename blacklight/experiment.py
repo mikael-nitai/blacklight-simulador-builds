@@ -227,9 +227,12 @@ def main() -> None:
     parser.add_argument("--stage", choices=("smoke", "dev", "confirm"), required=True)
     parser.add_argument("--n", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument('--historical-rules', action='store_true')
     parser.add_argument("--one-edge-counterfactual", action="store_true",
                         help="Sensitivity run only; disables the confirmed second Fast Strikes edge")
     args = parser.parse_args()
+    if not args.historical_rules:
+        parser.error('This experiment uses the historical single-check Fast rules; pass --historical-rules explicitly')
     if args.output.exists():
         parser.error('Output already exists; choose a new versioned filename')
     execute(args.stage, args.n, args.output,

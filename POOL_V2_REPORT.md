@@ -1,4 +1,6 @@
-# Resultados da versão de dano literal da mesa
+# Resultados históricos da primeira versão de dano literal
+
+**O balanceamento posterior de Fast Strikes mudou para um teste por braço e efeitos de um único braço escolhido. As tabelas abaixo usam o contrato anterior; não medem a regra atual de [FAST_STRIKES_RULING.md](FAST_STRIKES_RULING.md).**
 
 27/10/2026. As tabelas desta versão usam vários dados Marvel de dano: cada face 1 vale 6. A replicação contém 240.000 duelos e a reserva 120.000, além de 52.000 duelos de desenvolvimento. Os resultados da fórmula anterior permanecem históricos em `results/legacy_scalar_v1/`.
 

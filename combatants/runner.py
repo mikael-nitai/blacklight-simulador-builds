@@ -11,8 +11,9 @@ from blacklight import __version__
 from blacklight.audit import audit_log
 from blacklight.experiment import ROOT, Moment, source_hashes, wilson
 from .actions import DEFAULT_ACTIONS
-from .duel_adapter import compile_duel, coverage
+from .duel_adapter import CURRENT_RULESET, LEGACY_RULESET, compile_duel, coverage
 from .modular_duel import ModularDuel
+from .split_fast import SplitFastDuel
 from .sheets import CharacterSheet, sheet_record
 
 
@@ -21,8 +22,15 @@ def _outcome(result, hero_name: str) -> str:
             else 'win' if result.winner == hero_name else 'loss')
 
 
-def _engine_metadata() -> dict:
-    return {'execution_adapter': 'modular_physical_duel_v3',
+def _engine_metadata(ruleset: str = LEGACY_RULESET) -> dict:
+    current = ruleset == CURRENT_RULESET
+    return {'execution_adapter': ('split_fast_physical_duel_v1' if current else
+                                   'modular_physical_duel_v3'),
+            'table_ruleset': ruleset,
+            'fast_zero_dice_bonus': current,
+            'fast_strikes_contract': ('two checks before effects; one preselected effect limb; '
+                                      'Shield before damage; both effects before Riposte'
+                                      if current else 'historical single check, both weapon effects'),
             'lifecycle_scope': 'Dodge and Stunned expiry at turn start; immutable timing plans',
             'runtime': {'python': sys.version, 'implementation': sys.implementation.name,
                         'combat_core_dependencies': 'Python standard library',
@@ -33,6 +41,12 @@ def _engine_metadata() -> dict:
                  'requirements': [{'kind': item.kind, 'id': item.id}
                                   for item in module.requirements]}
                 for module in DEFAULT_ACTIONS.modules.values()]}
+
+
+def _engine_for(hero: CharacterSheet, opponent: CharacterSheet):
+    if hero.ruleset != opponent.ruleset:
+        raise ValueError('Both combatants must declare the same table ruleset revision')
+    return SplitFastDuel if hero.ruleset == CURRENT_RULESET else ModularDuel
 
 
 def _source_manifest(policies: tuple[object, object]) -> dict[str, str]:
@@ -57,12 +71,13 @@ def _assert_sources_unchanged(sources: dict[str, str], policies: tuple[object, o
 def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
              hero_policy: object, opponent_policy: object, *, seed: int,
              initial_distance: int = 1, max_rounds: int = 30) -> dict:
+    engine = _engine_for(hero, opponent)
     profiles = (compile_duel(hero), compile_duel(opponent))
     policies = (hero_policy, opponent_policy)
     sources = _source_manifest(policies)
     if profiles[0].name == profiles[1].name:
         raise ValueError("Combatants need distinct display names for the audit ledger")
-    result = ModularDuel(profiles, (hero_policy, opponent_policy), seed=seed,
+    result = engine(profiles, (hero_policy, opponent_policy), seed=seed,
                   initial_distance=initial_distance, max_rounds=max_rounds,
                   audit=True, action_registry=DEFAULT_ACTIONS).run()
     issues = audit_log(result.log,
@@ -74,7 +89,7 @@ def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
     return {'schema': 'blacklight-generic-character-duel-v1',
             'damage_model': 'literal_marvel_pool_v2',
             'engine_version': __version__, 'seed': seed,
-            **_engine_metadata(),
+            **_engine_metadata(hero.ruleset),
             'source_sha256': sources,
             'initial_distance': initial_distance, 'max_rounds': max_rounds,
             'sheets': [sheet_record(hero), sheet_record(opponent)],
@@ -92,6 +107,7 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
               max_rounds: int = 30, audit_every: int = 100) -> dict:
     if n < 1 or audit_every < 1:
         raise ValueError('Positive sample count and audit interval required')
+    engine = _engine_for(hero, opponent)
     profiles = (compile_duel(hero), compile_duel(opponent))
     policies = (hero_policy, opponent_policy)
     sources = _source_manifest(policies)
@@ -110,7 +126,7 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
         key = f'character-batch-v1|{master_seed}|{cell_hash}|{index}'
         seed = int.from_bytes(sha256(key.encode()).digest()[:8], 'big')
         audit_this = index % audit_every == 0
-        result = ModularDuel(profiles, (hero_policy, opponent_policy), seed=seed,
+        result = engine(profiles, (hero_policy, opponent_policy), seed=seed,
                       initial_distance=initial_distance, max_rounds=max_rounds,
                       audit=audit_this, action_registry=DEFAULT_ACTIONS).run()
         if audit_this:
@@ -131,7 +147,7 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
     _assert_sources_unchanged(sources, policies)
     return {'schema': 'blacklight-generic-character-batch-v1',
             'damage_model': 'literal_marvel_pool_v2', 'engine_version': __version__,
-            **_engine_metadata(),
+            **_engine_metadata(hero.ruleset),
             'source_sha256': sources,
             **cell, 'n': n, 'master_seed': master_seed, 'cell_sha256': cell_hash,
             'seed_formula': 'first 8 SHA-256 bytes of character-batch-v1|master_seed|cell_sha256|index',

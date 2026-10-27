@@ -106,7 +106,10 @@ def main() -> None:
     parser = ArgumentParser()
     parser.add_argument("--stage", choices=("dev", "description"), required=True)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--historical-rules', action='store_true')
     args = parser.parse_args()
+    if not args.historical_rules:
+        parser.error('Group Fast Strikes still uses the historical contract; pass --historical-rules explicitly')
     output = args.output or ROOT / 'results' / f'group_pool_v2_{args.stage}_summary.json'
     if output.exists():
         parser.error('Output already exists; use --output with a new versioned filename')

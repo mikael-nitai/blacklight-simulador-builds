@@ -31,9 +31,11 @@ def roll_damage_pool(rng: DieSource, *, full_multiplier: int,
                      ability: int, reduction: int = 0,
                      fast_strikes: bool = False,
                      fantastic: bool = False,
-                     sample_counterfactual: bool = False) -> PoolDamage:
+                     sample_counterfactual: bool = False,
+                     fast_zero_dice_bonus: bool = True) -> PoolDamage:
     """Roll one weapon's damage after DR; no hit check is performed here."""
-    if full_multiplier < 0 or reduction < 0 or not isinstance(ability, int):
+    if (full_multiplier < 0 or reduction < 0 or not isinstance(ability, int)
+            or type(fast_zero_dice_bonus) is not bool):
         raise ValueError("Invalid damage-pool inputs")
     after_dr = max(0, full_multiplier - reduction)
     if fast_strikes and not fantastic:
@@ -46,14 +48,15 @@ def roll_damage_pool(rng: DieSource, *, full_multiplier: int,
         added = ability
     faces = tuple(rng.randint(1, 6) for _ in range(count))
 
-    def value(rolled: tuple[int, ...], bonus: int) -> int:
-        if not rolled:
+    def value(rolled: tuple[int, ...], bonus: int, *, survives_reduction: bool) -> int:
+        if not survives_reduction:
             return 0
         total = max(0, sum(6 if face == 1 else face for face in rolled)
                     + bonus)
         return total * (2 if fantastic and not fast_strikes else 1)
 
-    total = value(faces, added)
+    survives = after_dr > 0 and (count > 0 or fast_zero_dice_bonus)
+    total = value(faces, added, survives_reduction=survives)
     extra: tuple[int, ...] = ()
     without_reduction: int | None = None
     if sample_counterfactual:
@@ -63,7 +66,9 @@ def roll_damage_pool(rng: DieSource, *, full_multiplier: int,
                       for _ in range(max(0, raw_count - count)))
         without_reduction = value(faces + extra,
                                   ability if fantastic or not fast_strikes
-                                  else ability // 2)
+                                  else ability // 2,
+                                  survives_reduction=full_multiplier > 0 and
+                                  (raw_count > 0 or fast_zero_dice_bonus))
     return PoolDamage(full_multiplier, reduction, after_dr,
-                      count, added if count else 0, faces, total,
+                      count, added if survives else 0, faces, total,
                       extra, without_reduction)

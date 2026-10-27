@@ -1,0 +1,65 @@
+{
+  "schema": "blacklight.character.v1",
+  "id": "synthetic_rank4_example",
+  "revision": "synthetic-split-fast-v3",
+  "name": "Exemplo Rank 4",
+  "rank": 4,
+  "ruleset": "split_fast_v3",
+  "abilities": {
+    "melee": 7,
+    "agility": 2,
+    "resilience": 6,
+    "vigilance": 2,
+    "ego": 2,
+    "logic": 1
+  },
+  "defenses": {
+    "melee": 17,
+    "agility": 12,
+    "resilience": 16,
+    "vigilance": 12,
+    "ego": 12,
+    "logic": 11
+  },
+  "resources": {
+    "health": 180,
+    "focus": 60,
+    "karma": 0
+  },
+  "movement": {
+    "run": 5,
+    "climb": 3,
+    "swim": 3
+  },
+  "initiative_modifier": 2,
+  "features": [
+    {
+      "id": "mighty",
+      "kind": "power",
+      "level": 2,
+      "parameters": {},
+      "sources": [
+        "Synthetic integration-test fixture"
+      ]
+    },
+    {
+      "id": "sturdy",
+      "kind": "power",
+      "level": 1,
+      "parameters": {},
+      "sources": [
+        "Synthetic integration-test fixture"
+      ]
+    }
+  ],
+  "provenance": [
+    {
+      "kind": "synthetic",
+      "purpose": "Character substitution test; not Victor Rank 4 and not an official profile"
+    }
+  ],
+  "notes": [
+    "This is an explicit synthetic example. It does not predict the user's future character progression.",
+    "Same character attributes/resources as the preserved earlier record; table rules revised on 2026-10-27: one check per limb, preselected effects, both checks before effects/reactions, Shield before damage and both damage/effects before Riposte. No Rank progression invented."
+  ]
+}

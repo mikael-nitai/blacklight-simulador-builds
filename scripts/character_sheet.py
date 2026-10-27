@@ -1,6 +1,7 @@
 """Inspect, import evidence, and run versioned character sheets."""
 
 from argparse import ArgumentParser
+from dataclasses import asdict
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -10,6 +11,8 @@ from blacklight.policies import ATTACK, KITER
 from combatants import load_sheet, coverage
 from combatants.pdf_draft import extract_draft
 from combatants.runner import run_duel, run_batch
+from combatants.duel_adapter import CURRENT_RULESET, LEGACY_RULESET
+from combatants.split_fast import SplitFastPolicy
 
 
 def write_json(path: Path, payload: dict) -> None:
@@ -34,6 +37,11 @@ def main() -> None:
         sub.add_argument('--opponent-policy', default='attack')
         sub.add_argument('--distance', type=int, default=1)
         sub.add_argument('--output', type=Path, required=True)
+        sub.add_argument('--effect-limb', type=int, choices=(0, 1), default=0,
+                         help='For current Fast rules: limb0 is the primary, limb1 the offhand')
+        sub.add_argument('--opponent-effect-limb', type=int, choices=(0, 1), default=0)
+        sub.add_argument('--historical-rules', action='store_true',
+                         help='Explicitly allow the preserved single-check Fast contract')
         if command == 'duel':
             sub.add_argument('--seed', type=int, required=True)
         else:
@@ -59,7 +67,13 @@ def main() -> None:
         if args.policy not in policies or args.opponent_policy not in policies:
             parser.error(f"Policy must be one of {sorted(policies)}")
         sheets = (load_sheet(args.hero), load_sheet(args.opponent))
+        if sheets[0].ruleset == LEGACY_RULESET and not args.historical_rules:
+            parser.error('This sheet uses historical table rules; use the current sheet revision or --historical-rules')
         selected_policies = (policies[args.policy], policies[args.opponent_policy])
+        if sheets[0].ruleset == CURRENT_RULESET:
+            selected_policies = tuple(SplitFastPolicy(**asdict(policy), effect_limb=limb)
+                                      for policy, limb in zip(selected_policies,
+                                                              (args.effect_limb, args.opponent_effect_limb)))
         if args.command == 'duel':
             payload = run_duel(*sheets, *selected_policies,
                                seed=args.seed, initial_distance=args.distance)

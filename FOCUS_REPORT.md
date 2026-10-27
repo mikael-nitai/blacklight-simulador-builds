@@ -2,6 +2,8 @@
 
 **27/10/2026.** Este estudo é separado dos [duelos físicos confirmatórios](REPORT.md). Usa o [gate normativo](FOCUS_SPEC.md) e o [pré-registro](FOCUS_DUEL_SPEC.md), ambos apoiados no *Core Rulebook* fornecido pelo usuário (pp.33–34, 38 e 108) e na [FAQ oficial de março/2025](https://cdn.marvel.com/u/prod/marvel/i/pdf/MMRPG_Rules-FAQ_20250327.pdf). O adversário é **sintético**, sempre ao alcance de Victor, e usa exclusivamente Mental Punch. Essa ação Melee reduz Focus, dobra dano e aplica Stunned em sucesso fantástico. Focus 0 impõe Demoralized/trouble; Focus ≤−90 deixa Victor Shattered e encerra o combate como derrota. Sturdy 1 protege Health, não Focus.
 
+**Resultados numéricos históricos:** a [decisão posterior da mesa sobre vários d6 literais](DAMAGE_POOL_RULING.md) substitui a aritmética usada neste experimento, inclusive Mental Punch. F0 continua sendo a regra válida sobre o Escudo proteger apenas Health, mas todas as taxas abaixo precisam ser reestimadas com o novo dano.
+
 ## A decisão de mesa que muda o resultado
 
 Após este experimento, o usuário [esclareceu a regra da mesa](FOCUS_RULING.md): o Escudo reduz **somente dano de Health**. Portanto, **F0** é a variante aplicável a Mental Punch; **F2** permanece na tabela apenas como análise contrafactual da hipótese investigada antes do esclarecimento. A decisão posterior não altera as amostras nem torna F2 legal na mesa. As sementes de F0 e F2 são independentes; o mesmo índice de amostra não forma um par causal.

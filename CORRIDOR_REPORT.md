@@ -2,6 +2,8 @@
 
 **27/10/2026 — experimento exploratório.** Este estudo testa a dependência do resultado S4 de [campo aberto](REPORT.md) em relação à geometria. O [protocolo](CORRIDOR_SPEC.md) foi fixado antes das amostras. O corredor sintético é uma linha de células `0..12` ou `0..20`, sem cobertura, obstáculos intermediários ou passagem através de outro personagem. Victor começa em 0 e o atirador em 8. A política inimiga de S4 atira e tenta recuar, mesmo quando a parede torna o movimento nulo. O motor trunca o deslocamento à célula livre mais distante; esse comportamento **não representa um atirador que escolhe rotas alternativas ou usa a parede taticamente**.
 
+**Resultados numéricos históricos:** a [regra posterior de dano como vários d6 literais](DAMAGE_POOL_RULING.md) não está neste motor. A geometria auditada continua sendo um protótipo útil, mas as taxas e durações abaixo não estimam a mesa atual e devem ser refeitas depois da correção do dano.
+
 C1 é o mesmo atirador sintético Rank 3 de munição do S4. C2 mantém seu perfil, mas sobe a Rank 4 e usa tiro não classificado como munição; é um teste adversarial de sensibilidade, **não** um personagem oficial. Victor usa Marreta sem Escudo (`hammer_attack`) ou Marreta com Escudo reativo (`shield_hammer_reactive`). São oito células, com 1000 lutas de desenvolvimento e 5000 novas por célula descritiva. O resultado `win`/`loss` na tabela é sempre da perspectiva de Victor; inconclusões e empates foram zero.
 
 | Corredor | Atirador | Política de Victor | Vitórias / 5000 | IC Wilson 95% | Parede atingida | Contato corpo a corpo | Rodadas médias |

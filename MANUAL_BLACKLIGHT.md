@@ -2,7 +2,7 @@
 
 Este manual usa a ficha **de Downloads** fornecida nesta conversa (Health 150, Focus 90, Melee 6, Mighty 3, Sturdy 1, Run derivado 5), o Core Rulebook, a errata/FAQ e as decisões de mesa registradas em [RULES_AUDIT.md](RULES_AUDIT.md). O Chicote está indisponível no Rank 3. As recomendações se baseiam em duelos simulados de campo aberto; não são uma regra universal para qualquer cena. Consulte [REPORT.md](REPORT.md) para as taxas, intervalos e limites do experimento.
 
-**Fast Strikes está em revisão:** a [decisão posterior da mesa](FAST_STRIKES_RULING.md) confirma duas edges e dois danos separados por arma. A comparação antiga com Marreta e as contas de Fast Strikes abaixo não devem orientar uma escolha quantitativa até a nova implementação e validação.
+**As contas e recomendações quantitativas abaixo estão em revisão:** a mesa [rola vários d6 literais para todo dano](DAMAGE_POOL_RULING.md), mas os combates que fundamentaram este manual multiplicavam o dado Marvel. A [decisão posterior de Fast Strikes](FAST_STRIKES_RULING.md) confirma ainda duas edges e dois danos separados. Use este texto somente como inventário de opções e gatilhos até a nova implementação e validação; não use seus números de dano ou sua classificação de armas para decidir um combate.
 
 ## Plano principal para um duelo próximo
 

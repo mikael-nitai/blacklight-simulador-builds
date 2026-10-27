@@ -2,6 +2,8 @@
 
 **27/10/2026.** Esta expansão é separada do [relatório confirmatório de duelos](REPORT.md). O [pré-registro específico](GROUP_EXPERIMENT_SPEC.md) fixou dois inimigos sintéticos que atacam Victor em conjunto, todos sempre ao alcance corpo a corpo. [GROUP_SPEC.md](GROUP_SPEC.md) delimita as regras implementadas e as que ainda faltam. O motor de grupo fica em `experimental/`; não foi usado nos 400.000 duelos confirmatórios.
 
+**Regra posterior da mesa:** [todo dano usa vários d6 literais](DAMAGE_POOL_RULING.md), ao contrário do motor desta bateria. **Todas as taxas abaixo são históricas para a mesa atual**, inclusive Marreta. [Fast Strikes](FAST_STRIKES_RULING.md) também passou a ter duas edges e dois componentes de dano. O estudo deve ser refeito antes de comparar suas políticas.
+
 ## O que foi testado
 
 Uma rolagem de Fast Strikes pode ser comparada a até duas defesas distintas. Cada alvo acertado recebe metade do dano regular, ou o dano integral em sucesso fantástico. A redução de dano é individual. Nesse experimento, Fast Strikes não usa armas biológicas nem gera o golpe adicional caseiro da Lâmina. A política de Marreta escolhe o adversário vivo com menor Health; a variante defensiva ativa o Escudo após um acerto ou ao fim do turno e o desativa gratuitamente antes de atacar. Ambos os inimigos atacam Victor, sem Riposte, armas ou poderes.

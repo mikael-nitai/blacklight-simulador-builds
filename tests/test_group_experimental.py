@@ -144,6 +144,24 @@ class TestGroupPrototype(unittest.TestCase):
         with self.assertRaises(IllegalGroupAction):
             game._attack(0, GroupAction("hammer", (0,)))
 
+    def test_stunned_target_grants_edge_and_mixed_fast_is_rejected(self):
+        player = replace(blacklight_profile(),
+                         powers=blacklight_profile().powers -
+                         {"blazing_fast_fists"})
+        game = GroupBattle(
+            (player, lower_enemy("E1"), lower_enemy("E2")),
+            (NoEdgeGroupPolicy("hammer", preferred="hammer"),
+             GROUP_ENEMY, GROUP_ENEMY), seed=1, audit=True)
+        game.round = 1
+        game._reset_reactions()
+        game.fighters[1].stunned_by = 0
+        game.rng = SequenceRNG([3, 3, 3])
+        game._attack(0, GroupAction("hammer", (1,)))
+        check = next(e for e in game.log if e["type"] == "attack_check")
+        self.assertEqual(check["edges"], 1)
+        with self.assertRaises(NotImplementedError):
+            game._attack(0, GroupAction("fast_strikes", (1, 2)))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -147,6 +147,13 @@ class GroupBattle:
         edges = int("blazing_fast_fists" in p.powers)
         if action.kind == "fast_strikes" and "signature_fast_strikes" in p.traits:
             edges = max(1, edges)
+        stunned_targets = [self.fighters[t].stunned_by is not None
+                           for t in action.targets]
+        if len(set(stunned_targets)) > 1:
+            raise NotImplementedError(
+                "shared Fast Strikes roll against mixed stunned targets needs adjudication")
+        if stunned_targets[0]:
+            edges += 1
         check, rerolls = resolve_check(
             self.rng, p.melee, target_number, edges=edges,
             chooser=lambda roll, mod, tn: self.policies[actor].choose_edge_die(

@@ -6,7 +6,7 @@
 
 Uma rolagem de Fast Strikes pode ser comparada a até duas defesas distintas. Cada alvo acertado recebe metade do dano regular, ou o dano integral em sucesso fantástico. A redução de dano é individual. Nesse experimento, Fast Strikes não usa armas biológicas nem gera o golpe adicional caseiro da Lâmina. A política de Marreta escolhe o adversário vivo com menor Health; a variante defensiva ativa o Escudo após um acerto ou ao fim do turno e o desativa gratuitamente antes de atacar. Ambos os inimigos atacam Victor, sem Riposte, armas ou poderes.
 
-G1 usa dois inimigos Rank 2 (Health 90, Melee 4); G2 usa dois Rank 3 (Health 150, Melee 6). Todos têm Resilience coerente com Health. Cada célula teve 1000 combates de desenvolvimento e 10.000 sementes novas para a tabela abaixo. As seis células de descrição totalizam **60.000** combates, com **600 trilhas completas auditadas**. A suíte total passou em **71 testes**, dos quais dez cobrem o protótipo de grupo e seu auditor.
+G1 usa dois inimigos Rank 2 (Health 90, Melee 4); G2 usa dois Rank 3 (Health 150, Melee 6). Todos têm Resilience coerente com Health. Cada célula teve 1000 combates de desenvolvimento e 10.000 sementes novas para a tabela abaixo. As seis células de descrição totalizam **60.000** combates, com **600 trilhas completas auditadas**. A suíte total passou em **72 testes**, dos quais onze cobrem o protótipo de grupo e seu auditor.
 
 | Cenário | Política de Victor | Vitórias / 10.000 | Taxa de vitória, IC Wilson 95% | Rodadas médias |
 |---|---|---:|---:|---:|
@@ -18,6 +18,8 @@ G1 usa dois inimigos Rank 2 (Health 90, Melee 4); G2 usa dois Rank 3 (Health 150
 | G2, dois Rank 3 | Fast Strikes sem armas | 7.779 | 77,79% [76,96%; 78,59%] | 5,23 |
 
 Não houve inconclusões nessas seis células; os demais combates foram derrotas. Uma observação de 100% significa **zero derrotas observadas** em 10.000 simulações, não invulnerabilidade universal. G1 saturou nas três políticas e quase não discrimina entre elas. Em G2, os atacantes básicos têm multiplicador de dano ×3; com Escudo ativo, a redução combinada do Escudo (2) e Sturdy 1 (1) zera esse multiplicador. O resultado de Marreta + Escudo depende fortemente desse perfil inimigo e da regra da mesa. Inimigos com bônus de multiplicador, ataques de Focus, controle, dano de área, alcance, terreno ou outras opções podem quebrar esse padrão. Os inimigos daqui cooperam apenas ao concentrar ataques e, portanto, não são um teste completo de tática de grupo.
+
+**Revisão após a primeira execução.** A conferência do Core p.38 encontrou edge para ataques contra alvo Stunned. O protótipo passou a aplicá-la e ganhou um oráculo forçado; as seis células e os exemplos foram reexecutados com os mesmos índices de sementes e novos hashes. As contagens ficaram idênticas porque nenhum dos adversários desse experimento ataca um alvo Stunned. A versão anterior está preservada no commit `af5fc0e`; as taxas desta tabela vêm dos JSONs atuais. Esta correção não transforma a bateria exploratória em confirmação independente.
 
 ## Evidência auditável
 

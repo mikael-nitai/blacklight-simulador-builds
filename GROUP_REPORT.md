@@ -6,7 +6,7 @@
 
 Uma rolagem de Fast Strikes pode ser comparada a até duas defesas distintas. Cada alvo acertado recebe metade do dano regular, ou o dano integral em sucesso fantástico. A redução de dano é individual. Nesse experimento, Fast Strikes não usa armas biológicas nem gera o golpe adicional caseiro da Lâmina. A política de Marreta escolhe o adversário vivo com menor Health; a variante defensiva ativa o Escudo após um acerto ou ao fim do turno e o desativa gratuitamente antes de atacar. Ambos os inimigos atacam Victor, sem Riposte, armas ou poderes.
 
-G1 usa dois inimigos Rank 2 (Health 90, Melee 4); G2 usa dois Rank 3 (Health 150, Melee 6). Todos têm Resilience coerente com Health. Cada célula teve 1000 combates de desenvolvimento e 10.000 sementes novas para a tabela abaixo. As seis células de descrição totalizam **60.000** combates, com **600 trilhas completas auditadas**. A suíte total passou em **72 testes**, dos quais onze cobrem o protótipo de grupo e seu auditor.
+G1 usa dois inimigos Rank 2 (Health 90, Melee 4); G2 usa dois Rank 3 (Health 150, Melee 6). Todos têm Resilience coerente com Health. Cada célula teve 1000 combates de desenvolvimento e 10.000 sementes novas para a tabela abaixo. As seis células de descrição totalizam **60.000** combates, com **600 trilhas completas auditadas**. A suíte total passou em **84 testes**, dos quais onze cobrem o protótipo de grupo e seu auditor.
 
 | Cenário | Política de Victor | Vitórias / 10.000 | Taxa de vitória, IC Wilson 95% | Rodadas médias |
 |---|---|---:|---:|---:|

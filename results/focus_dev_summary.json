@@ -1,0 +1,675 @@
+{
+  "schema": "blacklight-focus-fixed-contact-v1",
+  "stage": "dev",
+  "n_per_cell": 1000,
+  "seed_formula": "first 8 bytes SHA-256 of blacklight-focus-v1|stage|scenario|variant|strategy|index",
+  "source_sha256": {
+    "FOCUS_SPEC.md": "10babf385a90f9c8bba548db0ee699d51ebb91704e170aba21bb749e87c434b2",
+    "FOCUS_DUEL_SPEC.md": "55eb7385762596d86e0d59f4d0fcada1e259c411273c2669d589c1af52173a26",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "scripts/focus_experiment.py": "e94cfcc4839aecf5c8bd68ccbfcaf1634efde9003fa53d46dc293555f0b73539",
+    "experimental/focus_audit.py": "2f582c1f3b91742d944c6c3ee9ae3a05e523b20b3b93b0a4865c425b27923199",
+    "experimental/focus_duel.py": "a05e1be90624846dd149db7d74731c2c87265b82cfd6984c972fb2c643d56247",
+    "experimental/focus_primitives.py": "e55078f0df3bbc9db2e347b8e3bb2890c4c2cfdc29e4a9956e1eab2c03e23afa",
+    "blacklight/__init__.py": "30361ce63d1526dcee116dcf7b576b7a4e1162ba0c53376221f58a480b215491",
+    "blacklight/audit.py": "d897afc6aad0aaea7b79b3a04cf1413acd915a62e8c5b95943d2873d86df8901",
+    "blacklight/damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight/dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight/engine.py": "0cc35d055f340d6ce91dd714918ae3ba927c8f1e9af4cd7bcdb05e73fe8b9751",
+    "blacklight/experiment.py": "ea231961a0b17de3072136d8ac6d60980b6eab7c33e859670a05038fa72fea49",
+    "blacklight/policies.py": "c2ac709aab1beb288724b3561010b1ecc2e98d656ac0a94b2ee357eb2cc8b0a5",
+    "blacklight/search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight/sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f"
+  },
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "scenarios": [
+    {
+      "id": "M3",
+      "profiles": [
+        {
+          "name": "Blacklight",
+          "rank": 3,
+          "max_health": 150,
+          "max_focus": 90,
+          "melee": 6,
+          "agility": 1,
+          "resilience": 5,
+          "vigilance": 2,
+          "melee_defense": 16,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 1,
+          "melee_bonus": 3,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [
+            "attack_stance",
+            "blazing_fast_fists",
+            "brawling",
+            "do_this_all_day",
+            "fast_strikes",
+            "healing_factor",
+            "mighty",
+            "riposte"
+          ],
+          "traits": [
+            "battle_ready",
+            "combat_reflexes",
+            "signature_fast_strikes",
+            "situational_awareness"
+          ],
+          "weapons": [
+            "blade",
+            "claw",
+            "hammer",
+            "shield"
+          ],
+          "shield_active": false,
+          "heroic": true
+        },
+        {
+          "name": "Mentalist",
+          "rank": 3,
+          "max_health": 150,
+          "max_focus": 60,
+          "melee": 6,
+          "agility": 1,
+          "resilience": 5,
+          "vigilance": 2,
+          "melee_defense": 16,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 0,
+          "melee_bonus": 0,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [
+            "mental_punch"
+          ],
+          "traits": [],
+          "weapons": [],
+          "shield_active": false,
+          "heroic": false
+        }
+      ]
+    },
+    {
+      "id": "M4",
+      "profiles": [
+        {
+          "name": "Blacklight",
+          "rank": 3,
+          "max_health": 150,
+          "max_focus": 90,
+          "melee": 6,
+          "agility": 1,
+          "resilience": 5,
+          "vigilance": 2,
+          "melee_defense": 16,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 1,
+          "melee_bonus": 3,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [
+            "attack_stance",
+            "blazing_fast_fists",
+            "brawling",
+            "do_this_all_day",
+            "fast_strikes",
+            "healing_factor",
+            "mighty",
+            "riposte"
+          ],
+          "traits": [
+            "battle_ready",
+            "combat_reflexes",
+            "signature_fast_strikes",
+            "situational_awareness"
+          ],
+          "weapons": [
+            "blade",
+            "claw",
+            "hammer",
+            "shield"
+          ],
+          "shield_active": false,
+          "heroic": true
+        },
+        {
+          "name": "Mentalist",
+          "rank": 4,
+          "max_health": 150,
+          "max_focus": 60,
+          "melee": 6,
+          "agility": 1,
+          "resilience": 5,
+          "vigilance": 2,
+          "melee_defense": 16,
+          "agility_defense": 11,
+          "run_speed": 5,
+          "health_dr": 0,
+          "melee_bonus": 0,
+          "ranged_bonus": 0,
+          "ranged_range": 0,
+          "ranged_is_ammunition": false,
+          "logic": 0,
+          "initiative_modifier": null,
+          "run_speed_exception": false,
+          "powers": [
+            "mental_punch"
+          ],
+          "traits": [],
+          "weapons": [],
+          "shield_active": false,
+          "heroic": false
+        }
+      ]
+    }
+  ],
+  "strategies": [
+    "hammer",
+    "shield_reactive",
+    "shield_endturn"
+  ],
+  "shield_variants": {
+    "F0": 0,
+    "F2": 2
+  },
+  "rows": [
+    {
+      "stage": "dev",
+      "scenario": "M3",
+      "variant": "F0",
+      "strategy": "hammer",
+      "n": 1000,
+      "outcomes": {
+        "win": 984,
+        "loss": 16,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.984,
+          "wilson95": [
+            0.97416793978826,
+            0.9901277579977227
+          ]
+        },
+        "loss": {
+          "estimate": 0.016,
+          "wilson95": [
+            0.009872242002277388,
+            0.02583206021173997
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 135,
+      "shattered": 16,
+      "mean_final_focus": 49.662,
+      "mean_rounds": 2.814,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M3",
+      "variant": "F0",
+      "strategy": "shield_reactive",
+      "n": 1000,
+      "outcomes": {
+        "win": 973,
+        "loss": 27,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.973,
+          "wilson95": [
+            0.9610012692469598,
+            0.9813786172257051
+          ]
+        },
+        "loss": {
+          "estimate": 0.027,
+          "wilson95": [
+            0.018621382774294995,
+            0.03899873075304015
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 132,
+      "shattered": 27,
+      "mean_final_focus": 48.087,
+      "mean_rounds": 2.87,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M3",
+      "variant": "F0",
+      "strategy": "shield_endturn",
+      "n": 1000,
+      "outcomes": {
+        "win": 973,
+        "loss": 27,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.973,
+          "wilson95": [
+            0.9610012692469598,
+            0.9813786172257051
+          ]
+        },
+        "loss": {
+          "estimate": 0.027,
+          "wilson95": [
+            0.018621382774294995,
+            0.03899873075304015
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 134,
+      "shattered": 27,
+      "mean_final_focus": 50.688,
+      "mean_rounds": 2.768,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M3",
+      "variant": "F2",
+      "strategy": "hammer",
+      "n": 1000,
+      "outcomes": {
+        "win": 981,
+        "loss": 19,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.981,
+          "wilson95": [
+            0.9705155440876868,
+            0.9878031142492091
+          ]
+        },
+        "loss": {
+          "estimate": 0.019,
+          "wilson95": [
+            0.012196885750790904,
+            0.02948445591231312
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 121,
+      "shattered": 19,
+      "mean_final_focus": 51.504,
+      "mean_rounds": 2.775,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M3",
+      "variant": "F2",
+      "strategy": "shield_reactive",
+      "n": 1000,
+      "outcomes": {
+        "win": 1000,
+        "loss": 0,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 16,
+      "shattered": 0,
+      "mean_final_focus": 69.566,
+      "mean_rounds": 2.768,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M3",
+      "variant": "F2",
+      "strategy": "shield_endturn",
+      "n": 1000,
+      "outcomes": {
+        "win": 1000,
+        "loss": 0,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 1.0,
+          "wilson95": [
+            0.996173241514445,
+            1.0
+          ]
+        },
+        "loss": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 13,
+      "shattered": 0,
+      "mean_final_focus": 68.792,
+      "mean_rounds": 2.822,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M4",
+      "variant": "F0",
+      "strategy": "hammer",
+      "n": 1000,
+      "outcomes": {
+        "win": 953,
+        "loss": 47,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.953,
+          "wilson95": [
+            0.9380600619184716,
+            0.9644728948936154
+          ]
+        },
+        "loss": {
+          "estimate": 0.047,
+          "wilson95": [
+            0.0355271051063845,
+            0.06193993808152845
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 195,
+      "shattered": 47,
+      "mean_final_focus": 40.52,
+      "mean_rounds": 2.76,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M4",
+      "variant": "F0",
+      "strategy": "shield_reactive",
+      "n": 1000,
+      "outcomes": {
+        "win": 939,
+        "loss": 61,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.939,
+          "wilson95": [
+            0.9224198811757163,
+            0.9522202248739662
+          ]
+        },
+        "loss": {
+          "estimate": 0.061,
+          "wilson95": [
+            0.0477797751260337,
+            0.07758011882428367
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 225,
+      "shattered": 61,
+      "mean_final_focus": 36.42,
+      "mean_rounds": 2.834,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M4",
+      "variant": "F0",
+      "strategy": "shield_endturn",
+      "n": 1000,
+      "outcomes": {
+        "win": 947,
+        "loss": 53,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.947,
+          "wilson95": [
+            0.9313253831625082,
+            0.9592534947514054
+          ]
+        },
+        "loss": {
+          "estimate": 0.053,
+          "wilson95": [
+            0.04074650524859452,
+            0.06867461683749176
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 206,
+      "shattered": 53,
+      "mean_final_focus": 39.418,
+      "mean_rounds": 2.833,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M4",
+      "variant": "F2",
+      "strategy": "hammer",
+      "n": 1000,
+      "outcomes": {
+        "win": 945,
+        "loss": 55,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.945,
+          "wilson95": [
+            0.9290916123226243,
+            0.9575025726252315
+          ]
+        },
+        "loss": {
+          "estimate": 0.055,
+          "wilson95": [
+            0.04249742737476844,
+            0.07090838767737563
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 180,
+      "shattered": 55,
+      "mean_final_focus": 42.812,
+      "mean_rounds": 2.736,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M4",
+      "variant": "F2",
+      "strategy": "shield_reactive",
+      "n": 1000,
+      "outcomes": {
+        "win": 993,
+        "loss": 7,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.993,
+          "wilson95": [
+            0.9856216845342334,
+            0.9966051315990092
+          ]
+        },
+        "loss": {
+          "estimate": 0.007,
+          "wilson95": [
+            0.0033948684009907646,
+            0.014378315465766588
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 75,
+      "shattered": 7,
+      "mean_final_focus": 58.286,
+      "mean_rounds": 2.821,
+      "full_logs_audited": 0
+    },
+    {
+      "stage": "dev",
+      "scenario": "M4",
+      "variant": "F2",
+      "strategy": "shield_endturn",
+      "n": 1000,
+      "outcomes": {
+        "win": 994,
+        "loss": 6,
+        "inconclusive": 0
+      },
+      "rates": {
+        "win": {
+          "estimate": 0.994,
+          "wilson95": [
+            0.9869718317581478,
+            0.9972473308581237
+          ]
+        },
+        "loss": {
+          "estimate": 0.006,
+          "wilson95": [
+            0.0027526691418763745,
+            0.01302816824185209
+          ]
+        },
+        "inconclusive": {
+          "estimate": 0.0,
+          "wilson95": [
+            2.168404344971009e-19,
+            0.0038267584855551234
+          ]
+        }
+      },
+      "ever_demoralized": 55,
+      "shattered": 6,
+      "mean_final_focus": 62.658,
+      "mean_rounds": 2.668,
+      "full_logs_audited": 0
+    }
+  ]
+}

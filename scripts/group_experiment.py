@@ -60,7 +60,9 @@ def profile_record(profile: Profile) -> dict:
 def hashes() -> dict[str, str]:
     files = [ROOT / "GROUP_EXPERIMENT_SPEC.md", ROOT / "GROUP_SPEC.md",
              ROOT / "scripts" / "group_experiment.py"]
-    files.extend(sorted((ROOT / "experimental").glob("*.py")))
+    files.extend(ROOT / "experimental" / name for name in (
+        "__init__.py", "group.py", "group_audit.py",
+        "group_policies.py", "multi_target.py"))
     files.extend(sorted((ROOT / "blacklight").glob("*.py")))
     files.extend(ROOT / name for name in ("RULES_AUDIT.md", "CHARACTER_AUDIT.md"))
     return {str(path.relative_to(ROOT)).replace("\\", "/"):

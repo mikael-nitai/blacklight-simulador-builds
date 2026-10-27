@@ -1,0 +1,941 @@
+{
+  "schema": "blacklight-generic-character-batch-v1",
+  "damage_model": "literal_marvel_pool_v2",
+  "engine_version": "0.2.0-pool",
+  "execution_adapter": "modular_physical_duel_v3",
+  "lifecycle_scope": "Dodge and Stunned expiry at turn start; immutable timing plans",
+  "runtime": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "implementation": "cpython",
+    "combat_core_dependencies": "Python standard library",
+    "external_policy_dependency_scope": "Class source is hashed; transitive external dependencies need a separate manifest"
+  },
+  "registered_action_modules": [
+    {
+      "kind": "heal",
+      "required_power": "do_this_all_day",
+      "minimum_spend": 5,
+      "maximum_spend_per_rank": 5,
+      "minimum_focus_remaining": 1,
+      "health_per_focus": 2,
+      "cost_rules": [
+        "RES-01",
+        "POW-07"
+      ],
+      "healing_rule": "POW-07",
+      "sources": [
+        "Core Rulebook p.94",
+        "RULES_AUDIT.md POW-07/RES-01"
+      ],
+      "family": "FocusSelfHeal",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "do_this_all_day"
+        }
+      ]
+    },
+    {
+      "kind": "stance",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "attack_stance"
+        }
+      ],
+      "state": "stance",
+      "require_inactive": true,
+      "rules": [
+        "POW-09"
+      ],
+      "sources": [
+        "Core Rulebook p.83",
+        "RULES_AUDIT.md POW-09"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "shield",
+      "requirements": [
+        {
+          "kind": "weapon",
+          "id": "shield"
+        }
+      ],
+      "state": "shield_active",
+      "require_inactive": true,
+      "rules": [
+        "HR-04"
+      ],
+      "sources": [
+        "User table ruling HR-04: standard-action activation"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "dodge",
+      "requirements": [],
+      "state": "dodging",
+      "require_inactive": false,
+      "rules": [
+        "ACT-07"
+      ],
+      "sources": [
+        "Core Rulebook p.30",
+        "RULES_AUDIT.md ACT-07"
+      ],
+      "family": "StateActivation"
+    }
+  ],
+  "source_sha256": {
+    "blacklight\\__init__.py": "661aacdbe8eec1dc9eb5af1fc4e6946742daf032dd96f95434dd541a1b650f03",
+    "blacklight\\audit.py": "5cd464490ea054c8a2eded0a3505e53f54ca44f6d6c57468013ffd5b5e986a82",
+    "blacklight\\damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight\\dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight\\engine.py": "ef4ac0dfb91575c0f7d4fc0756ff613e1b7bafd4be51838ae6a0bbf0604e5c8d",
+    "blacklight\\experiment.py": "de9ba99853bc9fab6d60d2769eaad38dcf598e018795bb49e07f620604387772",
+    "blacklight\\policies.py": "fbf6756e0023efdb3b7d91a4ee4fd7f2a1868ab3b919ab28b284243e70a17e66",
+    "blacklight\\pool_damage.py": "55a2d67b3bfe7165a4b9bdfbb2da44f2def9a4334a0138f338ccfac0921ebf32",
+    "blacklight\\search.py": "d495e4fefb46213cf5839056ed7db84b0dcb919d568a7a70c4a2e56951cc90ff",
+    "blacklight\\sensitivity.py": "fa7154e3677041426b270b0f512c2ea200b7f645f0ea149377a64621fd57465f",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "DAMAGE_POOL_RULING.md": "c930574a5dde0c228865d4b305bb881c2992ff5f103adec272caed763464a4b3",
+    "DAMAGE_POOL_V2_SPEC.md": "92e1c71d767d075bc44ccc02e957b95bd904e20ff313f510fb8b315448b18387",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "FAST_STRIKES_RULING.md": "af2f21ac8c532d05fb7b9b39d6c64f299c9ee3dc0a748cc1ce98dd4e71c5ef74",
+    "RULES_AUDIT.md": "f9a082894bb6052d8053034af4f6a06c859aa7e4a84ca9b7ff95185711de468d",
+    "combatants\\__init__.py": "5978e1e5aedae6ee1105f87ed6d05850b786ffd4d345baa1109eefde35762d5e",
+    "combatants\\actions.py": "e6fd391755cdad6618cd1389938f844b35e8b3854d590510fc0f5db2071658a1",
+    "combatants\\duel_adapter.py": "e7b401dcda6c8cad9ed4cf4c02335e8294d8b5c5c70648e1f7af4d10ff67f85d",
+    "combatants\\lifecycle.py": "820dfdee332cced95cd51c08ca47999d523e910514edc49beadfad5abb3adf82",
+    "combatants\\modular_duel.py": "30d7f51a8ec952c5e5db9a4f087184bf69449e6b453b9d7a96a0dc3efa9ea12f",
+    "combatants\\pdf_draft.py": "cf651dcf3d2b90a26ef961ed18caba5c2321e2330e48427773549040da862add",
+    "combatants\\runner.py": "44145152854d3bf8df124cef9b3e2433b0d716f788bd6d49903eb8485509a0ea",
+    "combatants\\sheets.py": "ca90287b1ab6d2877388b3ffce53fc7ab70f778b992c14d5749b6b5a6300ad60",
+    "results\\generic_sheet_rank4_batch.json": "1912d3894c04bb1a0ec89b56c4b6bbb8b7e4c6716b12197ea66853aa30900b58",
+    "scripts\\replay_character_snapshots.py": "ba08ef21b113fbe5131e1e1bf3b314028c68596d022ff74ea2f62dbef15e97af"
+  },
+  "sheets": [
+    {
+      "schema": "blacklight.character.v1",
+      "id": "synthetic_rank4_example",
+      "revision": "example_v1",
+      "name": "Exemplo Rank 4",
+      "rank": 4,
+      "ruleset": "literal_marvel_pool_v2",
+      "abilities": {
+        "melee": 7,
+        "agility": 2,
+        "resilience": 6,
+        "vigilance": 2,
+        "ego": 2,
+        "logic": 1
+      },
+      "defenses": {
+        "melee": 17,
+        "agility": 12,
+        "resilience": 16,
+        "vigilance": 12,
+        "ego": 12,
+        "logic": 11
+      },
+      "resources": {
+        "health": 180,
+        "focus": 60,
+        "karma": 0
+      },
+      "movement": {
+        "run": 5,
+        "climb": 3,
+        "swim": 3
+      },
+      "initiative_modifier": 2,
+      "features": [
+        {
+          "id": "mighty",
+          "kind": "power",
+          "level": 2,
+          "parameters": {},
+          "sources": [
+            "Synthetic integration-test fixture"
+          ]
+        },
+        {
+          "id": "sturdy",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "Synthetic integration-test fixture"
+          ]
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "synthetic",
+          "purpose": "Character substitution test; not Victor Rank 4 and not an official profile"
+        }
+      ],
+      "notes": [
+        "This is an explicit synthetic example. It does not predict the user's future character progression."
+      ]
+    },
+    {
+      "schema": "blacklight.character.v1",
+      "id": "victor_halle",
+      "revision": "rank3_2026-10-26_table_2026-10-27",
+      "name": "Blacklight",
+      "rank": 3,
+      "ruleset": "literal_marvel_pool_v2",
+      "abilities": {
+        "melee": 6,
+        "agility": 1,
+        "resilience": 5,
+        "vigilance": 2,
+        "ego": 1,
+        "logic": 0
+      },
+      "defenses": {
+        "melee": 16,
+        "agility": 11,
+        "resilience": 15,
+        "vigilance": 12,
+        "ego": 11,
+        "logic": 10
+      },
+      "resources": {
+        "health": 150,
+        "focus": 90,
+        "karma": 3
+      },
+      "movement": {
+        "run": 5,
+        "climb": 3,
+        "swim": 3
+      },
+      "initiative_modifier": 2,
+      "features": [
+        {
+          "id": "mighty",
+          "kind": "power",
+          "level": 3,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "id": "sturdy",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "id": "healing_factor",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "id": "brawling",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "id": "fast_strikes",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "attack_stance",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "riposte",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "disguise",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "do_this_all_day",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blazing_fast_fists",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "weird",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "battle_ready",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "connections_military",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "situational_awareness",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "combat_reflexes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "id": "signature_fast_strikes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "obligation",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "rich",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "signature_weapon",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "heroic",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blade",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "claw",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "hammer",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "id": "shield",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "pdf",
+          "path": "C:/Users/avada/Downloads/Ficha_victor Halle Rank 3.pdf",
+          "sha256": "6c907dfcaa2af39b904e6144466915bafc6b6f66f407aeb312dea112fd3200d1",
+          "page": 1
+        },
+        {
+          "kind": "audit",
+          "path": "CHARACTER_AUDIT.md",
+          "date": "2026-10-26"
+        },
+        {
+          "kind": "table_rulings",
+          "paths": [
+            "DAMAGE_POOL_RULING.md",
+            "FAST_STRIKES_RULING.md",
+            "FOCUS_RULING.md"
+          ],
+          "date": "2026-10-27"
+        }
+      ],
+      "notes": [
+        "Initiative 2 and Run 5 follow the audited Core-derived variant. The PDF prints 1 and 6; that disagreement is retained in CHARACTER_AUDIT.md.",
+        "Mighty 1/2/3 rows are stored as the highest level 3, without summing levels.",
+        "Extended Reach is absent from this primary sheet. Whip is unavailable at Rank 3.",
+        "This record preserves all listed powers, traits and tags. Read the adapter coverage report before simulation."
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "name": "attack",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "bare",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false
+    },
+    {
+      "name": "shield_blade_hammer_reactive",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": true,
+      "weapon": "blade",
+      "offhand": "hammer",
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": false
+    }
+  ],
+  "initial_distance": 1,
+  "max_rounds": 30,
+  "n": 1000,
+  "master_seed": 731,
+  "cell_sha256": "56cf2ff6fcfb545f283bbf064fed60b0f651233cc60c9b57ec167d16eba1c275",
+  "seed_formula": "first 8 SHA-256 bytes of character-batch-v1|master_seed|cell_sha256|index",
+  "pairing_note": "Seeds identify this cell; different cells are not assumed to be paired samples",
+  "coverage": [
+    {
+      "sheet_id": "synthetic_rank4_example",
+      "revision": "example_v1",
+      "engine": "restricted_physical_duel_pool_v2",
+      "build_legality": "not_certified_by_this_mechanics_adapter",
+      "ready_for_this_scope": true,
+      "blockers": [],
+      "features": [
+        {
+          "kind": "power",
+          "id": "mighty",
+          "level": 2,
+          "status": "implemented",
+          "detail": "Level becomes Melee damage bonus",
+          "sources": [
+            "Synthetic integration-test fixture"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "sturdy",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Level becomes Health DR",
+          "sources": [
+            "Synthetic integration-test fixture"
+          ]
+        }
+      ],
+      "scope_limits": [
+        "two actors",
+        "direct physical combat",
+        "open field",
+        "no Karma spending",
+        "no numeric limb penalties",
+        "no Focus attacks",
+        "no climbing/swimming phase"
+      ]
+    },
+    {
+      "sheet_id": "victor_halle",
+      "revision": "rank3_2026-10-26_table_2026-10-27",
+      "engine": "restricted_physical_duel_pool_v2",
+      "build_legality": "not_certified_by_this_mechanics_adapter",
+      "ready_for_this_scope": true,
+      "blockers": [],
+      "features": [
+        {
+          "kind": "power",
+          "id": "mighty",
+          "level": 3,
+          "status": "implemented",
+          "detail": "Level becomes Melee damage bonus",
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "sturdy",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Level becomes Health DR",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "healing_factor",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "brawling",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "attack_stance",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "riposte",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "disguise",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No disguise/deception phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "do_this_all_day",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "blazing_fast_fists",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "weird",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No social phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "battle_ready",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "connections_military",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No contacts/reinforcements in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "situational_awareness",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "combat_reflexes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "signature_fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "obligation",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "rich",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "signature_weapon",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "heroic",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Nonlethal damage floor; Karma spending remains outside scope",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "blade",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "claw",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "hammer",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "shield",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "scope_limits": [
+        "two actors",
+        "direct physical combat",
+        "open field",
+        "no Karma spending",
+        "no numeric limb penalties",
+        "no Focus attacks",
+        "no climbing/swimming phase"
+      ]
+    }
+  ],
+  "outcomes": {
+    "win": 2,
+    "loss": 998,
+    "draw": 0,
+    "inconclusive": 0
+  },
+  "rates": {
+    "win": {
+      "estimate": 0.002,
+      "wilson95": [
+        0.0005486435881207267,
+        0.007262807863492175
+      ]
+    },
+    "loss": {
+      "estimate": 0.998,
+      "wilson95": [
+        0.9927371921365079,
+        0.9994513564118793
+      ]
+    },
+    "draw": {
+      "estimate": 0.0,
+      "wilson95": [
+        2.168404344971009e-19,
+        0.0038267584855551217
+      ]
+    },
+    "inconclusive": {
+      "estimate": 0.0,
+      "wilson95": [
+        2.168404344971009e-19,
+        0.0038267584855551217
+      ]
+    }
+  },
+  "metrics_all_starts": {
+    "rounds": {
+      "mean": 3.288,
+      "mc_se": 0.0399831796466296
+    },
+    "hero_final_health": {
+      "mean": -27.113,
+      "mc_se": 0.5880306208106947
+    },
+    "hero_final_focus": {
+      "mean": 60.0,
+      "mc_se": 0.0
+    },
+    "hero_damage_dealt": {
+      "mean": 44.936,
+      "mc_se": 1.181076985994921
+    },
+    "hero_damage_taken": {
+      "mean": 207.113,
+      "mc_se": 0.5880306208106937
+    }
+  },
+  "audited_traces": [
+    {
+      "index": 0,
+      "seed": 8367700984252748812,
+      "issues": []
+    },
+    {
+      "index": 100,
+      "seed": 18151242089395570858,
+      "issues": []
+    },
+    {
+      "index": 200,
+      "seed": 360254265218778850,
+      "issues": []
+    },
+    {
+      "index": 300,
+      "seed": 4934473137799044264,
+      "issues": []
+    },
+    {
+      "index": 400,
+      "seed": 1891769125498911819,
+      "issues": []
+    },
+    {
+      "index": 500,
+      "seed": 1117675761406612091,
+      "issues": []
+    },
+    {
+      "index": 600,
+      "seed": 14212044858828926179,
+      "issues": []
+    },
+    {
+      "index": 700,
+      "seed": 10990225802856081307,
+      "issues": []
+    },
+    {
+      "index": 800,
+      "seed": 14817935249677534549,
+      "issues": []
+    },
+    {
+      "index": 900,
+      "seed": 32676326094142431,
+      "issues": []
+    }
+  ],
+  "migration_reference": {
+    "path": "results\\generic_sheet_rank4_batch.json",
+    "sha256": "1912d3894c04bb1a0ec89b56c4b6bbb8b7e4c6716b12197ea66853aa30900b58",
+    "compared_fields": [
+      "outcomes",
+      "rates",
+      "metrics_all_starts",
+      "audited_traces",
+      "cell_sha256",
+      "sheets",
+      "policies",
+      "n",
+      "master_seed",
+      "initial_distance",
+      "max_rounds"
+    ]
+  }
+}

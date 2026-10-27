@@ -100,6 +100,30 @@
     "pool_v2_smoke_summary.json": {
       "result_sha256": "e423887df8e88f87fb05afe4fe32501287a2da0d34d254aef3c77487b9ce6cd7",
       "source_commit": "f9c540a8c2cf9ffbb619dba5deda1d14bb06f50a"
+    },
+    "character_replay_v3_dodge_demo.json": {
+      "result_sha256": "3300bbe083c6694a8ab668aeb16b2e01b82ad503ac82d684636c126447c89d36",
+      "source_commit": "7cdf0940303934231549cb383f7d656ca6a275b9"
+    },
+    "character_replay_v3_modular_heal_demo.json": {
+      "result_sha256": "17eefe65425f00117b3803ca8c4a65f212f77710e24f74ec11184e7f4d81ab89",
+      "source_commit": "7cdf0940303934231549cb383f7d656ca6a275b9"
+    },
+    "character_replay_v3_rank4_batch.json": {
+      "result_sha256": "198d8a5f3183488e02cd82b18884c3df7f7457aee1ca401108a19ec537f5b628",
+      "source_commit": "7cdf0940303934231549cb383f7d656ca6a275b9"
+    },
+    "character_replay_v3_rank4_demo.json": {
+      "result_sha256": "ba6a948063a5cce6c35817bbe6aaf5d289f44117bec1d90560248b0703f9d1c3",
+      "source_commit": "7cdf0940303934231549cb383f7d656ca6a275b9"
+    },
+    "character_replay_v3_stance_demo.json": {
+      "result_sha256": "f4ee27e4bc9a485df2ed0471715bf8605033560b49a6a8a819a72ea15620ecf3",
+      "source_commit": "7cdf0940303934231549cb383f7d656ca6a275b9"
+    },
+    "character_replay_v3_standard_shield_demo.json": {
+      "result_sha256": "f1ca3e645d095a174bbf08948080d4166faac6e7d0590cf4104755f1b4bb4123",
+      "source_commit": "7cdf0940303934231549cb383f7d656ca6a275b9"
     }
   }
 }

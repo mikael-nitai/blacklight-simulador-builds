@@ -124,6 +124,18 @@
     "character_replay_v3_standard_shield_demo.json": {
       "result_sha256": "f1ca3e645d095a174bbf08948080d4166faac6e7d0590cf4104755f1b4bb4123",
       "source_commit": "7cdf0940303934231549cb383f7d656ca6a275b9"
+    },
+    "split_fast_v3_blade_effects_demo.json": {
+      "result_sha256": "92b715b09a0bdd27091b3e1f9c6f69c1a23ebfd1349eaba4e4cfadf95d0474b0",
+      "source_commit": "00f06f90ba5cd89014fe021470456505d35948a1"
+    },
+    "split_fast_v3_hammer_effects_demo.json": {
+      "result_sha256": "426130bba5999843cea98d1106257c49336a3d51b91ace446bc720c9431d3231",
+      "source_commit": "00f06f90ba5cd89014fe021470456505d35948a1"
+    },
+    "split_fast_v3_rank4_integration_batch.json": {
+      "result_sha256": "d166fe6ff916cb53606c531e4b236e31c3d9de088640bf4810d4c8a707421767",
+      "source_commit": "00f06f90ba5cd89014fe021470456505d35948a1"
     }
   }
 }

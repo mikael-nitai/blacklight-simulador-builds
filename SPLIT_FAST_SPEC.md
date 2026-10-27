@@ -37,6 +37,8 @@ O revisor independente escreveu `scripts/audit_split_fast.py`, com 108 combinaç
 
 A suíte completa passou em 213 testes, incluindo as interações com a ficha versionada, ação extra após Lâmina comum fantástica e ausência de ação extra no Riposte. A execução real da CLI foi conferida nas duas versões, inclusive a recusa de executar o contrato histórico sem a opção explícita. Sessenta duelos de execução com as duas escolhas de efeitos também passaram no auditor; não foram usados para selecionar estratégia.
 
+Os [exemplos com efeitos da Lâmina](results/split_fast_v3_blade_effects_demo.json) e [da Marreta](results/split_fast_v3_hammer_effects_demo.json) foram gerados e auditados: cada um registra três usos de Fast e seis testes por braço. A [bateria de substituição por outra ficha Rank 4](results/split_fast_v3_rank4_integration_batch.json) executou 1.000 duelos e auditou as 1.000 trilhas completas. São controles de integração, sem seleção de estratégia. Os três artefatos estão ligados ao commit `00f06f9`; o verificador conferiu 34 resultados versionados sem divergências.
+
 Reprodução dos controles de integração, com um prefixo novo para não substituir arquivos:
 
 ```powershell

@@ -64,7 +64,9 @@ class GroupPolicy(SplitFastPolicy):
             return action
         def key(index):
             fighter = observation.fighters[index]
-            value = (fighter.melee_defense if self.target_order == 'lowest_defense' else
+            defense = (fighter.agility_defense if action.kind == 'ranged'
+                       and 'brawling' not in fighter.powers else fighter.melee_defense)
+            value = (defense if self.target_order == 'lowest_defense' else
                      -fighter.health if self.target_order == 'highest_health' else fighter.health)
             return value, index
         enemies = sorted(observation.enemies, key=key)
@@ -131,6 +133,7 @@ class GroupBattle(SplitFastDuel):
         self.initiative_tie_order = initiative_tie_order
         self.resolved_initiative_order = None
         self._timed_stuns: tuple[TimedEffect, ...] = ()
+        self._resolving_group_reactions = False
 
     def _initiative(self):
         if self.initiative_roles is None:
@@ -202,6 +205,23 @@ class GroupBattle(SplitFastDuel):
 
     def _reaction_source_available(self, event):
         return self.fighters[event.source].conscious
+
+    def _queue_reaction(self, event):
+        # An interrupt triggered by a Riposte resolves before older deferred
+        # events. The two original Fast limb misses are queued before draining.
+        if self._resolving_group_reactions:
+            self.pending.appendleft(event)
+        else:
+            super()._queue_reaction(event)
+
+    def _drain_events(self):
+        if self._resolving_group_reactions:
+            raise RuntimeError('Group reaction drain cannot be nested')
+        self._resolving_group_reactions = True
+        try:
+            super()._drain_events()
+        finally:
+            self._resolving_group_reactions = False
 
     def _move(self, actor, move, *, as_standard=False):
         if not isinstance(move, Move) or move != Move() or as_standard:

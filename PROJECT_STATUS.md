@@ -1,5 +1,11 @@
 # Estado do projeto completo — 27/10/2026
 
+**Expansão experimental de grupo:** [fichas versionadas podem alimentar um
+confronto de contato fixo](GROUP_CHARACTER_EXPERIMENT.md), com trilha e
+verificações parciais. Reações aninhadas interrompem a fila de gatilhos
+pendentes; o caso foi testado com incapacitação. Não há certificação de combate
+de grupo ou de resultados de eficácia nesta etapa.
+
 **Continuação após a Fundação:** o grupo experimental agora exige papéis
 explícitos de jogador/NPC e registra uma ordem declarada quando sobrar empate
 de iniciativa. Um verificador próprio confere essa ordem e os turnos, dentro

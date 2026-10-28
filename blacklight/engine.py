@@ -714,7 +714,7 @@ class Duel:
                 self._record("knockback_declined", ("POW-01",),
                              actor=p.name, target=q.name)
         if not result.success and not ranged:
-            self.pending.append(ReactionEvent("riposte", target_actor, actor, trigger))
+            self._queue_reaction(ReactionEvent("riposte", target_actor, actor, trigger))
             self._record("reaction_queued", ("ACT-03", "POW-06"),
                          actor=q.name, trigger=trigger, source=p.name)
         return result
@@ -728,6 +728,9 @@ class Duel:
                      actor=defender.profile.name, condition='stunned',
                      expires_on_actor=self.fighters[actor].profile.name,
                      source_turn_count=defender.stun_expires_on_actor_turn)
+
+    def _queue_reaction(self, event: ReactionEvent) -> None:
+        self.pending.append(event)
 
     def _reaction_source_available(self, event: ReactionEvent) -> bool:
         return True

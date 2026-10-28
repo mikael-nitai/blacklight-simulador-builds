@@ -26,10 +26,11 @@ reações ou desfecho do grupo e não prova a origem aleatória dos dados. Os te
 incluem NPC antes de jogador na lista, fantástico e total superiores, dados
 ausentes, desempates repetidos, trilha adulterada e combate completo.
 
-Ainda faltam, antes de usar o grupo em estudos de eficácia: auditoria completa
-das ações e dos efeitos por alvo, política explícita para reações adiadas entre
-gatilhos distintos, posições/movimento e integração de fichas e proveniência
-no runner de grupo. Stunned de múltiplas fontes segue a hipótese experimental
+O [executor experimental por fichas](GROUP_CHARACTER_EXPERIMENT.md) registra
+uma interpretação operacional para reações adiadas e faz verificações adicionais
+dos alvos. Ainda faltam, antes de usar o grupo em estudos de eficácia: auditoria
+completa das ações, efeitos e reações, posições/movimento e um protocolo de
+congelamento próprio. Stunned de múltiplas fontes segue a hipótese experimental
 de durações paralelas, sem que isso seja regra oficial confirmada. A renovação
 exata de reações e outras ambiguidades de mesa continuam documentadas em
 `RULES_AUDIT.md`. Não usar taxas históricas como resultados da regra atual.

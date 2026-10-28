@@ -29,6 +29,8 @@ REQUIRED_CORE = frozenset(('blacklight/engine.py', 'blacklight/policies.py',
 
 def require_generic_provenance(payload: dict, root: Path, commit: str) -> None:
     """Do not freeze a new generic result with unknown policies or partial core sources."""
+    if payload.get('schema') == 'blacklight-experimental-character-group-v1':
+        raise ValueError('Experimental group output has no certified freezing contract')
     if payload.get('schema') not in GENERIC_SCHEMAS:
         return
     if (payload.get('policy_provenance') != 'project_builtin'

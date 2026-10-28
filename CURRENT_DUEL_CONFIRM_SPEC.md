@@ -1,5 +1,9 @@
 # Confirmação dos duelos físicos atuais
 
+**Emenda anterior à execução:** [controle adicional com Marreta e 15
+comparações](CURRENT_DUEL_CONFIRM_AMENDMENT.md) substitui os números de células
+e comparações abaixo. O texto original é preservado para rastrear a alteração.
+
 Pré-registro de confirmação, feito após congelar o desenvolvimento e antes de
 executar estas células. A [seleção exploratória](experiments/current_duel_study/development_selection_v1.json)
 foi registrada no commit `a7ac036`; seu SHA-256 é

@@ -1,13 +1,15 @@
 """Run the preregistered confirmation of selected current-rule duel policies."""
 
 from argparse import ArgumentParser
+from dataclasses import asdict
 from hashlib import sha256
 import json
 from pathlib import Path
 
 from blacklight.experiment import ROOT
 from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
-from combatants.runner import run_batch
+from combatants.runner import _policy_types, run_batch
+from combatants.sheets import sheet_record
 from scripts.current_study_dev import INPUTS, SCENARIOS, configurations, declared_sources, source_commit
 from scripts.current_study_select import load_cells, select_candidates
 
@@ -17,8 +19,9 @@ N_PER_CELL = 10000
 SELECTION = ROOT / 'experiments/current_duel_study/development_selection_v1.json'
 SELECTION_SHA256 = '87fec028587c5c18ce4a7f55f4a45b3bc282f34241d18d9f4e55f00f23dc4529'
 SPEC = ROOT / 'CURRENT_DUEL_CONFIRM_SPEC.md'
+AMENDMENT = ROOT / 'CURRENT_DUEL_CONFIRM_AMENDMENT.md'
 FINALISTS = ('hammer_fast_hammer', 'hammer_fast_blade')
-POLICIES = ('bare', *FINALISTS)
+POLICIES = ('bare', 'hammer', *FINALISTS)
 
 
 def validated_selection():
@@ -44,7 +47,7 @@ def confirmation_sources(policies, board, input_bytes, selection):
     sources = declared_sources(policies, board, input_bytes)
     for name in selection['input_sha256']:
         sources[name] = sha256((ROOT / name).read_bytes()).hexdigest()
-    for path in (SELECTION, SPEC, Path(__file__).resolve()):
+    for path in (SELECTION, SPEC, AMENDMENT, Path(__file__).resolve()):
         sources[path.relative_to(ROOT).as_posix()] = sha256(path.read_bytes()).hexdigest()
     return sources
 
@@ -53,12 +56,53 @@ def output_path(scenario, policy):
     return ROOT / 'results' / f'current_duel_confirm_v1_{scenario}_{policy}.json'
 
 
+def confirmation_cell_hash(hero, opponent, policy, opponent_policy, distance, board):
+    cell = {'sheets': [sheet_record(hero), sheet_record(opponent)],
+            'policies': [asdict(policy), asdict(opponent_policy)],
+            'initial_distance': board.distance if board else distance, 'max_rounds': 30,
+            'policy_types': _policy_types((policy, opponent_policy))}
+    if board is not None:
+        cell['battlefield'] = board.record()
+    return sha256(json.dumps(cell, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def assert_seed_separation(selection):
+    development = set()
+    for name in selection['input_sha256']:
+        if not name.startswith('results/current_duel_dev_v1_'):
+            continue
+        record = json.loads((ROOT / name).read_text(encoding='utf-8'))
+        for trace in record['audited_traces']:
+            seed = trace['seed']
+            if type(seed) is not int or seed in development:
+                raise ValueError('Development seed collision or invalid seed')
+            development.add(seed)
+    if len(development) != 15000:
+        raise ValueError('Development seed inventory is incomplete')
+    input_bytes = tuple(path.read_bytes() for path in INPUTS)
+    hero, policies, scenarios = configurations(input_bytes)
+    confirmation = set()
+    for scenario in SCENARIOS:
+        opponent, opponent_policy, distance, board = scenarios[scenario]
+        for policy_name in POLICIES:
+            policy = policies[policy_name]
+            cell_hash = confirmation_cell_hash(hero, opponent, policy, opponent_policy, distance, board)
+            for index in range(N_PER_CELL):
+                key = f'character-batch-v2|{MASTER_SEED}|{cell_hash}|{index}'
+                seed = int.from_bytes(sha256(key.encode()).digest()[:8], 'big')
+                if seed in development or seed in confirmation:
+                    raise ValueError('Confirmation seed collision')
+                confirmation.add(seed)
+    return len(development), len(confirmation)
+
+
 def execute_cell(scenario_id, policy_id, *, n=N_PER_CELL, output=None):
     if scenario_id not in SCENARIOS or policy_id not in POLICIES or type(n) is not int or n < 1:
         raise ValueError('Unknown confirmation cell or invalid count')
     path = output_path(scenario_id, policy_id) if output is None else Path(output)
     require_new_output(path)
     selection = validated_selection()
+    development_count, confirmation_count = assert_seed_separation(selection)
     input_bytes = tuple(path.read_bytes() for path in INPUTS)
     hero, policies, scenarios = configurations(input_bytes)
     opponent, opponent_policy, distance, board = scenarios[scenario_id]
@@ -77,6 +121,10 @@ def execute_cell(scenario_id, policy_id, *, n=N_PER_CELL, output=None):
     payload['study'] = {'phase': 'confirmation', 'scenario_id': scenario_id, 'policy_id': policy_id,
                         'spec': SPEC.relative_to(ROOT).as_posix(), 'source_commit': commit,
                         'selection_sha256': SELECTION_SHA256, 'pre_registered_n': N_PER_CELL,
+                        'amendment': AMENDMENT.relative_to(ROOT).as_posix(),
+                        'seed_preflight': {'development': development_count,
+                                           'confirmation': confirmation_count,
+                                           'collisions': 0},
                         'n_matches_preregistration': n == N_PER_CELL,
                         'interpretation': 'limited synthetic physical duels, separate development and holdout'}
     write_new_text(path, json.dumps(payload, ensure_ascii=False, indent=2) + '\n')
@@ -99,6 +147,8 @@ def main():
         parser.error('Specify --all or both --scenario and --policy')
     for scenario, policy in cells:
         require_new_output(output_path(scenario, policy))
+    development_count, confirmation_count = assert_seed_separation(validated_selection())
+    print(f'Seed preflight: {development_count} development, {confirmation_count} confirmation; no collisions.', flush=True)
     for index, (scenario, policy) in enumerate(cells, 1):
         print(f'Confirmação {index}/{len(cells)}: {scenario}, {policy}', flush=True)
         execute_cell(scenario, policy)

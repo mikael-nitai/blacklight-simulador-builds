@@ -47,6 +47,9 @@ zero; isso não avalia o valor de Do This All Day.
 
 ## Próxima verificação
 
+A [emenda anterior à confirmação](CURRENT_DUEL_CONFIRM_AMENDMENT.md) acrescenta
+Marreta comum como segundo controle e predefine a família de 15 comparações.
+
 Confirmação e reserva ainda **não foram executadas**. As duas finalistas e o
 controle devem ser testados com sementes distintas conforme o pré-registro,
 sem alterar a seleção depois de observar a confirmação. A comparação incluirá

@@ -9,7 +9,7 @@ import unittest
 from unittest.mock import patch
 
 from scripts.freeze_results import freeze
-from scripts.verify_sources import (INDEX_NAME, HISTORICAL_NAME, HISTORICAL_SCHEMA,
+from scripts.verify_sources import (INDEX_NAME, HISTORICAL_NAME, HISTORICAL_SCHEMA, LEGACY_COPY_NOTE,
                                     LEGACY_SOURCE_ALIASES, load_index, relative_source,
                                     snapshot_source_hash, verify, verify_result)
 
@@ -232,6 +232,21 @@ class TestResultSnapshots(unittest.TestCase):
         historical.write_bytes(b'{"historical": false}')
         with self.assertRaisesRegex(ValueError, 'historical bytes differ'):
             verify(root=self.root)
+
+    def test_inventory_claimed_legacy_copy_is_checked_independently(self):
+        historical = self.root / 'results' / 'old.json'
+        historical.write_bytes(b'{"historical": true}')
+        legacy = self.root / 'results' / 'legacy_scalar_v1' / historical.name
+        legacy.parent.mkdir()
+        legacy.write_bytes(historical.read_bytes())
+        inventory = {'schema': HISTORICAL_SCHEMA, 'files': {
+            historical.name: {'sha256': sha256(historical.read_bytes()).hexdigest(),
+                              'reason': LEGACY_COPY_NOTE}}}
+        (self.root / 'results' / HISTORICAL_NAME).write_text(json.dumps(inventory), encoding='utf-8')
+        self.assertEqual(verify(root=self.root, allow_unfrozen=True), (1, []))
+        legacy.write_bytes(b'{"historical": false}')
+        with self.assertRaisesRegex(ValueError, 'legacy copy'):
+            verify(root=self.root, allow_unfrozen=True)
 
     def test_historical_exclusion_cannot_hide_frozen_result(self):
         freeze(self.base, root=self.root)

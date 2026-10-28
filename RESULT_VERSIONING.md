@@ -29,4 +29,14 @@ absolutos externos desconhecidos não são remapeados por suposição. A confer�
 de 37 resultados passou tanto no Windows quanto no Ubuntu e numa cópia do
 repositório localizada em outra pasta.
 
+`python -m scripts.result_compatibility --details` classifica os resultados
+congelados e os 36 arquivos escalares do inventário sem alterá-los. As revisões
+antigas sem campo de regra são identificadas somente pelos dois commits
+explicitamente reconhecidos; as demais ficam desconhecidas. Para as fontes
+listadas, uma diferença em relação ao projeto atual indica necessidade de
+revisão ou reprodução com o snapshot: ela não prova, por si só, que uma
+mudança afetou o resultado. O comando também sinaliza intervalos históricos de
+largura zero. As cópias `legacy_scalar_v1` declaradas no inventário agora são
+conferidas individualmente, além dos arquivos da raiz.
+
 Nesta etapa foram vinculados 25 resultados da fórmula literal ao commit `f9c540a`. A revisão independente encontrou e levou à correção de substituição de registro congelado, omissão de resultados ausentes ou malformados, aceitação de árvore Git como commit, aceitação implícita de dados não congelados, interferência de `refs/replace` e escrita parcial do índice. Os 19 testes usam repositórios Git temporários reais e falhas de publicação injetadas, incluindo evolução de fonte, adulteração dos resultados e isolamento de fontes externas.

@@ -14,6 +14,7 @@ INDEX_NAME = 'source_snapshots.json'
 INDEX_SCHEMA = 'blacklight.source_snapshots.v1'
 HISTORICAL_NAME = 'historical_inventory.json'
 HISTORICAL_SCHEMA = 'blacklight.historical_inventory.v1'
+LEGACY_COPY_NOTE = 'identical preserved copy in results/legacy_scalar_v1/'
 
 # Exact aliases for the two repository-owned sheets written as absolute paths
 # in three original Windows results. Their hashes are still checked against
@@ -121,6 +122,10 @@ def historical_inventory(root: Path = ROOT) -> dict:
         result = root / 'results' / name
         if not result.is_file() or sha256(result.read_bytes()).hexdigest() != record['sha256']:
             raise ValueError(f'{name}: historical bytes differ from the explicit inventory')
+        if LEGACY_COPY_NOTE in record['reason']:
+            copy = root / 'results' / 'legacy_scalar_v1' / name
+            if not copy.is_file() or sha256(copy.read_bytes()).hexdigest() != record['sha256']:
+                raise ValueError(f'{name}: preserved legacy copy is missing or differs from the inventory')
     return payload['files']
 
 

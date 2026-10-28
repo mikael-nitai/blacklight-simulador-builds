@@ -1,6 +1,6 @@
 # Blacklight: simulador de duelos restritos
 
-**Regra atual em 27/10/2026:** o [duelo genérico já executa o novo Fast Strikes](SPLIT_FAST_SPEC.md): um teste por braço, ambos antes dos efeitos, escolha prévia de um único braço para efeitos, Escudo antes do dano e ambos os danos/efeitos antes de Riposte. Os experimentos `pool_v2` preservam o contrato anterior e são históricos quanto ao novo Fast. O [corredor de duas fichas](CURRENT_CORRIDOR.md) também usa a regra atual; o grupo ainda precisa de migração. Nenhuma taxa antiga mede essa versão.
+**Regra atual em 27/10/2026:** o [duelo genérico já executa o novo Fast Strikes](SPLIT_FAST_SPEC.md): um teste por braço, ambos antes dos efeitos, escolha prévia de um único braço para efeitos, Escudo antes do dano e ambos os danos/efeitos antes de Riposte. O usuário confirmou que os braços podem mirar alvos distintos. Os experimentos `pool_v2` preservam o contrato anterior e são históricos quanto ao novo Fast. O [corredor de duas fichas](CURRENT_CORRIDOR.md) também usa a regra atual; a migração de grupo começou, mas continua experimental e sem validação suficiente. Nenhuma taxa antiga mede essa versão.
 
 Projeto de pesquisa reproduzível para Victor Halle (Rank 3) em *Marvel Multiverse Role-Playing Game*. Usa a ficha PDF fornecida nesta conversa, o Core Rulebook e as decisões de mesa registradas em [RULES_AUDIT.md](RULES_AUDIT.md). **Chicote não está disponível no Rank 3** e não entra no motor, nas políticas ou nos experimentos.
 
@@ -52,6 +52,7 @@ Abra PowerShell nesta pasta. Requer Python 3.11 ou mais recente; não há depend
 ```powershell
 python -m unittest discover -s tests -q
 python -m scripts.verify_sources
+python -m scripts.result_compatibility
 python -m scripts.character_sheet duel --hero characters/victor_halle/rank3_2026-10-27_split_fast.json --opponent characters/examples/synthetic_rank4_split_fast.json --policy shield_blade_hammer_reactive --effect-limb 1 --seed 51 --output results/new_current_fast.json
 python -m blacklight.experiment --historical-rules --stage dev --n 1000 --output results/reproduction_pool_v2_dev.json
 python -m scripts.pool_v2_confirm --historical-rules --stage confirm_v2 --n 10000 --output results/reproduction_pool_v2_confirm.json
@@ -66,7 +67,7 @@ As sementes são derivadas de SHA-256 de fase, cenário, política e índice. Re
 
 As reproduções acima usam as mesmas sementes e não contam como amostras novas. Os destinos precisam ser novos; as saídas são criadas sem substituir arquivos existentes. Os estudos antigos de busca, sensibilidade, reserva, métricas secundárias e adversários exigem `--historical-rules --output CAMINHO_NOVO`. Para regenerar o relatório v2, escolha um novo destino com `python -m scripts.pool_v2_report --output CAMINHO_NOVO`. A auditoria de versões usa Git, além do Python. Antes de congelar uma execução nova, as fontes precisam estar em um commit, conforme [RESULT_VERSIONING.md](RESULT_VERSIONING.md).
 
-A suíte atual tem **228 testes** aprovados, incluindo oráculos de dano, integração de duas armas, auditores independentes, troca de fichas, [famílias modulares de cura/estado](MODULAR_STATES.md), [duração](MODULAR_LIFECYCLE.md) e proveniência. A versão `pool_v2` tem 52.000 duelos de desenvolvimento, 240.000 de replicação, 120.000 de reserva e 60.000 combates descritivos em cada extensão de grupo, Focus e corredor. A camada genérica de fichas tem um teste de integração com 1.000 duelos adicionais. [PROJECT_STATUS.md](PROJECT_STATUS.md) separa o que ainda falta. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
+A suíte inclui oráculos de dano, integração de duas armas, auditores de trilha, troca de fichas, [famílias modulares de cura/estado](MODULAR_STATES.md), [duração](MODULAR_LIFECYCLE.md) e proveniência; execute o comando acima para verificar a versão presente. A versão histórica `pool_v2` tem 52.000 duelos de desenvolvimento, 240.000 de replicação, 120.000 de reserva e 60.000 combates descritivos em cada extensão de grupo, Focus e corredor. A camada genérica de fichas tem um teste de integração com 1.000 duelos adicionais. [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md) registra os limites da auditoria atual. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
 
 ## Leitura responsável
 

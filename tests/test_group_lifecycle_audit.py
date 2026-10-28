@@ -148,6 +148,14 @@ class TestGroupLifecycleAudit(TestCase):
         self.assertTrue(any('Shield reaction lacks a successful hit' in issue
                             for issue in audit_group_lifecycle(rows, profiles)))
 
+    def test_hit_check_does_not_accept_boolean_as_zero_trouble(self):
+        result, profiles = self.forced_battle()
+        rows = deepcopy(list(result.log))
+        hit = next(row for row in rows if row['type'] == 'group_hit_check' and row['troubles'] == 0)
+        hit['troubles'] = False
+        self.assertTrue(any('invalid group hit check field types' in issue
+                            for issue in audit_group_lifecycle(rows, profiles)))
+
     def test_unconscious_living_turn_heals_but_dead_turn_does_not_resurrect(self):
         base = blacklight_profile()
         attacker = replace(base, name='Atacante', heroic=False)

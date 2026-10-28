@@ -67,7 +67,9 @@ def audit_group_trace(result, profiles, teams, *, seed, max_rounds):
             power_edges = int('blazing_fast_fists' in profile.powers) + int(
                 'signature_fast_strikes' in profile.traits)
             expected_edges = max(power_edges, int(stunned[target]))
-            if (event.get('modifier') != profile.melee
+            if (any(type(event.get(key)) is not int for key in
+                    ('modifier', 'target_number', 'edges', 'troubles'))
+                    or event.get('modifier') != profile.melee
                     or event.get('target_number') != by_name[target].melee_defense
                     or event.get('edges') != expected_edges
                     or event.get('troubles') != int(dodging[target])):

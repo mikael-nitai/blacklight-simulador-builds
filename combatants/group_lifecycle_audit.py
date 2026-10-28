@@ -26,7 +26,7 @@ def audit_group_lifecycle(log, profiles):
     skip_seen = False
     last_dequeued = None
     expected_queue = None
-    action_events = {'movement', 'fast_use_start', 'fast_limb_check',
+    action_events = {'movement', 'group_grid_move', 'fast_use_start', 'fast_limb_check',
                      'fast_limb_start', 'fast_use_end', 'stance', 'dodge',
                      'focus_spent', 'wait', 'condition_treatment', 'blade_bonus'}
     boundary_events = {'condition_instance_end', 'condition_end', 'dodge_end', 'turn_start'}
@@ -120,6 +120,11 @@ def audit_group_lifecycle(log, profiles):
                 stunned[token] = (actor, source, deadline)
         elif kind == 'group_hit_check':
             trigger = event.get('trigger')
+            if (any(type(event.get(key)) is not int for key in
+                    ('modifier', 'target_number', 'edges', 'troubles', 'total'))
+                    or any(type(event.get(key)) is not bool for key in
+                           ('success', 'fantastic', 'ultimate'))):
+                issues.append(f'event {seq}: invalid group hit check field types')
             if type(trigger) is not int or trigger in checks or actor not in health or event.get('target') not in health:
                 issues.append(f'event {seq}: invalid or duplicate group hit check')
             else:

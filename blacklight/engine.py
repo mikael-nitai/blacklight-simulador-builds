@@ -365,8 +365,13 @@ class Duel:
     def observe(self, actor: int, target_actor: int | None = None) -> Observation:
         target_actor = self._target_index(actor, target_actor)
         return Observation(self._view(self.fighters[actor]),
-                           self._view(self.fighters[target_actor]), self.distance,
+                           self._view(self.fighters[target_actor]),
+                           self._distance_between(actor, target_actor),
                            self.round, self.bonus_round)
+
+    def _distance_between(self, actor: int, target_actor: int) -> int:
+        """Duel distance; spatial hosts may supply target-specific geometry."""
+        return self.distance
 
     def _move(self, actor: int, move: Move, *, as_standard: bool = False) -> None:
         if (type(actor) is not int or not 0 <= actor < len(self.fighters)
@@ -454,16 +459,17 @@ class Duel:
         target_actor = self._target_index(actor, target_actor)
         attacker, defender = self.fighters[actor], self.fighters[target_actor]
         p, q = attacker.profile, defender.profile
+        distance = self._distance_between(actor, target_actor)
         ranged = kind == 'ranged'
         fast = kind == 'fast_strikes' or kind.endswith('_fast')
         if ranged:
-            if not p.ranged_range or self.distance > p.ranged_range * 2:
+            if not p.ranged_range or distance > p.ranged_range * 2:
                 raise IllegalAction('Ranged target outside permitted range')
             modifier = p.agility
             target = q.melee_defense if 'brawling' in q.powers else q.agility_defense
-            power_edges, troubles = 0, int(self.distance > p.ranged_range)
+            power_edges, troubles = 0, int(distance > p.ranged_range)
         else:
-            if self.distance > 1:
+            if distance > 1:
                 raise IllegalAction('Close target out of reach')
             modifier, target, troubles = p.melee, q.melee_defense, 0
             power_edges = int('blazing_fast_fists' in p.powers)
@@ -677,7 +683,7 @@ class Duel:
         self._record("attack", rules + (("POW-06",) if reaction else ()),
                      actor=p.name, target=q.name, mode=kind, offhand=offhand,
                      reaction=reaction,
-                     trigger=trigger, distance=self.distance,
+                     trigger=trigger, distance=self._distance_between(actor, target_actor),
                      roll=[result.roll.left, result.roll.marvel, result.roll.right],
                      rerolls=[vars(x) for x in rerolls], total=result.total,
                      check_modifier=modifier, edges=edges, troubles=troubles,
@@ -754,7 +760,8 @@ class Duel:
             if ("riposte" not in defender.profile.powers or not defender.conscious
                     or defender.stunned_by is not None
                     or defender.reactions < 1 or event.trigger in defender.reacted_to
-                    or self.distance > 1 or not self._reaction_source_available(event)):
+                    or self._distance_between(event.reactor, event.source) > 1
+                    or not self._reaction_source_available(event)):
                 continue
             if not self.policies[event.reactor].use_riposte(self.observe(event.reactor, event.source)):
                 continue

@@ -1,5 +1,9 @@
 # Estado do projeto completo — 27/10/2026
 
+**Grade experimental de grupo:** [posições individuais, caminhos e alcance
+por alvo](GROUP_GRID_EXPERIMENT.md) já podem ser executados por fichas dentro
+de um cenário limitado; não são certificação geral de mapa ou grupo.
+
 **Expansão experimental de grupo:** [fichas versionadas podem alimentar um
 confronto de contato fixo](GROUP_CHARACTER_EXPERIMENT.md), com trilha e
 verificações parciais. Reações aninhadas interrompem a fila de gatilhos

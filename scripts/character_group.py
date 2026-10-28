@@ -8,6 +8,7 @@ from pathlib import Path
 from blacklight.experiment import ROOT
 from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
 from combatants.group import GroupPolicy
+from combatants.group_grid import GroupGrid, GridGroupPolicy
 from combatants.group_runner import run_group
 from combatants.sheets import parse_sheet
 
@@ -24,11 +25,22 @@ def main():
     config_path = args.config.resolve()
     config_bytes = config_path.read_bytes()
     config = json.loads(config_bytes.decode('utf-8'))
+    common_keys = {'schema', 'seed', 'max_rounds', 'initiative_tie_order', 'combatants'}
     if (not isinstance(config, dict)
-            or set(config) != {'schema', 'seed', 'max_rounds', 'initiative_tie_order', 'combatants'}
-            or config['schema'] != 'blacklight.experimental-group-config.v1'
+            or not (set(config) == common_keys and config.get('schema') == 'blacklight.experimental-group-config.v1'
+                    or set(config) == common_keys | {'grid'}
+                    and config.get('schema') == 'blacklight.experimental-group-grid-config.v1')
             or not isinstance(config['combatants'], list) or len(config['combatants']) < 2):
         raise ValueError('Invalid experimental group configuration')
+    grid = None
+    if 'grid' in config:
+        layout = config['grid']
+        if (not isinstance(layout, dict) or set(layout) != {'width', 'height', 'initial_positions'}
+                or not isinstance(layout['initial_positions'], list)
+                or any(not isinstance(point, list) for point in layout['initial_positions'])):
+            raise ValueError('Grid must define width, height and coordinate lists')
+        grid = GroupGrid(layout['width'], layout['height'],
+                         tuple(tuple(point) for point in layout['initial_positions']))
     script = Path(__file__).resolve()
     inputs = {script: script.read_bytes(), config_path: config_bytes}
     sheets, policies, teams, roles = [], [], [], []
@@ -43,7 +55,7 @@ def main():
             raise RuntimeError('Input changed while reading configuration')
         inputs[path] = content
         sheets.append(parse_sheet(json.loads(content.decode('utf-8'))))
-        policies.append(GroupPolicy(**row['policy']))
+        policies.append((GridGroupPolicy if grid is not None else GroupPolicy)(**row['policy']))
         teams.append(row['team'])
         roles.append(row['role'])
     order = config['initiative_tie_order']
@@ -52,7 +64,7 @@ def main():
     payload = run_group(tuple(sheets), tuple(policies), teams=tuple(teams),
                         initiative_roles=tuple(roles),
                         initiative_tie_order=tuple(order) if order is not None else None,
-                        seed=config['seed'], max_rounds=config['max_rounds'])
+                        seed=config['seed'], max_rounds=config['max_rounds'], grid=grid)
     before = {str(path): sha256(content).hexdigest() for path, content in inputs.items()}
     after = {str(path): sha256(path.read_bytes()).hexdigest() for path in inputs}
     require_unchanged_sources(before, after)

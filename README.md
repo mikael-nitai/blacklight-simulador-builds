@@ -21,6 +21,8 @@ As famílias de cura, ativação de estados e [duração de Dodge/Stunned](MODUL
 O [grupo experimental por fichas](GROUP_CHARACTER_EXPERIMENT.md) aceita equipes
 e alvos separados em contato fixo, com auditoria parcial da trilha. Ele ainda
 não é certificado para estudar eficácia ou substituir os duelos validados.
+Também há um [cenário experimental de grupo em grade](GROUP_GRID_EXPERIMENT.md),
+com posições individuais e linha de visão limitada explicitamente.
 
 O motor determinístico cobre duelos de dois personagens em campo aberto, d616, edge/trouble, iniciativa, Health/Focus, ações e movimento, ataques Melee/Agility, Fast Strikes contra um alvo, Garra, Lâmina, Marreta, Escudo, Mighty, Sturdy, Healing Factor, Do This All Day, Attack Stance, Riposte, Bleeding e Stunned. As políticas só solicitam ações; o motor valida e resolve o estado. Cada experimento registra sementes e hashes de fontes.
 

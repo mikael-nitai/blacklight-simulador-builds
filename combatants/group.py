@@ -206,6 +206,25 @@ class GroupBattle(SplitFastDuel):
     def _reaction_source_available(self, event):
         return self.fighters[event.source].conscious
 
+    def _shield_reaction_after_check(self, actor, check):
+        target = self._target_index(actor, check.target_actor)
+        result, spec = check.result, check.spec
+        self._record('group_hit_check', ('D616-01', 'ACT-05'),
+                     actor=self.fighters[actor].profile.name,
+                     target=self.fighters[target].profile.name, trigger=check.trigger,
+                     roll=[result.roll.left, result.roll.marvel, result.roll.right],
+                     rerolls=[vars(item) for item in check.rerolls],
+                     modifier=spec.modifier, target_number=spec.target,
+                     edges=spec.edges, troubles=spec.troubles, total=result.total,
+                     success=result.success, fantastic=result.fantastic, ultimate=result.ultimate)
+        super()._shield_reaction_after_check(actor, check)
+
+    def _reaction_dequeued(self, event):
+        self._record('group_reaction_dequeued', ('ACT-03',),
+                     actor=self.fighters[event.reactor].profile.name,
+                     source=self.fighters[event.source].profile.name,
+                     trigger=event.trigger, reaction_kind=event.kind)
+
     def _queue_reaction(self, event):
         # An interrupt triggered by a Riposte resolves before older deferred
         # events. The two original Fast limb misses are queued before draining.
@@ -251,6 +270,9 @@ class GroupBattle(SplitFastDuel):
                      source_turn_count=deadline, instance=token)
 
     def _start_turn_effects(self, actor):
+        self._record('group_turn_boundary', ('ACT-01', 'COND-02'),
+                     actor=self.fighters[actor].profile.name,
+                     turn_count=self.turn_counts[actor])
         now = TimePoint(Boundary.TURN_START, self.turn_counts[actor], actor)
         plan = expiration_plan(self._timed_stuns, now)
         self._timed_stuns = plan.remaining

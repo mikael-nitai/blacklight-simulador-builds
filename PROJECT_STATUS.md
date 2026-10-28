@@ -5,6 +5,9 @@ confronto de contato fixo](GROUP_CHARACTER_EXPERIMENT.md), com trilha e
 verificações parciais. Reações aninhadas interrompem a fila de gatilhos
 pendentes; o caso foi testado com incapacitação. Não há certificação de combate
 de grupo ou de resultados de eficácia nesta etapa.
+O contrato experimental de trilha v2 acrescenta auditoria independente das
+fronteiras de turno, durações de Stunned/Dodge, fila de reações e gatilho de
+Escudo. As trilhas v1 preservadas continuam identificadas por suas fontes.
 Uma revisão independente encontrou que Resilience negativa com Healing Factor
 podia reduzir Health. A combinação agora é bloqueada na entrada de fichas e
 perfis, sem presumir uma solução normativa para o caso extremo.

@@ -737,6 +737,9 @@ class Duel:
     def _reaction_source_available(self, event: ReactionEvent) -> bool:
         return True
 
+    def _reaction_dequeued(self, event: ReactionEvent) -> None:
+        """Experimental hosts can record the order of processed triggers."""
+
     def _drain_events(self) -> None:
         processed = 0
         while self.pending:
@@ -744,6 +747,7 @@ class Duel:
             if processed > 16:
                 raise RuntimeError("Reaction queue exceeded safety bound")
             event = self.pending.popleft()
+            self._reaction_dequeued(event)
             if event.kind != "riposte":
                 raise RuntimeError("Unrecognized pending event")
             defender = self.fighters[event.reactor]

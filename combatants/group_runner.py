@@ -16,11 +16,12 @@ from .duel_adapter import CURRENT_RULESET, compile_duel, coverage
 from .group import GroupBattle, GroupPolicy
 from .group_audit import audit_group_trace
 from .group_initiative_audit import audit_group_initiative
+from .group_lifecycle_audit import audit_group_lifecycle
 from .runner import _assert_sources_unchanged, _policy_types, _source_manifest
 from .sheets import CharacterSheet, sheet_record
 
 
-GROUP_SCHEMA = 'blacklight-experimental-character-group-v1'
+GROUP_SCHEMA = 'blacklight-experimental-character-group-v2'
 
 
 def run_group(sheets: tuple[CharacterSheet, ...], policies: tuple[GroupPolicy, ...], *,
@@ -49,7 +50,8 @@ def run_group(sheets: tuple[CharacterSheet, ...], policies: tuple[GroupPolicy, .
     result = battle.run()
     issues = (audit_profiled_log(result.log, profiles, ruleset=CURRENT_RULESET)
               + audit_group_initiative(result.log, profiles, initiative_roles, initiative_tie_order)
-              + audit_group_trace(result, profiles, teams, seed=seed, max_rounds=max_rounds))
+              + audit_group_trace(result, profiles, teams, seed=seed, max_rounds=max_rounds)
+              + audit_group_lifecycle(result.log, profiles))
     if issues:
         raise RuntimeError(f'Experimental group trace failed available audits: {issues}')
     _assert_sources_unchanged(sources, policies)
@@ -80,7 +82,8 @@ def run_group(sheets: tuple[CharacterSheet, ...], policies: tuple[GroupPolicy, .
             'initiative_tie_order': list(initiative_tie_order) if initiative_tie_order else None,
             'coverage': reports, 'result': asdict(result), 'audit_issues': issues,
             'audit_scope': ['profiled physical arithmetic and ruleset', 'group initiative',
-                            'group teams, Fast check inputs, partial reaction and result ledger'],
+                            'group teams, Fast check inputs, partial reaction and result ledger',
+                            'group turn boundaries, Stunned/Dodge instances and reaction queue'],
             'audit_limitations': ['does not certify every effect, action, reaction or turn transition',
                                   'overlapping Stunned duration and delayed reaction order are interpretations',
                                   'no group movement, knockback, Karma or Focus attacks',

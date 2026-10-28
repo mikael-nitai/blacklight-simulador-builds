@@ -18,6 +18,10 @@ e os limites da [certificação](CERTIFICACAO_FUNDACAO.md).
 
 As famílias de cura, ativação de estados e [duração de Dodge/Stunned](MODULAR_LIFECYCLE.md) já usam módulos reutilizáveis. Os [resultados congelados](RESULT_VERSIONING.md) ficam ligados ao commit executado; a evolução do motor produz arquivos novos e preserva as medições anteriores.
 
+O [grupo experimental por fichas](GROUP_CHARACTER_EXPERIMENT.md) aceita equipes
+e alvos separados em contato fixo, com auditoria parcial da trilha. Ele ainda
+não é certificado para estudar eficácia ou substituir os duelos validados.
+
 O motor determinístico cobre duelos de dois personagens em campo aberto, d616, edge/trouble, iniciativa, Health/Focus, ações e movimento, ataques Melee/Agility, Fast Strikes contra um alvo, Garra, Lâmina, Marreta, Escudo, Mighty, Sturdy, Healing Factor, Do This All Day, Attack Stance, Riposte, Bleeding e Stunned. As políticas só solicitam ações; o motor valida e resolve o estado. Cada experimento registra sementes e hashes de fontes.
 
 Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidades de membros inutilizados, Karma, dano de Focus, fogo e outras imunidades especiais, mapa/terreno e encontros sequenciais. Há **experimentos separados** de três participantes em contato fixo no [relatório de grupo](GROUP_REPORT.md), de Mental Punch no [relatório de Focus](FOCUS_REPORT.md) e de perseguição em [corredor limitado](CORRIDOR_REPORT.md). A ficha apresenta conflito entre Initiative/Run inscritos e derivados pelo Core; a variante literal está no [resultado atual de sensibilidade](results/sensitivity.json).

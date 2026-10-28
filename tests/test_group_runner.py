@@ -64,6 +64,8 @@ class TestGroupRunner(unittest.TestCase):
     def test_experimental_record_cannot_pass_certified_freeze(self):
         with self.assertRaisesRegex(ValueError, 'Experimental group'):
             require_generic_provenance(self.run_group(), Path('.'), 'unused')
+        with self.assertRaisesRegex(ValueError, 'Experimental group'):
+            require_generic_provenance({'schema': 'blacklight-experimental-character-group-v1'}, Path('.'), 'unused')
 
     def test_coordinated_fast_edge_forgery_is_rejected(self):
         record = self.run_group()

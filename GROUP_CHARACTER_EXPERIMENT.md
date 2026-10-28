@@ -51,12 +51,35 @@ recusa poderes e variações sem suporte. As saídas de grupo não passam pelo
 congelamento certificado de duelos e não são base para escolher a melhor
 estratégia até os demais gates de grupo serem concluídos.
 
+## Contrato experimental de trilha v2
+
+O schema `blacklight-experimental-character-group-v2` acrescenta eventos para
+o começo previsto de cada turno, o resultado de cada teste antes do dano e a
+retirada de gatilhos da fila. O auditor independente acompanha o relógio por
+participante, cada instância de Stunned, Dodge, ações e reações durante turnos,
+e a ordem dos gatilhos; ele vincula o Escudo a um acerto contra o próprio alvo.
+O caso de múltiplas fontes ainda usa a interpretação operacional documentada,
+e a ordem inicial entre gatilhos de braços diferentes continua uma convenção.
+
+As trilhas v1, inclusive `group_integration_001.json`, permanecem ligadas às
+fontes originais e não são reinterpretadas como trilhas v2. Ambos os schemas
+continuam bloqueados no congelamento certificado de duelos. A verificação v2
+amplia a cobertura, mas ainda não demonstra a legalidade de todos os poderes,
+efeitos, custos, configurações de mapa ou decisões dos adversários.
+
 ## Verificações desta etapa
 
 - Casos independentes forçados cobrem reações aninhadas, incapacitação antes
   de um Riposte pendente e ação extra de Lâmina que muda para outro alvo vivo.
 - Foram executados 300 confrontos sintéticos com auditorias disponíveis; são
   controles de integração, não uma bateria para comparar estratégias.
+- O contrato v2 foi exercitado em 400 confrontos adicionais com variações de
+  armas, reação defensiva, cura e Dodge. Testes forçados também rejeitam ações
+  fora do turno, expiração de Stunned adulterada, gatilho incorreto de Escudo
+  e processamento FIFO incorreto de reações aninhadas; o auditor acompanha a
+  recuperação de um inconsciente vivo e impede interpretá-la como ressurreição.
+- A suíte completa desta revisão passou em 330 testes; um caso adicional
+  específico confirmou a expiração no turno previsto de uma fonte inconsciente.
 - A suíte completa passou em 323 testes. Quatro logs de controle e duas
   baterias anteriores de 1.000 sementes foram reproduzidos; 37 resultados
   congelados tiveram suas fontes verificadas.

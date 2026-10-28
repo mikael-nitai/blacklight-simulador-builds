@@ -6,6 +6,8 @@ This intentionally does not import the damage or dice implementation.
 from __future__ import annotations
 
 from math import ceil
+from .dice_audit import audit_rerolls
+from .profile_audit import audit_profile_facts
 from .split_audit import audit_split_fast
 
 
@@ -170,6 +172,10 @@ def audit_log(log: tuple[dict, ...] | list[dict],
         if kind == 'fast_use_start':
             standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
         if kind == "attack":
+            if type(event.get('edges')) is not int or type(event.get('troubles')) is not int:
+                issues.append(f"event {seq}: missing or invalid edge/trouble counts")
+            else:
+                issues.extend(audit_rerolls(event, edges=event['edges'], troubles=event['troubles']))
             left, marvel, right = event["roll"]
             if not all(1 <= x <= 6 for x in (left, marvel, right)):
                 issues.append(f"event {seq}: invalid die face")
@@ -232,6 +238,7 @@ def audit_log(log: tuple[dict, ...] | list[dict],
                     or log[index - 1]["actor"] != actor):
                 issues.append(f"event {seq}: shield reaction has no cost event")
         if kind == "condition_treatment":
+            issues.extend(audit_rerolls(event, edges=0, troubles=0))
             left, marvel, right = event["roll"]
             total = left + (6 if marvel == 1 else marvel) + right + event["check_modifier"]
             ultimate = (left, marvel, right) == (6, 1, 6)
@@ -280,10 +287,12 @@ def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles) -> list[str
     names = [profile.name for profile in profiles]
     if len(set(names)) != len(names):
         raise ValueError('Audit requires distinct combatant names')
-    return audit_log(
+    issues = audit_log(
         log,
         {p.name: p.max_health for p in profiles},
         {p.name: p.max_focus for p in profiles},
         reaction_limits={p.name: 2 if 'combat_reflexes' in p.traits else 1 for p in profiles},
         movement_limits={p.name: p.run_speed for p in profiles},
     )
+    issues.extend(audit_profile_facts(log, profiles))
+    return issues

@@ -34,6 +34,20 @@ class TestAudit(unittest.TestCase):
                            {"Blacklight": 90, "Enemy": 90})
         self.assertTrue(any("damage arithmetic mismatch" in issue for issue in issues))
 
+    def test_checker_rejects_missing_or_boolean_edge_counts(self):
+        result = self.battle(0)
+        for field, value in (('edges', None), ('edges', True), ('troubles', None)):
+            log = deepcopy(result.log)
+            attack = next(event for event in log if event['type'] == 'attack')
+            if value is None:
+                attack.pop(field)
+            else:
+                attack[field] = value
+            with self.subTest(field=field, value=value):
+                issues = audit_log(log, {'Blacklight': 150, 'Enemy': 150},
+                                   {'Blacklight': 90, 'Enemy': 90})
+                self.assertTrue(any('edge/trouble' in issue for issue in issues))
+
     def test_checker_rejects_second_reaction_reset_in_same_round(self):
         result = self.battle(0)
         log = [dict(event) for event in result.log]

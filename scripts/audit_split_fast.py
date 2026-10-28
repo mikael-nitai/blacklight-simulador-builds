@@ -27,7 +27,8 @@ ONE_FACES = {
     'bare': {'common': 21, 'fantastic': 42, 'miss': 0},
 }
 SOURCES = (
-    'blacklight/audit.py', 'blacklight/dice.py', 'blacklight/engine.py',
+    'blacklight/audit.py', 'blacklight/dice.py', 'blacklight/dice_audit.py',
+    'blacklight/profile_audit.py', 'blacklight/engine.py',
     'blacklight/policies.py', 'blacklight/pool_damage.py',
     'blacklight/split_audit.py', 'combatants/actions.py',
     'combatants/modular_duel.py', 'combatants/split_fast.py',

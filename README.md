@@ -40,6 +40,7 @@ Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidade
 - `tests/`: oráculos e 4.000 trilhas auditadas em dez políticas × quatro cenários × 100 sementes.
 - `results/`: JSONs estruturados; `legacy_scalar_v1/`, `pre_*` e `invalid_*` são históricos. Os experimentos `pool_v2` precedem o último balanceamento de Fast Strikes.
 - [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md): diagnóstico, correções, evidências, limites e próximos gates da auditoria estrutural.
+- [CERTIFICACAO_FUNDACAO.md](CERTIFICACAO_FUNDACAO.md): escopo congelado e matriz dos critérios de conclusão da continuação da auditoria.
 - [DEMONSTRATIONS.md](DEMONSTRATIONS.md): quatro combates completos válidos com rolagens, ações e estados auditados; a trilha antiga do Escudo em Fast Strikes está arquivada.
 - [REPORT.md](REPORT.md): relatório histórico da fórmula escalar, com resultados, intervalos, refutação, sensibilidade e cenários reservados.
 - [MANUAL_BLACKLIGHT.md](MANUAL_BLACKLIGHT.md) e [QUICK_REFERENCE.md](QUICK_REFERENCE.md): registros históricos de opções; suas contas e recomendações ainda não foram atualizadas para as regras atuais.

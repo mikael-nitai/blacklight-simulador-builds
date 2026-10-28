@@ -364,6 +364,7 @@ def main() -> None:
     sources = [ROOT / name for name in (
         'scripts/audit_current_corridor.py', 'blacklight/engine.py',
         'blacklight/policies.py', 'blacklight/audit.py', 'blacklight/split_audit.py',
+        'blacklight/dice_audit.py', 'blacklight/profile_audit.py',
         'combatants/split_fast.py', 'combatants/runner.py',
         'combatants/battlefields.py', 'combatants/terrain_policies.py',
         'experimental/corridor.py', 'experimental/corridor_audit.py',

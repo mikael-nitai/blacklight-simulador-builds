@@ -21,9 +21,9 @@ class CorridorGeometry:
         self.wall_reached = right == length
         self.contact_occurred = right - left <= 1
 
-    def observe(self, actor: int):
+    def observe(self, actor: int, target_actor: int | None = None):
         self._assert_geometry()
-        observation = super().observe(actor)
+        observation = super().observe(actor, target_actor)
         return replace(observation, terrain=TerrainView(
             'corridor', (self.length + 1, 1), (self.positions[actor], 0),
             (self.positions[1 - actor], 0)))
@@ -35,9 +35,9 @@ class CorridorGeometry:
                 or self.distance != self.positions[1] - self.positions[0]):
             raise RuntimeError('Corridor positions and distance are inconsistent')
 
-    def _attack_check_spec(self, actor: int, kind: str):
+    def _attack_check_spec(self, actor: int, kind: str, target_actor: int | None = None):
         self._assert_geometry()
-        return super()._attack_check_spec(actor, kind)
+        return super()._attack_check_spec(actor, kind, target_actor)
 
     def _move(self, actor: int, move: Move, *, as_standard: bool = False) -> None:
         if (type(actor) is not int or actor not in (0, 1)

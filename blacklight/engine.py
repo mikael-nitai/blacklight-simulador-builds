@@ -228,9 +228,13 @@ class PreparedAttackCheck:
     result: Result
     rerolls: tuple
     trigger: int
+    target_actor: int | None = None
 
     def __post_init__(self) -> None:
-        if (type(self.actor) is not int or self.actor not in (0, 1)
+        if (type(self.actor) is not int or self.actor < 0
+                or self.target_actor is not None and
+                (type(self.target_actor) is not int or self.target_actor < 0
+                 or self.target_actor == self.actor)
                 or not isinstance(self.kind, str) or not self.kind
                 or not isinstance(self.spec, AttackCheckSpec) or not isinstance(self.result, Result)
                 or not isinstance(self.rerolls, tuple)
@@ -320,8 +324,8 @@ class Duel:
         self.round = 0
         self.bonus_round = False
         self.turns = 0
-        self.turn_counts = [0, 0]
-        self.damage_timeline: dict[int, tuple[int, int]] = {}
+        self.turn_counts = [0 for _ in profiles]
+        self.damage_timeline: dict[int, tuple[int, ...]] = {}
         self.active_actor: int | None = None
 
     def _record(self, kind: str, rules: tuple[str, ...], **data: object) -> None:
@@ -341,9 +345,20 @@ class Duel:
                            f.limb_stage, f.dodging,
                            p.powers)
 
-    def observe(self, actor: int) -> Observation:
+    def _target_index(self, actor: int, target_actor: int | None = None) -> int:
+        if (type(actor) is not int or not 0 <= actor < len(self.fighters)
+                or target_actor is None and len(self.fighters) != 2):
+            raise IllegalAction('An attack requires valid actor and target indices')
+        target_actor = 1 - actor if target_actor is None else target_actor
+        if (type(target_actor) is not int or not 0 <= target_actor < len(self.fighters)
+                or target_actor == actor):
+            raise IllegalAction('An attack requires a distinct target in the roster')
+        return target_actor
+
+    def observe(self, actor: int, target_actor: int | None = None) -> Observation:
+        target_actor = self._target_index(actor, target_actor)
         return Observation(self._view(self.fighters[actor]),
-                           self._view(self.fighters[1 - actor]), self.distance,
+                           self._view(self.fighters[target_actor]), self.distance,
                            self.round, self.bonus_round)
 
     def _move(self, actor: int, move: Move, *, as_standard: bool = False) -> None:
@@ -423,8 +438,10 @@ class Duel:
                      proposed=amount, effective=effective,
                      health_before=before, health_after=f.health)
 
-    def _attack_check_spec(self, actor: int, kind: str) -> AttackCheckSpec:
-        attacker, defender = self.fighters[actor], self.fighters[1 - actor]
+    def _attack_check_spec(self, actor: int, kind: str,
+                           target_actor: int | None = None) -> AttackCheckSpec:
+        target_actor = self._target_index(actor, target_actor)
+        attacker, defender = self.fighters[actor], self.fighters[target_actor]
         p, q = attacker.profile, defender.profile
         ranged = kind == 'ranged'
         fast = kind == 'fast_strikes' or kind.endswith('_fast')
@@ -450,24 +467,28 @@ class Duel:
                                 defender.stunned_by is not None, defender.dodging)
 
     def _prepare_attack_check(self, actor: int, kind: str,
-                              spec: AttackCheckSpec | None = None) -> PreparedAttackCheck:
-        spec = self._attack_check_spec(actor, kind) if spec is None else spec
+                              spec: AttackCheckSpec | None = None, *,
+                              target_actor: int | None = None) -> PreparedAttackCheck:
+        target_actor = self._target_index(actor, target_actor)
+        spec = self._attack_check_spec(actor, kind, target_actor) if spec is None else spec
         result, rerolls = resolve_check(
             self.rng, spec.modifier, spec.target, edges=spec.edges, troubles=spec.troubles,
             chooser=lambda roll, mod, tn: self.policies[actor].choose_edge_die(
                 roll, mod, tn, kind))
         self.trigger_seq += 1
-        return PreparedAttackCheck(actor, kind, spec, result, tuple(rerolls), self.trigger_seq)
+        return PreparedAttackCheck(actor, kind, spec, result, tuple(rerolls), self.trigger_seq,
+                                    target_actor)
 
     def _shield_reaction_after_check(self, actor: int, check: PreparedAttackCheck) -> None:
-        defender = self.fighters[1 - actor]
+        target_actor = self._target_index(actor, check.target_actor)
+        defender = self.fighters[target_actor]
         q = defender.profile
         if (check.result.success and not defender.shield_active
                 and 'shield' in q.weapons and defender.conscious
                 and defender.stunned_by is None and defender.reactions > 0
                 and check.trigger not in defender.reacted_to
-                and self.policies[1 - actor].use_shield_reaction(
-                    self.observe(1 - actor), check.kind)):
+                and self.policies[target_actor].use_shield_reaction(
+                    self.observe(target_actor, actor), check.kind)):
             defender.reactions -= 1
             defender.reacted_to.add(check.trigger)
             defender.shield_active = True
@@ -482,8 +503,10 @@ class Duel:
     def _attack(self, actor: int, kind: str, *, reaction: bool = False,
                 offhand: str | None = None,
                 fast_strike: FastStrikeContext | None = None,
-                prepared_check: PreparedAttackCheck | None = None) -> Result:
-        attacker, defender = self.fighters[actor], self.fighters[1 - actor]
+                prepared_check: PreparedAttackCheck | None = None,
+                target_actor: int | None = None) -> Result:
+        target_actor = self._target_index(actor, target_actor)
+        attacker, defender = self.fighters[actor], self.fighters[target_actor]
         p, q = attacker.profile, defender.profile
         ranged = kind == "ranged"
         fast = kind == "fast_strikes" or kind.endswith("_fast")
@@ -491,10 +514,11 @@ class Duel:
                                         or not fast or reaction or offhand is not None):
             raise IllegalAction('A limb context requires one standard Fast component')
         if prepared_check is not None and (not isinstance(prepared_check, PreparedAttackCheck)
-                                           or prepared_check.actor != actor or prepared_check.kind != kind):
+                                           or prepared_check.actor != actor or prepared_check.kind != kind
+                                           or prepared_check.target_actor != target_actor):
             raise IllegalAction('Prepared check does not match this attack')
         spec = (prepared_check.spec if prepared_check is not None else
-                self._attack_check_spec(actor, kind))
+                self._attack_check_spec(actor, kind, target_actor))
         modifier, target, edges, troubles = spec.modifier, spec.target, spec.edges, spec.troubles
         primary = kind[:-5] if kind.endswith("_fast") else kind
         weapons_used = ({primary} if primary in {"blade", "claw", "hammer"} else set())
@@ -550,7 +574,8 @@ class Duel:
         component_specs = [(weapon, component_bonuses(weapon))
                            for weapon in strike_weapons]
         bonuses = component_specs[0][1]
-        check = prepared_check or self._prepare_attack_check(actor, kind, spec)
+        check = prepared_check or self._prepare_attack_check(actor, kind, spec,
+                                                             target_actor=target_actor)
         result, rerolls, trigger = check.result, check.rerolls, check.trigger
         if fast_strike is None or not fast_strike.shield_handled:
             self._shield_reaction_after_check(actor, check)
@@ -564,7 +589,7 @@ class Duel:
                                   and not ranged and not fast
                                   and "mighty" in p.powers)
         knockback_selected = (self.policies[actor].choose_knockback(
-            self.observe(actor), kind) if knockback_eligible else False)
+            self.observe(actor, target_actor), kind) if knockback_eligible else False)
         knockback_spaces = (5 * max(0, p.rank + max(0, *bonuses) - reduction)
                             if knockback_selected else 0)
         if knockback_spaces:
@@ -627,13 +652,7 @@ class Duel:
                              mechanical_penalty="unmodeled")
             if hammer and result.fantastic and not knockback_selected:
                 attacker.stuns_applied += 1
-                defender.stunned_by = actor
-                defender.stun_expires_on_actor_turn = self.turn_counts[actor] + 1
-                defender.stance = False
-                self._record("condition_start", ("HR-02", "COND-02"),
-                             actor=q.name, condition="stunned",
-                             expires_on_actor=p.name,
-                             source_turn_count=defender.stun_expires_on_actor_turn)
+                self._apply_stun(actor, target_actor)
             if defender.health <= 0:
                 defender.stance = False
         self._record("attack", rules + (("POW-06",) if reaction else ()),
@@ -678,10 +697,23 @@ class Duel:
                 self._record("knockback_declined", ("POW-01",),
                              actor=p.name, target=q.name)
         if not result.success and not ranged:
-            self.pending.append(ReactionEvent("riposte", 1 - actor, actor, trigger))
+            self.pending.append(ReactionEvent("riposte", target_actor, actor, trigger))
             self._record("reaction_queued", ("ACT-03", "POW-06"),
                          actor=q.name, trigger=trigger, source=p.name)
         return result
+
+    def _apply_stun(self, actor: int, target_actor: int) -> None:
+        defender = self.fighters[target_actor]
+        defender.stunned_by = actor
+        defender.stun_expires_on_actor_turn = self.turn_counts[actor] + 1
+        defender.stance = False
+        self._record('condition_start', ('HR-02', 'COND-02'),
+                     actor=defender.profile.name, condition='stunned',
+                     expires_on_actor=self.fighters[actor].profile.name,
+                     source_turn_count=defender.stun_expires_on_actor_turn)
+
+    def _reaction_source_available(self, event: ReactionEvent) -> bool:
+        return True
 
     def _drain_events(self) -> None:
         processed = 0
@@ -696,9 +728,9 @@ class Duel:
             if ("riposte" not in defender.profile.powers or not defender.conscious
                     or defender.stunned_by is not None
                     or defender.reactions < 1 or event.trigger in defender.reacted_to
-                    or self.distance > 1):
+                    or self.distance > 1 or not self._reaction_source_available(event)):
                 continue
-            if not self.policies[event.reactor].use_riposte(self.observe(event.reactor)):
+            if not self.policies[event.reactor].use_riposte(self.observe(event.reactor, event.source)):
                 continue
             defender.reactions -= 1
             defender.reacted_to.add(event.trigger)
@@ -707,13 +739,13 @@ class Duel:
                          actor=defender.profile.name, trigger=event.trigger,
                          remaining=defender.reactions)
             chosen = self.policies[event.reactor].choose_riposte_attack(
-                self.observe(event.reactor))
+                self.observe(event.reactor, event.source))
             if (chosen.focus != 0 or chosen.offhand is not None or
                     chosen.kind not in ("melee", "blade", "claw", "hammer") or
                     (chosen.kind != "melee" and
                      chosen.kind not in defender.profile.weapons)):
                 raise IllegalAction("Riposte policy selected an invalid close attack")
-            self._attack(event.reactor, chosen.kind, reaction=True)
+            self._attack(event.reactor, chosen.kind, reaction=True, target_actor=event.source)
 
     def _act(self, actor: int, action: Action) -> None:
         if action.kind == "move":
@@ -823,9 +855,41 @@ class Duel:
                 self._record("condition_end", ("COND-02",),
                              actor=other.profile.name, condition="stunned")
 
+    def _end_turn_effects(self, actor: int) -> None:
+        f = self.fighters[actor]
+        if self.end_turn_healing_first and "healing_factor" in f.profile.powers:
+            self._heal(actor, f.profile.resilience, "POW-03")
+        if f.bleeding:
+            before = f.health
+            inflicted = max(0, f.bleeding - 5 * f.profile.health_dr)
+            f.health -= inflicted
+            f.damage_taken += inflicted
+            self._record("condition_tick", ("COND-01", "POW-02"),
+                         actor=f.profile.name, condition="bleeding",
+                         intensity=f.bleeding, damage=inflicted,
+                         health_before=before, health_after=f.health)
+        if not self.end_turn_healing_first and "healing_factor" in f.profile.powers:
+            self._heal(actor, f.profile.resilience, "POW-03")
+        if (f.conscious and f.stunned_by is None and not f.shield_active
+                and "shield" in f.profile.weapons and f.reactions > 0
+                and self.policies[actor].use_shield_end_turn(
+                    self.observe(actor))):
+            f.reactions -= 1
+            f.shield_active = True
+            self._record("reaction_spent", ("ACT-03", "ACT-04", "HR-04"),
+                         actor=f.profile.name, source="end_turn",
+                         remaining=f.reactions)
+            self._record("shield_activate", ("HR-04",),
+                         actor=f.profile.name, cost="reaction",
+                         timing="end_turn")
+
+    def _inactive_turn(self, actor: int) -> None:
+        """A roster host can advance a scheduled turn without allowing actions."""
+
     def _turn(self, actor: int) -> None:
         f = self.fighters[actor]
         if not f.conscious:
+            self._inactive_turn(actor)
             return
         if self.active_actor is not None:
             raise RuntimeError("Nested turn")
@@ -847,43 +911,18 @@ class Duel:
                     self._move(actor, move)
                 action = self.policies[actor].choose_action(self.observe(actor))
                 self._act(actor, action)
-                if f.movement_available and f.conscious:
+                if f.movement_available and f.conscious and f.stunned_by is None:
                     self._move(actor, self.policies[actor].choose_post_move(self.observe(actor)))
-            if self.end_turn_healing_first and "healing_factor" in f.profile.powers:
-                self._heal(actor, f.profile.resilience, "POW-03")
-            if f.bleeding:
-                before = f.health
-                inflicted = max(0, f.bleeding - 5 * f.profile.health_dr)
-                f.health -= inflicted
-                f.damage_taken += inflicted
-                self._record("condition_tick", ("COND-01", "POW-02"),
-                             actor=f.profile.name, condition="bleeding",
-                             intensity=f.bleeding, damage=inflicted,
-                             health_before=before, health_after=f.health)
-            if not self.end_turn_healing_first and "healing_factor" in f.profile.powers:
-                self._heal(actor, f.profile.resilience, "POW-03")
-            if (f.conscious and f.stunned_by is None and not f.shield_active
-                    and "shield" in f.profile.weapons and f.reactions > 0
-                    and self.policies[actor].use_shield_end_turn(
-                        self.observe(actor))):
-                f.reactions -= 1
-                f.shield_active = True
-                self._record("reaction_spent", ("ACT-03", "ACT-04", "HR-04"),
-                             actor=f.profile.name, source="end_turn",
-                             remaining=f.reactions)
-                self._record("shield_activate", ("HR-04",),
-                             actor=f.profile.name, cost="reaction",
-                             timing="end_turn")
+            self._end_turn_effects(actor)
             self._record("turn_end", ("ACT-01",), actor=f.profile.name,
                          health=f.health, focus=f.focus)
-            self.damage_timeline[self.round] = (
-                self.fighters[0].damage_dealt, self.fighters[1].damage_dealt)
+            self.damage_timeline[self.round] = tuple(fighter.damage_dealt for fighter in self.fighters)
         finally:
             f.standard_available = False
             f.movement_available = False
             self.active_actor = None
 
-    def _initiative(self) -> tuple[tuple[int, ...], tuple[bool, bool]]:
+    def _initiative(self) -> tuple[tuple[int, ...], tuple[bool, ...]]:
         checks = []
         modifiers = []
         for i, f in enumerate(self.fighters):
@@ -903,10 +942,10 @@ class Duel:
                          rerolls=[vars(x) for x in rerolls], total=result.total,
                          modifier=modifier,
                          fantastic=result.fantastic)
-        order = tuple(sorted(range(2), key=lambda i: (-checks[i].total,
+        order = tuple(sorted(range(len(self.fighters)), key=lambda i: (-checks[i].total,
                            -int(checks[i].fantastic), -modifiers[i],
                            i)))
-        return order, (checks[0].fantastic, checks[1].fantastic)
+        return order, tuple(check.fantastic for check in checks)
 
     def _outcome(self) -> tuple[str, str | None] | None:
         a, b = self.fighters

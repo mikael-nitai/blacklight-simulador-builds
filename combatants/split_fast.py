@@ -22,11 +22,15 @@ def is_fast(kind: str) -> bool:
 @dataclass(frozen=True)
 class FastAction(Action):
     effect_limb: int | None = None
+    targets: tuple[int, int] | None = None
 
     def __post_init__(self) -> None:
         if (not isinstance(self.kind, str) or not is_fast(self.kind)
                 or type(self.effect_limb) is not int or self.effect_limb not in (0, 1)
                 or type(self.focus) is not int or self.focus != 0 or self.move is not None
+                or self.targets is not None and
+                (not isinstance(self.targets, tuple) or len(self.targets) != 2
+                 or any(type(target) is not int or target < 0 for target in self.targets))
                 or self.offhand is not None and self.offhand not in ('blade', 'claw', 'hammer')):
             raise ValueError('Fast Strikes requires a preselected effect limb and no extra cost')
 
@@ -80,35 +84,52 @@ class SplitFastDuel(ModularDuel):
 
     def _attack(self, actor: int, kind: str, *, reaction: bool = False,
                 offhand: str | None = None, fast_strike: FastStrikeContext | None = None,
-                prepared_check: PreparedAttackCheck | None = None):
+                prepared_check: PreparedAttackCheck | None = None,
+                target_actor: int | None = None):
         if is_fast(kind) and fast_strike is None:
             raise IllegalAction('Fast Strikes must declare both limbs and its effect choice first')
         return super()._attack(actor, kind, reaction=reaction, offhand=offhand,
-                               fast_strike=fast_strike, prepared_check=prepared_check)
+                               fast_strike=fast_strike, prepared_check=prepared_check,
+                               target_actor=target_actor)
+
+    def _fast_targets(self, actor: int, action: FastAction) -> tuple[int, int]:
+        targets = action.targets or (self._target_index(actor),) * 2
+        for target in targets:
+            self._target_index(actor, target)
+            if not self.fighters[target].conscious:
+                raise IllegalAction('Declare conscious enemy targets before the Fast use')
+        return targets
+
+    def _attack_targets_available(self, actor: int) -> bool:
+        return self.fighters[self._target_index(actor)].conscious and self.distance <= 1
 
     def _fast_use(self, actor: int, action: FastAction, *, bonus_action: bool) -> tuple[bool, int]:
+        targets = self._fast_targets(actor, action)
         first = action.kind[:-5] if action.kind.endswith('_fast') else 'bare'
         weapons = (first, action.offhand or first)
         self.fast_use_seq += 1
         use_id = self.fast_use_seq
-        attacker, defender = self.fighters[actor], self.fighters[1 - actor]
+        attacker = self.fighters[actor]
+        target_names = [self.fighters[target].profile.name for target in targets]
         self._record('fast_use_start', ('HR-09', 'ACT-01'),
-                     actor=attacker.profile.name, target=defender.profile.name,
+                     actor=attacker.profile.name, target=target_names[0],
                      fast_use_id=use_id, weapons=list(weapons),
-                     effect_limb=action.effect_limb, bonus_action=bonus_action)
+                     effect_limb=action.effect_limb, bonus_action=bonus_action,
+                     **({'targets': target_names} if action.targets is not None else {}))
         if attacker.shield_active:
             attacker.shield_active = False
             self._record('shield_deactivate', ('HR-04',), actor=attacker.profile.name,
                          cost='free', reason='attack')
         modes = tuple('fast_strikes' if weapon == 'bare' else f'{weapon}_fast' for weapon in weapons)
-        specs = tuple(self._attack_check_spec(actor, mode) for mode in modes)
+        specs = tuple(self._attack_check_spec(actor, mode, targets[limb])
+                      for limb, mode in enumerate(modes))
         checks = []
         for limb, mode in enumerate(modes):
-            check = self._prepare_attack_check(actor, mode, specs[limb])
+            check = self._prepare_attack_check(actor, mode, specs[limb], target_actor=targets[limb])
             checks.append(check)
             result, spec = check.result, check.spec
             self._record('fast_limb_check', ('HR-09', 'D616-01'),
-                         actor=attacker.profile.name, target=defender.profile.name,
+                         actor=attacker.profile.name, target=target_names[limb],
                          fast_use_id=use_id, limb=limb, weapon=weapons[limb],
                          trigger=check.trigger, roll=[result.roll.left, result.roll.marvel, result.roll.right],
                          rerolls=[vars(item) for item in check.rerolls],
@@ -127,7 +148,7 @@ class SplitFastDuel(ModularDuel):
             result = self._attack(actor, mode,
                                   fast_strike=FastStrikeContext(use_id, limb, action.effect_limb,
                                                                 shield_handled=True),
-                                  prepared_check=check)
+                                  prepared_check=check, target_actor=targets[limb])
             if (limb == action.effect_limb and weapon == 'blade'
                     and result.success and result.fantastic):
                 eligible = True
@@ -140,7 +161,8 @@ class SplitFastDuel(ModularDuel):
     def _resolve_attack_action(self, actor: int, action: Action, *, bonus_action: bool):
         if is_fast(action.kind):
             return self._fast_use(actor, action, bonus_action=bonus_action)
-        result = self._attack(actor, action.kind, offhand=action.offhand)
+        result = self._attack(actor, action.kind, offhand=action.offhand,
+                              target_actor=getattr(action, 'target_actor', None))
         self._drain_events()
         return action.kind == 'blade' and result.success and result.fantastic, None
 
@@ -157,7 +179,7 @@ class SplitFastDuel(ModularDuel):
         fighter.standard_available = False
         eligible, source_use = self._resolve_attack_action(actor, action, bonus_action=False)
         if (not eligible or not fighter.conscious or fighter.stunned_by is not None
-                or not self.fighters[1 - actor].conscious or self.distance > 1):
+                or not self._attack_targets_available(actor)):
             return
         bonus = self.policies[actor].choose_blade_bonus(self.observe(actor))
         if (not isinstance(bonus, Action) or type(bonus.focus) is not int

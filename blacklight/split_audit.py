@@ -21,6 +21,7 @@ def audit_split_fast(log) -> list[str]:
         use = uses.get(identity) if type(identity) is int else None
         if kind == 'fast_use_start':
             weapons = event.get('weapons')
+            targets = event.get('targets', [event.get('target')] * 2)
             selected = event.get('effect_limb')
             if (type(identity) is not int or identity < 1 or identity in uses
                     or open_use is not None or not isinstance(weapons, list) or len(weapons) != 2
@@ -29,7 +30,13 @@ def audit_split_fast(log) -> list[str]:
                     or type(event.get('bonus_action')) is not bool):
                 issues.append(f'event {seq}: invalid Fast declaration')
                 continue
+            if (not isinstance(targets, list) or len(targets) != 2
+                    or any(not isinstance(target, str) or not target or target == event['actor']
+                           for target in targets) or targets[0] != event.get('target')):
+                issues.append(f'event {seq}: invalid predeclared Fast targets')
+                continue
             uses[identity] = {'actor': event['actor'], 'target': event['target'],
+                              'targets': targets,
                               'weapons': weapons, 'selected': selected,
                               'checks': [], 'attacks': [], 'closed': False,
                               'eligible': False, 'queued': set()}
@@ -43,14 +50,15 @@ def audit_split_fast(log) -> list[str]:
             if (use is None or open_use != identity or use['closed']
                     or type(limb) is not int or limb != len(use['checks']) or limb not in (0, 1)
                     or use['attacks'] or event.get('actor') != use['actor']
-                    or event.get('target') != use['target']
+                    or event.get('target') != use['targets'][limb]
                     or event.get('weapon') != use['weapons'][limb]):
                 issues.append(f'event {seq}: invalid pre-resolution limb check')
                 continue
             if use['checks']:
                 first = use['checks'][0]
-                if any(first[key] != event.get(key) for key in
-                       ('modifier', 'target_number', 'edges', 'troubles')):
+                fields = (('modifier', 'target_number', 'edges', 'troubles')
+                          if use['targets'][0] == use['targets'][1] else ('modifier',))
+                if any(first[key] != event.get(key) for key in fields):
                     issues.append(f'event {seq}: checks did not use the same pre-effect state')
                 if first['trigger'] == event.get('trigger'):
                     issues.append(f'event {seq}: limbs reused a hit-check trigger')
@@ -71,10 +79,13 @@ def audit_split_fast(log) -> list[str]:
             if len(current['checks']) != 2:
                 issues.append(f'event {seq}: weapon effect before both checks')
             if active_limb is not None:
-                if kind == 'condition_start' and event.get('actor') == current['target']:
+                if kind == 'condition_start' and event.get('actor') == current['targets'][active_limb]:
                     pending_effects.append(('condition', event.get('condition')))
-                elif kind == 'limb_effect' and event.get('actor') == current['actor']:
+                elif (kind == 'limb_effect' and event.get('actor') == current['actor']
+                      and event.get('target') == current['targets'][active_limb]):
                     pending_effects.append(('limb', 'disabled'))
+                else:
+                    issues.append(f'event {seq}: Fast effect used a different limb target')
         elif kind == 'reaction_spent' and open_use is not None:
             current = uses[open_use]
             if len(current['checks']) != 2:
@@ -95,7 +106,7 @@ def audit_split_fast(log) -> list[str]:
                 attacks = current['attacks']
                 if (len(current['checks']) != 2 or owner != open_use or not attacks
                         or attacks[-1]['trigger'] != trigger or attacks[-1]['success']
-                        or event.get('actor') != current['target']
+                        or event.get('actor') != attacks[-1]['target']
                         or event.get('source') != current['actor'] or trigger in current['queued']):
                     issues.append(f'event {seq}: reaction queued without a resolved failed limb')
                 else:
@@ -122,7 +133,7 @@ def audit_split_fast(log) -> list[str]:
             if (event.get('effect_limb') != use['selected']
                     or type(event.get('effects_enabled')) is not bool
                     or event['effects_enabled'] != selected
-                    or event.get('actor') != use['actor'] or event.get('target') != use['target']
+                    or event.get('actor') != use['actor'] or event.get('target') != use['targets'][limb]
                     or event.get('mode') != mode or event.get('offhand') is not None
                     or event.get('reaction') is not False or 'HR-09' not in event.get('rules', [])):
                 issues.append(f'event {seq}: Fast limb changed the predeclared effect/weapon choice')

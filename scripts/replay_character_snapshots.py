@@ -46,11 +46,11 @@ def replay(path: Path) -> dict:
     for field in compared:
         if normalized[field] != stored[field]:
             raise AssertionError(f'{path.name}: migration changed {field}')
-    result['migration_reference'] = {'path': str(path.relative_to(ROOT)),
+    result['migration_reference'] = {'path': path.relative_to(ROOT).as_posix(),
                                     'sha256': sha256(path.read_bytes()).hexdigest(),
                                     'compared_fields': list(compared)}
     for source in (path, Path(__file__).resolve()):
-        result['source_sha256'][str(source.relative_to(ROOT))] = sha256(source.read_bytes()).hexdigest()
+        result['source_sha256'][source.relative_to(ROOT).as_posix()] = sha256(source.read_bytes()).hexdigest()
     return result
 
 

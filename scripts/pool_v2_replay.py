@@ -38,7 +38,7 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
         raise RuntimeError(f"Full trace failed independent audit: {issues}")
     sources = source_hashes()
     script = Path(__file__).resolve()
-    sources[str(script.relative_to(script.parents[1]))] = sha256(script.read_bytes()).hexdigest()
+    sources[script.relative_to(script.parents[1]).as_posix()] = sha256(script.read_bytes()).hexdigest()
     for name in ("scripts/pool_v2_confirm.py", "POOL_V2_CONFIRM_SPEC.md"):
         path = script.parents[1] / name
         sources[name] = sha256(path.read_bytes()).hexdigest()

@@ -106,18 +106,18 @@ def _audit_battle(result, profiles, battle, battlefield) -> list[str]:
 def _source_manifest(policies: tuple[object, object], battlefield: CorridorMap | None = None) -> dict[str, str]:
     sources = source_hashes()
     for path in sorted((ROOT / 'combatants').glob('*.py')):
-        sources[str(path.relative_to(ROOT))] = sha256(path.read_bytes()).hexdigest()
+        sources[path.relative_to(ROOT).as_posix()] = sha256(path.read_bytes()).hexdigest()
     if battlefield:
         for name in ('experimental/__init__.py', 'experimental/corridor.py', 'experimental/corridor_audit.py',
                      'CORRIDOR_SPEC.md', 'CURRENT_CORRIDOR.md'):
             path = ROOT / name
-            sources[str(path.relative_to(ROOT))] = sha256(path.read_bytes()).hexdigest()
+            sources[path.relative_to(ROOT).as_posix()] = sha256(path.read_bytes()).hexdigest()
     for policy in policies:
         source = inspect.getsourcefile(type(policy))
         if source is None or not Path(source).is_file():
             raise ValueError('Policy source file is unavailable for reproducible execution')
         path = Path(source).resolve()
-        key = str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path)
+        key = path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else str(path)
         sources[key] = sha256(path.read_bytes()).hexdigest()
     return sources
 

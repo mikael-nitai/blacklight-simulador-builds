@@ -50,7 +50,7 @@ def main() -> None:
     for name, payload in payloads.items():
         payload['demonstration_note'] = 'Current corridor integration control; no strategy ranking inferred'
         for source in (HERO, FOE, Path(__file__).resolve()):
-            payload['source_sha256'][str(source.relative_to(ROOT))] = sha256(source.read_bytes()).hexdigest()
+            payload['source_sha256'][source.relative_to(ROOT).as_posix()] = sha256(source.read_bytes()).hexdigest()
         write_new_text(outputs[name], json.dumps(payload, ensure_ascii=False, indent=2), newline='\n')
         if 'result' in payload:
             print(f'{name}: combat+geometry audit=OK, final positions={payload["battlefield_result"]["final_positions"]}')

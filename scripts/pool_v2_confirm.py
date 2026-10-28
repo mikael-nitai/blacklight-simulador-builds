@@ -64,8 +64,8 @@ def execute(stage: str, n: int, output: Path) -> dict:
     spec = ROOT / "POOL_V2_CONFIRM_SPEC.md"
     script = Path(__file__).resolve()
     sources = source_hashes()
-    sources[str(spec.relative_to(ROOT))] = sha256(spec.read_bytes()).hexdigest()
-    sources[str(script.relative_to(ROOT))] = sha256(script.read_bytes()).hexdigest()
+    sources[spec.relative_to(ROOT).as_posix()] = sha256(spec.read_bytes()).hexdigest()
+    sources[script.relative_to(ROOT).as_posix()] = sha256(script.read_bytes()).hexdigest()
     payload = {
         "schema": "blacklight-finalists-pool-v2",
         "damage_model": "literal_marvel_pool_v2",

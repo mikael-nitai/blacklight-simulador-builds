@@ -115,5 +115,18 @@ e duas gravações simultâneas disputando o mesmo nome. A criação exclusiva
 impede substituir um arquivo existente; uma interrupção durante a escrita pode
 deixar uma saída nova incompleta, que não deve ser tratada como resultado válido.
 
+## Segunda correção: caminhos de proveniência
+
+Novos manifestos usam caminhos relativos ao projeto com `/`. O verificador lê
+as barras invertidas dos registros antigos e contém duas correspondências
+explícitas para os caminhos absolutos de fichas que aparecem em três resultados;
+cada correspondência ainda precisa coincidir com o hash do commit registrado.
+Caminhos externos desconhecidos não são convertidos por adivinhação. Os 37
+resultados passaram novamente no Windows, no Ubuntu e em uma cópia localizada em
+outra pasta. Testes com repositórios Git temporários conferiram também rejeição
+de um caminho externo não reconhecido. Os arquivos de resultados históricos não
+foram alterados. Isso verifica portabilidade dos caminhos, não garante que todas
+as dependências transitivas de uma política externa estejam registradas.
+
 **Prontidão inicial:** não recomendar expansão de conclusões nem apresentar o
 grupo novo como pronto enquanto os achados e os gates acima estiverem abertos.

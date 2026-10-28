@@ -10,8 +10,8 @@ from unittest.mock import patch
 
 from scripts.freeze_results import freeze
 from scripts.verify_sources import (INDEX_NAME, HISTORICAL_NAME, HISTORICAL_SCHEMA,
-                                    load_index, snapshot_source_hash, verify,
-                                    verify_result)
+                                    LEGACY_SOURCE_ALIASES, load_index, relative_source,
+                                    snapshot_source_hash, verify, verify_result)
 
 
 class TestResultSnapshots(unittest.TestCase):
@@ -125,6 +125,37 @@ class TestResultSnapshots(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'outside the repository'):
             freeze(self.base, root=self.root)
         self.assertFalse((self.root / 'results' / INDEX_NAME).exists())
+
+    def test_windows_relative_manifest_resolves_to_portable_git_path(self):
+        nested = self.root / 'nested' / 'source.py'
+        nested.parent.mkdir()
+        nested.write_bytes(b'# historical nested source\n')
+        self.git('add', 'nested/source.py')
+        self.git('commit', '--quiet', '-m', 'nested source')
+        commit = self.git('rev-parse', 'HEAD').strip()
+        windows_name = r'nested\source.py'
+        digest = sha256(nested.read_bytes()).hexdigest()
+        self.assertEqual(relative_source(self.root, windows_name), 'nested/source.py')
+        self.write_result('example.json', {windows_name: digest})
+        freeze(commit, root=self.root)
+        self.assertEqual(verify_result(self.result, root=self.root)[1], [])
+
+    def test_exact_legacy_absolute_alias_works_after_repository_moves(self):
+        old_name, relative = next(iter(LEGACY_SOURCE_ALIASES.items()))
+        relocated = self.root / relative
+        relocated.parent.mkdir(parents=True)
+        relocated.write_bytes(b'# relocated known source\n')
+        self.git('add', relative)
+        self.git('commit', '--quiet', '-m', 'relocated source')
+        commit = self.git('rev-parse', 'HEAD').strip()
+        self.assertEqual(relative_source(self.root, old_name), relative)
+        self.write_result('example.json', {old_name: sha256(relocated.read_bytes()).hexdigest()})
+        freeze(commit, root=self.root)
+        self.assertEqual(verify_result(self.result, root=self.root)[1], [])
+
+    def test_unrelated_windows_absolute_source_is_not_guessed(self):
+        with self.assertRaises(ValueError):
+            relative_source(self.root, r'C:\unrelated\source.py')
 
     def test_missing_or_malformed_manifest_is_not_a_successful_freeze(self):
         for sources in ({}, {'source.py': None}, {'source.py': 'not-a-hash'}):

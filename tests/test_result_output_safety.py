@@ -59,6 +59,20 @@ class TestResultOutputSafety(unittest.TestCase):
             replay.replay('demo', 'mirror_hammer', 'hammer', 0, output)
         self.assertEqual(output.read_bytes(), saved)
 
+    def test_sheet_cli_records_repository_inputs_as_portable_paths(self):
+        output = self.directory / 'sheet-duel.json'
+        hero = 'characters/victor_halle/rank3_2026-10-27_split_fast.json'
+        opponent = 'characters/examples/synthetic_rank4_split_fast.json'
+        proc = subprocess.run(
+            [sys.executable, '-B', '-m', 'scripts.character_sheet', 'duel',
+             '--hero', hero, '--opponent', opponent, '--seed', '51', '--output', str(output)],
+            cwd=ROOT, capture_output=True, text=True, timeout=20)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        sources = json.loads(output.read_text(encoding='utf-8'))['source_sha256']
+        self.assertIn(hero, sources)
+        self.assertIn(opponent, sources)
+        self.assertTrue(all('\\' not in name for name in sources))
+
     def test_competing_creators_cannot_replace_each_others_output(self):
         output = self.directory / 'race.txt'
         ready = Barrier(2)

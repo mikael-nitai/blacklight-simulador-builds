@@ -87,7 +87,7 @@ def source_hashes() -> dict[str, str]:
         ROOT / "DAMAGE_POOL_V2_SPEC.md", ROOT / "DAMAGE_POOL_RULING.md",
         ROOT / "FAST_STRIKES_RULING.md",
     ]
-    return {str(path.relative_to(ROOT)): sha256(path.read_bytes()).hexdigest()
+    return {path.relative_to(ROOT).as_posix(): sha256(path.read_bytes()).hexdigest()
             for path in sorted(paths)}
 
 

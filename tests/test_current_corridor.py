@@ -189,7 +189,7 @@ class TestCurrentCorridor(unittest.TestCase):
             self.assertEqual(report['engine'], 'split_fast_corridor_v1')
             self.assertNotIn('open field', report['scope_limits'])
         for source in ('experimental/corridor.py', 'experimental/corridor_audit.py'):
-            self.assertEqual(result['source_sha256'][str(Path(source))],
+            self.assertEqual(result['source_sha256'][Path(source).as_posix()],
                              sha256((ROOT / source).read_bytes()).hexdigest())
 
     def test_incompatible_map_inputs_fail_before_execution(self):

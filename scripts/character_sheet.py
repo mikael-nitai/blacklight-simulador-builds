@@ -6,7 +6,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from blacklight.experiment import strategies
+from blacklight.experiment import ROOT, strategies
 from blacklight.policies import ATTACK, KITER
 from blacklight.results_io import require_new_output, write_new_text
 from combatants import load_sheet, coverage
@@ -105,7 +105,8 @@ def main() -> None:
         sources['scripts/character_sheet.py'] = sha256(Path(__file__).read_bytes()).hexdigest()
         for name in (args.hero, args.opponent):
             resolved = name.resolve()
-            sources[str(resolved)] = sha256(resolved.read_bytes()).hexdigest()
+            key = resolved.relative_to(ROOT).as_posix() if resolved.is_relative_to(ROOT) else str(resolved)
+            sources[key] = sha256(resolved.read_bytes()).hexdigest()
         payload['source_sha256'] = sources
         write_json(args.output, payload)
         if args.command == 'duel':

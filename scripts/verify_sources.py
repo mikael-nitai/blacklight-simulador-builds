@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 from functools import lru_cache
 from hashlib import sha256
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 import subprocess
 
@@ -14,6 +14,16 @@ INDEX_NAME = 'source_snapshots.json'
 INDEX_SCHEMA = 'blacklight.source_snapshots.v1'
 HISTORICAL_NAME = 'historical_inventory.json'
 HISTORICAL_SCHEMA = 'blacklight.historical_inventory.v1'
+
+# Exact aliases for the two repository-owned sheets written as absolute paths
+# in three original Windows results. Their hashes are still checked against
+# the recorded Git commit; unknown external paths are never remapped.
+LEGACY_SOURCE_ALIASES = {
+    r'C:\Users\avada\Documents\ChatGPT\Simulador Builds\characters\victor_halle\rank3_2026-10-26.json':
+        'characters/victor_halle/rank3_2026-10-26.json',
+    r'C:\Users\avada\Documents\ChatGPT\Simulador Builds\characters\examples\synthetic_rank4.json':
+        'characters/examples/synthetic_rank4.json',
+}
 
 
 def _valid_name(name) -> bool:
@@ -37,10 +47,19 @@ def git_commit(root: Path, ref: str) -> str:
     return commit
 
 
-def relative_source(root: Path, source: str) -> str:
-    path = Path(source)
+def source_path(root: Path, source: str) -> Path:
+    """Resolve saved Windows-relative names on any host, without guessing aliases."""
+    normalized = LEGACY_SOURCE_ALIASES.get(source, source)
+    if PureWindowsPath(normalized).is_absolute() and not Path(normalized).is_absolute():
+        raise ValueError(f'Windows absolute source cannot be located on this host: {source}')
+    path = Path(normalized.replace('\\', '/'))
     if not path.is_absolute():
         path = root / path
+    return path
+
+
+def relative_source(root: Path, source: str) -> str:
+    path = source_path(root, source)
     try:
         return path.resolve().relative_to(root.resolve()).as_posix()
     except ValueError as exc:
@@ -148,7 +167,11 @@ def verify_result(path: Path, *, root: Path = ROOT, index: dict | None = None,
     issues = []
     used_snapshot = False
     for source, expected in sources.items():
-        live = root / source
+        try:
+            live = source_path(root, source)
+        except ValueError as exc:
+            issues.append(f'{path.name}: {exc}')
+            continue
         actual = sha256(live.read_bytes()).hexdigest() if live.is_file() else None
         if record and not live_only:
             try:

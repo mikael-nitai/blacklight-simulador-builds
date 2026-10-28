@@ -20,4 +20,13 @@ python -m scripts.freeze_results --ref HEAD
 
 Antes do último comando, as fontes da execução precisam estar em um commit. O resultado deve conter os hashes dessas fontes. Fontes externas ao repositório precisam ser preservadas no repositório antes desse tipo de congelamento. A verificação dos hashes comprova proveniência; a correção das regras e das conclusões continua dependendo dos testes e das auditorias.
 
+Os novos manifestos usam caminhos relativos com `/`. Para preservar os resultados
+antigos sem editar seus bytes, o verificador também aceita separadores Windows
+relativos e reconhece duas correspondências explícitas para fichas que foram
+gravadas com o caminho absoluto da pasta original. Essas correspondências estão
+em `scripts/verify_sources.py` e continuam sujeitas aos hashes do commit; caminhos
+absolutos externos desconhecidos não são remapeados por suposição. A conferência
+de 37 resultados passou tanto no Windows quanto no Ubuntu e numa cópia do
+repositório localizada em outra pasta.
+
 Nesta etapa foram vinculados 25 resultados da fórmula literal ao commit `f9c540a`. A revisão independente encontrou e levou à correção de substituição de registro congelado, omissão de resultados ausentes ou malformados, aceitação de árvore Git como commit, aceitação implícita de dados não congelados, interferência de `refs/replace` e escrita parcial do índice. Os 19 testes usam repositórios Git temporários reais e falhas de publicação injetadas, incluindo evolução de fonte, adulteração dos resultados e isolamento de fontes externas.

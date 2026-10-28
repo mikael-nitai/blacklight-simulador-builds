@@ -146,9 +146,10 @@ class TestCharacterSheets(unittest.TestCase):
                           modules['heal']['maximum_spend_per_rank'],
                           modules['heal']['health_per_focus']), (5, 5, 2))
         self.assertEqual(modules['shield']['requirements'], [{'kind': 'weapon', 'id': 'shield'}])
+        self.assertTrue(all('\\' not in key for key in result['source_sha256']))
         for name in ('combatants/actions.py', 'combatants/modular_duel.py', 'combatants/runner.py'):
-            # Windows manifests use native separators for project-relative paths.
-            key = str(Path(name))
+            # Repository-relative keys are portable across operating systems.
+            key = Path(name).as_posix()
             self.assertEqual(result['source_sha256'][key],
                              sha256((ROOT / name).read_bytes()).hexdigest())
 

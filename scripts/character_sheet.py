@@ -8,10 +8,11 @@ from pathlib import Path
 
 from blacklight.experiment import ROOT, strategies
 from blacklight.policies import ATTACK, KITER
-from blacklight.results_io import require_new_output, write_new_text
+from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
 from combatants import load_sheet, coverage
 from combatants.pdf_draft import extract_draft
 from combatants.runner import run_duel, run_batch
+from combatants.sheets import parse_sheet
 from combatants.duel_adapter import CURRENT_RULESET, LEGACY_RULESET
 from combatants.split_fast import SplitFastPolicy
 from combatants.battlefields import CorridorMap
@@ -74,7 +75,16 @@ def main() -> None:
         policies.update(attack=ATTACK, kiter=KITER)
         if args.policy not in policies or args.opponent_policy not in policies:
             parser.error(f"Policy must be one of {sorted(policies)}")
-        sheets = (load_sheet(args.hero), load_sheet(args.opponent))
+        # Parse exactly the bytes whose digests are recorded, then verify that
+        # the inputs and this command did not change during the simulation.
+        script = Path(__file__).resolve()
+        input_paths = (args.hero.resolve(), args.opponent.resolve())
+        input_bytes = tuple(path.read_bytes() for path in input_paths)
+        sheets = tuple(parse_sheet(json.loads(content.decode('utf-8'))) for content in input_bytes)
+        input_sources = {'scripts/character_sheet.py': sha256(script.read_bytes()).hexdigest()}
+        for path, content in zip(input_paths, input_bytes):
+            key = path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else str(path)
+            input_sources[key] = sha256(content).hexdigest()
         if sheets[0].ruleset == LEGACY_RULESET and not args.historical_rules:
             parser.error('This sheet uses historical table rules; use the current sheet revision or --historical-rules')
         selected_policies = (policies[args.policy], policies[args.opponent_policy])
@@ -101,12 +111,13 @@ def main() -> None:
             payload = run_batch(*sheets, *selected_policies, n=args.n,
                                 master_seed=args.master_seed,
                                 initial_distance=args.distance, battlefield=battlefield)
+        current_inputs = {'scripts/character_sheet.py': sha256(script.read_bytes()).hexdigest()}
+        for path in input_paths:
+            key = path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else str(path)
+            current_inputs[key] = sha256(path.read_bytes()).hexdigest()
+        require_unchanged_sources(input_sources, current_inputs)
         sources = dict(payload['source_sha256'])
-        sources['scripts/character_sheet.py'] = sha256(Path(__file__).read_bytes()).hexdigest()
-        for name in (args.hero, args.opponent):
-            resolved = name.resolve()
-            key = resolved.relative_to(ROOT).as_posix() if resolved.is_relative_to(ROOT) else str(resolved)
-            sources[key] = sha256(resolved.read_bytes()).hexdigest()
+        sources.update(input_sources)
         payload['source_sha256'] = sources
         write_json(args.output, payload)
         if args.command == 'duel':

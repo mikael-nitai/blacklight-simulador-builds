@@ -6,11 +6,12 @@ from pathlib import Path
 
 from .experiment import ROOT, Strategy, run_cell, scenarios, source_hashes
 from .policies import HAMMER
-from .results_io import historical_output, write_new_text
+from .results_io import historical_output, require_unchanged_sources, write_new_text
 
 
 def main() -> None:
     output = historical_output(__doc__)
+    sources = source_hashes()
     selected_scenarios = [s for s in scenarios() if s.id != "gunner_kiter"]
     candidates = [
         Strategy(f"hammer_heal_t{threshold}_s{spend}",
@@ -32,12 +33,13 @@ def main() -> None:
         })
     rankings.sort(key=lambda row: (-row["worst_win_rate"],
                                    row["mean_focus_spent"], row["strategy"]))
+    require_unchanged_sources(sources, source_hashes())
     payload = {"stage": "heal_search", "n_per_cell": 1000,
                "damage_model": "literal_marvel_pool_v2",
                "table_ruleset": "literal_marvel_pool_v2",
                "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|stage|scenario|strategy|index",
                "selection_rule": "maximin S1-S3 wins; tie lower mean Focus spent",
-               "source_sha256": source_hashes(), "rankings": rankings,
+               "source_sha256": sources, "rankings": rankings,
                "rows": rows, "selected": rankings[0]["strategy"]}
     write_new_text(output, json.dumps(payload, ensure_ascii=False, indent=2))
     print(*rankings, sep="\n")

@@ -122,6 +122,11 @@ def audit_log(log: tuple[dict, ...] | list[dict],
         kind = event["type"]
         actor = event.get("actor")
         turn_key = (actor, event["round"], event["bonus_round"])
+        if (kind in {'attack', 'movement', 'fast_use_start', 'stance', 'dodge',
+                     'focus_spent', 'wait', 'condition_treatment', 'blade_bonus',
+                     'reaction_spent', 'shield_activate'}
+                and (actor not in health or health[actor] <= 0)):
+            issues.append(f"event {seq}: unknown or unconscious actor performed an action")
         if kind == "reaction_reset":
             if turn_key in reaction_reset_seen:
                 issues.append(f"event {seq}: duplicate reaction reset within round")

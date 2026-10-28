@@ -6,14 +6,14 @@ import argparse
 from dataclasses import dataclass, replace
 from hashlib import sha256
 import json
-from math import isclose, isfinite, sqrt
+from math import isclose, isfinite, log, sqrt
 from pathlib import Path
 from statistics import NormalDist
 import sys
 
 from . import __version__
 from .engine import Duel, Profile, blacklight_profile
-from .results_io import require_new_output, write_new_text
+from .results_io import require_new_output, require_unchanged_sources, write_new_text
 from .policies import (ATTACK, BLADE_HAMMER_FAST, CLAW_HAMMER_FAST,
                        HAMMER, HAMMER_FAST, HYBRID,
                        KITER, RulePolicy, SHIELD_BLADE_REACTIVE,
@@ -155,6 +155,21 @@ def independent_win_difference(first: dict, second: dict, *, alpha: float = 0.05
     return delta, max(-1.0, lower), min(1.0, upper)
 
 
+def conservative_win_difference(first: dict, second: dict, *, alpha: float = 0.05) -> tuple[float, float, float]:
+    """Conservative Hoeffding/union-bound interval for two binomial means.
+
+    The stated coverage holds under the independent Bernoulli sampling model;
+    it does not validate simulator rules or the representativeness of scenarios.
+    """
+    wins_a, n_a = win_counts(first)
+    wins_b, n_b = win_counts(second)
+    if type(alpha) not in (int, float) or not isfinite(alpha) or not 0 < alpha < 1:
+        raise ValueError('Confidence level requires 0 < alpha < 1')
+    delta = wins_a / n_a - wins_b / n_b
+    radius = sqrt(log(4 / alpha) / (2 * n_a)) + sqrt(log(4 / alpha) / (2 * n_b))
+    return delta, max(-1.0, delta - radius), min(1.0, delta + radius)
+
+
 def run_cell(stage: str, scenario: Scenario, strategy: Strategy, n: int,
              *, stack_signature_edge: bool = True,
              profile_override: Profile | None = None,
@@ -220,11 +235,15 @@ def comparisons(rows: list[dict]) -> list[dict]:
             if strategy == "bare_attack":
                 continue
             delta, lower, upper = independent_win_difference(row, base, alpha=0.05 / m)
+            _, conservative_low, conservative_high = conservative_win_difference(
+                row, base, alpha=0.05 / m)
             result.append({"scenario": scenario, "strategy": strategy,
                            "vs": "bare_attack", "win_difference": delta,
                            "simultaneous_ci_bonferroni": [lower, upper],
+                           "simultaneous_ci_hoeffding": [conservative_low, conservative_high],
                            "method": "Newcombe/Wilson, independent Bernoulli samples; "
-                                     "approximate Bonferroni adjustment within scenario"})
+                                     "approximate Bonferroni adjustment within scenario; "
+                                     "Hoeffding interval is a conservative alternative"})
     return result
 
 
@@ -233,6 +252,7 @@ def execute(stage: str, n: int, output: Path,
     require_new_output(output)
     if n < 1:
         raise ValueError("n must be positive")
+    sources = source_hashes()
     rows = []
     for scenario in scenarios():
         for strategy in strategies():
@@ -241,6 +261,7 @@ def execute(stage: str, n: int, output: Path,
             rows.append(row)
             print(f"{stage} {scenario.id} {strategy.id}: "
                   f"{row['outcomes']['win']}/{n} wins", flush=True)
+    require_unchanged_sources(sources, source_hashes())
     payload = {
         "schema": "blacklight-restricted-duel-pool-v2", "engine_version": __version__,
         "damage_model": "literal_marvel_pool_v2",
@@ -248,7 +269,7 @@ def execute(stage: str, n: int, output: Path,
         "stage": stage, "n_per_cell": n,
         "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|stage|scenario|strategy|index",
         "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
-        "python": sys.version, "source_sha256": source_hashes(),
+        "python": sys.version, "source_sha256": sources,
         "rows": rows, "comparisons": comparisons(rows),
         "limitations": ["two-combatant open field", "no numeric limb effect",
                         "no Focus damage/Karma", "no multi-target Fast Strikes",

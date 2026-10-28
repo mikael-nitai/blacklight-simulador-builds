@@ -9,8 +9,10 @@ from scripts.result_compatibility import (PRE_SPLIT_FAST_COMMITS, classify_rules
 class TestResultCompatibility(unittest.TestCase):
     def test_explicit_versions_and_unknowns_are_not_confused(self):
         old_commit = next(iter(PRE_SPLIT_FAST_COMMITS))
-        self.assertEqual(classify_ruleset({'table_ruleset': 'split_fast_v3'}, old_commit),
+        self.assertEqual(classify_ruleset({'table_ruleset': 'split_fast_v3'}, 'new'),
                          'current_ruleset_declared')
+        self.assertEqual(classify_ruleset({'table_ruleset': 'split_fast_v3'}, old_commit),
+                         'conflicting_ruleset_and_snapshot')
         self.assertEqual(classify_ruleset({'table_ruleset': 'literal_marvel_pool_v2'}, 'new'),
                          'historical_ruleset_declared')
         self.assertEqual(classify_ruleset({}, old_commit), 'historical_snapshot_pre_split_fast')

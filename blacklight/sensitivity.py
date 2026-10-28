@@ -5,21 +5,24 @@ import json
 from pathlib import Path
 
 from .engine import blacklight_profile
-from .experiment import (ROOT, independent_win_difference, run_cell, scenarios,
-                         source_hashes, strategies)
-from .results_io import historical_output, write_new_text
+from .experiment import (ROOT, conservative_win_difference, independent_win_difference,
+                         run_cell, scenarios, source_hashes, strategies)
+from .results_io import historical_output, require_unchanged_sources, write_new_text
 
 
 def difference(a: dict, b: dict) -> dict:
     delta, lower, upper = independent_win_difference(b, a)
+    _, conservative_low, conservative_high = conservative_win_difference(b, a)
     return {"base_win_rate": a["win_rate"], "variant_win_rate": b["win_rate"],
             "difference_variant_minus_base": delta,
             "ci95_independent": [lower, upper],
-            "method": "Newcombe/Wilson; independent Bernoulli samples, approximate"}
+            "ci95_conservative_hoeffding": [conservative_low, conservative_high],
+            "method": "Newcombe/Wilson approximate; Hoeffding conservative under independent Bernoulli sampling"}
 
 
 def main() -> None:
     output = historical_output(__doc__)
+    sources = source_hashes()
     scenario_map = {x.id: x for x in scenarios()}
     strategy_map = {x.id: x for x in strategies()}
     pairs = []
@@ -63,11 +66,12 @@ def main() -> None:
                           "comparison": difference(one_edge, two_edges)})
             print("edges", scenario_id, strategy_id,
                   one_edge["win_rate"], two_edges["win_rate"], flush=True)
+    require_unchanged_sources(sources, source_hashes())
     payload = {"schema": "blacklight-sensitivity-v1", "n_per_cell": 3000,
                "damage_model": "literal_marvel_pool_v2",
                "table_ruleset": "literal_marvel_pool_v2",
                "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|stage|scenario|strategy|index",
-               "source_sha256": source_hashes(), "pairs": pairs,
+               "source_sha256": sources, "pairs": pairs,
                "note": "Independent seeds; intervals are exploratory, not paired"}
     write_new_text(output, json.dumps(payload, ensure_ascii=False, indent=2))
 

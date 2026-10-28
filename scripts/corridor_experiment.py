@@ -5,10 +5,10 @@ from hashlib import sha256
 import json
 from math import sqrt
 from pathlib import Path
-from blacklight.results_io import write_new_text
+from blacklight.results_io import require_unchanged_sources, write_new_text
 import sys
 
-from blacklight.audit import audit_log
+from blacklight.audit import audit_profiled_log
 from blacklight.engine import Profile, blacklight_profile
 from blacklight.experiment import scenarios
 from blacklight.policies import (HAMMER, KITER,
@@ -83,10 +83,7 @@ def run_cell(stage: str, length: int, opponent_id: str,
                             audit=audit)
         result = duel.run()
         if audit:
-            issues = audit_log(
-                result.log,
-                {p.name: p.max_health for p in profiles},
-                {p.name: p.max_focus for p in profiles})
+            issues = audit_profiled_log(result.log, profiles)
             issues += audit_corridor(
                 result.log, tuple(p.name for p in profiles),
                 initial_positions=(0, 8), length=length,
@@ -133,6 +130,7 @@ def main() -> None:
     output = args.output or ROOT / 'results' / f'corridor_pool_v2_{args.stage}_summary.json'
     if output.exists():
         parser.error('Output already exists; use --output with a new versioned filename')
+    sources = hashes()
     n = STAGES[args.stage]
     rows = []
     configured = gunners()
@@ -145,13 +143,15 @@ def main() -> None:
                 print(f"{args.stage} L{length} {opponent_id} {policy.name}: "
                       f"{row['outcomes']}, wall={row['wall_reached']}",
                       flush=True)
+    require_unchanged_sources(sources, hashes())
     payload = {
         "schema": "blacklight-bounded-corridor-pool-v2",
         "damage_model": "literal_marvel_pool_v2",
+        "table_ruleset": "literal_marvel_pool_v2",
         "stage": args.stage, "n_per_cell": n,
         "seed_formula": "first 8 bytes SHA-256 of blacklight-corridor-pool-v2|stage|length|opponent|policy|index",
         "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
-        "source_sha256": hashes(), "python": sys.version,
+        "source_sha256": sources, "python": sys.version,
         "initial_positions": [0, 8], "lengths": [12, 20],
         "opponents": [{"id": name, "profile": profile_record(profile)}
                       for name, profile in configured],

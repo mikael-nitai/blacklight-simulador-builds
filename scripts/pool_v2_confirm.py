@@ -10,7 +10,7 @@ import sys
 from blacklight.engine import Profile
 from blacklight.experiment import ROOT, Scenario, run_cell, scenarios, source_hashes, strategies
 from blacklight.policies import HAMMER, KITER
-from blacklight.results_io import require_new_output, write_new_text
+from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
 
 
 FINALISTS = (
@@ -47,10 +47,20 @@ def profile_record(profile: Profile) -> dict:
     return row
 
 
+def execution_sources() -> dict[str, str]:
+    spec = ROOT / 'POOL_V2_CONFIRM_SPEC.md'
+    script = Path(__file__).resolve()
+    sources = source_hashes()
+    sources[spec.relative_to(ROOT).as_posix()] = sha256(spec.read_bytes()).hexdigest()
+    sources[script.relative_to(ROOT).as_posix()] = sha256(script.read_bytes()).hexdigest()
+    return sources
+
+
 def execute(stage: str, n: int, output: Path) -> dict:
     require_new_output(output)
     if stage not in ("confirm_v2", "holdout_v2") or n < 1:
         raise ValueError("Unknown stage or invalid sample count")
+    sources = execution_sources()
     configured = scenarios() if stage == "confirm_v2" else holdout_scenarios()
     candidates = {s.id: s for s in strategies()}
     rows = []
@@ -61,11 +71,7 @@ def execute(stage: str, n: int, output: Path) -> dict:
             rows.append(row)
             print(f"{stage} {scenario.id} {strategy_id}: {row['outcomes']}",
                   flush=True)
-    spec = ROOT / "POOL_V2_CONFIRM_SPEC.md"
-    script = Path(__file__).resolve()
-    sources = source_hashes()
-    sources[spec.relative_to(ROOT).as_posix()] = sha256(spec.read_bytes()).hexdigest()
-    sources[script.relative_to(ROOT).as_posix()] = sha256(script.read_bytes()).hexdigest()
+    require_unchanged_sources(sources, execution_sources())
     payload = {
         "schema": "blacklight-finalists-pool-v2",
         "damage_model": "literal_marvel_pool_v2",

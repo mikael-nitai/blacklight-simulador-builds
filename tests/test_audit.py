@@ -80,6 +80,16 @@ class TestAudit(unittest.TestCase):
             issues = audit_log(log, health, focus, movement_limits=limits)
             self.assertTrue(any('invalid movement' in issue for issue in issues), bad_steps)
 
+    def test_checker_rejects_action_after_actor_becomes_unconscious(self):
+        log = [
+            {'seq': 1, 'round': 1, 'bonus_round': False, 'type': 'condition_tick',
+             'actor': 'A', 'health_before': 5, 'health_after': 0, 'damage': 5},
+            {'seq': 2, 'round': 1, 'bonus_round': False, 'type': 'movement',
+             'actor': 'A', 'direction': 'retreat', 'steps': 1, 'as_standard': False},
+        ]
+        issues = audit_log(log, {'A': 5}, {'A': 5}, movement_limits={'A': 5})
+        self.assertTrue(any('unconscious actor' in issue for issue in issues))
+
 
 if __name__ == "__main__":
     unittest.main()

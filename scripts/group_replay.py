@@ -2,10 +2,11 @@
 
 from argparse import ArgumentParser
 from dataclasses import asdict
+from hashlib import sha256
 import json
 from pathlib import Path
 
-from blacklight.results_io import require_new_output, write_new_text
+from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
 from experimental.group import GroupBattle
 from experimental.group_audit import audit_group_result
 from experimental.group_policies import (GROUP_ENEMY, GROUP_FAST,
@@ -17,9 +18,17 @@ from .group_experiment import (hashes, profile_record, scenarios,
 POLICIES = (GROUP_HAMMER, GROUP_HAMMER_SHIELD, GROUP_FAST)
 
 
+def execution_sources() -> dict[str, str]:
+    sources = hashes()
+    script = Path(__file__).resolve()
+    sources[script.relative_to(script.parents[1]).as_posix()] = sha256(script.read_bytes()).hexdigest()
+    return sources
+
+
 def replay(stage: str, scenario_id: str, policy_name: str,
            index: int, output: Path) -> dict:
     require_new_output(output)
+    sources = execution_sources()
     profiles = next(value for name, value in scenarios() if name == scenario_id)
     policy = next(value for value in POLICIES if value.name == policy_name)
     seed = seed_for(stage, scenario_id, policy_name, index)
@@ -28,12 +37,13 @@ def replay(stage: str, scenario_id: str, policy_name: str,
     issues = audit_group_result(result, profiles)
     if issues:
         raise RuntimeError(f"Group replay failed audit: {issues}")
+    require_unchanged_sources(sources, execution_sources())
     data = {"schema": "blacklight-group-full-trace-pool-v2",
             "damage_model": "literal_marvel_pool_v2",
             "table_ruleset": "literal_marvel_pool_v2",
             "stage": stage, "scenario": scenario_id,
             "policy": policy_name, "index": index, "seed": seed,
-            "source_sha256": hashes(),
+            "source_sha256": sources,
             "profiles": [profile_record(p) for p in profiles],
             "policies": [asdict(policy), asdict(GROUP_ENEMY),
                          asdict(GROUP_ENEMY)],

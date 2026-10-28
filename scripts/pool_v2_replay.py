@@ -9,13 +9,24 @@ from pathlib import Path
 from blacklight.audit import audit_profiled_log
 from blacklight.engine import Duel, blacklight_profile
 from blacklight.experiment import scenarios, seed_for, source_hashes, strategies
-from blacklight.results_io import require_new_output, write_new_text
+from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
 from .pool_v2_confirm import FINALISTS, holdout_scenarios, profile_record
+
+
+def execution_sources() -> dict[str, str]:
+    sources = source_hashes()
+    script = Path(__file__).resolve()
+    sources[script.relative_to(script.parents[1]).as_posix()] = sha256(script.read_bytes()).hexdigest()
+    for name in ('scripts/pool_v2_confirm.py', 'POOL_V2_CONFIRM_SPEC.md'):
+        path = script.parents[1] / name
+        sources[name] = sha256(path.read_bytes()).hexdigest()
+    return sources
 
 
 def replay(stage: str, scenario_id: str, strategy_id: str,
            index: int, output: Path) -> dict:
     require_new_output(output)
+    sources = execution_sources()
     if stage not in ("confirm_v2", "holdout_v2") or index < 0:
         raise ValueError("Invalid stage or index")
     configured = scenarios() if stage == "confirm_v2" else holdout_scenarios()
@@ -32,12 +43,7 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
     issues = audit_profiled_log(result.log, (victor, scenario.opponent))
     if issues:
         raise RuntimeError(f"Full trace failed independent audit: {issues}")
-    sources = source_hashes()
-    script = Path(__file__).resolve()
-    sources[script.relative_to(script.parents[1]).as_posix()] = sha256(script.read_bytes()).hexdigest()
-    for name in ("scripts/pool_v2_confirm.py", "POOL_V2_CONFIRM_SPEC.md"):
-        path = script.parents[1] / name
-        sources[name] = sha256(path.read_bytes()).hexdigest()
+    require_unchanged_sources(sources, execution_sources())
     payload = {
         "schema": "blacklight-finalist-full-trace-pool-v2",
         "damage_model": "literal_marvel_pool_v2",

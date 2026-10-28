@@ -1,9 +1,10 @@
 """Independent reference cases and invariants for Monte Carlo summaries."""
 
+from math import comb
 import unittest
 
-from blacklight.experiment import (Moment, comparisons, independent_win_difference,
-                                   scenarios, wilson)
+from blacklight.experiment import (Moment, comparisons, conservative_win_difference,
+                                   independent_win_difference, scenarios, wilson)
 from blacklight.sensitivity import difference
 
 
@@ -64,6 +65,22 @@ class TestStatisticsFoundation(unittest.TestCase):
         self.assertEqual(moment.summary(), {'mean': 1.0, 'mc_se': None})
         moment.add(3)
         self.assertEqual(moment.summary(), {'mean': 2.0, 'mc_se': 1.0})
+
+    def test_extreme_small_sample_coverage_and_conservative_alternative(self):
+        # Enumerate the actual sampling distribution: p=0.05, q=1, n=10.
+        # Newcombe is approximate; Hoeffding supplies an intentionally wider bound.
+        approximate = conservative = 0.0
+        true_difference = -0.95
+        for wins in range(11):
+            probability = comb(10, wins) * 0.05**wins * 0.95**(10 - wins)
+            low, high = independent_win_difference(row(wins, 10), row(10, 10))[1:]
+            safe_low, safe_high = conservative_win_difference(row(wins, 10), row(10, 10))[1:]
+            if low <= true_difference <= high:
+                approximate += probability
+            if safe_low <= true_difference <= safe_high:
+                conservative += probability
+        self.assertAlmostEqual(approximate, 0.9138616441006833, places=12)
+        self.assertGreaterEqual(conservative, 0.95)
 
 
 if __name__ == '__main__':

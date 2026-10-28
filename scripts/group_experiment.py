@@ -5,7 +5,7 @@ from hashlib import sha256
 import json
 from math import sqrt
 from pathlib import Path
-from blacklight.results_io import write_new_text
+from blacklight.results_io import require_unchanged_sources, write_new_text
 import sys
 
 from blacklight.engine import Profile, blacklight_profile
@@ -114,6 +114,7 @@ def main() -> None:
     output = args.output or ROOT / 'results' / f'group_pool_v2_{args.stage}_summary.json'
     if output.exists():
         parser.error('Output already exists; use --output with a new versioned filename')
+    sources = hashes()
     n = dict(STAGES)[args.stage]
     rows = []
     configured = scenarios()
@@ -123,14 +124,16 @@ def main() -> None:
             rows.append(row)
             print(f"{args.stage} {scenario_id} {policy.name}: {row['outcomes']}",
                   flush=True)
+    require_unchanged_sources(sources, hashes())
     payload = {
         "schema": "blacklight-fixed-contact-group-pool-v2",
         "damage_model": "literal_marvel_pool_v2",
+        "table_ruleset": "literal_marvel_pool_v2",
         "stage": args.stage,
         "n_per_cell": n,
         "seed_formula": "first 8 bytes SHA-256 of blacklight-group-pool-v2|stage|scenario|policy|index",
         "damage_seed_formula": "battle seed XOR 0xD6162026; separate Python Random stream",
-        "source_sha256": hashes(),
+        "source_sha256": sources,
         "python": sys.version,
         "scenarios": [{"id": name,
                        "profiles": [profile_record(p) for p in profiles]}

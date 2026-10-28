@@ -2,22 +2,31 @@
 
 from argparse import ArgumentParser
 from dataclasses import asdict
+from hashlib import sha256
 import json
 from pathlib import Path
 
 from blacklight.audit import audit_profiled_log
 from blacklight.engine import blacklight_profile
 from blacklight.policies import KITER
-from blacklight.results_io import require_new_output, write_new_text
+from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
 from experimental.corridor import CorridorDuel
 from experimental.corridor_audit import audit_corridor
 from .corridor_experiment import (POLICIES, gunners, hashes, profile_record,
                                   seed_for)
 
 
+def execution_sources() -> dict[str, str]:
+    sources = hashes()
+    script = Path(__file__).resolve()
+    sources[script.relative_to(script.parents[1]).as_posix()] = sha256(script.read_bytes()).hexdigest()
+    return sources
+
+
 def replay(stage: str, length: int, opponent_id: str, policy_name: str,
            index: int, output: Path) -> dict:
     require_new_output(output)
+    sources = execution_sources()
     opponent = next(p for name, p in gunners() if name == opponent_id)
     policy = next(p for p in POLICIES if p.name == policy_name)
     profiles = (blacklight_profile(), opponent)
@@ -34,6 +43,7 @@ def replay(stage: str, length: int, opponent_id: str, policy_name: str,
         contact_occurred=duel.contact_occurred)
     if issues:
         raise RuntimeError(f"Corridor replay failed audit: {issues}")
+    require_unchanged_sources(sources, execution_sources())
     victor_outcome = (result.outcome if result.outcome in
                       {"inconclusive", "draw"} else
                       "win" if result.winner == profiles[0].name else "loss")
@@ -43,7 +53,7 @@ def replay(stage: str, length: int, opponent_id: str, policy_name: str,
             "stage": stage, "length": length,
             "opponent": opponent_id, "policy": policy_name,
             "index": index, "seed": seed,
-            "source_sha256": hashes(),
+            "source_sha256": sources,
             "profiles": [profile_record(p) for p in profiles],
             "policies": [asdict(policy), asdict(KITER)],
             "initial_positions": [0, 8],

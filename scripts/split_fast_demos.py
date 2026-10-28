@@ -9,9 +9,9 @@ import json
 from pathlib import Path
 
 from blacklight.policies import ATTACK
-from blacklight.results_io import write_new_text
-from combatants import load_sheet
+from blacklight.results_io import require_unchanged_sources, write_new_text
 from combatants.runner import run_batch, run_duel
+from combatants.sheets import parse_sheet
 from combatants.split_fast import SplitFastPolicy
 
 
@@ -32,7 +32,11 @@ def main() -> None:
     outputs = {name: ROOT / 'results' / f'{args.output_prefix}_{name}.json' for name in names}
     if any(path.exists() for path in outputs.values()):
         parser.error('Output already exists; choose a new versioned prefix')
-    hero, foe = load_sheet(HERO), load_sheet(FOE)
+    paths = (HERO, FOE, Path(__file__).resolve())
+    content = {path: path.read_bytes() for path in paths}
+    sources = {path.relative_to(ROOT).as_posix(): sha256(data).hexdigest()
+               for path, data in content.items()}
+    hero, foe = (parse_sheet(json.loads(content[path].decode('utf-8'))) for path in (HERO, FOE))
     policies = {name: SplitFastPolicy(f'current_{name}', weapon='blade', offhand='hammer',
                                       prefer_fast=True, effect_limb=selected, shield_react=True)
                 for name, selected in (('blade', 0), ('hammer', 1))}
@@ -43,10 +47,11 @@ def main() -> None:
             raise AssertionError(f'{name}: selected demonstration did not exercise Fast')
     payloads['rank4_integration_batch'] = run_batch(
         foe, hero, ATTACK, policies['hammer'], n=1000, master_seed=731, audit_every=1)
+    require_unchanged_sources(sources, {path.relative_to(ROOT).as_posix(): sha256(path.read_bytes()).hexdigest()
+                                        for path in paths})
     for name, payload in payloads.items():
         payload['demonstration_note'] = 'Current table execution/integration control; no strategy ranking inferred'
-        for source in (HERO, FOE, Path(__file__).resolve()):
-            payload['source_sha256'][source.relative_to(ROOT).as_posix()] = sha256(source.read_bytes()).hexdigest()
+        payload['source_sha256'].update(sources)
         write_new_text(outputs[name], json.dumps(payload, ensure_ascii=False, indent=2), newline='\n')
         if 'result' in payload:
             checks = sum(row['type'] == 'fast_limb_check' for row in payload['result']['log'])

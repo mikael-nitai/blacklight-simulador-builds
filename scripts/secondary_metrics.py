@@ -9,7 +9,7 @@ import sys
 from blacklight.audit import audit_profiled_log
 from blacklight.engine import Duel, blacklight_profile
 from blacklight.experiment import ROOT, scenarios, seed_for, source_hashes, strategies, wilson
-from blacklight.results_io import historical_output, write_new_text
+from blacklight.results_io import historical_output, require_unchanged_sources, write_new_text
 
 
 def quantile(values: list[float], probability: float) -> float:
@@ -27,8 +27,16 @@ def mean_se(values: list[float]) -> dict[str, float]:
     return {"mean": avg, "mc_se": sqrt(variance / n)}
 
 
+def execution_sources() -> dict[str, str]:
+    sources = source_hashes()
+    for name in ('scripts/secondary_metrics.py', 'SECONDARY_SPEC.md'):
+        sources[name] = sha256((ROOT / name).read_bytes()).hexdigest()
+    return sources
+
+
 def main() -> None:
     output = historical_output(__doc__)
+    sources = execution_sources()
     chosen = {"bare_attack", "hammer", "shield_hammer_reactive",
               "hammer_heal_t75_s15", "shield_hammer_endturn"}
     selected = tuple(s for s in strategies() if s.id in chosen)
@@ -86,20 +94,17 @@ def main() -> None:
                 "audited_full_logs": n,
             })
             print(f"secondary {scenario.id} {strategy.id}: {n} audited", flush=True)
-    script = Path(__file__)
-    spec = ROOT / "SECONDARY_SPEC.md"
+    require_unchanged_sources(sources, execution_sources())
     payload = {
         "schema": "blacklight-secondary-v1", "n_per_cell": n,
         "damage_model": "literal_marvel_pool_v2",
         "table_ruleset": "literal_marvel_pool_v2",
         "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|secondary|scenario|strategy|index",
-        "source_sha256": source_hashes(),
-        "script_sha256": sha256(script.read_bytes()).hexdigest(),
-        "spec_sha256": sha256(spec.read_bytes()).hexdigest(),
+        "source_sha256": sources,
+        "script_sha256": sources['scripts/secondary_metrics.py'],
+        "spec_sha256": sources['SECONDARY_SPEC.md'],
         "python": sys.version, "rows": rows,
     }
-    payload['source_sha256']['scripts/secondary_metrics.py'] = sha256(script.read_bytes()).hexdigest()
-    payload['source_sha256']['SECONDARY_SPEC.md'] = sha256(spec.read_bytes()).hexdigest()
     write_new_text(output, json.dumps(payload, indent=2, ensure_ascii=False))
 
 

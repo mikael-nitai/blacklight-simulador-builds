@@ -4,13 +4,21 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import asdict
+from hashlib import sha256
 import json
 from pathlib import Path
 
 from blacklight.audit import audit_profiled_log
 from blacklight.engine import Duel, Profile, blacklight_profile
-from blacklight.experiment import scenarios, seed_for, source_hashes, strategies
-from blacklight.results_io import require_new_output, write_new_text
+from blacklight.experiment import ROOT, scenarios, seed_for, source_hashes, strategies
+from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
+
+
+def execution_sources() -> dict[str, str]:
+    sources = source_hashes()
+    script = Path(__file__).resolve()
+    sources[script.relative_to(ROOT).as_posix()] = sha256(script.read_bytes()).hexdigest()
+    return sources
 
 
 def profile_record(profile: Profile) -> dict:
@@ -23,6 +31,7 @@ def profile_record(profile: Profile) -> dict:
 def replay(stage: str, scenario_id: str, strategy_id: str,
            index: int, output: Path) -> dict:
     require_new_output(output)
+    sources = execution_sources()
     scenario = next(s for s in scenarios() if s.id == scenario_id)
     strategy = next(s for s in strategies() if s.id == strategy_id)
     blacklight = blacklight_profile()
@@ -35,6 +44,7 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
     issues = audit_profiled_log(result.log, (blacklight, opponent))
     if issues:
         raise RuntimeError(f"Trace failed audit: {issues[:5]}")
+    require_unchanged_sources(sources, execution_sources())
     data = {
         "schema": "blacklight-full-trace-pool-v2",
         "damage_model": "literal_marvel_pool_v2",
@@ -42,7 +52,7 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
         "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
         "stage": stage, "scenario": scenario_id,
         "strategy": strategy_id, "index": index, "seed": seed,
-        "source_sha256": source_hashes(),
+        "source_sha256": sources,
         "initial_distance": scenario.distance,
         "profiles": [profile_record(blacklight), profile_record(opponent)],
         "policies": [asdict(strategy.policy), asdict(scenario.policy)],

@@ -21,6 +21,8 @@ PRE_SPLIT_FAST_COMMITS = frozenset({
 def classify_ruleset(payload: dict, source_commit: str) -> str:
     declared = payload.get('table_ruleset')
     if declared == CURRENT_RULESET:
+        if source_commit in PRE_SPLIT_FAST_COMMITS:
+            return 'conflicting_ruleset_and_snapshot'
         return 'current_ruleset_declared'
     if declared == LEGACY_RULESET:
         return 'historical_ruleset_declared'
@@ -91,7 +93,7 @@ def main() -> None:
     print(f"Frozen results checked: {report['frozen_results_checked']}")
     for category, count in sorted(Counter(row['classification'] for row in entries).items()):
         print(f'{category}: {count}')
-    print('Zero-width historical intervals:', sum(row['zero_width_intervals'] for row in entries))
+    print('Zero-width intervals in listed results:', sum(row['zero_width_intervals'] for row in entries))
     print('Source matching does not by itself establish rule or conclusion validity.')
     if args.details:
         for row in entries:

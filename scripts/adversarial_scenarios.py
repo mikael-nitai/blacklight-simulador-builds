@@ -9,7 +9,7 @@ import sys
 from blacklight.engine import Profile, blacklight_profile
 from blacklight.experiment import ROOT, Scenario, run_cell, scenarios, source_hashes, strategies
 from blacklight.policies import ATTACK, HAMMER, KITER
-from blacklight.results_io import historical_output, write_new_text
+from blacklight.results_io import historical_output, require_unchanged_sources, write_new_text
 
 
 def profile_record(profile: Profile) -> dict:
@@ -33,8 +33,16 @@ def adversarial_scenarios() -> tuple[Scenario, ...]:
     )
 
 
+def execution_sources() -> dict[str, str]:
+    sources = source_hashes()
+    for name in ('scripts/adversarial_scenarios.py', 'ADVERSARIAL_SPEC.md'):
+        sources[name] = sha256((ROOT / name).read_bytes()).hexdigest()
+    return sources
+
+
 def main() -> None:
     output = historical_output(__doc__)
+    sources = execution_sources()
     keep = {"bare_attack", "hammer", "shield_hammer_reactive",
             "hammer_heal_t75_s15", "shield_hammer_endturn"}
     selected = tuple(s for s in strategies() if s.id in keep)
@@ -45,16 +53,15 @@ def main() -> None:
             rows.append(row)
             print(f"adversarial {scenario.id} {strategy.id}: "
                   f"{row['outcomes']}", flush=True)
-    script = Path(__file__)
-    spec = ROOT / "ADVERSARIAL_SPEC.md"
+    require_unchanged_sources(sources, execution_sources())
     payload = {
         "schema": "blacklight-adversarial-v1", "n_per_cell": 5000,
         "damage_model": "literal_marvel_pool_v2",
         "table_ruleset": "literal_marvel_pool_v2",
         "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|adversarial|scenario|strategy|index",
-        "source_sha256": source_hashes(),
-        "script_sha256": sha256(script.read_bytes()).hexdigest(),
-        "spec_sha256": sha256(spec.read_bytes()).hexdigest(),
+        "source_sha256": sources,
+        "script_sha256": sources['scripts/adversarial_scenarios.py'],
+        "spec_sha256": sources['ADVERSARIAL_SPEC.md'],
         "python": sys.version,
         "scenarios": [{"id": s.id, "distance": s.distance,
                        "opponent": profile_record(s.opponent),
@@ -62,8 +69,6 @@ def main() -> None:
                       for s in adversarial_scenarios()],
         "rows": rows,
     }
-    payload['source_sha256']['scripts/adversarial_scenarios.py'] = sha256(script.read_bytes()).hexdigest()
-    payload['source_sha256']['ADVERSARIAL_SPEC.md'] = sha256(spec.read_bytes()).hexdigest()
     write_new_text(output, json.dumps(payload, indent=2, ensure_ascii=False))
 
 

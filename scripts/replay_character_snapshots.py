@@ -8,12 +8,12 @@ from argparse import ArgumentParser
 from hashlib import sha256
 import json
 from pathlib import Path
-from blacklight.results_io import write_new_text
+from blacklight.results_io import require_unchanged_sources, write_new_text
 
 from blacklight.policies import RulePolicy
 from combatants.runner import run_batch, run_duel
 from combatants.sheets import parse_sheet
-from .verify_sources import ROOT, verify_result
+from .verify_sources import ROOT, load_index, verify_result
 
 
 CASES = ('dodge_demo', 'modular_heal_demo', 'rank4_batch', 'rank4_demo',
@@ -24,7 +24,13 @@ def replay(path: Path) -> dict:
     _, issues = verify_result(path)
     if issues:
         raise ValueError(f'{path.name}: {issues}')
-    stored = json.loads(path.read_text(encoding='utf-8'))
+    script = Path(__file__).resolve()
+    content = {source: source.read_bytes() for source in (path, script)}
+    sources = {source.relative_to(ROOT).as_posix(): sha256(data).hexdigest()
+               for source, data in content.items()}
+    if sources[path.relative_to(ROOT).as_posix()] != load_index()[path.name]['result_sha256']:
+        raise ValueError(f'{path.name}: input changed after frozen verification')
+    stored = json.loads(content[path].decode('utf-8'))
     sheets = tuple(parse_sheet(data) for data in stored['sheets'])
     policies = tuple(RulePolicy(**data) for data in stored['policies'])
     options = {'initial_distance': stored['initial_distance'],
@@ -46,11 +52,12 @@ def replay(path: Path) -> dict:
     for field in compared:
         if normalized[field] != stored[field]:
             raise AssertionError(f'{path.name}: migration changed {field}')
+    require_unchanged_sources(sources, {source.relative_to(ROOT).as_posix(): sha256(source.read_bytes()).hexdigest()
+                                       for source in content})
     result['migration_reference'] = {'path': path.relative_to(ROOT).as_posix(),
-                                    'sha256': sha256(path.read_bytes()).hexdigest(),
+                                    'sha256': sources[path.relative_to(ROOT).as_posix()],
                                     'compared_fields': list(compared)}
-    for source in (path, Path(__file__).resolve()):
-        result['source_sha256'][source.relative_to(ROOT).as_posix()] = sha256(source.read_bytes()).hexdigest()
+    result['source_sha256'].update(sources)
     return result
 
 

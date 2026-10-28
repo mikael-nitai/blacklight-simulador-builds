@@ -2,19 +2,28 @@
 
 from argparse import ArgumentParser
 from dataclasses import asdict
+from hashlib import sha256
 import json
 from pathlib import Path
 
 from blacklight.engine import blacklight_profile
-from blacklight.results_io import require_new_output, write_new_text
+from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
 from experimental.focus_audit import audit_focus_duel
 from experimental.focus_duel import FocusDuel, STRATEGIES
 from .focus_experiment import hashes, mentalist, profile_record, seed_for
 
 
+def execution_sources() -> dict[str, str]:
+    sources = hashes()
+    script = Path(__file__).resolve()
+    sources[script.relative_to(script.parents[1]).as_posix()] = sha256(script.read_bytes()).hexdigest()
+    return sources
+
+
 def replay(stage: str, scenario: str, variant: str,
            strategy: str, index: int, output: Path) -> dict:
     require_new_output(output)
+    sources = execution_sources()
     rank = int(scenario[1:])
     profiles = (blacklight_profile(), mentalist(rank))
     reduction = 0 if variant == "F0" else 2
@@ -25,12 +34,13 @@ def replay(stage: str, scenario: str, variant: str,
     issues = audit_focus_duel(result, profiles, reduction)
     if issues:
         raise RuntimeError(f"Focus replay failed audit: {issues}")
+    require_unchanged_sources(sources, execution_sources())
     data = {"schema": "blacklight-focus-full-trace-pool-v2",
             "damage_model": "literal_marvel_pool_v2",
             "stage": stage, "scenario": scenario,
             "variant": variant, "strategy": strategy,
             "index": index, "seed": seed,
-            "source_sha256": hashes(),
+            "source_sha256": sources,
             "profiles": [profile_record(p) for p in profiles],
             "result": asdict(result), "audit_issues": issues}
     write_new_text(output, json.dumps(data, indent=2, ensure_ascii=False))

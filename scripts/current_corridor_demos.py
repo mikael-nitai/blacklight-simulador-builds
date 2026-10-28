@@ -7,10 +7,10 @@ import json
 from pathlib import Path
 
 from blacklight.policies import KITER
-from blacklight.results_io import write_new_text
-from combatants import load_sheet
+from blacklight.results_io import require_unchanged_sources, write_new_text
 from combatants.battlefields import CorridorMap
 from combatants.runner import run_batch, run_duel
+from combatants.sheets import parse_sheet
 from combatants.split_fast import SplitFastPolicy
 from combatants.terrain_policies import WallAwarePolicy
 
@@ -32,7 +32,11 @@ def main() -> None:
     outputs = {name: ROOT / 'results' / f'{args.output_prefix}_{name}.json' for name in names}
     if any(path.exists() for path in outputs.values()):
         parser.error('Output already exists; choose a new versioned prefix')
-    hero, foe = load_sheet(HERO), load_sheet(FOE)
+    paths = (HERO, FOE, Path(__file__).resolve())
+    content = {path: path.read_bytes() for path in paths}
+    sources = {path.relative_to(ROOT).as_posix(): sha256(data).hexdigest()
+               for path, data in content.items()}
+    hero, foe = (parse_sheet(json.loads(content[path].decode('utf-8'))) for path in (HERO, FOE))
     opponent = WallAwarePolicy(**{**asdict(KITER), 'name': 'wall_aware_ranged_control'}, effect_limb=0)
     policies = {name: SplitFastPolicy(f'corridor_{name}_effects', weapon='blade', offhand='hammer',
                                       prefer_fast=True, effect_limb=limb, shield_react=True)
@@ -47,10 +51,11 @@ def main() -> None:
     payloads['integration_batch'] = run_batch(
         hero, foe, policies['hammer'], opponent, n=1000, master_seed=827,
         battlefield=layout, audit_every=1)
+    require_unchanged_sources(sources, {path.relative_to(ROOT).as_posix(): sha256(path.read_bytes()).hexdigest()
+                                        for path in paths})
     for name, payload in payloads.items():
         payload['demonstration_note'] = 'Current corridor integration control; no strategy ranking inferred'
-        for source in (HERO, FOE, Path(__file__).resolve()):
-            payload['source_sha256'][source.relative_to(ROOT).as_posix()] = sha256(source.read_bytes()).hexdigest()
+        payload['source_sha256'].update(sources)
         write_new_text(outputs[name], json.dumps(payload, ensure_ascii=False, indent=2), newline='\n')
         if 'result' in payload:
             print(f'{name}: combat+geometry audit=OK, final positions={payload["battlefield_result"]["final_positions"]}')

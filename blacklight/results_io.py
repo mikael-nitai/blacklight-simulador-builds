@@ -21,6 +21,12 @@ def write_new_text(path: Path, content: str, *, newline: str | None = None) -> N
         handle.write(content)
 
 
+def require_unchanged_sources(before: dict, after: dict) -> None:
+    """Do not publish a run whose declared sources changed during execution."""
+    if before != after:
+        raise RuntimeError('Simulation sources changed during execution; no result was written')
+
+
 def historical_output(description: str | None) -> Path:
     """Require an explicit legacy-rules opt-in and a fresh destination."""
     parser = ArgumentParser(description=description)

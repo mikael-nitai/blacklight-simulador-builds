@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
-from tempfile import TemporaryDirectory
+from tempfile import TemporaryDirectory, gettempdir
 
 from blacklight.audit import audit_log
 from blacklight.engine import Duel, Move, blacklight_profile
@@ -327,7 +327,11 @@ def runner_and_cli() -> dict:
 
     gunner_sheet = ROOT / 'characters/examples/synthetic_rank4_nonammo_gunner.json'
     with TemporaryDirectory(prefix='blacklight-corridor-audit-') as folder:
-        output = Path(folder) / 'smoke.json'
+        temporary_root = Path(folder).resolve()
+        if (not temporary_root.is_relative_to(Path(gettempdir()).resolve())
+                or not temporary_root.name.startswith('blacklight-corridor-audit-')):
+            raise AssertionError('Unexpected temporary audit path')
+        output = temporary_root / 'smoke.json'
         command = [sys.executable, '-B', '-m', 'scripts.character_sheet', 'duel',
                    '--hero', str(ROOT / 'characters/victor_halle/rank3_2026-10-27_split_fast.json'),
                    '--opponent', str(gunner_sheet), '--policy', 'attack',

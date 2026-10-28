@@ -1,8 +1,8 @@
 # Operação Fundação: diagnóstico e passagem
 
-Registro de trabalho iniciado em 28/10/2026. Este diagnóstico é uma linha de
-base, não uma certificação de todo o RPG. As conclusões se referem aos arquivos
-e verificações identificados abaixo; o estado das correções será atualizado aqui.
+Registro de trabalho de 28/10/2026, consolidado para passagem. Esta avaliação
+tem escopo limitado: não certifica todo o RPG. As conclusões se referem aos
+arquivos e às verificações identificados abaixo.
 
 ## Preservação e contexto
 
@@ -29,10 +29,10 @@ e verificações identificados abaixo; o estado das correções será atualizado
 |---|---|---|
 | Duelo físico atual | `SplitFastDuel` usa dois testes e um braço de efeitos; há casos com dano calculado à mão em `tests/test_split_fast.py`. | É um recorte de duas fichas, não a totalidade das regras ou uma prova de estratégia ótima. |
 | Corredor atual | Usa o mesmo ataque com geometria 1D e testes próprios de movimento. | Não cobre mapa geral, colisões, cobertura ou knockback. |
-| Grupo | `experimental/group.py` preserva o contrato anterior; `combatants/group.py` é a migração interrompida. Cem sementes sintéticas da migração executaram sem erros do auditor existente. | Esse auditor tem pontos cegos descritos abaixo; não há testes específicos da nova classe e a migração não está pronta para medições de eficácia. |
+| Grupo | `experimental/group.py` preserva o contrato anterior; `combatants/group.py` é a migração interrompida. Agora há testes específicos de casos limitados e 1.000 sementes sintéticas executadas sem erros do auditor reforçado. | O auditor tem pontos cegos descritos abaixo; há um desvio de desempate de iniciativa, e a migração não está pronta para medições de eficácia. |
 | Focus e estudos antigos | Existem protótipos e resultados históricos documentados. | Resultados `pool_v2` precedem o último balanceamento de Fast Strikes e não medem a regra atual. |
 | Proveniência | Em `python -B -m scripts.verify_sources`, 37 resultados congelados passaram na conferência dos hashes declarados e dos commits. | Isso verifica os arquivos declarados, não a fidelidade das regras nem a validade das conclusões. Apenas 6 dos 37 registros têm `table_ruleset` explícito; os demais dependem dos registros históricos. A varredura principal cobre JSONs na raiz de `results/`, não todos os arquivos de subpastas. |
-| Testes | `python -B -m unittest discover -s tests -q`: 228 testes passaram na linha de base. | Os casos não incluem a nova classe de grupo e os exemplos adversariais abaixo mostram que o auditor não detecta toda inconsistência. |
+| Testes | A linha de base teve 228 testes; após as correções, 263 passaram no Windows e no Ubuntu via WSL. | Os testes da migração de grupo cobrem casos específicos. Exemplos adversariais demonstraram que o auditor não detecta toda inconsistência, e quantidade de testes não é garantia de correção. |
 
 A conferência pontual do Core local, página impressa 99, distingue o Fast
 oficial de teste único da exceção da mesa em `FAST_STRIKES_RULING.md` e HR-09.
@@ -92,11 +92,21 @@ decide detalhes ainda não esclarecidos, como regras numéricas de membros.
    Foram encontrados 23 desses intervalos em 10 arquivos históricos; dois
    aparecem em `confirm_summary.json`, um em `pool_v2_dev_summary.json` e
    sete em `pool_v2_smoke_summary.json`.
+9. **Alto para a expansão de grupo — desempate de iniciativa incompleto.**
+   ACT-02 favorece personagem de jogador quando os critérios anteriores empatam.
+   `blacklight/engine.py::_initiative` usa a posição na lista no desempate final;
+   `combatants/group.py` herda isso, mas não identifica quais fichas são de
+   jogadores. Se um NPC vier antes de um personagem de jogador, a ordem pode
+   contrariar a regra. Em duelos em que o jogador está na primeira posição,
+   a escolha por índice coincide nesse caso. Não é seguro inferir jogador/NPC
+   a partir do time ou inventar como resolver empate entre jogadores.
 
-Os achados 1 e 3 são falhas reproduzidas. O item 2 é uma limitação demonstrada
-do verificador, não uma prova de que os combates já executados tiveram 99
-reações. Os itens 4 e 5 são riscos de interpretação/manutenção, não autorização
-para reescrever os motores ou modificar as regras da mesa.
+Os achados 1, 3, 6, 7 e 8 foram reproduzidos. O item 2 é uma limitação
+demonstrada do verificador, não uma prova de que os combates já executados
+tiveram 99 reações. O item 9 decorre do contrato de desempate do código e da
+ausência de identificação jogador/NPC. Os itens 4 e 5 são riscos de
+interpretação/manutenção, não autorização para reescrever os motores ou
+modificar as regras da mesa.
 
 ## Sequência de fortalecimento
 
@@ -163,6 +173,15 @@ O estudo original do método está em
 passou a usar a mesma abordagem. Para uma única observação, o erro-padrão Monte
 Carlo agora é `null`, pois não pode ser estimado pela variância amostral.
 
+Uma enumeração exata de um caso extremo com duas amostras de 10, probabilidades
+verdadeiras 0,05 e 1, e intervalo nominal de 95% obteve cobertura de cerca de
+91,4% para o intervalo aproximado. Por isso, as novas saídas oferecem também um
+intervalo conservador baseado na [desigualdade de Hoeffding](https://doi.org/10.1080/01621459.1963.10500830)
+e na união de limites. Ele pode ser bem mais largo; sua garantia depende do
+modelo de observações independentes por célula e não prova que o simulador ou os
+cenários representem a campanha. O ajuste simultâneo se refere às comparações
+dentro de cada cenário, não a todos os cenários conjuntamente.
+
 Todos os 23 intervalos históricos de largura zero puderam ser recalculados em
 memória, sem modificar seus arquivos. Por exemplo, no `confirm_summary.json`,
 ataque básico e postura contra o atirador registraram cada um 0 vitórias em
@@ -172,5 +191,124 @@ comparações daquela família. Isso não transforma os combates antigos em dado
 da regra atual de Fast. Os testes usam casos numéricos independentes, reversão
 de ordem das amostras, extremos 0/10 e 10/10, entradas inválidas e amostra única.
 
-**Prontidão inicial:** não recomendar expansão de conclusões nem apresentar o
-grupo novo como pronto enquanto os achados e os gates acima estiverem abertos.
+## Compatibilidade, grupo e ensaio de mudança
+
+O comando `python -m scripts.result_compatibility --details` verifica antes de
+classificar: 6 resultados declaram `split_fast_v3`, 31 pertencem a snapshots
+anteriores ao Fast por braço e 36 são escalares no inventário histórico. Os seis
+que declaram a regra atual têm ao menos uma fonte listada diferente do projeto
+presente. Isso exige revisão ou reprodução com o commit de origem; não prova que
+o comportamento relevante mudou. O sistema não infere regras de um resultado
+desconhecido. Também verifica as 36 cópias escalares que o inventário declara.
+Uma correspondência de hashes não garante completude das dependências, regras
+corretas ou conclusões válidas; um cenário antigo que não use Fast pode não ser
+afetado por essa regra específica.
+
+Quatro casos manuais da migração de grupo conferiram dano e DR por alvo, efeitos
+do braço escolhido, dois Escudos, rejeição de alvo aliado e passagem do turno
+inconsciente. Uma bateria adicional de 1.000 sementes em contato fixo passou no
+auditor reforçado, e um subconjunto foi incluído na suíte para verificar replay.
+Esses controles não cobrem posicionamento, todas as prioridades de reações,
+todos os poderes ou uma auditoria independente completa do grupo.
+
+Para testar uma alteração **hipotética**, sem modificar a mesa, aumentamos em
+teste a cura por Focus numa definição do registro: 5 Focus curaram 15 em vez de
+10, enquanto dez combates sem essa ação mantiveram trilhas idênticas. Outra
+injeção hipotética aumentou apenas o bônus de dano de Fast: o auditor detectou a
+divergência e o ataque comum permaneceu idêntico. Alterar de verdade a metade de
+Fast envolveria pelo menos o cálculo de pools, seu auditor independente, o
+campo de divisão no evento, a versão de regras e seus metadados, além de testes
+e documentação; o cálculo é compartilhado com o motor histórico. Preservar os
+replays antigos exigiria introduzir uma variante versionada, não substituir a
+fórmula global. Os testes demonstram esses casos limitados, não isolamento
+automático para toda futura regra.
+
+## Quinta correção: procedência durante a execução
+
+Experimentos, replays e demonstrações abrangidos registram suas fontes antes da
+execução e recusam publicar o resultado se os hashes declarados mudarem até a
+verificação final. As fichas lidas pela linha de comando são analisadas a partir
+dos mesmos bytes cujo hash é salvo. Testes injetaram mudanças nas fontes e nas
+fichas e verificaram que não houve saída publicada; também conferiram cinco
+replays e dois lotes de demonstração. O auditor passou ainda a rejeitar alguns
+eventos de ação ou reação atribuídos a um personagem desconhecido ou
+inconsciente, e o experimento de corredor usa os limites das fichas na auditoria.
+
+Esse mecanismo compara apenas os arquivos declarados nos dois instantes: não
+detecta mudança revertida entre as leituras, código já carregado antes do
+primeiro hash ou dependências transitivas externas não declaradas. Para um novo
+resultado de referência, registre código e dados em commit, inicie um processo
+novo com árvore limpa, preserve também o ambiente e congele a saída conforme
+[RESULT_VERSIONING.md](RESULT_VERSIONING.md). Exclusividade do nome impede
+sobrescrever um resultado, mas uma interrupção de escrita pode deixar arquivo
+novo incompleto.
+
+## Verificação independente e interpretação dos experimentos
+
+- `python -B -m scripts.audit_split_fast` conferiu 108 combinações de resultados,
+  casos de cronologia e limites, e rejeitou cinco trilhas adulteradas. Há também
+  exemplos calculados à mão nas suítes de Fast e grupo.
+- `python -B -m scripts.audit_current_corridor` comparou 50 sementes em contato,
+  reviu geometria histórica e verificou 100 situações de mapa. Os motores
+  comparados compartilham parte da execução: não são implementações totalmente
+  independentes. `python -B -m scripts.audit_modular_lifecycle` verificou 2.352
+  casos de ponte de estado, prazos e cinco trilhas congeladas.
+- `python -B -m scripts.audit_current_results` conferiu hashes dos seis controles
+  atuais, reproduziu exatamente os quatro logs completos e conferiu as sementes,
+  contagens e métricas das duas baterias de 1.000 combates. Os registros originais
+  das baterias não guardam todos os logs, apenas sementes e agregados; portanto
+  não é possível comparar cada evento original. Essas reproduções são controles
+  de integração, não testes confirmatórios de qual estratégia é melhor.
+- `python -B -m scripts.verify_sources` verifica 37 registros congelados;
+  `python -B -m scripts.result_compatibility --details` identifica seis com a
+  regra atual declarada, 31 em snapshots anteriores e 36 cópias escalares
+  inventariadas. Também identifica conflitos entre declaração e snapshot, sem
+  tentar inferir versões de origem desconhecida.
+
+Nos experimentos históricos, cenários e políticas são definidos por célula;
+as sementes incluem fase, cenário, política e índice, e células diferentes não
+são tratadas como amostras pareadas. Isso ajuda a separar exploração,
+confirmação e reserva, mas sementes determinísticas e um gerador
+pseudorrandômico são uma aproximação operacional do modelo estatístico, não uma
+prova matemática de independência. A seleção de políticas após explorar
+resultados requer confirmação separada; a reserva H2 corrigida foi exposta e é
+exploratória, como registra [HOLDOUT_SPEC.md](HOLDOUT_SPEC.md). Nenhum desses
+resultados históricos mede a última versão de Fast.
+
+O objeto de observação fornecido às políticas comuns contém estado corrente,
+sem sementes ou próximos dados. Isso reduz vazamento acidental de informação
+futura, mas não é uma caixa de segurança: código de política arbitrário pode
+acessar outras fontes do processo, e perfis de adversário e ambiente continuam
+simplificados. Comparações só valem para os cenários, políticas e duração
+estudados; validade da execução, fidelidade às regras e força das conclusões são
+questões separadas.
+
+## Prontidão e próxima fase
+
+**Não recomendo retomar expansão ampla nem usar a migração de grupo para
+conclusões de eficácia.** Correções e manutenção pontuais do recorte existente
+podem continuar, mas ainda faltam condições para a próxima camada:
+
+1. Definir no contrato de grupo quem é personagem de jogador e como resolver
+   empates remanescentes; implementar e verificar ACT-02 sem atribuir papéis
+   pelo time. Completar testes independentes de reação, duração, alvos e
+   interações antes de usar o grupo como motor de estudo.
+2. Delimitar e confirmar as regras necessárias ao cenário que se pretenda
+   estudar: arredondamento de bônus ímpar em Fast, efeitos numéricos de membros,
+   o instante de renovação de reações e o alcance das imunidades. Não preencher
+   essas lacunas por suposição; cenários que não as acionem podem ser tratados
+   separadamente.
+3. Isolar futuras alterações de regras por versão, especialmente o cálculo de
+   dano compartilhado entre motores, e manter replays antigos vinculados à
+   fórmula de origem. Acrescentar manifesto completo para dependências de
+   políticas externas antes de empregá-las em resultados congelados.
+4. Projetar novas baterias de desenvolvimento, confirmação e reserva com a
+   regra atual, depois dos gates de regras e de motor; pré-definir cenários,
+   políticas, métricas e comparações. Os controles atuais não substituem essas
+   baterias e os intervalos históricos de largura zero não devem ser lidos como
+   certeza.
+
+Os principais caminhos de execução e auditoria estão no [README](README.md).
+Esta passagem registra as evidências para continuar o projeto sem refazer a
+investigação; não atribui validade a regras ou cenários que ainda não passaram
+pelos respectivos gates.

@@ -4,7 +4,7 @@
 
 Projeto de pesquisa reproduzível para Victor Halle (Rank 3) em *Marvel Multiverse Role-Playing Game*. Usa a ficha PDF fornecida nesta conversa, o Core Rulebook e as decisões de mesa registradas em [RULES_AUDIT.md](RULES_AUDIT.md). **Chicote não está disponível no Rank 3** e não entra no motor, nas políticas ou nos experimentos.
 
-**Experimentos anteriores:** o motor de duelos, Focus, grupo e corredor agora lança [vários d6 literais com face Marvel 1→6](DAMAGE_POOL_RULING.md). [Fast Strikes](FAST_STRIKES_RULING.md) usa duas edges e dois componentes de dano no mesmo alvo. As 42 saídas da fórmula antiga foram copiadas para [results/legacy_scalar_v1/](results/legacy_scalar_v1/); suas taxas são históricas para a mesa atual. As saídas com `pool_v2` no nome usam a primeira regra de pools, anterior ao último balanceamento de Fast. O [relatório v2](POOL_V2_REPORT.md) consolida a replicação, a reserva e as três extensões; a sensibilidade e os manuais completos ainda precisam ser atualizados.
+**Experimentos anteriores:** o motor de duelos, Focus, grupo e corredor passou a lançar [vários d6 literais com face Marvel 1→6](DAMAGE_POOL_RULING.md). Na versão `pool_v2`, Fast Strikes usava duas edges, um teste de acerto e dois componentes de dano no mesmo alvo; a [regra atual](FAST_STRIKES_RULING.md) mudou esse contrato. As 42 saídas da fórmula escalar antiga foram copiadas para [results/legacy_scalar_v1/](results/legacy_scalar_v1/); suas taxas são históricas para a mesa atual. O [relatório v2](POOL_V2_REPORT.md) também é histórico: consolida a replicação, a reserva e as três extensões anteriores ao balanceamento mais recente. A sensibilidade e os manuais completos ainda precisam ser refeitos para a regra atual.
 
 ## O que está implementado
 
@@ -39,10 +39,10 @@ Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidade
 - `blacklight/`: dado, dano, motor, políticas, auditor de logs, busca, experimentos e sensibilidade.
 - `tests/`: oráculos e 4.000 trilhas auditadas em dez políticas × quatro cenários × 100 sementes.
 - `results/`: JSONs estruturados; `legacy_scalar_v1/`, `pre_*` e `invalid_*` são históricos. Os experimentos `pool_v2` precedem o último balanceamento de Fast Strikes.
-- [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md): diagnóstico, correções e limites da auditoria estrutural em andamento.
+- [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md): diagnóstico, correções, evidências, limites e próximos gates da auditoria estrutural.
 - [DEMONSTRATIONS.md](DEMONSTRATIONS.md): quatro combates completos válidos com rolagens, ações e estados auditados; a trilha antiga do Escudo em Fast Strikes está arquivada.
-- [REPORT.md](REPORT.md): resultados confirmatórios, intervalos, refutação, sensibilidade, cenários reservados e gráficos.
-- [MANUAL_BLACKLIGHT.md](MANUAL_BLACKLIGHT.md) e [QUICK_REFERENCE.md](QUICK_REFERENCE.md): estratégia prática e consulta durante a mesa.
+- [REPORT.md](REPORT.md): relatório histórico da fórmula escalar, com resultados, intervalos, refutação, sensibilidade e cenários reservados.
+- [MANUAL_BLACKLIGHT.md](MANUAL_BLACKLIGHT.md) e [QUICK_REFERENCE.md](QUICK_REFERENCE.md): registros históricos de opções; suas contas e recomendações ainda não foram atualizadas para as regras atuais.
 - [PROJECT_STATUS.md](PROJECT_STATUS.md): o que a missão completa já tem de evidência e os gates ainda abertos.
 
 ## Executar no Windows
@@ -53,6 +53,10 @@ Abra PowerShell nesta pasta. Requer Python 3.11 ou mais recente; não há depend
 python -m unittest discover -s tests -q
 python -m scripts.verify_sources
 python -m scripts.result_compatibility
+python -m scripts.audit_split_fast
+python -m scripts.audit_current_corridor
+python -m scripts.audit_modular_lifecycle
+python -m scripts.audit_current_results
 python -m scripts.character_sheet duel --hero characters/victor_halle/rank3_2026-10-27_split_fast.json --opponent characters/examples/synthetic_rank4_split_fast.json --policy shield_blade_hammer_reactive --effect-limb 1 --seed 51 --output results/new_current_fast.json
 python -m blacklight.experiment --historical-rules --stage dev --n 1000 --output results/reproduction_pool_v2_dev.json
 python -m scripts.pool_v2_confirm --historical-rules --stage confirm_v2 --n 10000 --output results/reproduction_pool_v2_confirm.json
@@ -63,7 +67,7 @@ python -m scripts.corridor_experiment --historical-rules --stage description --o
 python -m scripts.replay --historical-rules --scenario mirror_hammer --strategy hammer --index 0 --output results\replay.json
 ```
 
-As sementes são derivadas de SHA-256 de fase, cenário, política e índice. Reexecutar uma fase com o mesmo código produz os mesmos resultados. Os resultados de confirmação usam sementes diferentes das de desenvolvimento. `source_sha256` em cada JSON permite detectar mudanças nas regras, ficha auditada, especificação e código do pacote.
+As sementes são derivadas de SHA-256 de fase, cenário, política e índice. A reprodução depende também dos mesmos dados, parâmetros, implementação e versão de Python e demais dependências relevantes; sem essa condição, código e sementes iguais não garantem resultados idênticos. Os resultados de confirmação usam sementes diferentes das de desenvolvimento. `source_sha256` permite conferir as fontes declaradas, mas não garante que dependências externas transitivas tenham sido registradas.
 
 As reproduções acima usam as mesmas sementes e não contam como amostras novas. Os destinos precisam ser novos; as saídas são criadas sem substituir arquivos existentes. Os estudos antigos de busca, sensibilidade, reserva, métricas secundárias e adversários exigem `--historical-rules --output CAMINHO_NOVO`. Para regenerar o relatório v2, escolha um novo destino com `python -m scripts.pool_v2_report --output CAMINHO_NOVO`. A auditoria de versões usa Git, além do Python. Antes de congelar uma execução nova, as fontes precisam estar em um commit, conforme [RESULT_VERSIONING.md](RESULT_VERSIONING.md).
 

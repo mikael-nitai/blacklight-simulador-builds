@@ -2,7 +2,7 @@
 
 **Versão de 27/10/2026.** Este é um estudo **restrito de duelos**, não uma simulação integral do *Marvel Multiverse Role-Playing Game*. Os resultados dizem respeito à ficha Rank 3 atual, às decisões da mesa registradas e aos adversários e políticas explicitamente definidos abaixo. O [manual prático](MANUAL_BLACKLIGHT.md) e o [guia rápido](QUICK_REFERENCE.md) traduzem as conclusões para a sessão.
 
-**Bateria histórica:** a mesa [rola vários d6 literais para todo dano](DAMAGE_POOL_RULING.md); esta bateria multiplicava o dado Marvel por um fator. Todas as porcentagens, intervalos e rankings abaixo preservam a versão anterior. O [relatório atual v2](POOL_V2_REPORT.md) usa as decisões mais recentes, duas edges, dois componentes de Fast Strikes e novas sementes de replicação/reserva.
+**Bateria histórica:** a mesa [rola vários d6 literais para todo dano](DAMAGE_POOL_RULING.md); esta bateria multiplicava o dado Marvel por um fator. Todas as porcentagens, intervalos e rankings abaixo preservam a versão anterior. O [relatório v2](POOL_V2_REPORT.md) é posterior a esta bateria, mas também histórico: antecede o [balanceamento atual de Fast Strikes](FAST_STRIKES_RULING.md). As conclusões de ambos não demonstram a eficácia das estratégias com a regra atual. Os comandos antigos ao fim deste relatório são registro histórico; use os comandos atualizados no [README](README.md).
 
 Expansões posteriores de três participantes, Mental Punch e corredor limitado estão nos relatórios exploratórios de [grupo](GROUP_REPORT.md), [Focus](FOCUS_REPORT.md) e [terreno](CORRIDOR_REPORT.md). Elas não alteram as estimativas confirmatórias deste documento.
 

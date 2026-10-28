@@ -4,6 +4,8 @@
 define três cenários sintéticos, cinco políticas e a seleção das finalistas antes
 de observar os novos resultados. A execução e a confirmação devem ser registradas
 separadamente; as taxas antigas não substituem esses dados.
+O [desenvolvimento com 15.000 inícios](CURRENT_DUEL_DEV_REPORT.md) foi auditado,
+congelado e selecionou duas candidatas; confirmação e reserva ainda faltam.
 
 **Grade experimental de grupo:** [posições individuais, caminhos e alcance
 por alvo](GROUP_GRID_EXPERIMENT.md) já podem ser executados por fichas dentro

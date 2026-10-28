@@ -7,7 +7,7 @@ sincronizada com `origin/master`. O diagnóstico anterior está em
 [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md); o objetivo aqui é resolver os
 bloqueadores técnicos do escopo abaixo, com uma revisão adversarial final.
 
-O escopo candidato à certificação é o que já era apresentado como funcional:
+O escopo certificado é o que já era apresentado como funcional:
 
 1. Dados d616, edge/trouble e pools literais de dano das versões de mesa já
    implementadas, incluindo a fronteira `0d6` e a rejeição de bônus ímpar sem
@@ -34,13 +34,13 @@ mestre permanecem bloqueadas ou qualificadas nos pontos em que afetam o escopo.
 
 ## Matriz de critérios
 
-| Critério | Situação nesta linha de base | Evidência e trabalho necessário |
+| Critério | Estado | Evidências e limites |
 |---|---|---|
-| 1. Sem defeitos críticos/altos conhecidos no escopo | **Em andamento.** O auditor aceitava bônus e defesa adulterados, desde que a aritmética interna fosse coerente. | Corrigir e falsificar as trilhas; rever dependências reais antes da revisão final. |
-| 2. Contratos, testes e verificações independentes proporcionais | **Em andamento.** Há exemplos calculados e auditores, mas alguns ainda confiam em campos fornecidos pelo próprio motor. | Confrontar a trilha com as fichas e os estados; manter testes de limites e integrações. |
-| 3. Mudanças hipotéticas em três famílias e compatibilidade histórica | **Em andamento.** Cura e dano Fast tiveram ensaios iniciais; isolamento e terceira família precisam de evidência adequada. | Exercícios reversíveis com alterações locais, controles não afetados e identificação dos resultados históricos pertinentes. |
-| 4. Execução, auditoria, versionamento e reprodução documentados e verificados | **Em andamento.** Os comandos e índices existem; permanecem limites de dependências e versão compartilhada. | Verificar fluxos reais em ambientes disponíveis, procedência e tratamento de divergência sem sobrescrita. |
-| 5. Experimentais, ambiguidades e limitações controlados | **Em andamento.** Grupo atual está identificado, mas os gates e a rotulagem precisam ser conferidos. | Impedir que saídas experimentais sejam confundidas com conclusões validadas; explicitar bloqueios e alternativas. |
+| 1. Sem defeitos críticos/altos conhecidos no escopo | **Atendido na revisão realizada.** As falsificações relevantes encontradas foram corrigidas; a revisão final e os testes afetados passaram. | `tests/test_profile_audit.py`, `tests/test_result_integrity.py`, `tests/test_ruleset_audit.py`, `tests/test_result_snapshots.py`. Não é garantia de ausência de falhas desconhecidas. |
+| 2. Contratos, testes e verificações independentes proporcionais | **Atendido para as fronteiras declaradas.** Fichas, dados, turnos, distâncias, resultados e regras são confrontados com verificadores separados e exemplos calculados. | `blacklight/profile_audit.py`, `dice_audit.py`, `turn_audit.py`, `spatial_audit.py`, `result_audit.py`; `scripts/audit_split_fast.py`, `audit_current_corridor.py`, `audit_modular_*.py`. Os verificadores não demonstram todas as regras nem a origem aleatória das faces. |
+| 3. Mudanças hipotéticas em três famílias e compatibilidade histórica | **Atendido nos ensaios limitados.** Cura, dano de Fast e reações mudaram em variantes reversíveis; controles não afetados foram preservados e as versões foram distinguidas. | `tests/test_rule_change_resilience.py`, `tests/test_mechanics_contract.py`, `blacklight/mechanics_contract.py`. Identidade antiga ausente é classificada como não verificada; igualdade de identidade não prova equivalência geral. |
+| 4. Execução, auditoria, versionamento e reprodução | **Atendido nos ambientes e casos verificados.** Os 37 registros históricos foram verificados; quatro logs e duas baterias de 1.000 sementes foram reproduzidos. Uma cópia limpa executou, congelou e verificou novos resultados. | `README.md`, `CHARACTER_PIPELINE.md`, `RESULT_VERSIONING.md`, `scripts/audit_current_results.py`, `verify_sources.py`, `freeze_results.py` e `result_compatibility.py`. Lotes históricos preservam agregados e sementes, não todas as trilhas. |
+| 5. Experimentais, ambiguidades e limitações controlados | **Atendido para o recorte congelado.** Grupo/Focus são separados e rotulados; versões desconhecidas, políticas externas sem procedência e bônus ímpar sem decisão têm gates. | `tests/test_experimental_scope.py`, `tests/test_policy_provenance.py`, `tests/test_character_sheets.py`, `RULES_AUDIT.md`, `FAST_STRIKES_RULING.md`. Os protótipos e regras pendentes continuam fora da certificação. |
 
 ## Triagem inicial
 
@@ -58,9 +58,8 @@ mestre permanecem bloqueadas ou qualificadas nos pontos em que afetam o escopo.
 
 Os demais itens históricos de preservação, caminhos entre sistemas, nomes de
 saída e fórmula declarada de sementes foram corrigidos na primeira operação e
-serão rechecados quando afetados. A decisão final e as verificações executadas
-substituirão a situação provisória desta matriz; contagem de testes, por si só,
-não representa certificação.
+rechecados quando afetados. Contagem de testes, por si só, não representa
+certificação.
 
 ## Primeira consolidação: confrontar a trilha com as fichas
 
@@ -161,3 +160,61 @@ consistentes, contagens e taxas válidas. As trilhas completas dos lotes não s�
 salvas; apenas os registros de auditoria, sementes e agregados ficam no JSON.
 Os resultados históricos continuam ligados aos commits originais, sem receber
 uma certificação retroativa por meio de campos novos.
+
+## Revisão final, reprodução e encerramento
+
+A revisão adversarial posterior à consolidação tentou alterar vencedor,
+recursos, métricas, distância, turno, versão, procedência, cobertura de lote e
+identidade de contrato. Encontrou ainda duas falhas de congelamento: um duelo
+que registrava falha de auditoria era aceito e um intervalo Wilson adulterado
+não era rejeitado. Ambos foram classificados como **altos** para a integridade
+do resultado, corrigidos e retestados; o gate agora exige o registro de auditoria
+sem falhas e recalcula os intervalos Wilson a partir das contagens. Não se
+encontrou outro bloqueador na revisão final realizada.
+
+Verificações executadas no código consolidado:
+
+- Suíte completa: 304 testes passaram no Windows (Python 3.13.14) e no Ubuntu
+  via WSL (Python 3.14.4). Após a correção final restrita ao congelamento e à
+  validação de metadados, os 58 testes afetados passaram novamente em ambos.
+- `tests/test_foundation_cross_contracts.py` auditou 520 combates, cruzando duas
+  versões, quatro cenários, 13 políticas e cinco sementes por célula.
+- `python -m scripts.audit_current_results` reproduziu quatro logs completos e
+  dois lotes de 1.000 sementes. `python -m scripts.verify_sources` verificou 37
+  resultados existentes sem divergências. Essas reproduções não são novas
+  amostras nem substituem os logs individuais que não foram arquivados.
+- Os comandos `python -m scripts.audit_split_fast`, `python -m scripts.audit_current_corridor`,
+  `python -m scripts.audit_modular_healing`, `python -m scripts.audit_modular_states`,
+  `python -m scripts.audit_modular_lifecycle` e `python -m scripts.audit_shared_conditions` passaram.
+  Entre os controles estão 108 combinações Fast, cinco trilhas adulteradas,
+  55.760 transições de cura e 2.352 estados de duração; cada comando registra
+  os limites próprios no resultado.
+- Uma cópia limpa do commit de código `8521392` executou um duelo com semente 51
+  e um lote de dez combates com semente mestra 731. Na cópia, o congelamento
+  recusou uma auditoria declarada como falha, um intervalo Wilson alterado e um
+  lote amostrado; após restaurar as saídas válidas, congelou e verificou 39
+  resultados. Dois resultados novos com o mesmo contrato foram identificados
+  como compatíveis **nos dados registrados**; a comparação com um registro antigo
+  sem identidade ficou **não verificada**. A cópia temporária foi removida e os
+  37 resultados do repositório original não foram substituídos.
+
+O congelamento vincula bytes e fontes ao Git; não é uma barreira contra código
+arbitrário ou falsificação coordenada dos registros. Auditorias comparam dados
+registrados, não certificam o ambiente em memória, dependências externas ou a
+correção completa do RPG. Para reproduzir, consulte os comandos em
+[README.md](README.md) e [RESULT_VERSIONING.md](RESULT_VERSIONING.md), preserve
+as fontes e a versão de Python relevantes e escolha sempre um destino novo.
+
+## Backlog e decisões fora desta operação
+
+| Item | Classificação e consequência | Tratamento futuro |
+|---|---|---|
+| Grupo atual, iniciativa em grupo, reações simultâneas e posições | Experimental; não sustenta conclusões certificadas. | Desenvolver e auditar antes de usar como versão estável. |
+| Focus, outros poderes, múltiplos alvos, mapas gerais e adversários completos | Expansão, fora do escopo. | Planejar e testar como novas capacidades. |
+| Metade de bônus ímpar em Fast | Depende do mestre; o caso é bloqueado. | Registrar decisão da mesa antes de habilitá-lo. |
+| Renovação exata de reações, penalidade numérica de membros e outras ambiguidades registradas | Decisão da mesa ou efeito não modelado; não ampliar a alegação atual. | Revisar as alternativas em `RULES_AUDIT.md` e documentar decisão quando pertinente. |
+| Manuais e novas baterias de eficácia para o Fast atual | Melhoria/estudo futuro; taxas antigas não medem a regra atual. | Pré-registrar e executar estudos separados quando desejado. |
+| Identidade mecânica ausente em resultados antigos | Limite da evidência histórica; a ferramenta não presume equivalência. | Comparar fontes e reproduzir snapshots quando uma conclusão depender disso. |
+
+Os cinco critérios foram satisfeitos dentro do escopo acima. A Operação Fundação
+está encerrada; os itens dessa tabela não ampliam automaticamente a missão.

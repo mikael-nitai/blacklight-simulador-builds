@@ -9,9 +9,15 @@ O escopo congelado e os critérios da continuação estão em
 [CERTIFICACAO_FUNDACAO.md](CERTIFICACAO_FUNDACAO.md); os protótipos de grupo e
 Focus não são apresentados como componentes certificados.
 
+**Encerramento da Operação Fundação:** os cinco critérios foram atendidos no
+recorte de duas fichas e nas fronteiras documentadas da certificação. A missão
+mais ampla de fichas, poderes e grupo permanece futura; consulte a matriz e o
+backlog em [CERTIFICACAO_FUNDACAO.md](CERTIFICACAO_FUNDACAO.md) antes de tratar
+os textos históricos abaixo como estado atual.
+
 O [controle executado do corredor atual](CURRENT_CORRIDOR_RESULTS.md) acrescentou dois exemplos completos e 1.000 duelos com todas as trilhas auditadas para combate e posições. Esses artefatos de integração não selecionam uma estratégia como melhor.
 
-**Regra atual implementada no duelo de fichas:** [Fast Strikes por braço](SPLIT_FAST_SPEC.md), dois testes antes dos efeitos, seletor exclusivo de efeitos, Escudo antes do dano e danos/efeitos antes de Riposte. A suíte atual passou em **228 testes** e os oráculos independentes de cronologia, 108 combinações e cinco falsificações de logs passaram. A revisão de Victor conserva seus valores Rank 3 e o PDF; não é progressão inventada. O [corredor atual](CURRENT_CORRIDOR.md) já usa a mesma resolução de Fast e o runner de fichas, com geometria e política que observa a parede. Grupo, novos experimentos de eficácia, sensibilidade e manuais ainda precisam da revisão atual. Os resultados abaixo são históricos quanto ao último balanceamento.
+**Regra atual implementada no duelo de fichas:** [Fast Strikes por braço](SPLIT_FAST_SPEC.md), dois testes antes dos efeitos, seletor exclusivo de efeitos, Escudo antes do dano e danos/efeitos antes de Riposte. A suíte daquela etapa passou em **228 testes** e os oráculos independentes de cronologia, 108 combinações e cinco falsificações de logs passaram; a matriz de certificação registra as verificações posteriores. A revisão de Victor conserva seus valores Rank 3 e o PDF; não é progressão inventada. O [corredor atual](CURRENT_CORRIDOR.md) já usa a mesma resolução de Fast e o runner de fichas, com geometria e política que observa a parede. Grupo, novos experimentos de eficácia, sensibilidade e manuais ainda precisam da revisão atual. Os resultados abaixo são históricos quanto ao último balanceamento.
 
 **Histórico do contrato de Fast anterior:** o motor de duelos, Focus, grupo e corredor já usa vários dados Marvel de dano, com Fast Strikes de dois componentes e duas edges. Aquele snapshot tinha **176 testes**. Desenvolvimento v2: 52.000 duelos; replicação: 240.000; reserva: 120.000; descrições v2: 60.000 encontros de grupo, 60.000 duelos de Focus e 60.000 perseguições em corredor. [POOL_V2_CONFIRM_SPEC.md](POOL_V2_CONFIRM_SPEC.md) registra a seleção anterior à replicação/reserva. A camada de fichas também executou 1.000 duelos de integração com outro personagem Rank 4 sintético. As famílias modulares de cura, estado e [duração de Dodge/Stunned](MODULAR_LIFECYCLE.md) passaram por revisão independente e equivalência de replay. Os resultados estão ligados a [commits imutáveis](RESULT_VERSIONING.md), com nomes novos para novas execuções. As 42 saídas anteriores foram preservadas em `results/legacy_scalar_v1/` e suas taxas não valem para a mesa atual.
 

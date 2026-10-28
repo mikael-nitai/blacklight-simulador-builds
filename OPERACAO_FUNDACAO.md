@@ -83,6 +83,12 @@ decide detalhes ainda não esclarecidos, como regras numéricas de membros.
    `holdout.py`, `secondary_metrics.py` e `adversarial_scenarios.py` chamavam
    `seed_for`, que usa o prefixo `blacklight-pool-v2`, mas declaravam
    `blacklight-v1` em novas saídas. Os JSONs históricos não foram alterados.
+8. **Alto — intervalo de diferenças pode perder toda a incerteza.**
+   A comparação Wald em `blacklight.experiment.comparisons` devolveu `[0, 0]`
+   para duas amostras independentes de 10 vitórias em 10 combates. Mesmo com
+   resultados iguais, essas amostras não provam igualdade exata das taxas.
+   A correção deve afetar novas análises; os resultados congelados permanecem
+   históricos e devem ser interpretados conforme o método que os produziu.
 
 Os achados 1 e 3 são falhas reproduzidas. O item 2 é uma limitação demonstrada
 do verificador, não uma prova de que os combates já executados tiveram 99
@@ -127,6 +133,21 @@ outra pasta. Testes com repositórios Git temporários conferiram também rejei�
 de um caminho externo não reconhecido. Os arquivos de resultados históricos não
 foram alterados. Isso verifica portabilidade dos caminhos, não garante que todas
 as dependências transitivas de uma política externa estejam registradas.
+
+## Terceira correção: movimento e reação
+
+O duelo recusa distâncias iniciais, limites de rodadas e movimentos fracionários
+ou booleanos. Movimentos inválidos são recusados antes de consumir ações ou
+alterar a distância. O auditor passou a conferir quantidades de movimento e,
+quando recebe as fichas, velocidades e quantidade de reações permitidas. O
+runner de fichas e os replays físicos fornecem essas capacidades ao auditor.
+Uma trilha deliberadamente adulterada para dar 99 reações agora falha; quatro
+trilhas antigas de duelo e corredor foram reavaliadas sem divergências.
+
+O auditor ainda não reconstrói todas as capacidades, defesas e efeitos a partir
+das fichas; `audit=OK` não certifica a legalidade completa do combate. Se for
+chamado diretamente sem os limites opcionais, ele não conhece a velocidade ou
+as reações autorizadas. O grupo novo ainda não possui esse runner de produção.
 
 **Prontidão inicial:** não recomendar expansão de conclusões nem apresentar o
 grupo novo como pronto enquanto os achados e os gates acima estiverem abertos.

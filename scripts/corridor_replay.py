@@ -5,7 +5,7 @@ from dataclasses import asdict
 import json
 from pathlib import Path
 
-from blacklight.audit import audit_log
+from blacklight.audit import audit_profiled_log
 from blacklight.engine import blacklight_profile
 from blacklight.policies import KITER
 from blacklight.results_io import require_new_output, write_new_text
@@ -25,10 +25,7 @@ def replay(stage: str, length: int, opponent_id: str, policy_name: str,
     duel = CorridorDuel(profiles, (policy, KITER), seed=seed,
                         length=length, initial_positions=(0, 8), audit=True)
     result = duel.run()
-    issues = audit_log(
-        result.log,
-        {p.name: p.max_health for p in profiles},
-        {p.name: p.max_focus for p in profiles})
+    issues = audit_profiled_log(result.log, profiles)
     issues += audit_corridor(
         result.log, tuple(p.name for p in profiles),
         initial_positions=(0, 8), length=length,

@@ -159,6 +159,18 @@ class TestCharacterSheets(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, 'sources changed'):
                 run_duel(load_sheet(RANK4), load_sheet(VICTOR), ATTACK, ATTACK, seed=402)
 
+    def test_runner_rejects_a_falsified_reaction_capacity(self):
+        def faulty_reset(duel):
+            for fighter in duel.fighters:
+                fighter.reactions = 99
+                fighter.reacted_to.clear()
+                duel._record('reaction_reset', ('ACT-03', 'ACT-04'),
+                             actor=fighter.profile.name, reactions=99)
+
+        with patch.object(Duel, '_reset_reactions_for_round', faulty_reset):
+            with self.assertRaisesRegex(RuntimeError, 'reaction budget'):
+                run_duel(load_sheet(RANK4), load_sheet(VICTOR), ATTACK, ATTACK, seed=402)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 from blacklight import __version__
-from blacklight.audit import audit_log
+from blacklight.audit import audit_profiled_log
 from blacklight.experiment import ROOT, Moment, source_hashes, wilson
 from .actions import DEFAULT_ACTIONS
 from .battlefields import CorridorMap
@@ -91,8 +91,7 @@ def _coverage_for(sheet: CharacterSheet, battlefield: CorridorMap | None) -> dic
 
 
 def _audit_battle(result, profiles, battle, battlefield) -> list[str]:
-    issues = audit_log(result.log, {p.name: p.max_health for p in profiles},
-                        {p.name: p.max_focus for p in profiles})
+    issues = audit_profiled_log(result.log, profiles)
     if battlefield:
         from experimental.corridor_audit import audit_corridor
         issues.extend(audit_corridor(

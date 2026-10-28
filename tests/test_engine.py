@@ -108,6 +108,28 @@ class TestDuel(unittest.TestCase):
         with self.assertRaises(IllegalAction):
             d._act(0, Action("wait"))
 
+    def test_invalid_grid_movements_are_rejected_before_spending_an_action(self):
+        for steps in (0.5, True, -1, 6):
+            for standard in (False, True):
+                with self.subTest(steps=steps, standard=standard):
+                    duel = Duel(self.profiles(), (ATTACK, ATTACK), seed=1,
+                                initial_distance=3, audit=True)
+                    duel.active_actor = 0
+                    fighter = duel.fighters[0]
+                    fighter.standard_available = fighter.movement_available = True
+                    with self.assertRaises(IllegalAction):
+                        duel._move(0, Move('retreat', steps), as_standard=standard)
+                    self.assertEqual(duel.distance, 3)
+                    self.assertTrue(fighter.standard_available)
+                    self.assertTrue(fighter.movement_available)
+                    self.assertEqual(duel.log, [])
+
+    def test_distance_and_round_horizon_require_positive_integers(self):
+        for options in ({'initial_distance': 1.5}, {'initial_distance': True},
+                        {'max_rounds': 2.5}, {'max_rounds': True}):
+            with self.subTest(options=options), self.assertRaises(ValueError):
+                Duel(self.profiles(), (ATTACK, ATTACK), seed=1, **options)
+
     def test_out_of_range_attack_is_rejected(self):
         d = Duel(self.profiles(), (ATTACK, ATTACK), seed=1,
                  initial_distance=4)

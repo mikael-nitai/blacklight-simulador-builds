@@ -300,8 +300,9 @@ class Duel:
         fast_zero_dice_bonus: bool = False,
         audit: bool = False,
     ) -> None:
-        if initial_distance < 1 or max_rounds < 1:
-            raise ValueError("Distance and horizon must be positive")
+        if (type(initial_distance) is not int or type(max_rounds) is not int
+                or initial_distance < 1 or max_rounds < 1):
+            raise ValueError("Distance and horizon must be positive integers")
         self.fighters = [Fighter(p) for p in profiles]
         self.policies = policies
         self.rng = Random(seed)
@@ -362,6 +363,10 @@ class Duel:
                            self.round, self.bonus_round)
 
     def _move(self, actor: int, move: Move, *, as_standard: bool = False) -> None:
+        if (type(actor) is not int or not 0 <= actor < len(self.fighters)
+                or not isinstance(move, Move) or type(move.steps) is not int
+                or type(as_standard) is not bool):
+            raise IllegalAction("Movement requires a valid actor and integer grid steps")
         f = self.fighters[actor]
         if self.active_actor != actor or not f.conscious or f.stunned_by is not None:
             raise IllegalAction("Movement outside actor's turn")

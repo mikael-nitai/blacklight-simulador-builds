@@ -6,7 +6,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from blacklight.audit import audit_log
+from blacklight.audit import audit_profiled_log
 from blacklight.engine import Duel, blacklight_profile
 from blacklight.experiment import scenarios, seed_for, source_hashes, strategies
 from blacklight.results_io import require_new_output, write_new_text
@@ -29,11 +29,7 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
                   (strategy.policy, scenario.policy),
                   seed=seed, initial_distance=scenario.distance,
                   max_rounds=30, audit=True).run()
-    issues = audit_log(
-        result.log,
-        {p.name: p.max_health for p in (victor, scenario.opponent)},
-        {p.name: p.max_focus for p in (victor, scenario.opponent)},
-    )
+    issues = audit_profiled_log(result.log, (victor, scenario.opponent))
     if issues:
         raise RuntimeError(f"Full trace failed independent audit: {issues}")
     sources = source_hashes()

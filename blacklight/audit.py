@@ -91,12 +91,25 @@ def _audit_pool_attack(event: dict, seq: int) -> tuple[int, list[str]]:
 
 def audit_log(log: tuple[dict, ...] | list[dict],
               initial_health: dict[str, int],
-              initial_focus: dict[str, int]) -> list[str]:
+              initial_focus: dict[str, int], *,
+              reaction_limits: dict[str, int] | None = None,
+              movement_limits: dict[str, int] | None = None) -> list[str]:
+    """Audit ledgers; supplied limits also check capabilities against profiles.
+
+    Without the optional limits, a self-consistent ledger cannot establish how
+    many reactions or movement spaces a combatant was actually entitled to.
+    """
+    for limits in (reaction_limits, movement_limits):
+        if limits is not None and (not isinstance(limits, dict)
+                                   or any(not isinstance(name, str) or type(value) is not int or value < 0
+                                          for name, value in limits.items())):
+            raise ValueError('Audit limits require names and nonnegative integer capacities')
     issues: list[str] = []
     health = dict(initial_health)
     focus = dict(initial_focus)
     standard_actions: dict[tuple[str, int, bool], int] = {}
     bonus_actions: dict[tuple[str, int, bool], int] = {}
+    movement_actions: dict[tuple[str, int, bool], int] = {}
     reaction_remaining: dict[str, int] = {}
     reaction_reset_seen: set[tuple[str, int, bool]] = set()
     reacted_triggers: set[tuple[str, int]] = set()
@@ -113,22 +126,36 @@ def audit_log(log: tuple[dict, ...] | list[dict],
             if turn_key in reaction_reset_seen:
                 issues.append(f"event {seq}: duplicate reaction reset within round")
             reaction_reset_seen.add(turn_key)
-            reaction_remaining[actor] = event["reactions"]
+            if (type(event.get('reactions')) is not int or event['reactions'] < 0
+                    or reaction_limits is not None and
+                    event['reactions'] != reaction_limits.get(actor)):
+                issues.append(f"event {seq}: reaction budget exceeds or differs from the profile")
+            if type(event.get('reactions')) is int and event['reactions'] >= 0:
+                reaction_remaining[actor] = event['reactions']
+            else:
+                reaction_remaining.pop(actor, None)
         if kind == "turn_start":
             if turn_key not in reaction_reset_seen:
                 issues.append(f"event {seq}: missing reaction reset for round")
+            value = event.get('reactions')
             previous = reaction_remaining.get(actor)
-            if previous is not None and previous != event["reactions"]:
-                issues.append(f"event {seq}: reaction budget changed within round")
-            reaction_remaining[actor] = event["reactions"]
+            if type(value) is not int or value < 0:
+                issues.append(f"event {seq}: invalid reaction budget at turn start")
+                reaction_remaining.pop(actor, None)
+            else:
+                if previous is not None and previous != value:
+                    issues.append(f"event {seq}: reaction budget changed within round")
+                reaction_remaining[actor] = value
         if kind == "reaction_spent":
-            remaining = event["remaining"]
-            if remaining < 0:
-                issues.append(f"event {seq}: negative reaction budget")
-            previous = reaction_remaining.get(actor)
-            if previous is not None and previous - 1 != remaining:
-                issues.append(f"event {seq}: reaction ledger mismatch")
-            reaction_remaining[actor] = remaining
+            remaining = event.get('remaining')
+            if type(remaining) is not int or remaining < 0:
+                issues.append(f"event {seq}: invalid reaction budget")
+                reaction_remaining.pop(actor, None)
+            else:
+                previous = reaction_remaining.get(actor)
+                if previous is not None and previous - 1 != remaining:
+                    issues.append(f"event {seq}: reaction ledger mismatch")
+                reaction_remaining[actor] = remaining
             trigger = event.get("trigger")
             if trigger is not None:
                 key = (actor, trigger)
@@ -175,8 +202,21 @@ def audit_log(log: tuple[dict, ...] | list[dict],
             health[event["target"]] = after
             if not event["reaction"] and 'fast_use_id' not in event:
                 standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
-        elif kind == "movement" and event["as_standard"]:
-            standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
+        elif kind == "movement":
+            steps, direction, as_standard = (event.get('steps'), event.get('direction'),
+                                             event.get('as_standard'))
+            if (type(steps) is not int or steps < 0
+                    or direction not in ('stay', 'approach', 'retreat')
+                    or direction == 'stay' and steps != 0
+                    or type(as_standard) is not bool
+                    or movement_limits is not None and
+                    (actor not in movement_limits or type(steps) is int
+                     and steps > movement_limits[actor])):
+                issues.append(f"event {seq}: invalid movement request or speed")
+            if as_standard is True:
+                standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
+            elif as_standard is False:
+                movement_actions[turn_key] = movement_actions.get(turn_key, 0) + 1
         elif kind in ("stance", "dodge", "focus_spent", "wait",
                       "condition_treatment"):
             standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
@@ -222,5 +262,23 @@ def audit_log(log: tuple[dict, ...] | list[dict],
     for key, count in bonus_actions.items():
         if count > 1:
             issues.append(f"{key}: more than one blade bonus")
+    for key, count in movement_actions.items():
+        if count > 1:
+            issues.append(f"{key}: more than one movement action")
     issues.extend(audit_split_fast(log))
     return issues
+
+
+def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles) -> list[str]:
+    """Audit a physical-duel trace against each declared combatant's limits."""
+    profiles = tuple(profiles)
+    names = [profile.name for profile in profiles]
+    if len(set(names)) != len(names):
+        raise ValueError('Audit requires distinct combatant names')
+    return audit_log(
+        log,
+        {p.name: p.max_health for p in profiles},
+        {p.name: p.max_focus for p in profiles},
+        reaction_limits={p.name: 2 if 'combat_reflexes' in p.traits else 1 for p in profiles},
+        movement_limits={p.name: p.run_speed for p in profiles},
+    )

@@ -6,7 +6,7 @@ from math import sqrt
 from pathlib import Path
 import sys
 
-from blacklight.audit import audit_log
+from blacklight.audit import audit_profiled_log
 from blacklight.engine import Duel, blacklight_profile
 from blacklight.experiment import ROOT, scenarios, seed_for, source_hashes, strategies, wilson
 from blacklight.results_io import historical_output, write_new_text
@@ -49,11 +49,7 @@ def main() -> None:
                               (strategy.policy, scenario.policy), seed=seed,
                               initial_distance=scenario.distance, max_rounds=30,
                               audit=True).run()
-                issues = audit_log(result.log,
-                                   {profile.name: profile.max_health,
-                                    scenario.opponent.name: scenario.opponent.max_health},
-                                   {profile.name: profile.max_focus,
-                                    scenario.opponent.name: scenario.opponent.max_focus})
+                issues = audit_profiled_log(result.log, (profile, scenario.opponent))
                 if issues:
                     raise RuntimeError(f"{scenario.id}/{strategy.id}/{index}: {issues[:3]}")
                 blacklight_won = result.winner == profile.name

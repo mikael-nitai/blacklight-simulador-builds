@@ -3,6 +3,8 @@
 Attack rolls, damage, standard modules and reaction resolution are inherited;
 this host supplies teams, target declarations and scheduled inactive turns.
 It does not claim to implement positioning, resurrection or Karma recovery.
+This migration is experimental: the current tests cover selected fixed-contact
+cases, not a complete group-combat or independent rules certification.
 """
 
 from dataclasses import dataclass, replace

@@ -1,5 +1,11 @@
 # Regra de mesa atual: Fast Strikes por braço
 
+**Esclarecimento posterior:** na conversa de desenvolvimento, o usuário confirmou
+que cada braço pode atacar um alvo diferente, mantendo os dois testes e os
+efeitos apenas do braço escolhido antes do uso. A implementação de grupo está
+em migração e não deve ser tratada como validada apenas por essa confirmação;
+veja [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md).
+
 Consolidado em 27/10/2026 com o **balanceamento mais recente do mestre**, transmitido e esclarecido pelo usuário nesta conversa. Esta decisão revoga o contrato anterior de um único teste de acerto e aplicação dos efeitos de ambas as armas. A regra oficial do Core p.99 permanece identificada em POW-05; a exceção atual está em HR-09 de [RULES_AUDIT.md](RULES_AUDIT.md). A conta dos dados segue [DAMAGE_POOL_RULING.md](DAMAGE_POOL_RULING.md).
 
 1. **Escolha antes do uso:** escolher de qual braço/arma serão aplicados os efeitos. Só o braço escolhido aplica seus efeitos; todos os efeitos da outra arma ficam desativados. Escolher Marreta desativa Bleeding, inutilização/arrancamento de membro e ação extra da Lâmina no outro braço.
@@ -12,7 +18,7 @@ Consolidado em 27/10/2026 com o **balanceamento mais recente do mestre**, transm
 
 8. **Ordem final confirmada:** resolver os dois testes juntos a partir do estado anterior aos efeitos e reações. Depois de conhecidos os acertos, resolver a defesa do Escudo antes do dano. Aplicar os danos e os efeitos permitidos dos dois braços **antes de Riposte**. Stunned da Marreta escolhida pode impedir um Riposte pelo erro do outro braço, mas não altera o segundo teste já realizado.
 
-A metade de um bônus de atributo ímpar permanece sem decisão e é bloqueada. A distribuição de braços, armas e efeitos contra dois alvos distintos também exige regra própria. O protótipo de grupo tem seu recorte separado em [GROUP_POOL_V2_ADDENDUM.md](GROUP_POOL_V2_ADDENDUM.md).
+A metade de um bônus de atributo ímpar permanece sem decisão e é bloqueada. A escolha de um alvo por braço foi confirmada posteriormente pelo usuário; o protótipo histórico de grupo tem seu recorte anterior separado em [GROUP_POOL_V2_ADDENDUM.md](GROUP_POOL_V2_ADDENDUM.md).
 
 A Lâmina escolhida aplica Bleeding ao acertar e seus efeitos fantásticos quando o teste desse braço for fantástico. Bleeding básico causa 5 Health no fim de cada turno da vítima, sujeito à DR aplicável a condições, sem acúmulo e até remoção; não é uma terceira parcela instantânea nem apenas uma vez por rodada. Se a Marreta foi escolhida, o resultado fantástico do braço dela pode aplicar Stunned; a Lâmina do outro braço não aplica seus efeitos, mesmo acertando ou obtendo fantástico. Escudo é defensivo e não participa de Fast Strikes. Chicote é indisponível no Rank 3 atual.
 

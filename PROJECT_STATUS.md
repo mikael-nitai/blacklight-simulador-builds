@@ -1,5 +1,11 @@
 # Estado do projeto completo — 27/10/2026
 
+**Atualização de 28/10:** o usuário confirmou que os braços de Fast Strikes
+podem mirar alvos diferentes. A migração de grupo em `combatants/group.py` foi
+interrompida antes da validação e está preservada como experimental. Consulte
+[OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md) para o diagnóstico e as correções
+posteriores; os números e estágios abaixo descrevem o momento original.
+
 O [controle executado do corredor atual](CURRENT_CORRIDOR_RESULTS.md) acrescentou dois exemplos completos e 1.000 duelos com todas as trilhas auditadas para combate e posições. Esses artefatos de integração não selecionam uma estratégia como melhor.
 
 **Regra atual implementada no duelo de fichas:** [Fast Strikes por braço](SPLIT_FAST_SPEC.md), dois testes antes dos efeitos, seletor exclusivo de efeitos, Escudo antes do dano e danos/efeitos antes de Riposte. A suíte atual passou em **228 testes** e os oráculos independentes de cronologia, 108 combinações e cinco falsificações de logs passaram. A revisão de Victor conserva seus valores Rank 3 e o PDF; não é progressão inventada. O [corredor atual](CURRENT_CORRIDOR.md) já usa a mesma resolução de Fast e o runner de fichas, com geometria e política que observa a parede. Grupo, novos experimentos de eficácia, sensibilidade e manuais ainda precisam da revisão atual. Os resultados abaixo são históricos quanto ao último balanceamento.

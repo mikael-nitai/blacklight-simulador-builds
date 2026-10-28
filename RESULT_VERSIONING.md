@@ -8,6 +8,14 @@ As consultas desativam `refs/replace` do Git, que poderiam trocar silenciosament
 
 Um nome congelado é imutável. Se os bytes mudarem, a verificação e um novo congelamento falham; uma execução nova deve receber **outro nome de arquivo**. Um arquivo registrado que desapareça também causa falha. O congelamento valida o inventário inteiro antes de gravar e preserva os vínculos anteriores.
 
+Lotes podem declarar a extensão opcional `blacklight-batch-combat-samples-v1`:
+ela registra métricas por início e quantis de posto mais próximo, exigindo
+auditoria de todos os inícios. O gate recalcula os resumos, confere sementes,
+desfechos, recursos e limites de contadores antes de congelar. Essa verificação
+não prova a origem de amostras falsificadas de modo inteiramente consistente;
+as sementes permitem reproduzir combates. Lotes anteriores sem extensão não são
+reescritos e continuam sujeitos aos próprios contratos.
+
 Os 36 JSONs da fórmula antiga ainda presentes na raiz de `results/` foram comparados byte a byte com suas cópias em `results/legacy_scalar_v1/`. Estão enumerados com hash e motivo em `results/historical_inventory.json`. Esses bytes continuam sendo conferidos, mesmo quando seus experimentos não participam da análise atual. Um JSON novo sem manifesto, com modelo desconhecido ou com nome contendo `pre_`/`invalid_` não é excluído automaticamente.
 
 Comandos, a partir da pasta do projeto:

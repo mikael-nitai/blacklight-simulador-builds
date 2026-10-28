@@ -5,6 +5,7 @@ import json
 from math import isclose, isfinite, sqrt
 
 from .rulesets import CURRENT_RULESET, LEGACY_RULESET
+from .extended_batch_audit import audit_extended_batch
 
 
 def _wilson_95(count, total):
@@ -73,4 +74,5 @@ def audit_batch_metadata(payload):
                     issues.append(f'batch audit Wilson interval mismatch: {name}')
     except (KeyError, TypeError, ValueError):
         issues.append('batch audit metadata is incomplete or invalid')
+    issues.extend(audit_extended_batch(payload))
     return issues

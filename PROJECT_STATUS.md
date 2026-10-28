@@ -1,5 +1,10 @@
 # Estado do projeto completo — 27/10/2026
 
+**Estudo de duelos sob a regra atual:** o [pré-registro](CURRENT_DUEL_STUDY_SPEC.md)
+define três cenários sintéticos, cinco políticas e a seleção das finalistas antes
+de observar os novos resultados. A execução e a confirmação devem ser registradas
+separadamente; as taxas antigas não substituem esses dados.
+
 **Grade experimental de grupo:** [posições individuais, caminhos e alcance
 por alvo](GROUP_GRID_EXPERIMENT.md) já podem ser executados por fichas dentro
 de um cenário limitado; não são certificação geral de mapa ou grupo.

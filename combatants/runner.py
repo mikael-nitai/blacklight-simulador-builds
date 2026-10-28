@@ -4,6 +4,7 @@ from dataclasses import asdict
 from hashlib import sha256
 import inspect
 import json
+from math import ceil
 from pathlib import Path
 import sys
 
@@ -200,10 +201,13 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
               hero_policy: object, opponent_policy: object, *, n: int,
               master_seed: int, initial_distance: int | None = None,
               max_rounds: int = 30, audit_every: int = 1,
-              battlefield: CorridorMap | None = None) -> dict:
+              battlefield: CorridorMap | None = None,
+              extended_metrics: bool = False) -> dict:
     if (type(n) is not int or type(audit_every) is not int or type(master_seed) is not int
-            or n < 1 or audit_every < 1):
+            or type(extended_metrics) is not bool or n < 1 or audit_every < 1):
         raise ValueError('Positive sample count and audit interval required')
+    if extended_metrics and audit_every != 1:
+        raise ValueError('Extended combat metrics require an audit for every start')
     initial_distance, options = _battlefield_options(initial_distance, battlefield)
     engine = _engine_for(hero, opponent, battlefield)
     _require_engine_ruleset(engine, hero.ruleset, battlefield)
@@ -226,6 +230,12 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
                                          'hero_final_focus', 'hero_damage_dealt',
                                          'hero_damage_taken')}
     audited = []
+    extended_fields = ('rounds', 'turns', 'final_health', 'final_focus',
+                       'opponent_final_health', 'opponent_final_focus',
+                       'damage_dealt', 'damage_taken', 'damage_mitigated', 'healing_effective',
+                       'focus_spent', 'attacks', 'hits', 'fantastic_hits', 'ripostes',
+                       'stuns_applied', 'blade_bonus_actions', 'damage_round3', 'damage_round5', 'damage_round10')
+    extended_samples = []
     spatial_counts = {'wall_reached': 0, 'contact_occurred': 0}
     for index in range(n):
         key = f'{seed_version}|{master_seed}|{cell_hash}|{index}'
@@ -243,7 +253,13 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
         if battlefield:
             spatial_counts['wall_reached'] += battle.wall_reached
             spatial_counts['contact_occurred'] += battle.contact_occurred
-        outcomes[_outcome(result, profiles[0].name)] += 1
+        outcome = _outcome(result, profiles[0].name)
+        outcomes[outcome] += 1
+        if extended_metrics:
+            values = (result.rounds, result.turns, result.final_health[0], result.final_focus[0],
+                      result.final_health[1], result.final_focus[1])
+            values += tuple(result.metrics[0][field] for field in extended_fields[6:])
+            extended_samples.append([index, seed, outcome, *values])
         for name, value in (
             ('rounds', result.rounds), ('hero_final_health', result.final_health[0]),
             ('hero_final_focus', result.final_focus[0]),
@@ -255,6 +271,22 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
     metadata = _engine_metadata(hero.ruleset, battlefield)
     metadata['mechanics_contract_sha256'] = mechanics_digest(
         hero.ruleset, metadata['registered_action_modules'], sources)
+    extended = {}
+    if extended_metrics:
+        summaries = {}
+        for column, name in enumerate(extended_fields, 3):
+            values = sorted(sample[column] for sample in extended_samples)
+            moment = Moment()
+            for value in values:
+                moment.add(value)
+            summaries[name] = {**moment.summary(),
+                               **{f'q{percent}': values[max(0, ceil(percent * n / 100) - 1)]
+                                  for percent in (10, 50, 90)}}
+        extended = {'extended_metrics_schema': 'blacklight-batch-combat-samples-v1',
+                    'extended_fields': ['index', 'seed', 'outcome', *extended_fields],
+                    'extended_samples_all_starts': extended_samples,
+                    'extended_metrics_all_starts': summaries,
+                    'extended_metrics_note': 'Samples are ordered by audited start; quantiles use nearest rank.'}
     return {'schema': 'blacklight-generic-character-batch-v1',
             'damage_model': 'literal_marvel_pool_v2', 'engine_version': __version__,
             **metadata,
@@ -271,5 +303,5 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
             'rates': {name: {'estimate': count / n, 'wilson95': wilson(count, n)}
                       for name, count in outcomes.items()},
             'metrics_all_starts': {name: moment.summary() for name, moment in moments.items()},
-            'audited_traces': audited,
+            'audited_traces': audited, **extended,
             **({'spatial_counts_all_starts': spatial_counts} if battlefield else {})}

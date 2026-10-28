@@ -5,6 +5,7 @@ from collections import Counter
 import json
 from pathlib import Path
 
+from blacklight.mechanics_contract import compare_recorded_contracts, recorded_contract_status
 from combatants.duel_adapter import CURRENT_RULESET, LEGACY_RULESET
 from .verify_sources import (ROOT, eligible_results, historical_inventory,
                              load_index, verify, verify_result)
@@ -19,6 +20,8 @@ PRE_SPLIT_FAST_COMMITS = frozenset({
 
 
 def classify_ruleset(payload: dict, source_commit: str) -> str:
+    if payload.get('policy_provenance') == 'external_unverified':
+        return 'experimental_policy_unverified'
     declared = payload.get('table_ruleset')
     if declared == CURRENT_RULESET:
         if source_commit in PRE_SPLIT_FAST_COMMITS:
@@ -60,6 +63,9 @@ def inventory(root: Path = ROOT) -> dict:
             'source_commit': record['source_commit'],
             'listed_sources': 'differ_from_live' if live_issues else 'match_live',
             'listed_source_differences': len(live_issues),
+            'mechanics_contract': recorded_contract_status(payload),
+            'evidence_scope': payload.get('evidence_scope', 'not_recorded'),
+            'policy_provenance': payload.get('policy_provenance', 'not_recorded'),
             'zero_width_intervals': zero_width_intervals(payload),
         })
     for name in sorted(historical_inventory(root)):
@@ -67,6 +73,9 @@ def inventory(root: Path = ROOT) -> dict:
         entries.append({'name': name, 'classification': 'historical_scalar_inventory',
                         'source_commit': None, 'listed_sources': 'not_frozen_in_index',
                         'listed_source_differences': None,
+                        'mechanics_contract': recorded_contract_status(payload),
+                        'evidence_scope': 'historical_inventory',
+                        'policy_provenance': 'not_recorded',
                         'zero_width_intervals': zero_width_intervals(payload)})
     return {
         'schema': 'blacklight.result-compatibility.v1',
@@ -84,6 +93,8 @@ def inventory(root: Path = ROOT) -> dict:
 def main() -> None:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('--details', action='store_true')
+    parser.add_argument('--compare', nargs=2, metavar=('FIRST_JSON', 'SECOND_JSON'),
+                        help='Compare two verified result records by their recorded mechanical contracts')
     args = parser.parse_args()
     try:
         report = inventory()
@@ -98,7 +109,17 @@ def main() -> None:
     if args.details:
         for row in entries:
             print(f"{row['name']}: {row['classification']}; {row['listed_sources']}; "
+                  f"contract={row['mechanics_contract']}; scope={row['evidence_scope']}; "
                   f"zero-width intervals={row['zero_width_intervals']}")
+    if args.compare:
+        allowed = {row['name'] for row in entries}
+        if any(name not in allowed for name in args.compare):
+            parser.exit(1, 'Both compared names must belong to the verified result inventory\n')
+        first, second = (json.loads((ROOT / 'results' / name).read_text(encoding='utf-8'))
+                         for name in args.compare)
+        comparison = compare_recorded_contracts(first, second)
+        print(json.dumps({'first': args.compare[0], 'second': args.compare[1],
+                          **comparison}, indent=2, ensure_ascii=False))
 
 
 if __name__ == '__main__':

@@ -10,7 +10,9 @@ from blacklight.audit import audit_profiled_log
 from blacklight.engine import Duel, blacklight_profile
 from blacklight.experiment import scenarios, seed_for, source_hashes, strategies
 from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
+from blacklight.result_audit import audit_battle_result
 from blacklight.rulesets import LEGACY_RULESET
+from blacklight.spatial_audit import audit_open_field_distance
 from .pool_v2_confirm import FINALISTS, holdout_scenarios, profile_record
 
 
@@ -42,6 +44,8 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
                   seed=seed, initial_distance=scenario.distance,
                   max_rounds=30, audit=True).run()
     issues = audit_profiled_log(result.log, (victor, scenario.opponent), ruleset=LEGACY_RULESET)
+    issues.extend(audit_battle_result(result, (victor, scenario.opponent), expected_seed=seed, max_rounds=30))
+    issues.extend(audit_open_field_distance(result.log, scenario.distance))
     if issues:
         raise RuntimeError(f"Full trace failed independent audit: {issues}")
     require_unchanged_sources(sources, execution_sources())

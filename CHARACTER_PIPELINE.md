@@ -32,6 +32,15 @@ O usuário não precisa editar esses arquivos manualmente ao enviar uma nova fic
 
 Cada execução nova recebe outro nome e os [resultados anteriores preservam suas fontes](RESULT_VERSIONING.md). A troca de Rank ou de ficha muda os dados da célula; a migração do motor é conferida contra combates completos congelados, sem apresentar esses replays como novas amostras estatísticas.
 
+Por padrão, `batch` executa e audita a trilha completa de **cada** combate antes
+de somá-lo. Os agregados e os índices/sementes auditados são salvos, mas as
+trilhas completas do lote não são guardadas; para inspecionar um combate, é
+necessário reproduzi-lo com a mesma versão e a semente registrada. O comando
+`--audit-every N`, com N maior que 1, reduz essa verificação a uma amostra e
+identifica a saída como `sampled_starts`; ela não pode ser congelada como lote
+genérico integralmente auditado. Isso não é evidência de que as simulações não
+auditadas estejam erradas, nem de que passaram pela auditoria.
+
 A revisão `split_fast_v3` seleciona o [novo Fast por braço](SPLIT_FAST_SPEC.md). Misturar revisões de regras entre as duas fichas é recusado antes do combate. O teste de seleção de Rank 4 usa o mesmo motor e outra ficha; as regras não são escolhidas pelo nome do personagem.
 
 O mesmo runner aceita um [corredor opcional](CURRENT_CORRIDOR.md), escolhido como dado de ambiente, sem reescrever os ataques da ficha. O mapa e as classes das políticas entram na identidade das células atuais; geometria, fontes e posições são registradas e auditadas. Os valores e as sementes de células históricas v1 permanecem preservados. A política nova pode observar a parede por um snapshot imutável, sem acessar o estado mutável ou dados futuros.

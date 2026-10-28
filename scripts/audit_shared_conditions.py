@@ -30,21 +30,11 @@ from scripts.group_experiment import (POLICIES as GROUP_POLICIES,
                                       scenarios as group_scenarios,
                                       seed_for as group_seed)
 from scripts.verify_sources import verify_result
+from .audit_manifest import audit_source_manifest, require_audit_sources_unchanged
 
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE_REF = 'e84a7532a58f1dd2a0ba5792be6f5d1e064223a0'
-SOURCES = (
-    'blacklight/dice.py', 'blacklight/engine.py', 'blacklight/policies.py',
-    'blacklight/pool_damage.py', 'combatants/actions.py',
-    'combatants/condition_bridge.py', 'combatants/lifecycle.py',
-    'combatants/modular_duel.py', 'experimental/group.py',
-    'experimental/group_policies.py', 'experimental/multi_target.py',
-    'experimental/focus_duel.py', 'experimental/focus_primitives.py',
-    'experimental/corridor.py', 'scripts/group_experiment.py',
-    'scripts/focus_experiment.py', 'scripts/corridor_experiment.py',
-    'scripts/audit_shared_conditions.py',
-)
 DEMOS = {
     'group': 'group_pool_v2_demo_G2_shield_0.json',
     'focus': 'focus_pool_v2_demo_M4_F0_shield_0.json',
@@ -415,6 +405,7 @@ def frozen_demo_replays(old_group, old_focus, old_corridor) -> dict[str, str]:
 
 
 def main() -> None:
+    sources = audit_source_manifest()
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('--timing-only', action='store_true',
                         help='Run current timing oracles without historical fight/replay comparisons')
@@ -439,6 +430,7 @@ def main() -> None:
                     historical_differential(old_group, old_focus, old_corridor))
     demos = ({} if args.timing_only else
              frozen_demo_replays(old_group, old_focus, old_corridor))
+    require_audit_sources_unchanged(sources)
     print(json.dumps({
         'status': 'pass',
         'mode': 'timing-only' if args.timing_only else 'full-pre-fast-comparison',
@@ -450,8 +442,7 @@ def main() -> None:
         'frozen_demo_sha256': demos,
         'baseline_commit': BASE_REF,
         'baseline_source_sha256': baseline_hashes,
-        'source_sha256': {name: sha256((ROOT / name).read_bytes()).hexdigest()
-                          for name in SOURCES},
+        'source_sha256': sources,
         'snapshot_index_sha256': sha256(
             (ROOT / 'results' / 'source_snapshots.json').read_bytes()).hexdigest(),
         'coverage_limits': [

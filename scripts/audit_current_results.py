@@ -11,7 +11,9 @@ from math import isclose, sqrt
 
 from blacklight.audit import audit_profiled_log
 from blacklight.policies import RulePolicy
+from blacklight.result_audit import audit_battle_result
 from blacklight.rulesets import CURRENT_RULESET
+from blacklight.spatial_audit import audit_open_field_distance
 from combatants.battlefields import CorridorMap
 from combatants.duel_adapter import compile_duel
 from combatants.runner import run_batch, run_duel
@@ -19,6 +21,7 @@ from combatants.sheets import parse_sheet
 from combatants.split_fast import SplitFastDuel, SplitFastPolicy
 from combatants.terrain_policies import WallAwarePolicy
 from .verify_sources import ROOT, load_index, verify_result
+from .audit_manifest import audit_source_manifest, require_audit_sources_unchanged
 
 
 DUELS = (
@@ -117,6 +120,9 @@ def audit_early_batch(saved: dict) -> int:
                                initial_distance=saved['initial_distance'], max_rounds=saved['max_rounds'])
         result = battle.run()
         issues = audit_profiled_log(result.log, profiles, ruleset=CURRENT_RULESET)
+        issues.extend(audit_battle_result(result, profiles, expected_seed=seed,
+                                          max_rounds=saved['max_rounds']))
+        issues.extend(audit_open_field_distance(result.log, saved['initial_distance']))
         if issues:
             raise AssertionError(f"Audit failed at index {trace['index']}: {issues[:3]}")
         outcome = (result.outcome if result.outcome in ('draw', 'inconclusive') else
@@ -144,15 +150,18 @@ def audit_early_batch(saved: dict) -> int:
 
 
 def main() -> None:
+    sources = audit_source_manifest()
     index = load_index()
     saved = {name: load_frozen(name, index) for name in (*DUELS, CORRIDOR_BATCH, EARLY_BATCH)}
     for name in DUELS:
         audit_duel(saved[name])
     corridor_starts = audit_corridor_batch(saved[CORRIDOR_BATCH])
     early_starts = audit_early_batch(saved[EARLY_BATCH])
+    require_audit_sources_unchanged(sources)
     print(json.dumps({
         'status': 'pass', 'complete_duel_logs_matching': len(DUELS),
         'corridor_batch_starts': corridor_starts, 'early_batch_starts': early_starts,
+        'source_sha256': sources,
         'limits': ['Batch originals contain seeds and aggregates, not every original full log.',
                    'Matching replays do not establish the correctness of all game rules.'],
     }, indent=2))

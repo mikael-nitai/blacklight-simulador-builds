@@ -509,6 +509,14 @@ class Duel:
     def _validate_knockback(self, actor: int, spaces: int) -> None:
         """A terrain host rejects unsupported displacement before damage is applied."""
 
+    def _roll_damage_component(self, **parameters):
+        """Revision-specific hosts can replace this without editing the shared attack loop.
+
+        An alternate implementation still needs its own ruleset identity,
+        provenance and independent audit before use as a stable runner.
+        """
+        return roll_damage_pool(self.damage_rng, **parameters)
+
     def _attack(self, actor: int, kind: str, *, reaction: bool = False,
                 offhand: str | None = None,
                 fast_strike: FastStrikeContext | None = None,
@@ -616,8 +624,8 @@ class Duel:
                 rules += ("HR-04",)
             for weapon, candidates in component_specs:
                 full_multiplier = p.rank + max(0, *candidates)
-                pool = roll_damage_pool(
-                    self.damage_rng, full_multiplier=full_multiplier,
+                pool = self._roll_damage_component(
+                    full_multiplier=full_multiplier,
                     ability=ability_for_damage,
                     reduction=0 if ammo_immunity else reduction,
                     fast_strikes=fast, fantastic=result.fantastic,

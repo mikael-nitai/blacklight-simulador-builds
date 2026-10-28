@@ -30,6 +30,31 @@ não são conhecidas automaticamente. Essa é uma barreira de procedência, não
 caixa de segurança para código arbitrário. Os resultados já congelados antes
 desse campo conservam seus bytes e continuam verificáveis pelo índice anterior.
 
+Novos lotes genéricos só passam pelo congelamento quando indicam auditoria de
+todos os combates e apresentam uma entrada sem falhas para cada índice, com a
+semente derivada da célula, contagens e taxas consistentes. O runner faz isso
+por padrão; amostragem explícita fica identificada e não passa nesse gate. As
+entradas são registros de execução, não uma prova criptográfica contra um autor
+que altere o programa ou falsifique coordenadamente os dados. Os lotes guardam
+agregados e sementes, não cada trilha completa. A conferência de combate por
+combate posteriormente exige reprodução nas condições registradas.
+
+Cada nova saída genérica também registra `mechanics_contract_sha256`, calculado
+a partir da versão declarada, dos parâmetros dos módulos de ação e dos hashes
+Python registrados de `blacklight/`, `combatants/` e, quando usado, do corredor.
+O congelamento recalcula essa identidade e exige coerência. Ela é conservadora:
+uma mudança em uma fonte incluída pode disparar revisão mesmo quando não afeta
+um combate. Igualdade identifica apenas os dados de contrato registrados, não
+comprova regras corretas nem ambientes idênticos.
+
+Use `python -m scripts.result_compatibility --compare PRIMEIRO.json SEGUNDO.json`
+com dois nomes presentes no inventário. O comando verifica os registros primeiro
+e distingue contratos declarados diferentes, identidades iguais e evidência
+insuficiente. Arquivos antigos sem identidade permanecem `not_recorded`; a
+ferramenta não inventa um hash retroativo e aponta fontes compartilhadas que
+mudaram. Divergência de fonte requer revisão e não prova que um cenário foi
+afetado.
+
 Os novos manifestos usam caminhos relativos com `/`. Para preservar os resultados
 antigos sem editar seus bytes, o verificador também aceita separadores Windows
 relativos e reconhece duas correspondências explícitas para fichas que foram

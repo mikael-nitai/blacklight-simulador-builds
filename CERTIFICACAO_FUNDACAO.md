@@ -50,6 +50,7 @@ mestre permanecem bloqueadas ou qualificadas nos pontos em que afetam o escopo.
 | Motor antigo executado sob etiqueta da regra atual | Alto, reproduzido | Verificar o contrato declarado da classe antes do combate e os eventos Fast durante a auditoria. |
 | Código de dano compartilhado entre versões e motores | Alto para alteração futura | Isolar as variantes existentes e provar que uma mudança hipotética não altera silenciosamente a outra; preservar replays. |
 | Dependências externas/transitivas e fontes já carregadas | Alto para alegações de reprodução não qualificadas | Definir e verificar a fronteira de procedência; bloquear ou rotular o que não puder ser demonstrado. |
+| Distância, ações fora do turno e resumo do combate adulterados | Alto, reproduzido na revisão de integração | Reconstruir a posição, conferir turnos e reconciliar Health, Focus, vencedor e métricas com a trilha. |
 | Resultados antigos e intervalos de largura zero | Corrigido para novas análises; histórico preservado | Manter distinção por versão e comprovar que alterações não reclassificam o passado silenciosamente. |
 | Desempate de iniciativa em grupo, múltiplas reações e posições | Experimental, fora da certificação | Não usar o grupo migrado como base de conclusões validadas; manter no backlog. |
 | Bônus ímpar em Fast, penalidades de membros, renovação exata de reações, escopo de imunidade | Depende de regra da mesa ou recorte | Bloquear casos sem decisão e explicitar interpretações já usadas, sem inventar regra. |
@@ -106,3 +107,57 @@ da migração de grupo carregam essa identificação, e novos replays/experiment
 históricos de grupo, Focus e corredor indicam escopo exploratório; seus registros
 antigos não foram reescritos. Esses mecanismos não são sandbox contra código
 arbitrário e não transformam uma auditoria parcial em prova da campanha.
+
+## Ensaio de três mudanças hipotéticas
+
+Em `tests/test_rule_change_resilience.py`, sem alterar as regras vigentes:
+
+1. **Cura:** um registro de ações de teste elevou a cura de 10 para 15 ao
+   gastar 5 Focus; dez duelos que não usam cura mantiveram a trilha inteira.
+2. **Dano de Fast:** uma subclasse experimental alterou apenas o bônus de dano
+   dos braços. O exemplo passou de 42 para 44; um ataque comum e os replays
+   históricos e atuais de controle ficaram idênticos. O auditor da regra atual
+   rejeitou a variante quando apresentada como se fosse a regra vigente.
+3. **Reações:** outra subclasse de teste reduziu o orçamento para uma reação.
+   Num caso construído, Escudo consumiu a reação e a segunda reação, Riposte,
+   deixou de ocorrer; a regra atual continuou permitindo as duas. Em dez sementes
+   com políticas que não reagem, os ataques e desfechos permaneceram idênticos.
+
+As subclasses são exemplos restritos, não novas regras liberadas pelo runner.
+Uma revisão real precisará de identidade própria, registro explícito e auditoria
+para a nova regra. Os novos resultados genéricos registram identidade derivada da
+versão, das definições de ações e das fontes mecânicas. A comparação assinala
+diferenças; resultados antigos sem essa identidade recebem estado não verificado,
+sem serem alterados ou considerados equivalentes por suposição. A cópia de teste
+do repositório no commit `bd67b50` conseguiu executar um duelo novo, congelá-lo e
+verificar 38 resultados; uma nova repetição será necessária após esta alteração.
+
+Os auditores de linha de comando agora capturam antes e depois todos os arquivos
+Python das pastas de código, scripts e testes como um conjunto conservador de
+fontes. A verificação detecta alterações persistentes nesse conjunto e evita
+listas manuais que omitiam dependências novas. Não detecta alteração revertida
+entre as leituras, alteração do processo em memória nem dependências externas.
+
+## Integridade de combate e lotes
+
+A revisão reproduziu três falhas que os testes anteriores não pegavam: o motor
+podia registrar distância 99 quando a distância real era 1; um resumo podia
+declarar um vencedor fabricado; e uma ação podia ser deslocada para depois do
+fim do turno sem que os auditores a rejeitassem. Essas falhas comprometiam a
+confiança nos resultados e foram classificadas como altas.
+
+`blacklight/spatial_audit.py` reconstrói a distância em campo aberto a partir de
+movimentos e recuos. `blacklight/turn_audit.py` confere iniciativa, ordem e
+limites dos turnos completos e distingue ações de reações. O auditor de resumo
+`blacklight/result_audit.py` confronta vencedor, recursos e métricas com os
+eventos. O corredor mantém seu auditor espacial próprio. Os testes injetam as
+três adulterações e conferem exemplos calculados à mão; essas verificações
+continuam limitadas aos eventos registrados e não provam a fidelidade a todas as
+regras do jogo.
+
+Lotes genéricos auditam cada início por padrão. Uma amostra explícita recebe
+`sampled_starts`; o congelamento exige cobertura completa, índices e sementes
+consistentes, contagens e taxas válidas. As trilhas completas dos lotes não são
+salvas; apenas os registros de auditoria, sementes e agregados ficam no JSON.
+Os resultados históricos continuam ligados aos commits originais, sem receber
+uma certificação retroativa por meio de campos novos.

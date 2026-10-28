@@ -11,6 +11,7 @@ import sys
 from blacklight.audit import audit_profiled_log
 from blacklight.engine import Profile, blacklight_profile
 from blacklight.experiment import scenarios
+from blacklight.result_audit import audit_battle_result
 from blacklight.rulesets import LEGACY_RULESET
 from blacklight.policies import (HAMMER, KITER,
                                  SHIELD_HAMMER_REACTIVE,
@@ -77,14 +78,15 @@ def run_cell(stage: str, length: int, opponent_id: str,
     audited = 0
     for index in range(n):
         audit = stage == "description" and index % 100 == 0
+        seed = seed_for(stage, length, opponent_id, policy.name, index)
         duel = CorridorDuel(profiles, (policy, KITER),
-                            seed=seed_for(stage, length, opponent_id,
-                                          policy.name, index),
+                            seed=seed,
                             length=length, initial_positions=(0, 8),
                             audit=audit)
         result = duel.run()
         if audit:
             issues = audit_profiled_log(result.log, profiles, ruleset=LEGACY_RULESET)
+            issues.extend(audit_battle_result(result, profiles, expected_seed=seed, max_rounds=30))
             issues += audit_corridor(
                 result.log, tuple(p.name for p in profiles),
                 initial_positions=(0, 8), length=length,

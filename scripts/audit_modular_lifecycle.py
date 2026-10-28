@@ -19,24 +19,10 @@ from combatants.lifecycle import Boundary, TimePoint, TimedEffect, expiration_pl
 from combatants.modular_duel import ModularDuel
 from combatants.sheets import parse_sheet
 from scripts.verify_sources import verify_result
+from .audit_manifest import audit_source_manifest, require_audit_sources_unchanged
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = (
-    'blacklight/dice.py',
-    'blacklight/engine.py',
-    'blacklight/policies.py',
-    'blacklight/pool_damage.py',
-    'combatants/actions.py',
-    'combatants/duel_adapter.py',
-    'combatants/lifecycle.py',
-    'combatants/modular_duel.py',
-    'combatants/sheets.py',
-    'scripts/audit_modular_lifecycle.py',
-    'scripts/verify_sources.py',
-)
-
-
 def timing_oracle() -> dict[str, int]:
     """Compare every small clock pair with a direct boundary/actor/count oracle."""
     points = tuple(
@@ -186,11 +172,11 @@ def frozen_replay_oracle() -> tuple[int, dict[str, str]]:
 
 
 def main() -> None:
+    source_hashes = audit_source_manifest()
     timing = timing_oracle()
     bridge_states = bridge_oracle()
     frozen_replays, result_hashes = frozen_replay_oracle()
-    source_hashes = {name: sha256((ROOT / name).read_bytes()).hexdigest()
-                     for name in SOURCES}
+    require_audit_sources_unchanged(source_hashes)
     print(json.dumps({
         'status': 'pass',
         'timing_oracle': timing,

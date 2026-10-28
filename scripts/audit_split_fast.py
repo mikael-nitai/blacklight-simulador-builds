@@ -7,18 +7,16 @@ helpers. Tagged RNG, policy decisions and events check the execution order.
 
 from copy import deepcopy
 from dataclasses import replace
-from hashlib import sha256
 from itertools import product
 import json
-from pathlib import Path
 
 from blacklight.audit import audit_log
 from blacklight.engine import Action, IllegalAction, Profile, blacklight_profile
 from blacklight.policies import RulePolicy
 from combatants.split_fast import FastAction, SplitFastDuel, SplitFastPolicy
+from .audit_manifest import audit_source_manifest, require_audit_sources_unchanged
 
 
-ROOT = Path(__file__).resolve().parents[1]
 ROLLS = {'common': (6, 6, 6), 'fantastic': (2, 1, 2), 'miss': (2, 2, 2)}
 ONE_FACES = {
     'hammer': {'common': 27, 'fantastic': 54, 'miss': 0},
@@ -26,17 +24,6 @@ ONE_FACES = {
     'claw': {'common': 21, 'fantastic': 48, 'miss': 0},
     'bare': {'common': 21, 'fantastic': 42, 'miss': 0},
 }
-SOURCES = (
-    'blacklight/audit.py', 'blacklight/dice.py', 'blacklight/dice_audit.py',
-    'blacklight/profile_audit.py', 'blacklight/ruleset_audit.py',
-    'blacklight/rulesets.py', 'blacklight/engine.py',
-    'blacklight/policies.py', 'blacklight/pool_damage.py',
-    'blacklight/split_audit.py', 'combatants/actions.py',
-    'combatants/modular_duel.py', 'combatants/split_fast.py',
-    'scripts/audit_split_fast.py',
-)
-
-
 class TaggedDice:
     def __init__(self, values, timeline, label):
         self.values = iter(values)
@@ -357,12 +344,12 @@ def falsification_oracles() -> int:
 
 
 def main() -> None:
+    hashes = audit_source_manifest()
     chronology = chronology_oracles()
     grid = outcome_grid()
     boundaries = boundary_and_bonus_oracles()
     falsifications = falsification_oracles()
-    hashes = {name: sha256((ROOT / name).read_bytes()).hexdigest()
-              for name in SOURCES}
+    require_audit_sources_unchanged(hashes)
     print(json.dumps({
         'status': 'pass',
         'chronology_cases': chronology,

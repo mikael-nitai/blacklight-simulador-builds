@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+from blacklight.mechanics_contract import mechanics_digest
 from scripts.freeze_results import REQUIRED_CORE, freeze
 from scripts.verify_sources import (INDEX_NAME, HISTORICAL_NAME, HISTORICAL_SCHEMA, LEGACY_COPY_NOTE,
                                     LEGACY_SOURCE_ALIASES, load_index, relative_source,
@@ -321,14 +322,25 @@ class TestResultSnapshots(unittest.TestCase):
                    for relative in REQUIRED_CORE}
         payload = {'schema': 'blacklight-generic-character-duel-v1',
                    'damage_model': 'literal_marvel_pool_v2',
+                   'table_ruleset': 'split_fast_v3',
+                   'registered_action_modules': [{'kind': 'heal', 'health_per_focus': 2}],
                    'policy_provenance': 'project_builtin',
                    'policy_types': [{'module': 'blacklight.policies', 'class': 'RulePolicy'}] * 2,
                    'source_sha256': sources}
+        payload['mechanics_contract_sha256'] = mechanics_digest(
+            payload['table_ruleset'], payload['registered_action_modules'], sources)
+        payload['registered_action_modules'][0]['health_per_focus'] = 3
+        self.result.write_text(json.dumps(payload), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'inconsistent mechanics contract'):
+            freeze(commit, root=self.root)
+        payload['registered_action_modules'][0]['health_per_focus'] = 2
         self.result.write_text(json.dumps(payload), encoding='utf-8')
         with self.assertRaisesRegex(ValueError, 'incomplete source provenance'):
             freeze(commit, root=self.root)
         self.assertFalse((self.root / 'results' / INDEX_NAME).exists())
         payload['source_sha256']['combatants/additional_dependency.py'] = sha256(extra.read_bytes()).hexdigest()
+        payload['mechanics_contract_sha256'] = mechanics_digest(
+            payload['table_ruleset'], payload['registered_action_modules'], sources)
         self.result.write_text(json.dumps(payload), encoding='utf-8')
         freeze(commit, root=self.root)
         self.assertEqual(verify_result(self.result, root=self.root)[1], [])
@@ -344,6 +356,20 @@ class TestResultSnapshots(unittest.TestCase):
         (self.root / 'results' / INDEX_NAME).write_text(json.dumps(index), encoding='utf-8')
         self.assertEqual(verify_result(self.result, root=self.root)[1], [])
         self.assertEqual(freeze(self.base, root=self.root)['results'], index['results'])
+
+    def test_new_generic_batch_cannot_claim_complete_audit_with_missing_traces(self):
+        payload = json.loads(self.result.read_text(encoding='utf-8'))
+        payload.update(schema='blacklight-generic-character-batch-v1',
+                       table_ruleset='split_fast_v3', policy_provenance='project_builtin',
+                       policy_types=[{'module': 'blacklight.policies', 'class': 'RulePolicy'}] * 2,
+                       n=2, audit_every=1, audited_traces=[])
+        for scope in ('sampled_starts', 'all_starts'):
+            payload['audit_scope'] = scope
+            self.result.write_text(json.dumps(payload), encoding='utf-8')
+            with self.subTest(scope=scope):
+                with self.assertRaisesRegex(ValueError, 'batch audit'):
+                    freeze(self.base, root=self.root)
+                self.assertFalse((self.root / 'results' / INDEX_NAME).exists())
 
 
 if __name__ == '__main__':

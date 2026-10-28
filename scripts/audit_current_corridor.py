@@ -28,6 +28,7 @@ from combatants.split_fast import SplitFastDuel, SplitFastPolicy
 from combatants.terrain_policies import WallAwarePolicy
 from experimental.corridor import CorridorDuel, CorridorGeometry, SplitFastCorridorDuel
 from experimental.corridor_audit import audit_corridor
+from .audit_manifest import audit_source_manifest, require_audit_sources_unchanged
 
 
 BASELINE_COMMIT = 'a6cfd28'
@@ -354,6 +355,7 @@ def runner_and_cli() -> dict:
 
 
 def main() -> None:
+    sources = audit_source_manifest()
     results = {'contact_open_equivalence': equivalent_contact(),
                'historical_replays': historical_replays(),
                'mapped_grids': mapped_grids(),
@@ -361,17 +363,8 @@ def main() -> None:
                'knockback_boundary': knockback_boundary(),
                'geometry_consistency': geometry_consistency(),
                'runner_and_cli': runner_and_cli()}
-    sources = [ROOT / name for name in (
-        'scripts/audit_current_corridor.py', 'blacklight/engine.py',
-        'blacklight/policies.py', 'blacklight/audit.py', 'blacklight/split_audit.py',
-        'blacklight/dice_audit.py', 'blacklight/profile_audit.py',
-        'blacklight/ruleset_audit.py', 'blacklight/rulesets.py',
-        'combatants/split_fast.py', 'combatants/runner.py',
-        'combatants/battlefields.py', 'combatants/terrain_policies.py',
-        'experimental/corridor.py', 'experimental/corridor_audit.py',
-        'scripts/character_sheet.py')]
-    results['source_sha256'] = {p.relative_to(ROOT).as_posix(): sha256(p.read_bytes()).hexdigest()
-                                for p in sources}
+    require_audit_sources_unchanged(sources)
+    results['source_sha256'] = sources
     print(json.dumps(results, ensure_ascii=False, sort_keys=True, indent=2))
 
 

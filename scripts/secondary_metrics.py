@@ -10,7 +10,9 @@ from blacklight.audit import audit_profiled_log
 from blacklight.engine import Duel, blacklight_profile
 from blacklight.experiment import ROOT, scenarios, seed_for, source_hashes, strategies, wilson
 from blacklight.results_io import historical_output, require_unchanged_sources, write_new_text
+from blacklight.result_audit import audit_battle_result
 from blacklight.rulesets import LEGACY_RULESET
+from blacklight.spatial_audit import audit_open_field_distance
 
 
 def quantile(values: list[float], probability: float) -> float:
@@ -60,6 +62,9 @@ def main() -> None:
                               audit=True).run()
                 issues = audit_profiled_log(result.log, (profile, scenario.opponent),
                                             ruleset=LEGACY_RULESET)
+                issues.extend(audit_battle_result(result, (profile, scenario.opponent),
+                                                  expected_seed=seed, max_rounds=30))
+                issues.extend(audit_open_field_distance(result.log, scenario.distance))
                 if issues:
                     raise RuntimeError(f"{scenario.id}/{strategy.id}/{index}: {issues[:3]}")
                 blacklight_won = result.winner == profile.name

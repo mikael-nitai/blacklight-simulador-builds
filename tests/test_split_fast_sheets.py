@@ -5,7 +5,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+from blacklight.audit import audit_profiled_log
 from blacklight.policies import ATTACK, BLADE_HAMMER_FAST
+from blacklight.rulesets import CURRENT_RULESET
 from combatants import compile_duel, coverage, load_sheet
 from combatants.modular_duel import ModularDuel
 from combatants.runner import run_batch, run_duel
@@ -52,9 +54,14 @@ class TestSplitFastSheets(unittest.TestCase):
         hero, foe = load_sheet(CURRENT), load_sheet(FOE)
         # A mistaken implementation that reports the new label while executing
         # the old one-check Fast contract must still be rejected by the auditor.
+        profiles = (compile_duel(hero), compile_duel(foe))
+        legacy = ModularDuel(profiles, (BLADE_HAMMER_FAST, ATTACK),
+                             seed=51, max_rounds=5, audit=True).run()
+        self.assertTrue(any('ruleset' in issue and 'Fast' in issue for issue in
+                            audit_profiled_log(legacy.log, profiles, ruleset=CURRENT_RULESET)))
         with patch('combatants.runner._engine_for', return_value=ModularDuel), \
                 patch.object(ModularDuel, 'table_ruleset', 'split_fast_v3', create=True):
-            with self.assertRaisesRegex(RuntimeError, 'ruleset.*Fast'):
+            with self.assertRaisesRegex(RuntimeError, 'engine.*registered'):
                 run_duel(hero, foe, BLADE_HAMMER_FAST, ATTACK, seed=51, max_rounds=5)
 
     def test_experimental_engine_cannot_use_the_stable_runner(self):

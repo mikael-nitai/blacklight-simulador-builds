@@ -10,6 +10,12 @@ Projeto de pesquisa reproduzível para Victor Halle (Rank 3) em *Marvel Multiver
 
 A [camada de fichas versionadas](CHARACTER_PIPELINE.md) carrega Rank, seis atributos, recursos e habilidades graduadas de arquivos externos ao motor. Ela já executa duelos e baterias com outra ficha, conserva a origem do PDF e bloqueia poderes sem suporte. O objetivo final inclui fichas oficiais completas e evolução de Victor sem reescrever o motor; a cobertura atual continua limitada às mecânicas validadas do recorte físico.
 
+Os lotes genéricos auditam todos os combates por padrão. A opção explícita
+`--audit-every N` permite amostragem exploratória; quando não cobre todos os
+combates, o resultado é identificado e não passa pelo congelamento reservado a
+lotes genéricos integralmente auditados. Veja [fichas e execução](CHARACTER_PIPELINE.md)
+e os limites da [certificação](CERTIFICACAO_FUNDACAO.md).
+
 As famílias de cura, ativação de estados e [duração de Dodge/Stunned](MODULAR_LIFECYCLE.md) já usam módulos reutilizáveis. Os [resultados congelados](RESULT_VERSIONING.md) ficam ligados ao commit executado; a evolução do motor produz arquivos novos e preserva as medições anteriores.
 
 O motor determinístico cobre duelos de dois personagens em campo aberto, d616, edge/trouble, iniciativa, Health/Focus, ações e movimento, ataques Melee/Agility, Fast Strikes contra um alvo, Garra, Lâmina, Marreta, Escudo, Mighty, Sturdy, Healing Factor, Do This All Day, Attack Stance, Riposte, Bleeding e Stunned. As políticas só solicitam ações; o motor valida e resolve o estado. Cada experimento registra sementes e hashes de fontes.
@@ -37,7 +43,7 @@ Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidade
 - [OFFICIAL_PROFILE_GATE.md](OFFICIAL_PROFILE_GATE.md): conferência visual de três perfis Rank 3 do Core e lacunas que impedem chamá-los de adversários completos no motor atual.
 - [VALIDATION_PLAN.md](VALIDATION_PLAN.md) e [REVIEW_FINDINGS.md](REVIEW_FINDINGS.md): oráculos independentes e revisão adversarial.
 - `blacklight/`: dado, dano, motor, políticas, auditor de logs, busca, experimentos e sensibilidade.
-- `tests/`: oráculos e 4.000 trilhas auditadas em dez políticas × quatro cenários × 100 sementes.
+- `tests/`: oráculos e trilhas cruzando políticas, cenários e sementes; a suíte informa a contagem atual de testes.
 - `results/`: JSONs estruturados; `legacy_scalar_v1/`, `pre_*` e `invalid_*` são históricos. Os experimentos `pool_v2` precedem o último balanceamento de Fast Strikes.
 - [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md): diagnóstico, correções, evidências, limites e próximos gates da auditoria estrutural.
 - [CERTIFICACAO_FUNDACAO.md](CERTIFICACAO_FUNDACAO.md): escopo congelado e matriz dos critérios de conclusão da continuação da auditoria.
@@ -54,6 +60,7 @@ Abra PowerShell nesta pasta. Requer Python 3.11 ou mais recente; não há depend
 python -m unittest discover -s tests -q
 python -m scripts.verify_sources
 python -m scripts.result_compatibility
+python -m scripts.result_compatibility --compare split_fast_v3_blade_effects_demo.json current_corridor_v1_hammer_effects_demo.json
 python -m scripts.audit_split_fast
 python -m scripts.audit_current_corridor
 python -m scripts.audit_modular_lifecycle

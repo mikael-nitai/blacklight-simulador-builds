@@ -10,7 +10,10 @@ import sys
 from blacklight import __version__
 from blacklight.audit import audit_profiled_log
 from blacklight.experiment import ROOT, Moment, source_hashes, wilson
+from blacklight.mechanics_contract import mechanics_digest
+from blacklight.result_audit import audit_battle_result
 from blacklight.rulesets import SUPPORTED_RULESETS
+from blacklight.spatial_audit import audit_open_field_distance
 from .actions import DEFAULT_ACTIONS
 from .battlefields import CorridorMap
 from .duel_adapter import CURRENT_RULESET, LEGACY_RULESET, compile_duel, coverage
@@ -51,15 +54,19 @@ def _engine_metadata(ruleset: str = LEGACY_RULESET, battlefield: CorridorMap | N
                if battlefield else {})}
 
 
+def _registered_engine(ruleset: str, battlefield: CorridorMap | None = None):
+    if ruleset not in SUPPORTED_RULESETS:
+        raise ValueError(f'Unsupported table ruleset: {ruleset!r}')
+    if battlefield is not None:
+        from experimental.corridor import CorridorDuel, SplitFastCorridorDuel
+        return SplitFastCorridorDuel if ruleset == CURRENT_RULESET else CorridorDuel
+    return SplitFastDuel if ruleset == CURRENT_RULESET else ModularDuel
+
+
 def _engine_for(hero: CharacterSheet, opponent: CharacterSheet, battlefield: CorridorMap | None = None):
     if hero.ruleset != opponent.ruleset:
         raise ValueError('Both combatants must declare the same table ruleset revision')
-    if hero.ruleset not in SUPPORTED_RULESETS:
-        raise ValueError(f'Unsupported table ruleset: {hero.ruleset!r}')
-    if battlefield is not None:
-        from experimental.corridor import CorridorDuel, SplitFastCorridorDuel
-        return SplitFastCorridorDuel if hero.ruleset == CURRENT_RULESET else CorridorDuel
-    return SplitFastDuel if hero.ruleset == CURRENT_RULESET else ModularDuel
+    return _registered_engine(hero.ruleset, battlefield)
 
 
 def _battlefield_options(initial_distance: int | None, battlefield: CorridorMap | None) -> tuple[int, dict]:
@@ -96,8 +103,9 @@ def _coverage_for(sheet: CharacterSheet, battlefield: CorridorMap | None) -> dic
     return report
 
 
-def _audit_battle(result, profiles, battle, battlefield, ruleset) -> list[str]:
+def _audit_battle(result, profiles, battle, battlefield, ruleset, *, initial_distance, seed, max_rounds) -> list[str]:
     issues = audit_profiled_log(result.log, profiles, ruleset=ruleset)
+    issues.extend(audit_battle_result(result, profiles, expected_seed=seed, max_rounds=max_rounds))
     if battlefield:
         from experimental.corridor_audit import audit_corridor
         issues.extend(audit_corridor(
@@ -105,14 +113,18 @@ def _audit_battle(result, profiles, battle, battlefield, ruleset) -> list[str]:
             initial_positions=battlefield.initial_positions, length=battlefield.length,
             final_positions=tuple(battle.positions), wall_reached=battle.wall_reached,
             contact_occurred=battle.contact_occurred))
+    else:
+        issues.extend(audit_open_field_distance(result.log, initial_distance))
     return issues
 
 
-def _require_engine_ruleset(engine, ruleset) -> None:
+def _require_engine_ruleset(engine, ruleset, battlefield) -> None:
     if getattr(engine, 'table_ruleset', None) != ruleset:
         raise RuntimeError('Selected engine does not implement the declared table ruleset')
     if getattr(engine, 'execution_scope', None) != 'two_character_physical':
         raise RuntimeError('An experimental engine cannot use the stable two-character runner')
+    if engine is not _registered_engine(ruleset, battlefield):
+        raise RuntimeError('Selected engine is not registered for the declared table ruleset')
 
 
 def _source_manifest(policies: tuple[object, object], battlefield: CorridorMap | None = None) -> dict[str, str]:
@@ -144,9 +156,11 @@ def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
              hero_policy: object, opponent_policy: object, *, seed: int,
              initial_distance: int | None = None, max_rounds: int = 30,
              battlefield: CorridorMap | None = None) -> dict:
+    if type(seed) is not int:
+        raise ValueError('A duel seed must be an integer')
     initial_distance, options = _battlefield_options(initial_distance, battlefield)
     engine = _engine_for(hero, opponent, battlefield)
-    _require_engine_ruleset(engine, hero.ruleset)
+    _require_engine_ruleset(engine, hero.ruleset, battlefield)
     profiles = (compile_duel(hero), compile_duel(opponent))
     policies = (hero_policy, opponent_policy)
     sources = _source_manifest(policies, battlefield)
@@ -155,14 +169,18 @@ def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
     battle = engine(profiles, policies, seed=seed, max_rounds=max_rounds,
                      audit=True, action_registry=DEFAULT_ACTIONS, **options)
     result = battle.run()
-    issues = _audit_battle(result, profiles, battle, battlefield, hero.ruleset)
+    issues = _audit_battle(result, profiles, battle, battlefield, hero.ruleset,
+                           initial_distance=initial_distance, seed=seed, max_rounds=max_rounds)
     if issues:
         raise RuntimeError(f"Generic character duel failed audit: {issues}")
     _assert_sources_unchanged(sources, policies, battlefield)
+    metadata = _engine_metadata(hero.ruleset, battlefield)
+    metadata['mechanics_contract_sha256'] = mechanics_digest(
+        hero.ruleset, metadata['registered_action_modules'], sources)
     return {'schema': 'blacklight-generic-character-duel-v1',
             'damage_model': 'literal_marvel_pool_v2',
             'engine_version': __version__, 'seed': seed,
-            **_engine_metadata(hero.ruleset, battlefield),
+            **metadata,
             'source_sha256': sources,
             'initial_distance': initial_distance, 'max_rounds': max_rounds,
             'sheets': [sheet_record(hero), sheet_record(opponent)],
@@ -181,13 +199,14 @@ def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
 def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
               hero_policy: object, opponent_policy: object, *, n: int,
               master_seed: int, initial_distance: int | None = None,
-              max_rounds: int = 30, audit_every: int = 100,
+              max_rounds: int = 30, audit_every: int = 1,
               battlefield: CorridorMap | None = None) -> dict:
-    if n < 1 or audit_every < 1:
+    if (type(n) is not int or type(audit_every) is not int or type(master_seed) is not int
+            or n < 1 or audit_every < 1):
         raise ValueError('Positive sample count and audit interval required')
     initial_distance, options = _battlefield_options(initial_distance, battlefield)
     engine = _engine_for(hero, opponent, battlefield)
-    _require_engine_ruleset(engine, hero.ruleset)
+    _require_engine_ruleset(engine, hero.ruleset, battlefield)
     profiles = (compile_duel(hero), compile_duel(opponent))
     policies = (hero_policy, opponent_policy)
     sources = _source_manifest(policies, battlefield)
@@ -216,7 +235,8 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
                          audit=audit_this, action_registry=DEFAULT_ACTIONS, **options)
         result = battle.run()
         if audit_this:
-            issues = _audit_battle(result, profiles, battle, battlefield, hero.ruleset)
+            issues = _audit_battle(result, profiles, battle, battlefield, hero.ruleset,
+                                   initial_distance=initial_distance, seed=seed, max_rounds=max_rounds)
             if issues:
                 raise RuntimeError(f'Batch trace {index} failed audit: {issues}')
             audited.append({'index': index, 'seed': seed, 'issues': []})
@@ -232,13 +252,18 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
         ):
             moments[name].add(value)
     _assert_sources_unchanged(sources, policies, battlefield)
+    metadata = _engine_metadata(hero.ruleset, battlefield)
+    metadata['mechanics_contract_sha256'] = mechanics_digest(
+        hero.ruleset, metadata['registered_action_modules'], sources)
     return {'schema': 'blacklight-generic-character-batch-v1',
             'damage_model': 'literal_marvel_pool_v2', 'engine_version': __version__,
-            **_engine_metadata(hero.ruleset, battlefield),
+            **metadata,
             'source_sha256': sources,
             'policy_types': _policy_types(policies),
             'policy_provenance': policy_provenance(policies),
             **cell, 'n': n, 'master_seed': master_seed, 'cell_sha256': cell_hash,
+            'audit_every': audit_every,
+            'audit_scope': 'all_starts' if len(audited) == n else 'sampled_starts',
             'seed_formula': f'first 8 SHA-256 bytes of {seed_version}|master_seed|cell_sha256|index',
             'pairing_note': 'Seeds identify this cell; different cells are not assumed to be paired samples',
             'coverage': [_coverage_for(hero, battlefield), _coverage_for(opponent, battlefield)],

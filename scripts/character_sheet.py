@@ -54,6 +54,8 @@ def main() -> None:
         else:
             sub.add_argument('--master-seed', type=int, required=True)
             sub.add_argument('--n', type=int, required=True)
+            sub.add_argument('--audit-every', type=int, default=1,
+                             help='Audit every start by default; higher values are exploratory sampling')
     args = parser.parse_args()
     if args.output:
         require_new_output(args.output)
@@ -110,6 +112,7 @@ def main() -> None:
         else:
             payload = run_batch(*sheets, *selected_policies, n=args.n,
                                 master_seed=args.master_seed,
+                                audit_every=args.audit_every,
                                 initial_distance=args.distance, battlefield=battlefield)
         current_inputs = {'scripts/character_sheet.py': sha256(script.read_bytes()).hexdigest()}
         for path in input_paths:

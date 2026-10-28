@@ -8,6 +8,9 @@ from pathlib import Path
 import subprocess
 import tempfile
 
+from blacklight.mechanics_contract import recorded_contract_status
+from blacklight.batch_audit import audit_batch_metadata
+from blacklight.rulesets import SUPPORTED_RULESETS
 from combatants.policy_provenance import recorded_builtin_policies
 from .verify_sources import (ROOT, INDEX_NAME, INDEX_SCHEMA, eligible_results,
                              git_commit, load_index, relative_source, snapshot_source_hash, source_manifest,
@@ -17,7 +20,9 @@ from .verify_sources import (ROOT, INDEX_NAME, INDEX_SCHEMA, eligible_results,
 GENERIC_SCHEMAS = frozenset(('blacklight-generic-character-duel-v1',
                              'blacklight-generic-character-batch-v1'))
 REQUIRED_CORE = frozenset(('blacklight/engine.py', 'blacklight/policies.py',
-                           'blacklight/rulesets.py', 'combatants/runner.py',
+                           'blacklight/rulesets.py', 'blacklight/ruleset_audit.py',
+                           'blacklight/audit.py', 'blacklight/mechanics_contract.py',
+                           'combatants/runner.py',
                            'combatants/sheets.py', 'combatants/split_fast.py',
                            'combatants/terrain_policies.py', 'combatants/policy_provenance.py'))
 
@@ -29,6 +34,15 @@ def require_generic_provenance(payload: dict, root: Path, commit: str) -> None:
     if (payload.get('policy_provenance') != 'project_builtin'
             or not recorded_builtin_policies(payload.get('policy_types'))):
         raise ValueError('Generic result has unverified policy provenance; keep it experimental')
+    if (not isinstance(payload.get('table_ruleset'), str)
+            or payload['table_ruleset'] not in SUPPORTED_RULESETS):
+        raise ValueError('Generic result has an unsupported declared table ruleset')
+    if payload.get('schema') == 'blacklight-generic-character-batch-v1':
+        issues = audit_batch_metadata(payload)
+        if issues:
+            raise ValueError(f'Generic batch audit is incomplete or inconsistent: {issues}')
+    if recorded_contract_status(payload) != 'recorded_verified':
+        raise ValueError('Generic result has missing or inconsistent mechanics contract provenance')
     result = subprocess.run(
         ['git', '--no-replace-objects', 'ls-tree', '-r', '--name-only', commit, '--',
          'blacklight', 'combatants'], cwd=root, check=True, capture_output=True, text=True)

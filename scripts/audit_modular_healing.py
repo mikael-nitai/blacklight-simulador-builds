@@ -7,17 +7,13 @@ This compares Do This All Day against the frozen Duel resolver. It does not
 estimate strategy performance, create experiment results, or modify files.
 """
 
-from hashlib import sha256
 import json
-from pathlib import Path
 
 from blacklight.engine import Action, Duel, IllegalAction, Profile, blacklight_profile
 from blacklight.policies import RulePolicy
 from combatants.actions import ActionPlan, ActionRegistry, CapabilityRequirement, RestoreHealth
 from combatants.modular_duel import ModularDuel
-
-
-ROOT = Path(__file__).resolve().parents[1]
+from .audit_manifest import audit_source_manifest, require_audit_sources_unchanged
 
 
 def profile(rank: int, *, powers: frozenset[str] = frozenset({'do_this_all_day'})) -> Profile:
@@ -153,13 +149,11 @@ def malformed_extension_oracles() -> int:
 
 
 def main() -> None:
+    sources = audit_source_manifest()
     states, transitions = direct_transition_oracle()
     replays = complete_replay_oracle()
     malformed = malformed_extension_oracles()
-    sources = {}
-    for relative in ('blacklight/engine.py', 'combatants/actions.py',
-                     'combatants/modular_duel.py'):
-        sources[relative] = sha256((ROOT / relative).read_bytes()).hexdigest()
+    require_audit_sources_unchanged(sources)
     print(json.dumps({'status': 'pass', 'state_grid': states,
                       'heal_transitions': transitions,
                       'complete_replays': replays,

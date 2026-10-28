@@ -10,6 +10,7 @@ from blacklight.audit import audit_profiled_log
 from blacklight.engine import blacklight_profile
 from blacklight.policies import KITER
 from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
+from blacklight.result_audit import audit_battle_result
 from blacklight.rulesets import LEGACY_RULESET
 from experimental.corridor import CorridorDuel
 from experimental.corridor_audit import audit_corridor
@@ -36,6 +37,7 @@ def replay(stage: str, length: int, opponent_id: str, policy_name: str,
                         length=length, initial_positions=(0, 8), audit=True)
     result = duel.run()
     issues = audit_profiled_log(result.log, profiles, ruleset=LEGACY_RULESET)
+    issues.extend(audit_battle_result(result, profiles, expected_seed=seed, max_rounds=30))
     issues += audit_corridor(
         result.log, tuple(p.name for p in profiles),
         initial_positions=(0, 8), length=length,

@@ -19,6 +19,9 @@ class TestResultCompatibility(unittest.TestCase):
         self.assertEqual(classify_ruleset({}, 'unknown'), 'unknown_ruleset')
         self.assertEqual(classify_ruleset({'table_ruleset': 'unrecognized'}, old_commit),
                          'unknown_ruleset')
+        self.assertEqual(classify_ruleset({'table_ruleset': 'split_fast_v3',
+                                           'policy_provenance': 'external_unverified'}, 'new'),
+                         'experimental_policy_unverified')
 
     def test_known_zero_width_interval_fields_are_counted_once(self):
         payload = {'comparisons': [{'simultaneous_ci_bonferroni': [0, 0]},

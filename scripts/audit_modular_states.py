@@ -19,6 +19,7 @@ from combatants.actions import (ActionRegistry, CapabilityRequirement, CombatSta
 from combatants.modular_duel import ModularDuel
 from combatants.runner import run_batch, run_duel
 from combatants.sheets import load_sheet
+from .audit_manifest import audit_source_manifest, require_audit_sources_unchanged
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -235,16 +236,14 @@ def runner_smoke_oracle() -> int:
 
 
 def main() -> None:
+    hashes = audit_source_manifest()
     states, transitions = state_grid_oracle()
     requirements = combined_requirement_oracle()
     replays = complete_replay_oracle()
     runner = runner_smoke_oracle()
     findings = malformed_definition_probe()
     request_findings = malformed_request_probe()
-    files = ('blacklight/engine.py', 'combatants/actions.py',
-             'combatants/modular_duel.py', 'combatants/runner.py',
-             'tests/test_modular_states.py')
-    hashes = {name: sha256((ROOT / name).read_bytes()).hexdigest() for name in files}
+    require_audit_sources_unchanged(hashes)
     print(json.dumps({'equivalence': 'pass', 'state_grid': states,
                       'state_transitions': transitions,
                       'combined_requirement_cases': requirements,

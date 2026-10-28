@@ -103,7 +103,7 @@ class TestResultIntegrity(unittest.TestCase):
                          (partial['outcomes'], partial['metrics_all_starts']))
         self.assertEqual(audit_batch_metadata(full), [])
         self.assertTrue(audit_batch_metadata(partial))
-        for field in ('seed', 'index', 'issues', 'cell', 'rate', 'outcome'):
+        for field in ('seed', 'index', 'issues', 'cell', 'rate', 'wilson', 'outcome'):
             forged = deepcopy(full)
             if field in ('seed', 'index'):
                 forged['audited_traces'][1][field] += 1
@@ -113,6 +113,8 @@ class TestResultIntegrity(unittest.TestCase):
                 forged['cell_sha256'] = '0' * 64
             elif field == 'rate':
                 forged['rates']['win']['estimate'] += 0.1
+            elif field == 'wilson':
+                forged['rates']['win']['wilson95'] = [0.99, 0.99]
             else:
                 forged['outcomes']['win'] += 1
             with self.subTest(field=field):

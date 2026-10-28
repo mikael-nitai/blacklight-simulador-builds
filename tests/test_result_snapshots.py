@@ -326,6 +326,7 @@ class TestResultSnapshots(unittest.TestCase):
                    'registered_action_modules': [{'kind': 'heal', 'health_per_focus': 2}],
                    'policy_provenance': 'project_builtin',
                    'policy_types': [{'module': 'blacklight.policies', 'class': 'RulePolicy'}] * 2,
+                   'audit_issues': [],
                    'source_sha256': sources}
         payload['mechanics_contract_sha256'] = mechanics_digest(
             payload['table_ruleset'], payload['registered_action_modules'], sources)
@@ -344,6 +345,22 @@ class TestResultSnapshots(unittest.TestCase):
         self.result.write_text(json.dumps(payload), encoding='utf-8')
         freeze(commit, root=self.root)
         self.assertEqual(verify_result(self.result, root=self.root)[1], [])
+
+    def test_new_generic_duel_cannot_freeze_a_failed_or_missing_audit(self):
+        payload = json.loads(self.result.read_text(encoding='utf-8'))
+        payload.update(schema='blacklight-generic-character-duel-v1',
+                       table_ruleset='split_fast_v3', policy_provenance='project_builtin',
+                       policy_types=[{'module': 'blacklight.policies', 'class': 'RulePolicy'}] * 2)
+        for recorded in (None, ['failed']):
+            if recorded is None:
+                payload.pop('audit_issues', None)
+            else:
+                payload['audit_issues'] = recorded
+            self.result.write_text(json.dumps(payload), encoding='utf-8')
+            with self.subTest(recorded=recorded):
+                with self.assertRaisesRegex(ValueError, 'missing or failed recorded audit'):
+                    freeze(self.base, root=self.root)
+                self.assertFalse((self.root / 'results' / INDEX_NAME).exists())
 
     def test_previously_frozen_generic_result_remains_valid_without_new_metadata(self):
         payload = json.loads(self.result.read_text(encoding='utf-8'))

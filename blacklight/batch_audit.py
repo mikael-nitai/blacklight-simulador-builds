@@ -2,9 +2,20 @@
 
 from hashlib import sha256
 import json
-from math import isclose, isfinite
+from math import isclose, isfinite, sqrt
 
 from .rulesets import CURRENT_RULESET, LEGACY_RULESET
+
+
+def _wilson_95(count, total):
+    # Independent closed-form check of the runner's 95% Wilson interval.
+    z = 1.959963984540054
+    proportion = count / total
+    denominator = 1 + z * z / total
+    center = (proportion + z * z / (2 * total)) / denominator
+    half_width = z * sqrt(proportion * (1 - proportion) / total
+                          + z * z / (4 * total * total)) / denominator
+    return max(0.0, center - half_width), min(1.0, center + half_width)
 
 
 def audit_batch_metadata(payload):
@@ -53,6 +64,13 @@ def audit_batch_metadata(payload):
                 if (type(estimate) not in (int, float) or not isfinite(estimate)
                         or not isclose(estimate, count / n, rel_tol=0, abs_tol=1e-12)):
                     issues.append(f'batch audit outcome rate mismatch: {name}')
+                interval = rates[name].get('wilson95') if isinstance(rates[name], dict) else None
+                expected = _wilson_95(count, n)
+                if (not isinstance(interval, (list, tuple)) or len(interval) != 2
+                        or any(type(value) not in (int, float) or not isfinite(value)
+                               or not isclose(value, reference, rel_tol=0, abs_tol=1e-12)
+                               for value, reference in zip(interval, expected))):
+                    issues.append(f'batch audit Wilson interval mismatch: {name}')
     except (KeyError, TypeError, ValueError):
         issues.append('batch audit metadata is incomplete or invalid')
     return issues

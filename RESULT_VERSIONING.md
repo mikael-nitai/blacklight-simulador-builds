@@ -32,7 +32,8 @@ desse campo conservam seus bytes e continuam verificáveis pelo índice anterior
 
 Novos lotes genéricos só passam pelo congelamento quando indicam auditoria de
 todos os combates e apresentam uma entrada sem falhas para cada índice, com a
-semente derivada da célula, contagens e taxas consistentes. O runner faz isso
+semente derivada da célula, contagens, taxas e intervalos Wilson consistentes.
+Um duelo genérico novo também precisa registrar uma auditoria sem falhas. O runner faz isso
 por padrão; amostragem explícita fica identificada e não passa nesse gate. As
 entradas são registros de execução, não uma prova criptográfica contra um autor
 que altere o programa ou falsifique coordenadamente os dados. Os lotes guardam

@@ -37,6 +37,9 @@ def require_generic_provenance(payload: dict, root: Path, commit: str) -> None:
     if (not isinstance(payload.get('table_ruleset'), str)
             or payload['table_ruleset'] not in SUPPORTED_RULESETS):
         raise ValueError('Generic result has an unsupported declared table ruleset')
+    if (payload.get('schema') == 'blacklight-generic-character-duel-v1'
+            and payload.get('audit_issues') != []):
+        raise ValueError('Generic duel has a missing or failed recorded audit')
     if payload.get('schema') == 'blacklight-generic-character-batch-v1':
         issues = audit_batch_metadata(payload)
         if issues:

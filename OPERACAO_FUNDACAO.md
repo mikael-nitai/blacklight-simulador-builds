@@ -73,6 +73,16 @@ decide detalhes ainda não esclarecidos, como regras numéricas de membros.
    Mudanças em regras exigem rever testes, auditor e identificação dos
    experimentos. Fontes externas transitivas de políticas personalizadas não
    são automaticamente registradas; o próprio runner explicita essa limitação.
+6. **Alto — caminhos históricos dependem do sistema operacional.**
+   Resultados congelados contêm nomes como `blacklight\\engine.py`. Em sistemas
+   POSIX essa sequência é um nome único, enquanto no Git a fonte é
+   `blacklight/engine.py`. A referência do Git com barra invertida falhou e a
+   mesma referência com barra normal funcionou. Os resultados precisam continuar
+   intactos; o verificador deve entender ambos os formatos.
+7. **Médio — fórmula de semente declarada em scripts antigos.**
+   `holdout.py`, `secondary_metrics.py` e `adversarial_scenarios.py` chamavam
+   `seed_for`, que usa o prefixo `blacklight-pool-v2`, mas declaravam
+   `blacklight-v1` em novas saídas. Os JSONs históricos não foram alterados.
 
 Os achados 1 e 3 são falhas reproduzidas. O item 2 é uma limitação demonstrada
 do verificador, não uma prova de que os combates já executados tiveram 99
@@ -89,6 +99,21 @@ para reescrever os motores ou modificar as regras da mesa.
    estatísticos e um ensaio isolado de mudança hipotética de regra.
 5. Executar testes completos e verificações adversariais adicionais. Atualizar
    esta passagem com alterações, evidências, restrições e decisão de prontidão.
+
+## Primeira correção: preservação das saídas
+
+Os caminhos de geração de JSON, demonstrações e replays agora criam arquivos
+com exclusividade. As buscas e estudos antigos exigem destino novo e aceitação
+explícita das regras históricas; o relatório e as figuras também precisam de
+novos destinos quando os arquivos originais existem. Isso não altera os dados
+já arquivados. Os scripts de reserva, métricas secundárias e adversários também
+passaram a declarar o prefixo de semente efetivamente usado em novas saídas.
+
+Quatro testes direcionados passaram, incluindo reprodução real com recusa de
+uma segunda gravação, cinco comandos antigos apontados a um arquivo já existente
+e duas gravações simultâneas disputando o mesmo nome. A criação exclusiva
+impede substituir um arquivo existente; uma interrupção durante a escrita pode
+deixar uma saída nova incompleta, que não deve ser tratada como resultado válido.
 
 **Prontidão inicial:** não recomendar expansão de conclusões nem apresentar o
 grupo novo como pronto enquanto os achados e os gates acima estiverem abertos.

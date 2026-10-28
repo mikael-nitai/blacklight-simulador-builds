@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from hashlib import sha256
 import json
 from pathlib import Path
+from blacklight.results_io import write_new_text
 
 from blacklight.policies import RulePolicy
 from combatants.runner import run_batch, run_duel
@@ -67,8 +68,7 @@ def main() -> None:
     # Finish all comparisons before publishing any example from this invocation.
     payloads = {case: replay(ROOT / 'results' / f'generic_sheet_{case}.json') for case in CASES}
     for case, payload in payloads.items():
-        outputs[case].write_text(json.dumps(payload, ensure_ascii=False, indent=2),
-                                 encoding='utf-8', newline='\n')
+        write_new_text(outputs[case], json.dumps(payload, ensure_ascii=False, indent=2), newline='\n')
         detail = payload.get('hero_outcome', payload.get('outcomes'))
         print(f'{case}: exact migration comparison passed; {detail}')
 

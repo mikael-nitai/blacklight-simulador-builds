@@ -13,6 +13,7 @@ import sys
 
 from . import __version__
 from .engine import Duel, Profile, blacklight_profile
+from .results_io import require_new_output, write_new_text
 from .policies import (ATTACK, BLADE_HAMMER_FAST, CLAW_HAMMER_FAST,
                        HAMMER, HAMMER_FAST, HYBRID,
                        KITER, RulePolicy, SHIELD_BLADE_REACTIVE,
@@ -195,6 +196,7 @@ def comparisons(rows: list[dict]) -> list[dict]:
 
 def execute(stage: str, n: int, output: Path,
             *, stack_signature_edge: bool = True) -> dict:
+    require_new_output(output)
     if n < 1:
         raise ValueError("n must be positive")
     rows = []
@@ -208,6 +210,7 @@ def execute(stage: str, n: int, output: Path,
     payload = {
         "schema": "blacklight-restricted-duel-pool-v2", "engine_version": __version__,
         "damage_model": "literal_marvel_pool_v2",
+        "table_ruleset": "literal_marvel_pool_v2",
         "stage": stage, "n_per_cell": n,
         "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|stage|scenario|strategy|index",
         "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
@@ -217,8 +220,7 @@ def execute(stage: str, n: int, output: Path,
                         "no Focus damage/Karma", "no multi-target Fast Strikes",
                         "shield starts inactive; activation costs standard action or reaction"],
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_new_text(output, json.dumps(payload, indent=2, ensure_ascii=False))
     return payload
 
 

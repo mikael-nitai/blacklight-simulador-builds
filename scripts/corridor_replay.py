@@ -8,6 +8,7 @@ from pathlib import Path
 from blacklight.audit import audit_log
 from blacklight.engine import blacklight_profile
 from blacklight.policies import KITER
+from blacklight.results_io import require_new_output, write_new_text
 from experimental.corridor import CorridorDuel
 from experimental.corridor_audit import audit_corridor
 from .corridor_experiment import (POLICIES, gunners, hashes, profile_record,
@@ -16,6 +17,7 @@ from .corridor_experiment import (POLICIES, gunners, hashes, profile_record,
 
 def replay(stage: str, length: int, opponent_id: str, policy_name: str,
            index: int, output: Path) -> dict:
+    require_new_output(output)
     opponent = next(p for name, p in gunners() if name == opponent_id)
     policy = next(p for p in POLICIES if p.name == policy_name)
     profiles = (blacklight_profile(), opponent)
@@ -40,6 +42,7 @@ def replay(stage: str, length: int, opponent_id: str, policy_name: str,
                       "win" if result.winner == profiles[0].name else "loss")
     data = {"schema": "blacklight-corridor-full-trace-pool-v2",
             "damage_model": "literal_marvel_pool_v2",
+            "table_ruleset": "literal_marvel_pool_v2",
             "stage": stage, "length": length,
             "opponent": opponent_id, "policy": policy_name,
             "index": index, "seed": seed,
@@ -52,9 +55,7 @@ def replay(stage: str, length: int, opponent_id: str, policy_name: str,
             "contact_occurred": duel.contact_occurred,
             "victor_outcome": victor_outcome,
             "result": asdict(result), "audit_issues": issues}
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(data, indent=2, ensure_ascii=False),
-                      encoding="utf-8")
+    write_new_text(output, json.dumps(data, indent=2, ensure_ascii=False))
     return data
 
 
@@ -69,7 +70,10 @@ def main() -> None:
                         required=True)
     parser.add_argument("--index", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument('--historical-rules', action='store_true')
     args = parser.parse_args()
+    if not args.historical_rules:
+        parser.error('This replay uses historical Fast Strikes rules; pass --historical-rules explicitly')
     if args.index < 0:
         parser.error("index must be nonnegative")
     data = replay(args.stage, args.length, args.opponent,

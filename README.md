@@ -38,7 +38,8 @@ Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidade
 - [VALIDATION_PLAN.md](VALIDATION_PLAN.md) e [REVIEW_FINDINGS.md](REVIEW_FINDINGS.md): oráculos independentes e revisão adversarial.
 - `blacklight/`: dado, dano, motor, políticas, auditor de logs, busca, experimentos e sensibilidade.
 - `tests/`: oráculos e 4.000 trilhas auditadas em dez políticas × quatro cenários × 100 sementes.
-- `results/`: JSONs estruturados; `legacy_scalar_v1/`, `pre_*` e `invalid_*` são históricos. Arquivos `pool_v2` usam a regra atual da mesa.
+- `results/`: JSONs estruturados; `legacy_scalar_v1/`, `pre_*` e `invalid_*` são históricos. Os experimentos `pool_v2` precedem o último balanceamento de Fast Strikes.
+- [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md): diagnóstico, correções e limites da auditoria estrutural em andamento.
 - [DEMONSTRATIONS.md](DEMONSTRATIONS.md): quatro combates completos válidos com rolagens, ações e estados auditados; a trilha antiga do Escudo em Fast Strikes está arquivada.
 - [REPORT.md](REPORT.md): resultados confirmatórios, intervalos, refutação, sensibilidade, cenários reservados e gráficos.
 - [MANUAL_BLACKLIGHT.md](MANUAL_BLACKLIGHT.md) e [QUICK_REFERENCE.md](QUICK_REFERENCE.md): estratégia prática e consulta durante a mesa.
@@ -58,12 +59,12 @@ python -m scripts.pool_v2_confirm --historical-rules --stage holdout_v2 --n 1000
 python -m scripts.group_experiment --historical-rules --stage description --output results/reproduction_group_pool_v2.json
 python -m scripts.focus_experiment --stage description --output results/reproduction_focus_pool_v2.json
 python -m scripts.corridor_experiment --historical-rules --stage description --output results/reproduction_corridor_pool_v2.json
-python -m scripts.replay --scenario mirror_hammer --strategy hammer --index 0 --output results\replay.json
+python -m scripts.replay --historical-rules --scenario mirror_hammer --strategy hammer --index 0 --output results\replay.json
 ```
 
 As sementes são derivadas de SHA-256 de fase, cenário, política e índice. Reexecutar uma fase com o mesmo código produz os mesmos resultados. Os resultados de confirmação usam sementes diferentes das de desenvolvimento. `source_sha256` em cada JSON permite detectar mudanças nas regras, ficha auditada, especificação e código do pacote.
 
-As reproduções acima usam as mesmas sementes e não contam como amostras novas. Os destinos precisam ser novos; os comandos recusam substituir um arquivo existente. A auditoria de versões usa Git, além do Python. Antes de congelar uma execução nova, as fontes precisam estar em um commit, conforme [RESULT_VERSIONING.md](RESULT_VERSIONING.md).
+As reproduções acima usam as mesmas sementes e não contam como amostras novas. Os destinos precisam ser novos; as saídas são criadas sem substituir arquivos existentes. Os estudos antigos de busca, sensibilidade, reserva, métricas secundárias e adversários exigem `--historical-rules --output CAMINHO_NOVO`. Para regenerar o relatório v2, escolha um novo destino com `python -m scripts.pool_v2_report --output CAMINHO_NOVO`. A auditoria de versões usa Git, além do Python. Antes de congelar uma execução nova, as fontes precisam estar em um commit, conforme [RESULT_VERSIONING.md](RESULT_VERSIONING.md).
 
 A suíte atual tem **228 testes** aprovados, incluindo oráculos de dano, integração de duas armas, auditores independentes, troca de fichas, [famílias modulares de cura/estado](MODULAR_STATES.md), [duração](MODULAR_LIFECYCLE.md) e proveniência. A versão `pool_v2` tem 52.000 duelos de desenvolvimento, 240.000 de replicação, 120.000 de reserva e 60.000 combates descritivos em cada extensão de grupo, Focus e corredor. A camada genérica de fichas tem um teste de integração com 1.000 duelos adicionais. [PROJECT_STATUS.md](PROJECT_STATUS.md) separa o que ainda falta. Os PNG/SVG anteriores em `results/` são históricos e precisam ser refeitos para a nova regra.
 

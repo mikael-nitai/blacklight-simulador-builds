@@ -7,6 +7,7 @@ strategy-performance experiment.
 from hashlib import sha256
 import json
 from pathlib import Path
+from blacklight.results_io import write_new_text
 from argparse import ArgumentParser
 
 from blacklight.policies import ATTACK, RulePolicy, STANCE
@@ -43,7 +44,8 @@ def main() -> None:
         content = json.dumps(result, ensure_ascii=False, indent=2)
         if output.exists() and output.read_bytes() != content.encode('utf-8'):
             raise ValueError(f'{output.name}: existing result differs; use a new output prefix')
-        output.write_text(content, encoding='utf-8', newline='\n')
+        if not output.exists():
+            write_new_text(output, content, newline='\n')
         print(f'{name}: {result["hero_outcome"]}, {count} activation events, audit=OK')
 
 

@@ -5,6 +5,7 @@ from dataclasses import asdict
 import json
 from pathlib import Path
 
+from blacklight.results_io import require_new_output, write_new_text
 from experimental.group import GroupBattle
 from experimental.group_audit import audit_group_result
 from experimental.group_policies import (GROUP_ENEMY, GROUP_FAST,
@@ -18,6 +19,7 @@ POLICIES = (GROUP_HAMMER, GROUP_HAMMER_SHIELD, GROUP_FAST)
 
 def replay(stage: str, scenario_id: str, policy_name: str,
            index: int, output: Path) -> dict:
+    require_new_output(output)
     profiles = next(value for name, value in scenarios() if name == scenario_id)
     policy = next(value for value in POLICIES if value.name == policy_name)
     seed = seed_for(stage, scenario_id, policy_name, index)
@@ -28,6 +30,7 @@ def replay(stage: str, scenario_id: str, policy_name: str,
         raise RuntimeError(f"Group replay failed audit: {issues}")
     data = {"schema": "blacklight-group-full-trace-pool-v2",
             "damage_model": "literal_marvel_pool_v2",
+            "table_ruleset": "literal_marvel_pool_v2",
             "stage": stage, "scenario": scenario_id,
             "policy": policy_name, "index": index, "seed": seed,
             "source_sha256": hashes(),
@@ -35,9 +38,7 @@ def replay(stage: str, scenario_id: str, policy_name: str,
             "policies": [asdict(policy), asdict(GROUP_ENEMY),
                          asdict(GROUP_ENEMY)],
             "result": asdict(result), "audit_issues": issues}
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(data, ensure_ascii=False, indent=2),
-                      encoding="utf-8")
+    write_new_text(output, json.dumps(data, ensure_ascii=False, indent=2))
     return data
 
 
@@ -51,7 +52,10 @@ def main() -> None:
                         required=True)
     parser.add_argument("--index", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument('--historical-rules', action='store_true')
     args = parser.parse_args()
+    if not args.historical_rules:
+        parser.error('This replay uses historical Fast Strikes rules; pass --historical-rules explicitly')
     if args.index < 0:
         parser.error("index must be nonnegative")
     data = replay(args.stage, args.scenario, args.policy,

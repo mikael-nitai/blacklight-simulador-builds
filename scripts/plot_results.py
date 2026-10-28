@@ -3,6 +3,7 @@
 Optional dependency: matplotlib. The simulator itself has no external deps.
 """
 
+from argparse import ArgumentParser
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -13,9 +14,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from blacklight.experiment import ROOT, source_hashes
+from blacklight.results_io import require_new_output, write_new_text
 
 
 def main() -> None:
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument('--output-dir', type=Path, default=ROOT / 'results')
+    args = parser.parse_args()
+    names = ('fig_win_rates.png', 'fig_win_rates.svg', 'fig_s4_outcomes.png',
+             'fig_s4_outcomes.svg', 'figures_manifest.json')
+    try:
+        for name in names:
+            require_new_output(args.output_dir / name)
+    except FileExistsError as exc:
+        parser.error(str(exc))
     path = ROOT / "results" / "confirm_summary.json"
     data = json.loads(path.read_text(encoding="utf-8"))
     if data["source_sha256"] != source_hashes():
@@ -57,8 +69,11 @@ def main() -> None:
         ax.set_xlabel("Vitórias em 10 000 combates (%)")
     fig.suptitle("Blacklight Rank 3: vitórias por cenário e política",
                  fontsize=14, weight="bold")
-    fig.savefig(ROOT / "results" / "fig_win_rates.png", dpi=180)
-    fig.savefig(ROOT / "results" / "fig_win_rates.svg")
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    with (args.output_dir / 'fig_win_rates.png').open('xb') as output:
+        fig.savefig(output, format='png', dpi=180)
+    with (args.output_dir / 'fig_win_rates.svg').open('xb') as output:
+        fig.savefig(output, format='svg')
     plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(10, 4.4), constrained_layout=True)
@@ -79,8 +94,10 @@ def main() -> None:
     ax.set_title("S4 · Atirador em campo aberto: sobreviver não é vencer",
                  loc="left", fontsize=12, weight="bold")
     ax.legend(loc="lower right", ncol=3)
-    fig.savefig(ROOT / "results" / "fig_s4_outcomes.png", dpi=180)
-    fig.savefig(ROOT / "results" / "fig_s4_outcomes.svg")
+    with (args.output_dir / 'fig_s4_outcomes.png').open('xb') as output:
+        fig.savefig(output, format='png', dpi=180)
+    with (args.output_dir / 'fig_s4_outcomes.svg').open('xb') as output:
+        fig.savefig(output, format='svg')
     plt.close(fig)
 
     script = Path(__file__)
@@ -91,8 +108,7 @@ def main() -> None:
         "figures": ["fig_win_rates.png", "fig_win_rates.svg",
                     "fig_s4_outcomes.png", "fig_s4_outcomes.svg"],
     }
-    (ROOT / "results" / "figures_manifest.json").write_text(
-        json.dumps(manifest, indent=2), encoding="utf-8")
+    write_new_text(args.output_dir / 'figures_manifest.json', json.dumps(manifest, indent=2))
 
 
 if __name__ == "__main__":

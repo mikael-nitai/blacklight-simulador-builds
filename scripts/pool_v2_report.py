@@ -1,9 +1,12 @@
 """Build a local report from validated v2 result JSONs, without resimulation."""
 
+from argparse import ArgumentParser
 import json
 from math import sqrt
+from pathlib import Path
 
 from blacklight.experiment import ROOT, wilson
+from blacklight.results_io import require_new_output, write_new_text
 from .verify_sources import verify_result
 
 
@@ -59,6 +62,13 @@ def difference(a: dict, b: dict, *, comparisons: int) -> tuple[float, float, flo
 
 
 def main() -> None:
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, default=ROOT / 'POOL_V2_REPORT.md')
+    args = parser.parse_args()
+    try:
+        require_new_output(args.output)
+    except FileExistsError as exc:
+        parser.error(str(exc))
     confirm = read_verified('pool_v2_confirm_summary.json')
     holdout = read_verified('pool_v2_holdout_summary.json')
     group = read_verified('group_pool_v2_description_summary.json')
@@ -157,9 +167,8 @@ def main() -> None:
               '- [Grupo](results/group_pool_v2_description_summary.json), [Focus](results/focus_pool_v2_description_summary.json) e [corredor](results/corridor_pool_v2_description_summary.json).',
               '- [Vitória no contato reservado](results/pool_v2_demo_H1_fast_shield_0.json), [derrota para energia](results/pool_v2_demo_H2_fast_shield_0.json) e [inconclusão contra munição](results/pool_v2_demo_gunner_confirm_fast_shield_0.json).',
               '- Gerar este relatório novamente: `python -m scripts.pool_v2_report`.', '']
-    output = ROOT / 'POOL_V2_REPORT.md'
-    output.write_text('\n'.join(lines), encoding='utf-8')
-    print(f'{output}: 36 duel rows, 12 adjusted comparisons, 24 extension rows; source hashes checked')
+    write_new_text(args.output, '\n'.join(lines))
+    print(f'{args.output}: 36 duel rows, 12 adjusted comparisons, 24 extension rows; source hashes checked')
 
 
 if __name__ == '__main__':

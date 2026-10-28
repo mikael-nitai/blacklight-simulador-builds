@@ -5,6 +5,7 @@ from hashlib import sha256
 import json
 from math import sqrt
 from pathlib import Path
+from blacklight.results_io import write_new_text
 import sys
 
 from blacklight.engine import Profile, blacklight_profile
@@ -137,9 +138,7 @@ def main() -> None:
         "policies": [asdict(policy) for policy in POLICIES],
         "rows": rows,
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
-                      encoding="utf-8")
+    write_new_text(output, json.dumps(payload, indent=2, ensure_ascii=False))
 
 
 if __name__ == "__main__":

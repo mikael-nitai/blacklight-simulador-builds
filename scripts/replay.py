@@ -10,6 +10,7 @@ from pathlib import Path
 from blacklight.audit import audit_log
 from blacklight.engine import Duel, Profile, blacklight_profile
 from blacklight.experiment import scenarios, seed_for, source_hashes, strategies
+from blacklight.results_io import require_new_output, write_new_text
 
 
 def profile_record(profile: Profile) -> dict:
@@ -21,6 +22,7 @@ def profile_record(profile: Profile) -> dict:
 
 def replay(stage: str, scenario_id: str, strategy_id: str,
            index: int, output: Path) -> dict:
+    require_new_output(output)
     scenario = next(s for s in scenarios() if s.id == scenario_id)
     strategy = next(s for s in strategies() if s.id == strategy_id)
     blacklight = blacklight_profile()
@@ -42,6 +44,7 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
     data = {
         "schema": "blacklight-full-trace-pool-v2",
         "damage_model": "literal_marvel_pool_v2",
+        "table_ruleset": "literal_marvel_pool_v2",
         "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
         "stage": stage, "scenario": scenario_id,
         "strategy": strategy_id, "index": index, "seed": seed,
@@ -52,9 +55,7 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
         "result": asdict(result),
         "audit_issues": issues,
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(data, ensure_ascii=False, indent=2),
-                      encoding="utf-8")
+    write_new_text(output, json.dumps(data, ensure_ascii=False, indent=2))
     return data
 
 
@@ -67,7 +68,10 @@ def main() -> None:
                         choices=[s.id for s in strategies()])
     parser.add_argument("--index", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument('--historical-rules', action='store_true')
     args = parser.parse_args()
+    if not args.historical_rules:
+        parser.error('This replay uses historical Fast Strikes rules; pass --historical-rules explicitly')
     if args.index < 0:
         parser.error("index must be nonnegative")
     data = replay(args.stage, args.scenario, args.strategy,

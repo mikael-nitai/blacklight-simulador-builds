@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 from blacklight.policies import ATTACK
+from blacklight.results_io import write_new_text
 from combatants import load_sheet
 from combatants.runner import run_batch, run_duel
 from combatants.split_fast import SplitFastPolicy
@@ -46,8 +47,7 @@ def main() -> None:
         payload['demonstration_note'] = 'Current table execution/integration control; no strategy ranking inferred'
         for source in (HERO, FOE, Path(__file__).resolve()):
             payload['source_sha256'][str(source.relative_to(ROOT))] = sha256(source.read_bytes()).hexdigest()
-        outputs[name].write_text(json.dumps(payload, ensure_ascii=False, indent=2),
-                                 encoding='utf-8', newline='\n')
+        write_new_text(outputs[name], json.dumps(payload, ensure_ascii=False, indent=2), newline='\n')
         if 'result' in payload:
             checks = sum(row['type'] == 'fast_limb_check' for row in payload['result']['log'])
             print(f'{name}: audit=OK, {checks} separate limb checks')

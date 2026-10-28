@@ -8,6 +8,7 @@ from pathlib import Path
 
 from blacklight.experiment import strategies
 from blacklight.policies import ATTACK, KITER
+from blacklight.results_io import require_new_output, write_new_text
 from combatants import load_sheet, coverage
 from combatants.pdf_draft import extract_draft
 from combatants.runner import run_duel, run_batch
@@ -18,8 +19,7 @@ from combatants.terrain_policies import WallAwarePolicy
 
 
 def write_json(path: Path, payload: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
+    write_new_text(path, json.dumps(payload, ensure_ascii=False, indent=2))
 
 
 def main() -> None:
@@ -54,6 +54,8 @@ def main() -> None:
             sub.add_argument('--master-seed', type=int, required=True)
             sub.add_argument('--n', type=int, required=True)
     args = parser.parse_args()
+    if args.output:
+        require_new_output(args.output)
     if args.command == 'extract-pdf':
         payload = extract_draft(args.pdf)
         write_json(args.output, payload)

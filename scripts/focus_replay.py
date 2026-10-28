@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from blacklight.engine import blacklight_profile
+from blacklight.results_io import require_new_output, write_new_text
 from experimental.focus_audit import audit_focus_duel
 from experimental.focus_duel import FocusDuel, STRATEGIES
 from .focus_experiment import hashes, mentalist, profile_record, seed_for
@@ -13,6 +14,7 @@ from .focus_experiment import hashes, mentalist, profile_record, seed_for
 
 def replay(stage: str, scenario: str, variant: str,
            strategy: str, index: int, output: Path) -> dict:
+    require_new_output(output)
     rank = int(scenario[1:])
     profiles = (blacklight_profile(), mentalist(rank))
     reduction = 0 if variant == "F0" else 2
@@ -31,9 +33,7 @@ def replay(stage: str, scenario: str, variant: str,
             "source_sha256": hashes(),
             "profiles": [profile_record(p) for p in profiles],
             "result": asdict(result), "audit_issues": issues}
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(data, indent=2, ensure_ascii=False),
-                      encoding="utf-8")
+    write_new_text(output, json.dumps(data, indent=2, ensure_ascii=False))
     return data
 
 

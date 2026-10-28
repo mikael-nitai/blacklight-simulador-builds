@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from blacklight.policies import KITER
+from blacklight.results_io import write_new_text
 from combatants import load_sheet
 from combatants.battlefields import CorridorMap
 from combatants.runner import run_batch, run_duel
@@ -50,8 +51,7 @@ def main() -> None:
         payload['demonstration_note'] = 'Current corridor integration control; no strategy ranking inferred'
         for source in (HERO, FOE, Path(__file__).resolve()):
             payload['source_sha256'][str(source.relative_to(ROOT))] = sha256(source.read_bytes()).hexdigest()
-        outputs[name].write_text(json.dumps(payload, ensure_ascii=False, indent=2),
-                                 encoding='utf-8', newline='\n')
+        write_new_text(outputs[name], json.dumps(payload, ensure_ascii=False, indent=2), newline='\n')
         if 'result' in payload:
             print(f'{name}: combat+geometry audit=OK, final positions={payload["battlefield_result"]["final_positions"]}')
         else:

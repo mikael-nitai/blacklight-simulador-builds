@@ -8,6 +8,7 @@ from statistics import NormalDist
 
 from .engine import blacklight_profile
 from .experiment import ROOT, run_cell, scenarios, source_hashes, strategies
+from .results_io import historical_output, write_new_text
 
 
 def difference(a: dict, b: dict) -> dict:
@@ -22,6 +23,7 @@ def difference(a: dict, b: dict) -> dict:
 
 
 def main() -> None:
+    output = historical_output(__doc__)
     scenario_map = {x.id: x for x in scenarios()}
     strategy_map = {x.id: x for x in strategies()}
     pairs = []
@@ -66,10 +68,12 @@ def main() -> None:
             print("edges", scenario_id, strategy_id,
                   one_edge["win_rate"], two_edges["win_rate"], flush=True)
     payload = {"schema": "blacklight-sensitivity-v1", "n_per_cell": 3000,
+               "damage_model": "literal_marvel_pool_v2",
+               "table_ruleset": "literal_marvel_pool_v2",
+               "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|stage|scenario|strategy|index",
                "source_sha256": source_hashes(), "pairs": pairs,
                "note": "Independent seeds; intervals are exploratory, not paired"}
-    output = ROOT / "results" / "sensitivity.json"
-    output.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_new_text(output, json.dumps(payload, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

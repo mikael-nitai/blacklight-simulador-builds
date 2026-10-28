@@ -10,6 +10,7 @@ import sys
 from blacklight.engine import Profile
 from blacklight.experiment import ROOT, Scenario, run_cell, scenarios, source_hashes, strategies
 from blacklight.policies import HAMMER, KITER
+from blacklight.results_io import require_new_output, write_new_text
 
 
 FINALISTS = (
@@ -47,6 +48,7 @@ def profile_record(profile: Profile) -> dict:
 
 
 def execute(stage: str, n: int, output: Path) -> dict:
+    require_new_output(output)
     if stage not in ("confirm_v2", "holdout_v2") or n < 1:
         raise ValueError("Unknown stage or invalid sample count")
     configured = scenarios() if stage == "confirm_v2" else holdout_scenarios()
@@ -67,6 +69,7 @@ def execute(stage: str, n: int, output: Path) -> dict:
     payload = {
         "schema": "blacklight-finalists-pool-v2",
         "damage_model": "literal_marvel_pool_v2",
+        "table_ruleset": "literal_marvel_pool_v2",
         "stage": stage, "n_per_cell": n,
         "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|stage|scenario|strategy|index",
         "damage_seed_formula": "duel seed XOR 0xD6162026; separate Python Random stream",
@@ -79,9 +82,7 @@ def execute(stage: str, n: int, output: Path) -> dict:
         "limitations": ["synthetic opponents", "two actors", "open field",
                         "no Karma", "no numeric limb effect"],
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
-                      encoding="utf-8")
+    write_new_text(output, json.dumps(payload, indent=2, ensure_ascii=False))
     return payload
 
 

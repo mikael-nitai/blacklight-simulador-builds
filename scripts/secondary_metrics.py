@@ -9,6 +9,7 @@ import sys
 from blacklight.audit import audit_log
 from blacklight.engine import Duel, blacklight_profile
 from blacklight.experiment import ROOT, scenarios, seed_for, source_hashes, strategies, wilson
+from blacklight.results_io import historical_output, write_new_text
 
 
 def quantile(values: list[float], probability: float) -> float:
@@ -27,6 +28,7 @@ def mean_se(values: list[float]) -> dict[str, float]:
 
 
 def main() -> None:
+    output = historical_output(__doc__)
     chosen = {"bare_attack", "hammer", "shield_hammer_reactive",
               "hammer_heal_t75_s15", "shield_hammer_endturn"}
     selected = tuple(s for s in strategies() if s.id in chosen)
@@ -92,15 +94,17 @@ def main() -> None:
     spec = ROOT / "SECONDARY_SPEC.md"
     payload = {
         "schema": "blacklight-secondary-v1", "n_per_cell": n,
-        "seed_formula": "first 8 bytes SHA-256 of blacklight-v1|secondary|scenario|strategy|index",
+        "damage_model": "literal_marvel_pool_v2",
+        "table_ruleset": "literal_marvel_pool_v2",
+        "seed_formula": "first 8 bytes SHA-256 of blacklight-pool-v2|secondary|scenario|strategy|index",
         "source_sha256": source_hashes(),
         "script_sha256": sha256(script.read_bytes()).hexdigest(),
         "spec_sha256": sha256(spec.read_bytes()).hexdigest(),
         "python": sys.version, "rows": rows,
     }
-    output = ROOT / "results" / "secondary_summary.json"
-    output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
-                      encoding="utf-8")
+    payload['source_sha256']['scripts/secondary_metrics.py'] = sha256(script.read_bytes()).hexdigest()
+    payload['source_sha256']['SECONDARY_SPEC.md'] = sha256(spec.read_bytes()).hexdigest()
+    write_new_text(output, json.dumps(payload, indent=2, ensure_ascii=False))
 
 
 if __name__ == "__main__":

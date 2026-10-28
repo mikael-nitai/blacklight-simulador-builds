@@ -9,11 +9,13 @@ from pathlib import Path
 from blacklight.audit import audit_log
 from blacklight.engine import Duel, blacklight_profile
 from blacklight.experiment import scenarios, seed_for, source_hashes, strategies
+from blacklight.results_io import require_new_output, write_new_text
 from .pool_v2_confirm import FINALISTS, holdout_scenarios, profile_record
 
 
 def replay(stage: str, scenario_id: str, strategy_id: str,
            index: int, output: Path) -> dict:
+    require_new_output(output)
     if stage not in ("confirm_v2", "holdout_v2") or index < 0:
         raise ValueError("Invalid stage or index")
     configured = scenarios() if stage == "confirm_v2" else holdout_scenarios()
@@ -43,6 +45,7 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
     payload = {
         "schema": "blacklight-finalist-full-trace-pool-v2",
         "damage_model": "literal_marvel_pool_v2",
+        "table_ruleset": "literal_marvel_pool_v2",
         "stage": stage, "scenario": scenario.id,
         "strategy": strategy.id, "index": index, "seed": seed,
         "source_sha256": sources,
@@ -50,9 +53,7 @@ def replay(stage: str, scenario_id: str, strategy_id: str,
         "policies": [asdict(strategy.policy), asdict(scenario.policy)],
         "result": asdict(result), "audit_issues": issues,
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
-                      encoding="utf-8")
+    write_new_text(output, json.dumps(payload, indent=2, ensure_ascii=False))
     return payload
 
 
@@ -64,7 +65,10 @@ def main() -> None:
     parser.add_argument("--strategy", choices=FINALISTS, required=True)
     parser.add_argument("--index", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument('--historical-rules', action='store_true')
     args = parser.parse_args()
+    if not args.historical_rules:
+        parser.error('This replay uses historical Fast Strikes rules; pass --historical-rules explicitly')
     data = replay(args.stage, args.scenario, args.strategy,
                   args.index, args.output)
     result = data["result"]

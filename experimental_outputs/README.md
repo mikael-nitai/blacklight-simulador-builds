@@ -17,3 +17,11 @@ fontes e entradas foram comparados com esse commit; a reprodução em um process
 novo gerou bytes idênticos. SHA-256 do arquivo:
 `c85d243068a37054749dbe61ea7fc168e794d7daa7fb368cbbba8c9b4e411d75`.
 É um exemplo com adversários sintéticos, não uma conclusão de eficácia.
+
+`group_grid_integration_001.json` usa o exemplo de grade, semente 51 e as
+fontes do commit `d81101a`. Os 52 hashes de fontes e entradas foram comparados
+com esse commit; uma execução nova reproduziu os bytes do arquivo. SHA-256:
+`c889528502cf5447a3f9f018a1b8c82fec5496f3d2660ef50552dbe6c09a7127`.
+As restrições de visão, ocupação e movimento estão em
+[GROUP_GRID_EXPERIMENT.md](../GROUP_GRID_EXPERIMENT.md). Os adversários são
+sintéticos e o resultado é apenas uma demonstração experimental.

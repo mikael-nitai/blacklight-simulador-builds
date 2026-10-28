@@ -148,6 +148,66 @@
     "current_corridor_v1_integration_batch.json": {
       "result_sha256": "09d39cc61871438466d68b7d1780d8873a85a3b5ca97e1b9ba0ffbd7cf0b644a",
       "source_commit": "7d6517a75c862a2566f7ad22a4e81af37a9d7c7f"
+    },
+    "current_duel_dev_v1_gunner_corridor_bare.json": {
+      "result_sha256": "07c397d853458e735f267a8da3cd2222819caaa6e404254eeab788763b744dd6",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_gunner_corridor_blade_fast_blade.json": {
+      "result_sha256": "7d85acd70bd74c749da3b639270faf63a08a3c23920618baeb52fddc33f766bd",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_gunner_corridor_hammer.json": {
+      "result_sha256": "0fb1cfd30ba8b444660134f32df9fa313d3ba0349db0963d49a7f648d7f133ce",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_gunner_corridor_hammer_fast_blade.json": {
+      "result_sha256": "a914b9f0d5aed22453cb8af7ae05a36bfee2ef4a05d416c89eaed0eb08cfb1fe",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_gunner_corridor_hammer_fast_hammer.json": {
+      "result_sha256": "b1a41542532936ed6ec42a27dcf9f5bca91bc34eba1e0047b81856ce9832855f",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_mirror_bare.json": {
+      "result_sha256": "b8e86641bb2f1ed738e645adb7182eb46cb3d265bb8f4aae603d265487294c48",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_mirror_blade_fast_blade.json": {
+      "result_sha256": "5b5966bf12fa97823be7d0186bae63fb1a532149662a523e9f8fc4cf10b41959",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_mirror_hammer.json": {
+      "result_sha256": "5713c385a78a342ea03a8da18d64125613cdd2a0ea90cc5f7b55c87ca9165d82",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_mirror_hammer_fast_blade.json": {
+      "result_sha256": "3a6b2c8bd1384eea2dafb23c496ecac0a6ad55c40db6d9eb56f71afc33aac9a8",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_mirror_hammer_fast_hammer.json": {
+      "result_sha256": "7f6114911606544b97b21eb7077df427e37f8ea6118a129e9b532c51826457c1",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_rank4_bare.json": {
+      "result_sha256": "19c561ea7ee6a88e6ccb65d7f2963d34bdaba9043fe6f05959ac8c6d3f048e77",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_rank4_blade_fast_blade.json": {
+      "result_sha256": "6e512c0633888d7b9ab3bc57fad8eddc774253a28486eb9354dc6e87d447c806",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_rank4_hammer.json": {
+      "result_sha256": "dcd76cf4217901b756f4c1c8c308ed9d0c361e2bdeea68a98b74e347eeaf7e8b",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_rank4_hammer_fast_blade.json": {
+      "result_sha256": "84b956846348dced30f01465307eaaf98763463d34fd3de3e10831520fc4051a",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_dev_v1_rank4_hammer_fast_hammer.json": {
+      "result_sha256": "1b47ea4b2e58cde0f0b4225c5c3c0e4d45ce72625a731bfc22bde983dd74ab84",
+      "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
     }
   }
 }

@@ -5,6 +5,9 @@ confronto de contato fixo](GROUP_CHARACTER_EXPERIMENT.md), com trilha e
 verificações parciais. Reações aninhadas interrompem a fila de gatilhos
 pendentes; o caso foi testado com incapacitação. Não há certificação de combate
 de grupo ou de resultados de eficácia nesta etapa.
+Uma revisão independente encontrou que Resilience negativa com Healing Factor
+podia reduzir Health. A combinação agora é bloqueada na entrada de fichas e
+perfis, sem presumir uma solução normativa para o caso extremo.
 
 **Continuação após a Fundação:** o grupo experimental agora exige papéis
 explícitos de jogador/NPC e registra uma ordem declarada quando sobrar empate

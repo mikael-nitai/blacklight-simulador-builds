@@ -37,8 +37,6 @@ def run_group(sheets: tuple[CharacterSheet, ...], policies: tuple[GroupPolicy, .
         raise ValueError('Group supports only the current table ruleset')
     profiles = tuple(compile_duel(sheet) for sheet in sheets)
     for profile, policy in zip(profiles, policies):
-        if 'healing_factor' in profile.powers and profile.resilience < 0:
-            raise ValueError('Healing Factor with negative Resilience is unresolved in this group scope')
         if (policy.weapon != 'bare' and policy.weapon not in profile.weapons
                 or policy.offhand is not None and policy.offhand not in profile.weapons
                 or policy.weapon != 'bare' and policy.prefer_fast and 'fast_strikes' not in profile.powers

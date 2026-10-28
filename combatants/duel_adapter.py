@@ -59,6 +59,8 @@ def coverage(sheet: CharacterSheet) -> dict:
         blockers.append(f"ruleset {sheet.ruleset!r} is not implemented by the physical-duel adapters")
     if sheet.level('fast_strikes') and sheet.abilities['melee'] % 2:
         blockers.append('Fast Strikes with odd Melee damage bonus needs a table rounding ruling')
+    if sheet.level('healing_factor') and sheet.abilities['resilience'] < 0:
+        blockers.append('Healing Factor with negative Resilience is unresolved; do not interpret healing as damage')
     for feature in sheet.features:
         mechanic = REGISTRY.get((feature.kind, feature.id))
         status = mechanic.status if mechanic else 'pending'

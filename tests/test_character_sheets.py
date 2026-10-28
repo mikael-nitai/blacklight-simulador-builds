@@ -129,6 +129,24 @@ class TestCharacterSheets(unittest.TestCase):
         with self.assertRaisesRegex(CoverageError, 'rounding ruling'):
             compile_duel(parse_sheet(data))
 
+    def test_negative_healing_factor_is_blocked_without_inventing_a_rule(self):
+        data = json.loads(VICTOR.read_text(encoding='utf-8'))
+        data['abilities']['resilience'] = -1
+        data['defenses']['resilience'] = 9
+        sheet = parse_sheet(data)
+        self.assertFalse(coverage(sheet)['ready_for_this_scope'])
+        with self.assertRaisesRegex(CoverageError, 'negative Resilience'):
+            compile_duel(sheet)
+        with self.assertRaisesRegex(ValueError, 'negative Resilience'):
+            replace(blacklight_profile(), resilience=-1)
+        data['features'] = [row for row in data['features'] if row['id'] != 'healing_factor']
+        self.assertEqual(compile_duel(parse_sheet(data)).resilience, -1)
+        data['abilities']['resilience'] = 0
+        data['defenses']['resilience'] = 10
+        original = json.loads(VICTOR.read_text(encoding='utf-8'))
+        data['features'].append(next(row for row in original['features'] if row['id'] == 'healing_factor'))
+        self.assertEqual(compile_duel(parse_sheet(data)).resilience, 0)
+
     def test_blade_rank_requirement_is_checked_at_adapter(self):
         data = json.loads(VICTOR.read_text(encoding='utf-8'))
         data['rank'] = 1

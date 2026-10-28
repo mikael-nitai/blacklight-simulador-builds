@@ -53,6 +53,8 @@ class Profile:
             raise ValueError("Invalid resource maximum")
         if self.run_speed < 0 or self.health_dr < 0 or self.ranged_range < 0:
             raise ValueError("Invalid movement, reduction, or range")
+        if "healing_factor" in self.powers and self.resilience < 0:
+            raise ValueError("Healing Factor with negative Resilience is unresolved")
         if self.melee_defense != 10 + self.melee or self.agility_defense != 10 + self.agility:
             raise ValueError("Defense scores must be derived from abilities in this model")
         if (self.run_speed != 5 + max(0, self.agility // 5)

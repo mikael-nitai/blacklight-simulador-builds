@@ -10,7 +10,7 @@ da build ou a fidelidade de todas as habilidades no grupo. Exige a regra atual
 
 O campo de batalha é **contato fixo entre todos**: não há posições individuais,
 movimentação, knockback, Karma ou ataques de Focus. Uma ficha com Healing Factor
-e Resilience negativa é bloqueada no executor de grupo enquanto o caso extremo
+e Resilience negativa é bloqueada no adaptador comum e no perfil do motor enquanto o caso extremo
 é investigado. Os inimigos de exemplo são sintéticos, não personagens oficiais.
 
 O executor confronta a trilha com os perfis e as contas de dano, a iniciativa,

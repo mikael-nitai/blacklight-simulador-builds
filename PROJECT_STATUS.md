@@ -1,5 +1,12 @@
 # Estado do projeto completo — 27/10/2026
 
+**Continuação após a Fundação:** o grupo experimental agora exige papéis
+explícitos de jogador/NPC e registra uma ordem declarada quando sobrar empate
+de iniciativa. Um verificador próprio confere essa ordem e os turnos, dentro
+dos limites de [GROUP_INITIATIVE_EXPERIMENT.md](GROUP_INITIATIVE_EXPERIMENT.md).
+O grupo inteiro permanece experimental; seu uso em estudos depende dos gates
+de reações, alvos, efeitos, posicionamento e integração de fichas.
+
 **Atualização de 28/10:** o usuário confirmou que os braços de Fast Strikes
 podem mirar alvos diferentes. A migração de grupo em `combatants/group.py` foi
 interrompida antes da validação e está preservada como experimental. Consulte

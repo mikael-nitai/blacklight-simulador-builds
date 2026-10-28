@@ -95,13 +95,18 @@ class GroupResult:
     final_focus: tuple[int, ...]
     metrics: tuple[dict, ...]
     log: tuple[dict, ...]
+    initiative_roles: tuple[str, ...] | None = None
+    initiative_tie_order: tuple[int, ...] | None = None
+    initiative_order: tuple[int, ...] | None = None
     evidence_scope: str = 'experimental_group_uncertified'
 
 
 class GroupBattle(SplitFastDuel):
     execution_scope = 'experimental_group'
 
-    def __init__(self, profiles, policies, *, teams: tuple[str, ...], **kwargs):
+    def __init__(self, profiles, policies, *, teams: tuple[str, ...],
+                 initiative_roles: tuple[str, ...] | None = None,
+                 initiative_tie_order: tuple[int, ...] | None = None, **kwargs):
         if (not isinstance(profiles, tuple) or len(profiles) < 2
                 or not isinstance(policies, tuple) or len(policies) != len(profiles)
                 or not isinstance(teams, tuple) or len(teams) != len(profiles)
@@ -110,9 +115,43 @@ class GroupBattle(SplitFastDuel):
                 or len({profile.name for profile in profiles}) != len(profiles)
                 or kwargs.get('initial_distance', 1) != 1):
             raise ValueError('A group requires distinct names, policies and at least two teams at contact')
+        count = len(profiles)
+        if (initiative_roles is not None and
+                (not isinstance(initiative_roles, tuple) or len(initiative_roles) != count
+                 or any(role not in ('player', 'npc') for role in initiative_roles))):
+            raise ValueError('Declare player or npc for every combatant')
+        if (initiative_tie_order is not None and
+                (not isinstance(initiative_tie_order, tuple) or len(initiative_tie_order) != count
+                 or any(type(index) is not int for index in initiative_tie_order)
+                 or set(initiative_tie_order) != set(range(count)))):
+            raise ValueError('Tie order must be a permutation of roster indices')
         super().__init__(profiles, policies, **kwargs)
         self.teams = teams
+        self.initiative_roles = initiative_roles
+        self.initiative_tie_order = initiative_tie_order
+        self.resolved_initiative_order = None
         self._timed_stuns: tuple[TimedEffect, ...] = ()
+
+    def _initiative(self):
+        if self.initiative_roles is None:
+            raise ValueError('Group initiative needs explicit player/npc roles')
+        return super()._initiative()
+
+    def _initiative_order(self, checks, modifiers):
+        keys = [(-check.total, -int(check.fantastic), -modifiers[i],
+                 0 if self.initiative_roles[i] == 'player' else 1)
+                for i, check in enumerate(checks)]
+        if len(set(keys)) != len(keys) and self.initiative_tie_order is None:
+            raise ValueError('Remaining initiative tie needs an explicit agreed tie order')
+        order = self.initiative_tie_order or tuple(range(len(checks)))
+        priority = {actor: position for position, actor in enumerate(order)}
+        result = tuple(sorted(range(len(checks)), key=lambda i: (keys[i], priority[i])))
+        self.resolved_initiative_order = result
+        self._record('group_initiative_order', ('ACT-02',),
+                     roles=list(self.initiative_roles),
+                     tie_order=list(self.initiative_tie_order) if self.initiative_tie_order else None,
+                     order=list(result))
+        return result
 
     def _enemies(self, actor, *, conscious=True):
         return tuple(i for i, fighter in enumerate(self.fighters)
@@ -258,4 +297,6 @@ class GroupBattle(SplitFastDuel):
                         for index, fighter in enumerate(self.fighters))
         return GroupResult(self.seed, winner, outcome, self.round, self.turns, bonus_occurred,
                            self.teams, tuple(f.health for f in self.fighters),
-                           tuple(f.focus for f in self.fighters), metrics, tuple(self.log))
+                           tuple(f.focus for f in self.fighters), metrics, tuple(self.log),
+                           self.initiative_roles, self.initiative_tie_order,
+                           self.resolved_initiative_order)

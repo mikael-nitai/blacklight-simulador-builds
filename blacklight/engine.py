@@ -959,10 +959,13 @@ class Duel:
                          rerolls=[vars(x) for x in rerolls], total=result.total,
                          modifier=modifier,
                          fantastic=result.fantastic)
-        order = tuple(sorted(range(len(self.fighters)), key=lambda i: (-checks[i].total,
-                           -int(checks[i].fantastic), -modifiers[i],
-                           i)))
+        order = self._initiative_order(checks, modifiers)
         return order, tuple(check.fantastic for check in checks)
+
+    def _initiative_order(self, checks, modifiers):
+        """Historical duel tie convention; group hosts may declare their own contract."""
+        return tuple(sorted(range(len(self.fighters)), key=lambda i: (-checks[i].total,
+                           -int(checks[i].fantastic), -modifiers[i], i)))
 
     def _outcome(self) -> tuple[str, str | None] | None:
         a, b = self.fighters

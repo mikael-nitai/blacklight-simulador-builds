@@ -121,6 +121,8 @@ class TestCurrentGroupFoundation(unittest.TestCase):
                         def run():
                             return GroupBattle(profiles, policies,
                                                teams=('heroes', 'enemies', 'enemies'),
+                                               initiative_roles=('player', 'npc', 'npc'),
+                                               initiative_tie_order=(0, 1, 2),
                                                seed=seed, max_rounds=12, audit=True).run()
                         first = run()
                         self.assertEqual(first, run())

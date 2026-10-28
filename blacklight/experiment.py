@@ -6,7 +6,7 @@ import argparse
 from dataclasses import dataclass, replace
 from hashlib import sha256
 import json
-from math import sqrt
+from math import isclose, isfinite, sqrt
 from pathlib import Path
 from statistics import NormalDist
 import sys
@@ -102,19 +102,57 @@ class Moment:
         self.total += value
         self.square_total += value * value
 
-    def summary(self) -> dict[str, float]:
+    def summary(self) -> dict[str, float | None]:
+        if self.n < 1:
+            raise ValueError('A mean requires at least one observation')
         mean = self.total / self.n
-        variance = max(0.0, (self.square_total - self.n * mean * mean) / (self.n - 1)) if self.n > 1 else 0.0
+        if self.n == 1:
+            return {"mean": mean, "mc_se": None}
+        variance = max(0.0, (self.square_total - self.n * mean * mean) / (self.n - 1))
         return {"mean": mean, "mc_se": sqrt(variance / self.n)}
 
 
 def wilson(successes: int, n: int, alpha: float = 0.05) -> tuple[float, float]:
+    if (type(successes) is not int or type(n) is not int or n < 1
+            or not 0 <= successes <= n or type(alpha) not in (int, float)
+            or not isfinite(alpha) or not 0 < alpha < 1):
+        raise ValueError('Wilson interval requires valid binomial counts and 0 < alpha < 1')
     z = NormalDist().inv_cdf(1 - alpha / 2)
     p = successes / n
     den = 1 + z * z / n
     center = (p + z * z / (2 * n)) / den
     half = z * sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / den
-    return center - half, center + half
+    return max(0.0, center - half), min(1.0, center + half)
+
+
+def win_counts(row: dict) -> tuple[int, int]:
+    """Recover binomial counts and reject a rate inconsistent with the sample."""
+    n, rate = row['n'], row['win_rate']
+    if (type(n) is not int or n < 1 or type(rate) not in (int, float)
+            or not isfinite(rate) or not 0 <= rate <= 1):
+        raise ValueError('Win rate requires a positive integer sample and a finite proportion')
+    wins = round(rate * n)
+    if not isclose(rate, wins / n, rel_tol=0.0, abs_tol=1e-12):
+        raise ValueError('Win rate does not correspond to an integer count')
+    if 'outcomes' in row:
+        outcomes = row['outcomes']
+        if (not isinstance(outcomes, dict) or type(outcomes.get('win')) is not int
+                or outcomes['win'] != wins):
+            raise ValueError('Win rate disagrees with the recorded outcome count')
+    return wins, n
+
+
+def independent_win_difference(first: dict, second: dict, *, alpha: float = 0.05) -> tuple[float, float, float]:
+    """Newcombe/Wilson interval for first minus second, with independent samples."""
+    wins_a, n_a = win_counts(first)
+    wins_b, n_b = win_counts(second)
+    p, q = wins_a / n_a, wins_b / n_b
+    low_a, high_a = wilson(wins_a, n_a, alpha=alpha)
+    low_b, high_b = wilson(wins_b, n_b, alpha=alpha)
+    delta = p - q
+    lower = delta - sqrt((p - low_a) ** 2 + (high_b - q) ** 2)
+    upper = delta + sqrt((high_a - p) ** 2 + (q - low_b) ** 2)
+    return delta, max(-1.0, lower), min(1.0, upper)
 
 
 def run_cell(stage: str, scenario: Scenario, strategy: Strategy, n: int,
@@ -176,21 +214,17 @@ def comparisons(rows: list[dict]) -> list[dict]:
                    for scenario in scenarios()}
     result = []
     m = len(strategies()) - 1
-    z = NormalDist().inv_cdf(1 - 0.05 / (2 * m))
     for scenario, block in by_scenario.items():
         base = block["bare_attack"]
-        p0, n0 = base["win_rate"], base["n"]
         for strategy, row in block.items():
             if strategy == "bare_attack":
                 continue
-            p, n = row["win_rate"], row["n"]
-            delta = p - p0
-            se = sqrt(p * (1 - p) / n + p0 * (1 - p0) / n0)
+            delta, lower, upper = independent_win_difference(row, base, alpha=0.05 / m)
             result.append({"scenario": scenario, "strategy": strategy,
                            "vs": "bare_attack", "win_difference": delta,
-                           "simultaneous_ci_bonferroni": [delta - z * se,
-                                                          delta + z * se],
-                           "method": "independent Bernoulli samples; Bonferroni within scenario"})
+                           "simultaneous_ci_bonferroni": [lower, upper],
+                           "method": "Newcombe/Wilson, independent Bernoulli samples; "
+                                     "approximate Bonferroni adjustment within scenario"})
     return result
 
 

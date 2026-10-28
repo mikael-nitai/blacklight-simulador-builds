@@ -89,6 +89,9 @@ decide detalhes ainda não esclarecidos, como regras numéricas de membros.
    resultados iguais, essas amostras não provam igualdade exata das taxas.
    A correção deve afetar novas análises; os resultados congelados permanecem
    históricos e devem ser interpretados conforme o método que os produziu.
+   Foram encontrados 23 desses intervalos em 10 arquivos históricos; dois
+   aparecem em `confirm_summary.json`, um em `pool_v2_dev_summary.json` e
+   sete em `pool_v2_smoke_summary.json`.
 
 Os achados 1 e 3 são falhas reproduzidas. O item 2 é uma limitação demonstrada
 do verificador, não uma prova de que os combates já executados tiveram 99
@@ -148,6 +151,26 @@ O auditor ainda não reconstrói todas as capacidades, defesas e efeitos a parti
 das fichas; `audit=OK` não certifica a legalidade completa do combate. Se for
 chamado diretamente sem os limites opcionais, ele não conhece a velocidade ou
 as reações autorizadas. O grupo novo ainda não possui esse runner de produção.
+
+## Quarta correção: incerteza estatística
+
+As novas comparações de vitória entre amostras independentes usam o intervalo
+de Newcombe que combina limites de Wilson, com ajuste Bonferroni dentro de cada
+cenário. Esse é um método aproximado, não uma garantia de cobertura exata; a
+independência e a validade do modelo continuam sendo pressupostos a verificar.
+O estudo original do método está em
+[Newcombe, 1998](https://pubmed.ncbi.nlm.nih.gov/9595617/). A sensibilidade
+passou a usar a mesma abordagem. Para uma única observação, o erro-padrão Monte
+Carlo agora é `null`, pois não pode ser estimado pela variância amostral.
+
+Todos os 23 intervalos históricos de largura zero puderam ser recalculados em
+memória, sem modificar seus arquivos. Por exemplo, no `confirm_summary.json`,
+ataque básico e postura contra o atirador registraram cada um 0 vitórias em
+10.000 combates: o antigo `[0, 0]` vira aproximadamente
+`[-0,000768; +0,000768]` na escala de proporção, com ajuste para as nove
+comparações daquela família. Isso não transforma os combates antigos em dados
+da regra atual de Fast. Os testes usam casos numéricos independentes, reversão
+de ordem das amostras, extremos 0/10 e 10/10, entradas inválidas e amostra única.
 
 **Prontidão inicial:** não recomendar expansão de conclusões nem apresentar o
 grupo novo como pronto enquanto os achados e os gates acima estiverem abertos.

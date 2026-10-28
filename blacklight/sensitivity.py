@@ -2,24 +2,20 @@
 
 from dataclasses import replace
 import json
-from math import sqrt
 from pathlib import Path
-from statistics import NormalDist
 
 from .engine import blacklight_profile
-from .experiment import ROOT, run_cell, scenarios, source_hashes, strategies
+from .experiment import (ROOT, independent_win_difference, run_cell, scenarios,
+                         source_hashes, strategies)
 from .results_io import historical_output, write_new_text
 
 
 def difference(a: dict, b: dict) -> dict:
-    p, q = a["win_rate"], b["win_rate"]
-    n, m = a["n"], b["n"]
-    delta = q - p
-    z = NormalDist().inv_cdf(0.975)
-    se = sqrt(p * (1 - p) / n + q * (1 - q) / m)
-    return {"base_win_rate": p, "variant_win_rate": q,
+    delta, lower, upper = independent_win_difference(b, a)
+    return {"base_win_rate": a["win_rate"], "variant_win_rate": b["win_rate"],
             "difference_variant_minus_base": delta,
-            "ci95_independent": [delta - z * se, delta + z * se]}
+            "ci95_independent": [lower, upper],
+            "method": "Newcombe/Wilson; independent Bernoulli samples, approximate"}
 
 
 def main() -> None:

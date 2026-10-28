@@ -10,6 +10,7 @@ from blacklight.audit import audit_profiled_log
 from blacklight.engine import blacklight_profile
 from blacklight.policies import KITER
 from blacklight.results_io import require_new_output, require_unchanged_sources, write_new_text
+from blacklight.rulesets import LEGACY_RULESET
 from experimental.corridor import CorridorDuel
 from experimental.corridor_audit import audit_corridor
 from .corridor_experiment import (POLICIES, gunners, hashes, profile_record,
@@ -34,7 +35,7 @@ def replay(stage: str, length: int, opponent_id: str, policy_name: str,
     duel = CorridorDuel(profiles, (policy, KITER), seed=seed,
                         length=length, initial_positions=(0, 8), audit=True)
     result = duel.run()
-    issues = audit_profiled_log(result.log, profiles)
+    issues = audit_profiled_log(result.log, profiles, ruleset=LEGACY_RULESET)
     issues += audit_corridor(
         result.log, tuple(p.name for p in profiles),
         initial_positions=(0, 8), length=length,
@@ -48,6 +49,7 @@ def replay(stage: str, length: int, opponent_id: str, policy_name: str,
                       {"inconclusive", "draw"} else
                       "win" if result.winner == profiles[0].name else "loss")
     data = {"schema": "blacklight-corridor-full-trace-pool-v2",
+            "evidence_scope": "exploratory_uncertified",
             "damage_model": "literal_marvel_pool_v2",
             "table_ruleset": "literal_marvel_pool_v2",
             "stage": stage, "length": length,
@@ -87,7 +89,7 @@ def main() -> None:
                   args.policy, args.index, args.output)
     result = data["result"]
     print(f"{args.output}: Victor {data['victor_outcome']}, rounds={result['rounds']}, "
-          f"positions={data['final_positions']}, events={len(result['log'])}, audit=OK")
+          f"positions={data['final_positions']}, events={len(result['log'])}, limited audit=OK, scope=exploratory")
 
 
 if __name__ == "__main__":

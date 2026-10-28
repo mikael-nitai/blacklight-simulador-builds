@@ -127,6 +127,7 @@ def main() -> None:
     require_unchanged_sources(sources, hashes())
     payload = {
         "schema": "blacklight-fixed-contact-group-pool-v2",
+        "evidence_scope": "exploratory_uncertified",
         "damage_model": "literal_marvel_pool_v2",
         "table_ruleset": "literal_marvel_pool_v2",
         "stage": args.stage,

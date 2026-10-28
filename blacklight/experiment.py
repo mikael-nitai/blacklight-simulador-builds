@@ -81,7 +81,7 @@ def seed_for(stage: str, scenario: str, strategy: str, index: int) -> int:
 
 
 def source_hashes() -> dict[str, str]:
-    paths = list((ROOT / "blacklight").glob("*.py")) + [
+    paths = list((ROOT / "blacklight").rglob("*.py")) + [
         ROOT / "EXPERIMENT_SPEC.md", ROOT / "RULES_AUDIT.md",
         ROOT / "CHARACTER_AUDIT.md",
         ROOT / "DAMAGE_POOL_V2_SPEC.md", ROOT / "DAMAGE_POOL_RULING.md",

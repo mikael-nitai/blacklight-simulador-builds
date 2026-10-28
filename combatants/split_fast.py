@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 from blacklight.engine import Action, FastStrikeContext, IllegalAction, PreparedAttackCheck
 from blacklight.policies import RulePolicy
+from blacklight.rulesets import CURRENT_RULESET
 from .modular_duel import ModularDuel
 
 
@@ -56,6 +57,8 @@ class SplitFastPolicy(RulePolicy):
 
 
 class SplitFastDuel(ModularDuel):
+    table_ruleset = CURRENT_RULESET
+
     def __init__(self, *args, **kwargs) -> None:
         if kwargs.get('stack_signature_edge', True) is not True:
             raise ValueError('The current table confirmed both Fast Strikes edge sources')

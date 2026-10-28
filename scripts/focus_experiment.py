@@ -123,6 +123,7 @@ def main() -> None:
     require_unchanged_sources(sources, hashes())
     payload = {
         "schema": "blacklight-focus-fixed-contact-pool-v2",
+        "evidence_scope": "exploratory_uncertified",
         "damage_model": "literal_marvel_pool_v2",
         "stage": args.stage, "n_per_cell": n,
         "seed_formula": "first 8 bytes SHA-256 of blacklight-focus-pool-v2|stage|scenario|variant|strategy|index",

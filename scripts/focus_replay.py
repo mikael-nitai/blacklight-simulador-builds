@@ -36,6 +36,7 @@ def replay(stage: str, scenario: str, variant: str,
         raise RuntimeError(f"Focus replay failed audit: {issues}")
     require_unchanged_sources(sources, execution_sources())
     data = {"schema": "blacklight-focus-full-trace-pool-v2",
+            "evidence_scope": "exploratory_uncertified",
             "damage_model": "literal_marvel_pool_v2",
             "stage": stage, "scenario": scenario,
             "variant": variant, "strategy": strategy,
@@ -63,7 +64,7 @@ def main() -> None:
                   args.strategy, args.index, args.output)
     result = data["result"]
     print(f"{args.output}: {result['outcome']}, rounds={result['rounds']}, "
-          f"focus={result['final_focus'][0]}, events={len(result['log'])}, audit=OK")
+          f"focus={result['final_focus'][0]}, events={len(result['log'])}, limited audit=OK, scope=exploratory")
 
 
 if __name__ == "__main__":

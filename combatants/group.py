@@ -95,9 +95,12 @@ class GroupResult:
     final_focus: tuple[int, ...]
     metrics: tuple[dict, ...]
     log: tuple[dict, ...]
+    evidence_scope: str = 'experimental_group_uncertified'
 
 
 class GroupBattle(SplitFastDuel):
+    execution_scope = 'experimental_group'
+
     def __init__(self, profiles, policies, *, teams: tuple[str, ...], **kwargs):
         if (not isinstance(profiles, tuple) or len(profiles) < 2
                 or not isinstance(policies, tuple) or len(policies) != len(profiles)

@@ -11,6 +11,7 @@ from math import isclose, sqrt
 
 from blacklight.audit import audit_profiled_log
 from blacklight.policies import RulePolicy
+from blacklight.rulesets import CURRENT_RULESET
 from combatants.battlefields import CorridorMap
 from combatants.duel_adapter import compile_duel
 from combatants.runner import run_batch, run_duel
@@ -115,7 +116,7 @@ def audit_early_batch(saved: dict) -> int:
         battle = SplitFastDuel(profiles, policies, seed=seed, audit=True,
                                initial_distance=saved['initial_distance'], max_rounds=saved['max_rounds'])
         result = battle.run()
-        issues = audit_profiled_log(result.log, profiles)
+        issues = audit_profiled_log(result.log, profiles, ruleset=CURRENT_RULESET)
         if issues:
             raise AssertionError(f"Audit failed at index {trace['index']}: {issues[:3]}")
         outcome = (result.outcome if result.outcome in ('draw', 'inconclusive') else

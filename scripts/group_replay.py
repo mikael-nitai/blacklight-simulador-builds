@@ -39,6 +39,7 @@ def replay(stage: str, scenario_id: str, policy_name: str,
         raise RuntimeError(f"Group replay failed audit: {issues}")
     require_unchanged_sources(sources, execution_sources())
     data = {"schema": "blacklight-group-full-trace-pool-v2",
+            "evidence_scope": "exploratory_uncertified",
             "damage_model": "literal_marvel_pool_v2",
             "table_ruleset": "literal_marvel_pool_v2",
             "stage": stage, "scenario": scenario_id,
@@ -72,7 +73,7 @@ def main() -> None:
                   args.index, args.output)
     result = data["result"]
     print(f"{args.output}: {result['outcome']}, rounds={result['rounds']}, "
-          f"events={len(result['log'])}, audit=OK")
+          f"events={len(result['log'])}, limited audit=OK, scope=exploratory")
 
 
 if __name__ == "__main__":

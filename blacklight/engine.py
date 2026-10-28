@@ -14,6 +14,7 @@ from typing import Protocol
 
 from .dice import DieRoll, Result, RerollTrace, resolve_check
 from .pool_damage import roll_damage_pool
+from .rulesets import LEGACY_RULESET
 
 
 class IllegalAction(ValueError):
@@ -286,6 +287,9 @@ def blade_second_strike_eligible(first_strike: Result) -> bool:
 
 
 class Duel:
+    table_ruleset = LEGACY_RULESET
+    execution_scope = 'two_character_physical'
+
     def __init__(
         self,
         profiles: tuple[Profile, Profile],

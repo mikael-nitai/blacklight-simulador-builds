@@ -20,6 +20,16 @@ python -m scripts.freeze_results --ref HEAD
 
 Antes do último comando, as fontes da execução precisam estar em um commit. O resultado deve conter os hashes dessas fontes. Fontes externas ao repositório precisam ser preservadas no repositório antes desse tipo de congelamento. A verificação dos hashes comprova proveniência; a correção das regras e das conclusões continua dependendo dos testes e das auditorias.
 
+Para **novos** resultados genéricos de ficha, o congelamento também exige
+`policy_provenance: project_builtin`, tipos de política registrados e hashes de
+todos os arquivos Python do núcleo presentes no commit; para corredores exige
+as fontes e especificações adicionais do corredor. Uma política personalizada
+pode executar e produzir dados, mas recebe `external_unverified` e não pode
+ser congelada como resultado genérico certificado: suas dependências transitivas
+não são conhecidas automaticamente. Essa é uma barreira de procedência, não uma
+caixa de segurança para código arbitrário. Os resultados já congelados antes
+desse campo conservam seus bytes e continuam verificáveis pelo índice anterior.
+
 Os novos manifestos usam caminhos relativos com `/`. Para preservar os resultados
 antigos sem editar seus bytes, o verificador também aceita separadores Windows
 relativos e reconhece duas correspondências explícitas para fichas que foram

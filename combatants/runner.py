@@ -10,10 +10,12 @@ import sys
 from blacklight import __version__
 from blacklight.audit import audit_profiled_log
 from blacklight.experiment import ROOT, Moment, source_hashes, wilson
+from blacklight.rulesets import SUPPORTED_RULESETS
 from .actions import DEFAULT_ACTIONS
 from .battlefields import CorridorMap
 from .duel_adapter import CURRENT_RULESET, LEGACY_RULESET, compile_duel, coverage
 from .modular_duel import ModularDuel
+from .policy_provenance import policy_provenance
 from .split_fast import SplitFastDuel
 from .sheets import CharacterSheet, sheet_record
 
@@ -24,6 +26,8 @@ def _outcome(result, hero_name: str) -> str:
 
 
 def _engine_metadata(ruleset: str = LEGACY_RULESET, battlefield: CorridorMap | None = None) -> dict:
+    if ruleset not in SUPPORTED_RULESETS:
+        raise ValueError(f'Unsupported table ruleset: {ruleset!r}')
     current = ruleset == CURRENT_RULESET
     adapter = ('split_fast_corridor_v1' if current else 'modular_corridor_v1') if battlefield else (
         'split_fast_physical_duel_v1' if current else 'modular_physical_duel_v3')
@@ -50,6 +54,8 @@ def _engine_metadata(ruleset: str = LEGACY_RULESET, battlefield: CorridorMap | N
 def _engine_for(hero: CharacterSheet, opponent: CharacterSheet, battlefield: CorridorMap | None = None):
     if hero.ruleset != opponent.ruleset:
         raise ValueError('Both combatants must declare the same table ruleset revision')
+    if hero.ruleset not in SUPPORTED_RULESETS:
+        raise ValueError(f'Unsupported table ruleset: {hero.ruleset!r}')
     if battlefield is not None:
         from experimental.corridor import CorridorDuel, SplitFastCorridorDuel
         return SplitFastCorridorDuel if hero.ruleset == CURRENT_RULESET else CorridorDuel
@@ -90,8 +96,8 @@ def _coverage_for(sheet: CharacterSheet, battlefield: CorridorMap | None) -> dic
     return report
 
 
-def _audit_battle(result, profiles, battle, battlefield) -> list[str]:
-    issues = audit_profiled_log(result.log, profiles)
+def _audit_battle(result, profiles, battle, battlefield, ruleset) -> list[str]:
+    issues = audit_profiled_log(result.log, profiles, ruleset=ruleset)
     if battlefield:
         from experimental.corridor_audit import audit_corridor
         issues.extend(audit_corridor(
@@ -102,9 +108,16 @@ def _audit_battle(result, profiles, battle, battlefield) -> list[str]:
     return issues
 
 
+def _require_engine_ruleset(engine, ruleset) -> None:
+    if getattr(engine, 'table_ruleset', None) != ruleset:
+        raise RuntimeError('Selected engine does not implement the declared table ruleset')
+    if getattr(engine, 'execution_scope', None) != 'two_character_physical':
+        raise RuntimeError('An experimental engine cannot use the stable two-character runner')
+
+
 def _source_manifest(policies: tuple[object, object], battlefield: CorridorMap | None = None) -> dict[str, str]:
     sources = source_hashes()
-    for path in sorted((ROOT / 'combatants').glob('*.py')):
+    for path in sorted((ROOT / 'combatants').rglob('*.py')):
         sources[path.relative_to(ROOT).as_posix()] = sha256(path.read_bytes()).hexdigest()
     if battlefield:
         for name in ('experimental/__init__.py', 'experimental/corridor.py', 'experimental/corridor_audit.py',
@@ -133,6 +146,7 @@ def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
              battlefield: CorridorMap | None = None) -> dict:
     initial_distance, options = _battlefield_options(initial_distance, battlefield)
     engine = _engine_for(hero, opponent, battlefield)
+    _require_engine_ruleset(engine, hero.ruleset)
     profiles = (compile_duel(hero), compile_duel(opponent))
     policies = (hero_policy, opponent_policy)
     sources = _source_manifest(policies, battlefield)
@@ -141,7 +155,7 @@ def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
     battle = engine(profiles, policies, seed=seed, max_rounds=max_rounds,
                      audit=True, action_registry=DEFAULT_ACTIONS, **options)
     result = battle.run()
-    issues = _audit_battle(result, profiles, battle, battlefield)
+    issues = _audit_battle(result, profiles, battle, battlefield, hero.ruleset)
     if issues:
         raise RuntimeError(f"Generic character duel failed audit: {issues}")
     _assert_sources_unchanged(sources, policies, battlefield)
@@ -154,6 +168,7 @@ def run_duel(hero: CharacterSheet, opponent: CharacterSheet,
             'sheets': [sheet_record(hero), sheet_record(opponent)],
             'policies': [asdict(hero_policy), asdict(opponent_policy)],
             'policy_types': _policy_types(policies),
+            'policy_provenance': policy_provenance(policies),
             'hero_id': hero.id, 'hero_revision': hero.revision,
             'opponent_id': opponent.id, 'opponent_revision': opponent.revision,
             'hero_outcome': _outcome(result, profiles[0].name),
@@ -172,6 +187,7 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
         raise ValueError('Positive sample count and audit interval required')
     initial_distance, options = _battlefield_options(initial_distance, battlefield)
     engine = _engine_for(hero, opponent, battlefield)
+    _require_engine_ruleset(engine, hero.ruleset)
     profiles = (compile_duel(hero), compile_duel(opponent))
     policies = (hero_policy, opponent_policy)
     sources = _source_manifest(policies, battlefield)
@@ -200,7 +216,7 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
                          audit=audit_this, action_registry=DEFAULT_ACTIONS, **options)
         result = battle.run()
         if audit_this:
-            issues = _audit_battle(result, profiles, battle, battlefield)
+            issues = _audit_battle(result, profiles, battle, battlefield, hero.ruleset)
             if issues:
                 raise RuntimeError(f'Batch trace {index} failed audit: {issues}')
             audited.append({'index': index, 'seed': seed, 'issues': []})
@@ -221,6 +237,7 @@ def run_batch(hero: CharacterSheet, opponent: CharacterSheet,
             **_engine_metadata(hero.ruleset, battlefield),
             'source_sha256': sources,
             'policy_types': _policy_types(policies),
+            'policy_provenance': policy_provenance(policies),
             **cell, 'n': n, 'master_seed': master_seed, 'cell_sha256': cell_hash,
             'seed_formula': f'first 8 SHA-256 bytes of {seed_version}|master_seed|cell_sha256|index',
             'pairing_note': 'Seeds identify this cell; different cells are not assumed to be paired samples',

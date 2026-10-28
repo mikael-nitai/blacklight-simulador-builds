@@ -3,12 +3,14 @@
 from dataclasses import replace
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
-from blacklight.policies import ATTACK
+from blacklight.policies import ATTACK, BLADE_HAMMER_FAST
 from combatants import compile_duel, coverage, load_sheet
+from combatants.modular_duel import ModularDuel
 from combatants.runner import run_batch, run_duel
 from combatants.sheets import sheet_record
-from combatants.split_fast import SplitFastPolicy
+from combatants.split_fast import SplitFastDuel, SplitFastPolicy
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,6 +34,37 @@ class TestSplitFastSheets(unittest.TestCase):
         foe = replace(foe, name='Historical duplicate')
         with self.assertRaisesRegex(ValueError, 'same table ruleset'):
             run_duel(hero, foe, ATTACK, ATTACK, seed=1)
+
+    def test_runner_refuses_a_wrong_engine_for_either_ruleset(self):
+        current_hero, current_foe = load_sheet(CURRENT), load_sheet(FOE)
+        old_hero = load_sheet(OLD)
+        old_foe = replace(old_hero, name='Historical opponent')
+        for hero, foe, wrong in ((current_hero, current_foe, ModularDuel),
+                                 (old_hero, old_foe, SplitFastDuel)):
+            with self.subTest(ruleset=hero.ruleset), \
+                    patch('combatants.runner._engine_for', return_value=wrong):
+                with self.assertRaisesRegex(RuntimeError, 'engine.*ruleset'):
+                    run_duel(hero, foe, ATTACK, ATTACK, seed=51)
+                with self.assertRaisesRegex(RuntimeError, 'engine.*ruleset'):
+                    run_batch(hero, foe, ATTACK, ATTACK, n=1, master_seed=51)
+
+    def test_a_false_engine_label_cannot_hide_legacy_fast_events(self):
+        hero, foe = load_sheet(CURRENT), load_sheet(FOE)
+        # A mistaken implementation that reports the new label while executing
+        # the old one-check Fast contract must still be rejected by the auditor.
+        with patch('combatants.runner._engine_for', return_value=ModularDuel), \
+                patch.object(ModularDuel, 'table_ruleset', 'split_fast_v3', create=True):
+            with self.assertRaisesRegex(RuntimeError, 'ruleset.*Fast'):
+                run_duel(hero, foe, BLADE_HAMMER_FAST, ATTACK, seed=51, max_rounds=5)
+
+    def test_experimental_engine_cannot_use_the_stable_runner(self):
+        class ExperimentalDuel(SplitFastDuel):
+            execution_scope = 'experimental_group'
+
+        hero, foe = load_sheet(CURRENT), load_sheet(FOE)
+        with patch('combatants.runner._engine_for', return_value=ExperimentalDuel):
+            with self.assertRaisesRegex(RuntimeError, 'experimental engine'):
+                run_duel(hero, foe, ATTACK, ATTACK, seed=51)
 
     def test_two_choices_work_through_generic_character_api(self):
         hero, foe = load_sheet(CURRENT), load_sheet(FOE)

@@ -2,7 +2,7 @@
 
 **27/10/2026.** Este estudo é separado dos [duelos físicos confirmatórios](REPORT.md). Usa o [gate normativo](FOCUS_SPEC.md) e o [pré-registro](FOCUS_DUEL_SPEC.md), ambos apoiados no *Core Rulebook* fornecido pelo usuário (pp.33–34, 38 e 108) e na [FAQ oficial de março/2025](https://cdn.marvel.com/u/prod/marvel/i/pdf/MMRPG_Rules-FAQ_20250327.pdf). O adversário é **sintético**, sempre ao alcance de Victor, e usa exclusivamente Mental Punch. Essa ação Melee reduz Focus, dobra dano e aplica Stunned em sucesso fantástico. Focus 0 impõe Demoralized/trouble; Focus ≤−90 deixa Victor Shattered e encerra o combate como derrota. Sturdy 1 protege Health, não Focus.
 
-**Resultados numéricos históricos:** a bateria foi reexecutada com os dados literais de dano. As taxas atuais de F0 estão no [relatório v2](POOL_V2_REPORT.md); as tabelas abaixo preservam o experimento anterior. F0 continua sendo a decisão válida de que Escudo protege somente Health.
+**Resultados numéricos históricos e exploratórios:** a bateria foi reexecutada com os dados literais de dano. As taxas posteriores de F0 estão no [relatório v2](POOL_V2_REPORT.md), associado ao snapshot da época; as tabelas abaixo preservam o experimento anterior. O estudo de Focus permanece experimental e não exercita Fast Strikes. F0 continua sendo a decisão da mesa de que Escudo protege somente Health.
 
 ## A decisão de mesa que muda o resultado
 

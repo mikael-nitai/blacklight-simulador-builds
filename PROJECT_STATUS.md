@@ -5,6 +5,9 @@ podem mirar alvos diferentes. A migração de grupo em `combatants/group.py` foi
 interrompida antes da validação e está preservada como experimental. Consulte
 [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md) para o diagnóstico e as correções
 posteriores; os números e estágios abaixo descrevem o momento original.
+O escopo congelado e os critérios da continuação estão em
+[CERTIFICACAO_FUNDACAO.md](CERTIFICACAO_FUNDACAO.md); os protótipos de grupo e
+Focus não são apresentados como componentes certificados.
 
 O [controle executado do corredor atual](CURRENT_CORRIDOR_RESULTS.md) acrescentou dois exemplos completos e 1.000 duelos com todas as trilhas auditadas para combate e posições. Esses artefatos de integração não selecionam uma estratégia como melhor.
 

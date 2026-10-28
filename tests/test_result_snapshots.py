@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from scripts.freeze_results import freeze
+from scripts.freeze_results import REQUIRED_CORE, freeze
 from scripts.verify_sources import (INDEX_NAME, HISTORICAL_NAME, HISTORICAL_SCHEMA, LEGACY_COPY_NOTE,
                                     LEGACY_SOURCE_ALIASES, load_index, relative_source,
                                     snapshot_source_hash, verify, verify_result)
@@ -288,6 +288,62 @@ class TestResultSnapshots(unittest.TestCase):
                     freeze(self.base, root=self.root)
             self.assertEqual(index_path.read_bytes(), before)
             self.assertEqual(list(index_path.parent.glob('.source-snapshots-*.tmp')), [])
+
+    def test_external_or_unidentified_policy_cannot_be_frozen_as_certified_generic_result(self):
+        payload = json.loads(self.result.read_text(encoding='utf-8'))
+        payload['schema'] = 'blacklight-generic-character-duel-v1'
+        payload['policy_types'] = [
+            {'module': 'test_policy_provenance', 'class': 'CustomPolicy'},
+            {'module': 'blacklight.policies', 'class': 'RulePolicy'},
+        ]
+        for marker in ('external_unverified', 'project_builtin', None):
+            if marker is None:
+                payload.pop('policy_provenance', None)
+            else:
+                payload['policy_provenance'] = marker
+            self.result.write_text(json.dumps(payload), encoding='utf-8')
+            with self.subTest(marker=marker):
+                with self.assertRaisesRegex(ValueError, 'policy.*provenance'):
+                    freeze(self.base, root=self.root)
+                self.assertFalse((self.root / 'results' / INDEX_NAME).exists())
+
+    def test_generic_builtin_requires_all_committed_core_sources_before_freeze(self):
+        for relative in REQUIRED_CORE:
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(('# ' + relative + '\n').encode())
+        extra = self.root / 'combatants' / 'additional_dependency.py'
+        extra.write_bytes(b'# transitive project source\n')
+        self.git('add', 'blacklight', 'combatants')
+        self.git('commit', '--quiet', '-m', 'generic source fixture')
+        commit = self.git('rev-parse', 'HEAD').strip()
+        sources = {relative: sha256((self.root / relative).read_bytes()).hexdigest()
+                   for relative in REQUIRED_CORE}
+        payload = {'schema': 'blacklight-generic-character-duel-v1',
+                   'damage_model': 'literal_marvel_pool_v2',
+                   'policy_provenance': 'project_builtin',
+                   'policy_types': [{'module': 'blacklight.policies', 'class': 'RulePolicy'}] * 2,
+                   'source_sha256': sources}
+        self.result.write_text(json.dumps(payload), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'incomplete source provenance'):
+            freeze(commit, root=self.root)
+        self.assertFalse((self.root / 'results' / INDEX_NAME).exists())
+        payload['source_sha256']['combatants/additional_dependency.py'] = sha256(extra.read_bytes()).hexdigest()
+        self.result.write_text(json.dumps(payload), encoding='utf-8')
+        freeze(commit, root=self.root)
+        self.assertEqual(verify_result(self.result, root=self.root)[1], [])
+
+    def test_previously_frozen_generic_result_remains_valid_without_new_metadata(self):
+        payload = json.loads(self.result.read_text(encoding='utf-8'))
+        payload['schema'] = 'blacklight-generic-character-duel-v1'
+        self.result.write_text(json.dumps(payload), encoding='utf-8')
+        # Simulate a valid pre-existing index created before this gate existed.
+        index = {'schema': 'blacklight.source_snapshots.v1', 'results': {
+            self.result.name: {'source_commit': self.base,
+                               'result_sha256': sha256(self.result.read_bytes()).hexdigest()}}}
+        (self.root / 'results' / INDEX_NAME).write_text(json.dumps(index), encoding='utf-8')
+        self.assertEqual(verify_result(self.result, root=self.root)[1], [])
+        self.assertEqual(freeze(self.base, root=self.root)['results'], index['results'])
 
 
 if __name__ == '__main__':

@@ -11,6 +11,7 @@ import sys
 from blacklight.audit import audit_profiled_log
 from blacklight.engine import Profile, blacklight_profile
 from blacklight.experiment import scenarios
+from blacklight.rulesets import LEGACY_RULESET
 from blacklight.policies import (HAMMER, KITER,
                                  SHIELD_HAMMER_REACTIVE,
                                  SHIELD_BLADE_HAMMER_REACTIVE)
@@ -83,7 +84,7 @@ def run_cell(stage: str, length: int, opponent_id: str,
                             audit=audit)
         result = duel.run()
         if audit:
-            issues = audit_profiled_log(result.log, profiles)
+            issues = audit_profiled_log(result.log, profiles, ruleset=LEGACY_RULESET)
             issues += audit_corridor(
                 result.log, tuple(p.name for p in profiles),
                 initial_positions=(0, 8), length=length,
@@ -146,6 +147,7 @@ def main() -> None:
     require_unchanged_sources(sources, hashes())
     payload = {
         "schema": "blacklight-bounded-corridor-pool-v2",
+        "evidence_scope": "exploratory_uncertified",
         "damage_model": "literal_marvel_pool_v2",
         "table_ruleset": "literal_marvel_pool_v2",
         "stage": args.stage, "n_per_cell": n,

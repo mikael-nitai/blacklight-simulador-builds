@@ -28,7 +28,8 @@ ONE_FACES = {
 }
 SOURCES = (
     'blacklight/audit.py', 'blacklight/dice.py', 'blacklight/dice_audit.py',
-    'blacklight/profile_audit.py', 'blacklight/engine.py',
+    'blacklight/profile_audit.py', 'blacklight/ruleset_audit.py',
+    'blacklight/rulesets.py', 'blacklight/engine.py',
     'blacklight/policies.py', 'blacklight/pool_damage.py',
     'blacklight/split_audit.py', 'combatants/actions.py',
     'combatants/modular_duel.py', 'combatants/split_fast.py',

@@ -2,7 +2,7 @@
 
 **27/10/2026.** Esta expansão é separada do [relatório confirmatório de duelos](REPORT.md). O [pré-registro específico](GROUP_EXPERIMENT_SPEC.md) fixou dois inimigos sintéticos que atacam Victor em conjunto, todos sempre ao alcance corpo a corpo. [GROUP_SPEC.md](GROUP_SPEC.md) delimita as regras implementadas e as que ainda faltam. O motor de grupo fica em `experimental/`; não foi usado nos 400.000 duelos confirmatórios.
 
-**Bateria histórica:** as taxas abaixo usam a fórmula anterior. O estudo foi refeito com dano literal, duas edges e os componentes de Fast Strikes da mesa; os resultados atuais estão no [relatório v2](POOL_V2_REPORT.md), com os limites da extensão de dois alvos declarados.
+**Baterias históricas e exploratórias:** as taxas abaixo usam a fórmula anterior. O estudo posterior com dano literal está no [relatório v2](POOL_V2_REPORT.md), mas também antecede a regra atual de dois testes de Fast Strikes. Os protótipos de grupo e suas taxas não são funcionalidades certificadas para a regra vigente.
 
 ## O que foi testado
 

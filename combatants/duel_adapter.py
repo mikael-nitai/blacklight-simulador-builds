@@ -7,11 +7,8 @@ implemented for a direct open-field physical duel; unknown features block it.
 from dataclasses import dataclass
 
 from blacklight.engine import Profile
+from blacklight.rulesets import CURRENT_RULESET, LEGACY_RULESET
 from .sheets import CharacterSheet
-
-
-LEGACY_RULESET = 'literal_marvel_pool_v2'
-CURRENT_RULESET = 'split_fast_v3'
 
 
 @dataclass(frozen=True)

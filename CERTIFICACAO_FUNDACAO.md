@@ -47,6 +47,7 @@ mestre permanecem bloqueadas ou qualificadas nos pontos em que afetam o escopo.
 | Achado ou pendência | Classificação | Tratamento nesta operação |
 |---|---|---|
 | Bônus, defesa, dano, reações e rolagens declarados apenas pela própria trilha | Alto para a confiança no auditor | Reconciliar fatos verificáveis com fichas e eventos e testar falsificações. |
+| Motor antigo executado sob etiqueta da regra atual | Alto, reproduzido | Verificar o contrato declarado da classe antes do combate e os eventos Fast durante a auditoria. |
 | Código de dano compartilhado entre versões e motores | Alto para alteração futura | Isolar as variantes existentes e provar que uma mudança hipotética não altera silenciosamente a outra; preservar replays. |
 | Dependências externas/transitivas e fontes já carregadas | Alto para alegações de reprodução não qualificadas | Definir e verificar a fronteira de procedência; bloquear ou rotular o que não puder ser demonstrado. |
 | Resultados antigos e intervalos de largura zero | Corrigido para novas análises; histórico preservado | Manter distinção por versão e comprovar que alterações não reclassificam o passado silenciosamente. |
@@ -79,3 +80,29 @@ congelados continuou sem divergências. A suíte de 277 testes passou no Windows
 no Ubuntu via WSL após essa consolidação; verificações atingidas por mudanças
 posteriores serão repetidas. O escopo do auditor continua explícito: conferir
 consistência não prova que uma política ou uma regra represente toda a mesa.
+
+## Separação de execução e componentes experimentais
+
+Uma troca forçada de motor reproduziu uma falha de versão: o runner declarava
+`split_fast_v3`, mas executava Fast com a regra histórica de um único teste.
+Os contratos agora são identificados nas classes, o runner recusa uma classe de
+versão diferente antes do combate e `blacklight/ruleset_audit.py` confronta o
+formato dos eventos com a versão declarada. Um teste adicional força uma classe
+a mentir sobre seu nome de versão: quando Fast é usado, a verificação da trilha
+recusa o resultado mesmo assim. Versões desconhecidas são recusadas. Duelo e
+corredor preservados continuaram reproduzindo os controles anteriores.
+
+Políticas internas e externas recebem classificações distintas. O congelamento
+de novos resultados genéricos exige política interna identificada e a lista das
+fontes Python do núcleo presentes no commit, além das fontes do corredor quando
+aplicável. Um teste em repositório Git temporário confirma que uma dependência
+omitida bloqueia o congelamento e que acrescentá-la permite a verificação; outro
+mantém válido um registro antigo sem os metadados novos. Código externo continua
+executável para exploração, mas recebe marca de procedência não verificada e
+não pode ser congelado sob a alegação de resultado genérico certificado.
+
+O runner de duas fichas recusa uma classe com escopo experimental. Resultados
+da migração de grupo carregam essa identificação, e novos replays/experimentos
+históricos de grupo, Focus e corredor indicam escopo exploratório; seus registros
+antigos não foram reescritos. Esses mecanismos não são sandbox contra código
+arbitrário e não transformam uma auditoria parcial em prova da campanha.

@@ -5,11 +5,43 @@ from hashlib import sha256
 import json
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 
+from combatants.policy_provenance import recorded_builtin_policies
 from .verify_sources import (ROOT, INDEX_NAME, INDEX_SCHEMA, eligible_results,
-                             git_commit, load_index, snapshot_source_hash, source_manifest,
+                             git_commit, load_index, relative_source, snapshot_source_hash, source_manifest,
                              verify_result, verify)
+
+
+GENERIC_SCHEMAS = frozenset(('blacklight-generic-character-duel-v1',
+                             'blacklight-generic-character-batch-v1'))
+REQUIRED_CORE = frozenset(('blacklight/engine.py', 'blacklight/policies.py',
+                           'blacklight/rulesets.py', 'combatants/runner.py',
+                           'combatants/sheets.py', 'combatants/split_fast.py',
+                           'combatants/terrain_policies.py', 'combatants/policy_provenance.py'))
+
+
+def require_generic_provenance(payload: dict, root: Path, commit: str) -> None:
+    """Do not freeze a new generic result with unknown policies or partial core sources."""
+    if payload.get('schema') not in GENERIC_SCHEMAS:
+        return
+    if (payload.get('policy_provenance') != 'project_builtin'
+            or not recorded_builtin_policies(payload.get('policy_types'))):
+        raise ValueError('Generic result has unverified policy provenance; keep it experimental')
+    result = subprocess.run(
+        ['git', '--no-replace-objects', 'ls-tree', '-r', '--name-only', commit, '--',
+         'blacklight', 'combatants'], cwd=root, check=True, capture_output=True, text=True)
+    required = {name for name in result.stdout.splitlines() if name.endswith('.py')}
+    if not REQUIRED_CORE <= required:
+        raise ValueError('Generic result source commit lacks the required core provenance files')
+    if payload.get('battlefield') is not None:
+        required.update(('experimental/__init__.py', 'experimental/corridor.py',
+                         'experimental/corridor_audit.py', 'CORRIDOR_SPEC.md', 'CURRENT_CORRIDOR.md'))
+    recorded = {relative_source(root, name) for name in source_manifest(payload)}
+    missing = required - recorded
+    if missing:
+        raise ValueError(f'Generic result has incomplete source provenance: {sorted(missing)}')
 
 
 def freeze(ref: str, *, root: Path = ROOT) -> dict:
@@ -29,6 +61,7 @@ def freeze(ref: str, *, root: Path = ROOT) -> dict:
             if issues:
                 raise ValueError(f'Existing frozen result failed verification: {issues}')
             continue
+        require_generic_provenance(payload, root, commit)
         sources = source_manifest(payload)
         for source, expected in sources.items():
             if snapshot_source_hash(root, commit, source) != expected:

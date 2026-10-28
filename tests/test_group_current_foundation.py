@@ -4,7 +4,7 @@ These are narrow integration controls, not a certification of group combat.
 """
 
 from copy import deepcopy
-from dataclasses import replace
+from dataclasses import asdict, replace
 import unittest
 
 from blacklight.audit import audit_profiled_log
@@ -124,6 +124,7 @@ class TestCurrentGroupFoundation(unittest.TestCase):
                                                seed=seed, max_rounds=12, audit=True).run()
                         first = run()
                         self.assertEqual(first, run())
+                        self.assertEqual(asdict(first)['evidence_scope'], 'experimental_group_uncertified')
                         self.assertEqual(audit_profiled_log(first.log, profiles), [])
 
 

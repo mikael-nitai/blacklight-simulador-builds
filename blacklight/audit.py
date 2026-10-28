@@ -8,6 +8,7 @@ from __future__ import annotations
 from math import ceil
 from .dice_audit import audit_rerolls
 from .profile_audit import audit_profile_facts
+from .ruleset_audit import audit_ruleset_log
 from .split_audit import audit_split_fast
 
 
@@ -281,8 +282,8 @@ def audit_log(log: tuple[dict, ...] | list[dict],
     return issues
 
 
-def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles) -> list[str]:
-    """Audit a physical-duel trace against each declared combatant's limits."""
+def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles, *, ruleset=None) -> list[str]:
+    """Audit a physical trace against profiles and, if supplied, its ruleset."""
     profiles = tuple(profiles)
     names = [profile.name for profile in profiles]
     if len(set(names)) != len(names):
@@ -295,4 +296,6 @@ def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles) -> list[str
         movement_limits={p.name: p.run_speed for p in profiles},
     )
     issues.extend(audit_profile_facts(log, profiles))
+    if ruleset is not None:
+        issues.extend(audit_ruleset_log(log, ruleset))
     return issues

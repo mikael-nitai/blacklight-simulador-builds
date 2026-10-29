@@ -256,6 +256,54 @@
     "current_duel_confirm_v1_rank4_hammer_fast_hammer.json": {
       "result_sha256": "8763435b2dfa03a15488a343263f392277d5b18f68e785651ef6cdb13b25a96e",
       "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_holdout_v1_gunner_open_bare.json": {
+      "result_sha256": "c8963a43f5b83a5ed988090001c1e6780f648331ffac10a98fb8e424abe97f96",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_gunner_open_hammer.json": {
+      "result_sha256": "c5125f7c9545e06d1045ebec7d837194b7b36611aa437752ba4245f4f099cbcb",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_gunner_open_hammer_fast_blade.json": {
+      "result_sha256": "f54df94db1a5ec35f691e6cf1964df981ff1ae80e17244faa6579b459fdedf34",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_gunner_open_hammer_fast_hammer.json": {
+      "result_sha256": "ebf77fe447964104008673261eb056626a8836519afb718e76c12c7e5d9d600b",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_mirror_blade_bare.json": {
+      "result_sha256": "f4328e5c5d0dc3e2c12d6b37d414325ce232225b9e920cca376c58d66137be49",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_mirror_blade_hammer.json": {
+      "result_sha256": "f503326f67543278fa6337e210703c7e48aa6a0bf10165afb00991d7e7ec44f5",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_mirror_blade_hammer_fast_blade.json": {
+      "result_sha256": "85d26753decdde3d4adbd7b7c6beecad0dab22a66a0c953ba5f2b370c335cbf3",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_mirror_blade_hammer_fast_hammer.json": {
+      "result_sha256": "3ac4008c58e431750b6115f3eb4a4120af4d648253c65fcec6ffb47fa7b250fa",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_rank4_sturdy2_bare.json": {
+      "result_sha256": "a378e2e792dbdef9a6629b742815c2f981efe0ebbf65142c74ec572169efc9fe",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_rank4_sturdy2_hammer.json": {
+      "result_sha256": "88378a17a5355109b57e95ff237b0a29d23c3706cfc0b0d124357c5ab1ef2625",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_rank4_sturdy2_hammer_fast_blade.json": {
+      "result_sha256": "1a075cf5eaefe295349b4d097f3b07a96e4d7f17f22b9203de282f9ed578fece",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
+    },
+    "current_duel_holdout_v1_rank4_sturdy2_hammer_fast_hammer.json": {
+      "result_sha256": "f9556c82bc45d59c3e5677b9e08d5f8ae0de9460a062ffb366357e556d534e4c",
+      "source_commit": "4c9a5dfd82023530352d681f058729b125655cb6"
     }
   }
 }

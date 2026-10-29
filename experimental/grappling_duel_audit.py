@@ -28,10 +28,12 @@ def _escape(data):
         tuple(RerollTrace(**r) for r in data['rerolls']), data['total'], data['success'], data['trigger'])
 
 
-def audit_grappling_duel(result, profiles, *, declared_armed_lethal, escape_trigger_mode, **context):
+def audit_grappling_duel(result, profiles, *, declared_armed_lethal, escape_trigger_mode,
+                         allow_entangled_attacks=False, **context):
     profiles = tuple(profiles)
     names = {p.name: p for p in profiles}
-    if (len(profiles) != 2 or len(names) != 2 or escape_trigger_mode not in ('attack', 'condition')):
+    if (len(profiles) != 2 or len(names) != 2 or escape_trigger_mode not in ('attack', 'condition')
+            or type(allow_entangled_attacks) is not bool):
         raise ValueError('Invalid grappling duel audit context')
     health = {p.name: p.max_health for p in profiles}
     focus = {p.name: p.max_focus for p in profiles}
@@ -96,7 +98,7 @@ def audit_grappling_duel(result, profiles, *, declared_armed_lethal, escape_trig
                     pending['cost'] = True
             focus[actor] = event.get('focus_after')
         elif kind == 'attack':
-            if holder is not None:
+            if holder is not None and not allow_entangled_attacks:
                 issues.append(f'event {seq}: attack during unsupported hold')
             if pending is not None:
                 if (pending['attack'] is not None or actor != pending['actor'] or target != pending['target']

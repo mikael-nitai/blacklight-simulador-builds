@@ -1,5 +1,11 @@
 # Estado do projeto completo — 27/10/2026
 
+**Ataques durante agarrão:** [uma extensão experimental](ENTANGLED_ATTACK_EXPERIMENT.md)
+permite ataques próximos entre os dois envolvidos, incluindo Fast Strikes, com
+duas hipóteses explícitas para trouble adicional. Autoacerto, terceiros,
+deslocamento conjunto e contra-ataques durante o agarrão seguem fora do escopo;
+não há novas estimativas de eficácia.
+
 **Agarrar em desenvolvimento:** [transações experimentais de Grappling
 Technique e Escape](GRAPPLING_EXPERIMENT.md) agora integram um duelo restrito
 e um recorte parcial de Crossbones, com auditoria e duas hipóteses de gatilho.

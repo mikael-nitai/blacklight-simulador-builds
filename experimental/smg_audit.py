@@ -4,13 +4,19 @@ from dataclasses import replace
 from .ranged_powers_audit import audit_ranged_powers_duel
 
 
-def audit_submachine_duel(result, profiles, *, ranged_weapons, **context):
+def audit_submachine_duel(result, profiles, *, ranged_weapons, entangled_verified_troubles=None, **context):
     profiles = tuple(profiles)
     if (len(profiles) != 2 or len({p.name for p in profiles}) != 2
             or not isinstance(ranged_weapons, tuple) or len(ranged_weapons) != 2
             or any(weapon not in ('generic', 'submachine_gun') for weapon in ranged_weapons)):
         raise ValueError('Two profiles and explicit ranged weapons are required')
     names = {p.name: (p, weapon) for p, weapon in zip(profiles, ranged_weapons)}
+    if entangled_verified_troubles is None:
+        entangled_verified_troubles = {}
+    if (not isinstance(entangled_verified_troubles, dict)
+            or any(type(k) is not int or k < 1 or type(v) is not int or v < 0
+                   for k, v in entangled_verified_troubles.items())):
+        raise ValueError('Invalid independently verified entangled trouble')
     for p, weapon in zip(profiles, ranged_weapons):
         if weapon == 'submachine_gun' and (p.ranged_range != 10 or not p.ranged_is_ammunition
                                             or p.ranged_bonus < 1):
@@ -55,5 +61,8 @@ def audit_submachine_duel(result, profiles, *, ranged_weapons, **context):
         copy = dict(event)
         copy['seq'] = len(projection) + 1
         projection.append(copy)
+    combined = dict(extra)
+    for trigger, amount in entangled_verified_troubles.items():
+        combined[trigger] = combined.get(trigger, 0) + amount
     return audit_ranged_powers_duel(replace(result, log=tuple(projection)), profiles,
-                                    verified_extra_troubles=extra, **context)
+                                    verified_extra_troubles=combined, **context)

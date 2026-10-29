@@ -1,5 +1,10 @@
 # Estado do projeto completo — 27/10/2026
 
+**Estudo exploratório do agarrão:** [8.000 inícios](GRAPPLE_STRATEGY_EXPLORATION_REPORT.md)
+compararam políticas de fuga e ataque em quatro combinações de hipóteses. Todas
+as células registraram 1.000 vitórias no recorte parcial; isso não distingue as
+políticas nem sustenta uma estratégia geral. Fontes e 24 replays foram conferidos.
+
 **Reações durante agarrão:** [Riposte e Point-Blank Parry experimentais](ENTANGLED_REACTION_EXPERIMENT.md)
 foram combinados com os ataques dos envolvidos e com uma fila auditada de
 reações aninhadas. Autoacerto e ataques de terceiros continuam pendentes; a

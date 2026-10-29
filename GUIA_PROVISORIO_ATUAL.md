@@ -109,6 +109,12 @@ uma política de recuo, mas a maioria dos combates ainda terminou inconclusiva.
 O adversário usa apenas parte da ficha oficial e munição à qual o Escudo é
 imune. Essa amostra não estabelece uma arma ou estratégia universalmente melhor.
 
+Outra [exploração de agarrão](GRAPPLE_STRATEGY_EXPLORATION_REPORT.md) comparou
+escapar com continuar atacando contra Crossbones parcial. As duas políticas
+venceram todos os combates do recorte; a taxa de vitória não permite escolher
+entre elas. A penalidade entre personagens agarrados e o possível autoacerto
+continuam dependendo da interpretação da mesa.
+
 Fontes de decisões: [Fast Strikes](FAST_STRIKES_RULING.md),
 [dados de dano](DAMAGE_POOL_RULING.md), [Escudo e Focus](FOCUS_RULING.md) e
 [Ram](RAM_RULING.md). Este documento substitui o uso prático dos números do

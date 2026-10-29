@@ -1,0 +1,204 @@
+{
+  "schema": "blacklight-experimental-grapple-strategy-replay-v1",
+  "dataset_sha256": "ea3ae6b125b15bc640f1b5725e71e159935b10eebd1a864a1c716985b6bcbe28",
+  "source_commit": "6ec70bed1fab4a30f48a7a6a72c2079282b10337",
+  "sampling": "first, middle and last index per cell; duplicates removed",
+  "checked": [
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": false,
+      "trigger_mode": "attack",
+      "index": 0,
+      "seed": 6823897049924510076,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": false,
+      "trigger_mode": "attack",
+      "index": 500,
+      "seed": 4771234837610881630,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": false,
+      "trigger_mode": "attack",
+      "index": 999,
+      "seed": 14897106127392878383,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": false,
+      "trigger_mode": "condition",
+      "index": 0,
+      "seed": 6823897049924510076,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": false,
+      "trigger_mode": "condition",
+      "index": 500,
+      "seed": 4771234837610881630,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": false,
+      "trigger_mode": "condition",
+      "index": 999,
+      "seed": 14897106127392878383,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": true,
+      "trigger_mode": "attack",
+      "index": 0,
+      "seed": 6823897049924510076,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": true,
+      "trigger_mode": "attack",
+      "index": 500,
+      "seed": 4771234837610881630,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": true,
+      "trigger_mode": "attack",
+      "index": 999,
+      "seed": 14897106127392878383,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": true,
+      "trigger_mode": "condition",
+      "index": 0,
+      "seed": 6823897049924510076,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": true,
+      "trigger_mode": "condition",
+      "index": 500,
+      "seed": 4771234837610881630,
+      "status": "victory"
+    },
+    {
+      "strategy": "escape",
+      "inside_attack_trouble": true,
+      "trigger_mode": "condition",
+      "index": 999,
+      "seed": 14897106127392878383,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": false,
+      "trigger_mode": "attack",
+      "index": 0,
+      "seed": 6823897049924510076,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": false,
+      "trigger_mode": "attack",
+      "index": 500,
+      "seed": 4771234837610881630,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": false,
+      "trigger_mode": "attack",
+      "index": 999,
+      "seed": 14897106127392878383,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": false,
+      "trigger_mode": "condition",
+      "index": 0,
+      "seed": 6823897049924510076,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": false,
+      "trigger_mode": "condition",
+      "index": 500,
+      "seed": 4771234837610881630,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": false,
+      "trigger_mode": "condition",
+      "index": 999,
+      "seed": 14897106127392878383,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": true,
+      "trigger_mode": "attack",
+      "index": 0,
+      "seed": 6823897049924510076,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": true,
+      "trigger_mode": "attack",
+      "index": 500,
+      "seed": 4771234837610881630,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": true,
+      "trigger_mode": "attack",
+      "index": 999,
+      "seed": 14897106127392878383,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": true,
+      "trigger_mode": "condition",
+      "index": 0,
+      "seed": 6823897049924510076,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": true,
+      "trigger_mode": "condition",
+      "index": 500,
+      "seed": 4771234837610881630,
+      "status": "victory"
+    },
+    {
+      "strategy": "attack",
+      "inside_attack_trouble": true,
+      "trigger_mode": "condition",
+      "index": 999,
+      "seed": 14897106127392878383,
+      "status": "victory"
+    }
+  ],
+  "issues": [],
+  "limitations": [
+    "sampled replay, not an independent full replay or confirmation"
+  ]
+}

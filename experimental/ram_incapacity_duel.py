@@ -4,15 +4,13 @@ from blacklight.engine import IllegalAction
 from .nonlethal_ram_duel import NonlethalRamProneDuel
 
 
-class RamIncapacityDuel(NonlethalRamProneDuel):
+class RamIncapacityMixin:
     """Allow a declared self-damage and end-of-combat convention.
 
     The historical lethal/nonlethal hypotheses heal a living unconscious actor
     at turn end. The separately selected current table mode ends the encounter
     before that healing and refuses the unresolved self-death boundary.
     """
-
-    execution_scope = 'experimental_ram_incapacity_duel'
 
     def __init__(self, *args, self_damage_mode, stop_on_attacker=None, **kwargs):
         if self_damage_mode not in ('lethal_impact', 'nonlethal_impact', 'stop_before_heal_reject_lethal'):
@@ -54,12 +52,16 @@ class RamIncapacityDuel(NonlethalRamProneDuel):
         return 'experimental bare Ram; simultaneous damage; self-incapacity hypothesis'
 
     def _on_ram_opportunity(self, actor, first, second):
+        start = len(self.log)
         super()._on_ram_opportunity(actor, first, second)
         fighter = self.fighters[actor]
-        if self.self_damage_mode == 'stop_before_heal_reject_lethal' and not fighter.conscious:
+        impact = next((event for event in self.log[start:] if event.get('type') == 'ram_attack'
+                       and event.get('actor') == fighter.profile.name), None)
+        if (self.self_damage_mode == 'stop_before_heal_reject_lethal' and impact is not None
+                and impact['attacker_health_after'] <= 0):
             self._ram_incapacitated_actor = actor
             self._record('ram_incapacity_stop', ('ACT-05', 'DMG-05'), actor=fighter.profile.name,
-                         target=second.target, trigger=self.trigger_seq, health=fighter.health,
+                         target=second.target, trigger=impact['trigger'], health=impact['attacker_health_after'],
                          reason='combat_ends_before_recovery')
 
     def _end_turn_effects(self, actor):
@@ -98,3 +100,7 @@ class RamIncapacityDuel(NonlethalRamProneDuel):
                          actor=fighter.profile.name, source='end_turn', remaining=fighter.reactions)
             self._record('shield_activate', ('HR-04',), actor=fighter.profile.name,
                          cost='reaction', timing='end_turn')
+
+
+class RamIncapacityDuel(RamIncapacityMixin, NonlethalRamProneDuel):
+    execution_scope = 'experimental_ram_incapacity_duel'

@@ -75,6 +75,19 @@ class RamStopRulingTests(unittest.TestCase):
         self.assertTrue(any(e['type'] == 'heal' and e['actor'] == 'A' for e in result.log))
         self.assertEqual(self.audit(duel, result, profiles), [])
 
+    def test_enemy_riposte_does_not_trigger_the_ram_self_damage_ruling(self):
+        profiles = (profile('A', 0, health=15, initiative=100, powers=frozenset({'healing_factor'})),
+                    profile('B', 4, health=250, powers=frozenset({'riposte'})))
+        duel, result = self.run_duel(profiles, seed=0)
+        ram = next(event for event in result.log if event['type'] == 'ram_attack')
+        self.assertFalse(ram['transaction']['parameters']['success'])
+        self.assertEqual(ram['attacker_health_after'], 15)
+        self.assertTrue(any(event['type'] == 'attack' and event.get('reaction') is True
+                            and event.get('health_after') == 0 for event in result.log))
+        self.assertFalse(any(event['type'] == 'ram_incapacity_stop' for event in result.log))
+        self.assertEqual(result.final_health[0], 5)
+        self.assertEqual(self.audit(duel, result, profiles), [])
+
     def test_forged_stop_or_postimpact_healing_is_rejected(self):
         duel, result = self.run_duel()
         index = next(i for i, e in enumerate(result.log) if e['type'] == 'ram_incapacity_stop')

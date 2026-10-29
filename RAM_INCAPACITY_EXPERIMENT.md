@@ -20,6 +20,20 @@ concluir o combate. O auditor confere o marcador, o encerramento imediato e a
 ausência de cura. O executor ainda é experimental e não promove o cenário a
 uma bateria estatística.
 
+Uma revisão posterior encontrou e corrigiu uma distinção importante: se Ram
+errar e um contra-ataque inimigo incapacitar o atacante, esse dano não é
+autoimpacto de Ram. A versão anterior podia encerrar antes da cura pelo motivo
+errado. A versão atual identifica o Health registrado no próprio impacto,
+antes de eventuais reações. Para dano de contra-ataque, o experimento conserva
+o comportamento anterior de fim de turno; isso não é uma nova decisão da
+mesa. Os exemplos históricos ficam preservados com suas fontes e não devem ser
+usados como evidência de casos de contra-ataque que não demonstram.
+
+O host `experimental/stopping_ram_duel.py` também combina essa decisão com o
+recorte experimental de poderes à distância. Há testes de Ram, reação a Ram
+errado, Stopping Power e auto-incapacitação, incluindo auditoria e replay.
+O limiar de morte por autoimpacto continua bloqueado.
+
 O [exemplo sintético da decisão](experimental_outputs/ram_stop_table_ruling_001.json)
 usa seed `1`: os danos levam o atacante de 20 para −1 Health e o alvo de 250
 para 210, sem cura posterior. A trilha foi auditada novamente após a leitura e

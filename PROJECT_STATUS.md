@@ -47,6 +47,8 @@ decisões da mesa nem modificam o padrão que bloqueia esse caso. A mesa agora
 confirmou que os dois danos de Ram ocorrem e que o combate termina antes da
 cura quando Victor fica inconsciente; o modo experimental correspondente foi
 adicionado. A morte por autoimpacto permanece sem decisão e é bloqueada.
+O modo foi combinado com os poderes experimentais à distância; uma correção
+impede confundir dano de contra-ataque após Ram errado com autoimpacto.
 
 **Prone experimental:** um [duelo separado](PRONE_EXPERIMENT.md) já mantém a
 condição, ajusta testes e permite levantar gastando movimento. A trilha completa

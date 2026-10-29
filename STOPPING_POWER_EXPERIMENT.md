@@ -16,6 +16,12 @@ host não oferece o ataque adicional contra um alvo inconsciente ou se o
 atacante estiver incapacitado ou Stunned; essa é uma restrição conservadora,
 não uma decisão atribuída à mesa.
 
+O host separado `experimental/stopping_ram_duel.py` acrescenta a decisão
+atual sobre Ram ao mesmo conjunto de poderes. Ele encerra antes da cura quando
+o autoimpacto deixa o atacante indicado inconsciente e aborta o caso de morte
+por autoimpacto ainda não decidido. Uma falha de Ram seguida de contra-ataque
+não é confundida com dano próprio. Esse recorte também permanece experimental.
+
 `experimental/stopping_audit.py` verifica a declaração, o custo, os dois
 testes, o alvo, a elegibilidade e a ordem das reações. Ele chama depois as
 auditorias independentes de reação, armas e dano. O contador de ação padrão

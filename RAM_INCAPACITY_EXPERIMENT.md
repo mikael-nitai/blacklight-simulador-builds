@@ -45,3 +45,9 @@ byte. As fontes correspondem ao commit `f858a99` e o SHA-256 do arquivo é
 `9748df88fb39addfd6878637e5388dc68ac3cc126a84559252ffd46e461a9fb4`.
 Essa é uma comparação de fronteira, não uma estimativa de frequência nem uma
 decisão sobre a mesa.
+
+Uma [segunda versão da comparação](experimental_outputs/ram_self_incapacity_sensitivity_002.json)
+acrescenta a auditoria independente dos efeitos automáticos de fim de turno.
+Ela foi repetida byte a byte; suas fontes correspondem ao commit `a8362f1` e o
+SHA-256 é `9cada6241c2ae60e2e76bec61a90ffc1f6a38bc37372cab56ff8763304fe9d63`.
+A primeira versão continua preservada com suas fontes originais.

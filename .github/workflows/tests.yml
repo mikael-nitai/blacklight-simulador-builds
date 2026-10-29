@@ -34,3 +34,5 @@ jobs:
         run: python -B -m scripts.verify_sources
       - name: Conferir estudo experimental de Ram e Crossbones parcial
         run: python -B -m scripts.audit_ram_crossbones_explore experimental_outputs/ram_crossbones_explore_v1.json
+      - name: Conferir estudo experimental de estratégia no agarrão
+        run: python -B -m scripts.audit_grapple_strategy_explore experimental_outputs/grapple_strategy_explore_v1.json

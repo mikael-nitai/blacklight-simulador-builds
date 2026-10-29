@@ -1,0 +1,7123 @@
+{
+  "schema": "blacklight-generic-character-duel-v1",
+  "damage_model": "literal_marvel_pool_v2",
+  "engine_version": "0.2.0-pool",
+  "seed": 146003,
+  "execution_adapter": "split_fast_physical_duel_v1",
+  "table_ruleset": "split_fast_v3",
+  "fast_zero_dice_bonus": true,
+  "fast_strikes_contract": "two checks before effects; one preselected effect limb; Shield before damage; both effects before Riposte",
+  "lifecycle_scope": "Dodge and Stunned expiry at turn start; immutable timing plans",
+  "runtime": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "implementation": "cpython",
+    "combat_core_dependencies": "Python standard library",
+    "external_policy_dependency_scope": "Class source is hashed; transitive external dependencies need a separate manifest"
+  },
+  "registered_action_modules": [
+    {
+      "kind": "heal",
+      "required_power": "do_this_all_day",
+      "minimum_spend": 5,
+      "maximum_spend_per_rank": 5,
+      "minimum_focus_remaining": 1,
+      "health_per_focus": 2,
+      "cost_rules": [
+        "RES-01",
+        "POW-07"
+      ],
+      "healing_rule": "POW-07",
+      "sources": [
+        "Core Rulebook p.94",
+        "RULES_AUDIT.md POW-07/RES-01"
+      ],
+      "family": "FocusSelfHeal",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "do_this_all_day"
+        }
+      ]
+    },
+    {
+      "kind": "stance",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "attack_stance"
+        }
+      ],
+      "state": "stance",
+      "require_inactive": true,
+      "rules": [
+        "POW-09"
+      ],
+      "sources": [
+        "Core Rulebook p.83",
+        "RULES_AUDIT.md POW-09"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "shield",
+      "requirements": [
+        {
+          "kind": "weapon",
+          "id": "shield"
+        }
+      ],
+      "state": "shield_active",
+      "require_inactive": true,
+      "rules": [
+        "HR-04"
+      ],
+      "sources": [
+        "User table ruling HR-04: standard-action activation"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "dodge",
+      "requirements": [],
+      "state": "dodging",
+      "require_inactive": false,
+      "rules": [
+        "ACT-07"
+      ],
+      "sources": [
+        "Core Rulebook p.30",
+        "RULES_AUDIT.md ACT-07"
+      ],
+      "family": "StateActivation"
+    }
+  ],
+  "mechanics_contract_sha256": "46920662f097656be8bd4e88e9281c87ec95a3c5f08d307267cd8ec5b8a64cb0",
+  "source_sha256": {
+    "blacklight/__init__.py": "661aacdbe8eec1dc9eb5af1fc4e6946742daf032dd96f95434dd541a1b650f03",
+    "blacklight/audit.py": "af63b0a71bb027db6093f620073aa08c5aaa517b57323b362c8f00e3715d19cf",
+    "blacklight/batch_audit.py": "bfc4c894e8da5ddef8d3ee2bf2e69d9a81a1baa07056afa63202f231e83f0d20",
+    "blacklight/damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight/dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight/dice_audit.py": "ebce1bd892f8ecef507162a0f28280e5fa5300d6408c04e97b45edab6335b1e1",
+    "blacklight/engine.py": "e49d63d730ce8ac2ad62ff45b392196783914d439c7e99efa6ec48be264202e5",
+    "blacklight/experiment.py": "81707496fce1164170e961287b0fe3105e7c21c8c030b472ddeac9b26523873b",
+    "blacklight/extended_batch_audit.py": "2b0add707c406dfa3cd7906c2f388cafd82aefa8c98dc10c557b87e3998e1de3",
+    "blacklight/mechanics_contract.py": "0c7a4c3a963e1ea13fe3f8c996f81f436b801758019d26f240078a883c6109c6",
+    "blacklight/policies.py": "fbf6756e0023efdb3b7d91a4ee4fd7f2a1868ab3b919ab28b284243e70a17e66",
+    "blacklight/pool_damage.py": "0b71361a4778d2f6e811357a854d7b67303b6c9ffaa5d2e7a61004b645f3e1d1",
+    "blacklight/profile_audit.py": "0ec9e752b3adddd71a8fd6c5e7c86dd8b0f9422dd7f7f234d726716ee155526d",
+    "blacklight/result_audit.py": "4162e48a0c1846e394ca4fd6f62cdecab17cb3f962b060404684273a2080fd43",
+    "blacklight/results_io.py": "858ceba8c897dae87119526313e6fb893dd88002d991fc263b33538839dbf9bb",
+    "blacklight/ruleset_audit.py": "5a35bf7c340c644fd44ac2b0e1c7aeb47f24582d3f6828607959224e11094f74",
+    "blacklight/rulesets.py": "ae933562bd76aa826a8ec1b7a1da6dad53ae52d4d70452d88682c2adc8f5d456",
+    "blacklight/search.py": "1cb96edf48e95ee9869c1e2f6741339ccbb8bfa63299f7ee4f38c53a219e0ffc",
+    "blacklight/sensitivity.py": "6f9755be75a0ef460e88dc419f1aaea67748f658b180b7e69577b9e83b9d91ea",
+    "blacklight/spatial_audit.py": "2773e2296db91957d4be901e0e436cabfbd65a8a4e51f36fdbced592b886e41d",
+    "blacklight/split_audit.py": "ee1d6c7b755762355d5edf8fbd81147ee05fa59967e06715a0db421646971c30",
+    "blacklight/turn_audit.py": "b73b5500a34885ae4e14516a770e3436ba2a92d7b476f233c9a50466d2e75e22",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "DAMAGE_POOL_RULING.md": "e09fcaea9bb1ce07f963b64980bcad5af1b144a855703678a78951d78de30c1c",
+    "DAMAGE_POOL_V2_SPEC.md": "92e1c71d767d075bc44ccc02e957b95bd904e20ff313f510fb8b315448b18387",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "FAST_STRIKES_RULING.md": "57fd65b361afdc1e7b53f8dafddef5ec26c2eea9df65d28fd9a53ec5276a8803",
+    "RULES_AUDIT.md": "2773d920e526dfb8f5d542f8a72f9af2b19a900ffcf63390bc4814945cbe1912",
+    "combatants/__init__.py": "5978e1e5aedae6ee1105f87ed6d05850b786ffd4d345baa1109eefde35762d5e",
+    "combatants/actions.py": "e6fd391755cdad6618cd1389938f844b35e8b3854d590510fc0f5db2071658a1",
+    "combatants/battlefields.py": "9edc399643999d6f832dca07e4ff303c903fe07b81e2fa5285a6161821fec0bd",
+    "combatants/condition_bridge.py": "e85b0c32e4beebe5302148f5c5d61658c821600a785355cc3a1c49c5325009d1",
+    "combatants/duel_adapter.py": "3dcd331697480bb385d999870e57511590997de84120308e6ecc86fd27881b5b",
+    "combatants/group.py": "469126ff4d5e937c1c60f29e75f2c1856b41064f4433a1ce4255b7e04e6a337c",
+    "combatants/group_audit.py": "e6489cd3ccc5c345bff59656a47c4debc3af903be9edea23f8b410e7cc88b3da",
+    "combatants/group_grid.py": "c6af56dbda7bff57ae8db9cd3a1ed30de59ddeb1751ba203f6d1aea32f00eb78",
+    "combatants/group_grid_audit.py": "8b8daea9d36bbb5428b1937535489254cd20fa0717437284ff9c3fdb85739689",
+    "combatants/group_initiative_audit.py": "240ab93eb5480266929de59bbbdec571066125cfb31a5b11296fabe45f51ed31",
+    "combatants/group_lifecycle_audit.py": "3338224852bb5eb883100ceac3cfdbcafb601ce0d3ee3bb182410e8b406ecd1c",
+    "combatants/group_runner.py": "a5c332b364ade9d713dcdd20cadb5b2da282564c07ac55a781fde29d1d877f50",
+    "combatants/lifecycle.py": "820dfdee332cced95cd51c08ca47999d523e910514edc49beadfad5abb3adf82",
+    "combatants/modular_duel.py": "158b569475ce20d158f7792e77ab38421c1ec68b348ff26ea43659982fe6b359",
+    "combatants/pdf_draft.py": "cf651dcf3d2b90a26ef961ed18caba5c2321e2330e48427773549040da862add",
+    "combatants/policy_provenance.py": "69a0a1c85a9c28eacdaab83a1a02deb5d5078918886fcb5c11d6b5b6c0627bde",
+    "combatants/runner.py": "96f2ef97f7f346605f7b87bd090fe76e4eafe5c72de0b4056e6258dccbf8125a",
+    "combatants/sheets.py": "ca90287b1ab6d2877388b3ffce53fc7ab70f778b992c14d5749b6b5a6300ad60",
+    "combatants/split_fast.py": "6d33a35cdd9c3ab3ef53469a637fccce6cf81ebf1759be9f1fd282232303df18",
+    "combatants/terrain_policies.py": "781591fa9ecc9f26712f5c272be2478fc30ce9bd9bbf601134db0f57955a2db9",
+    "characters/victor_halle/rank3_2026-10-27_split_fast.json": "194c63ac9746b88d6d466264173fb298426a05e07b37d52dd47c07151246d78d",
+    "characters/examples/synthetic_rank4_split_fast.json": "3057276d2615daebcd19e0abb20c58c9cf438728d9457b643ed72e6aee707906",
+    "characters/examples/synthetic_rank4_nonammo_gunner.json": "954c9d94829458d006b9c3b855587f56772559aaf0f3267a9f0042b4a9e803da",
+    "CURRENT_DUEL_STUDY_SPEC.md": "4a724e9371ce32b932ba9a7459272e7a57c3efbfc67927355c14fbe77a0ed56d",
+    "scripts/current_study_dev.py": "997e512bbbf9a801970c794a8d85714e70273e749e183cea0e484526be56e6c8",
+    "CURRENT_DUEL_HOLDOUT_SPEC.md": "ee1195ecc340698d2a9ab65bc344afacd26e40cfdd89af600fd48f34f49a6b2f",
+    "scripts/current_study_holdout.py": "0139862d7347fd3c0f23a90a96c0bbffb58cbcf68cdd4c5e1534177f5e397ad9",
+    "scripts/current_study_holdout_demo.py": "8bfac9d68da4c5ee299ca6ec330155c32ebadff3e34c66fc085602218478854f"
+  },
+  "initial_distance": 8,
+  "max_rounds": 30,
+  "sheets": [
+    {
+      "schema": "blacklight.character.v1",
+      "id": "victor_halle",
+      "revision": "2026-10-27-split-fast",
+      "name": "Blacklight",
+      "rank": 3,
+      "ruleset": "split_fast_v3",
+      "abilities": {
+        "melee": 6,
+        "agility": 1,
+        "resilience": 5,
+        "vigilance": 2,
+        "ego": 1,
+        "logic": 0
+      },
+      "defenses": {
+        "melee": 16,
+        "agility": 11,
+        "resilience": 15,
+        "vigilance": 12,
+        "ego": 11,
+        "logic": 10
+      },
+      "resources": {
+        "health": 150,
+        "focus": 90,
+        "karma": 3
+      },
+      "movement": {
+        "run": 5,
+        "climb": 3,
+        "swim": 3
+      },
+      "initiative_modifier": 2,
+      "features": [
+        {
+          "id": "mighty",
+          "kind": "power",
+          "level": 3,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "id": "sturdy",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "id": "healing_factor",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "id": "brawling",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "id": "fast_strikes",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "attack_stance",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "riposte",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "disguise",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "do_this_all_day",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blazing_fast_fists",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "weird",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "battle_ready",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "connections_military",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "situational_awareness",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "combat_reflexes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "id": "signature_fast_strikes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "obligation",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "rich",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "signature_weapon",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "heroic",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blade",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "claw",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "hammer",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "id": "shield",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "pdf",
+          "path": "C:/Users/avada/Downloads/Ficha_victor Halle Rank 3.pdf",
+          "sha256": "6c907dfcaa2af39b904e6144466915bafc6b6f66f407aeb312dea112fd3200d1",
+          "page": 1
+        },
+        {
+          "kind": "audit",
+          "path": "CHARACTER_AUDIT.md",
+          "date": "2026-10-26"
+        },
+        {
+          "kind": "table_rulings",
+          "paths": [
+            "DAMAGE_POOL_RULING.md",
+            "FAST_STRIKES_RULING.md",
+            "FOCUS_RULING.md"
+          ],
+          "date": "2026-10-27"
+        }
+      ],
+      "notes": [
+        "Initiative 2 and Run 5 follow the audited Core-derived variant. The PDF prints 1 and 6; that disagreement is retained in CHARACTER_AUDIT.md.",
+        "Mighty 1/2/3 rows are stored as the highest level 3, without summing levels.",
+        "Extended Reach is absent from this primary sheet. Whip is unavailable at Rank 3.",
+        "This record preserves all listed powers, traits and tags. Read the adapter coverage report before simulation.",
+        "Same character attributes/resources as the preserved earlier record; table rules revised on 2026-10-27: one check per limb, preselected effects, both checks before effects/reactions, Shield before damage and both damage/effects before Riposte. No Rank progression invented."
+      ]
+    },
+    {
+      "schema": "blacklight.character.v1",
+      "id": "synthetic_rank4_nonammo_gunner",
+      "revision": "corridor-current-v1",
+      "name": "Atirador sintético Rank 4",
+      "rank": 4,
+      "ruleset": "split_fast_v3",
+      "abilities": {
+        "melee": 2,
+        "agility": 6,
+        "resilience": 4,
+        "vigilance": 2,
+        "ego": 4,
+        "logic": 2
+      },
+      "defenses": {
+        "melee": 12,
+        "agility": 16,
+        "resilience": 14,
+        "vigilance": 12,
+        "ego": 14,
+        "logic": 12
+      },
+      "resources": {
+        "health": 120,
+        "focus": 60,
+        "karma": 0
+      },
+      "movement": {
+        "run": 6,
+        "climb": 3,
+        "swim": 3
+      },
+      "initiative_modifier": 2,
+      "features": [
+        {
+          "id": "ranged_attack",
+          "kind": "equipment",
+          "level": 1,
+          "parameters": {
+            "range": 10,
+            "ammunition": false
+          },
+          "sources": [
+            "Synthetic corridor integration fixture; not an official energy power"
+          ]
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "synthetic",
+          "purpose": "Non-ammunition ranged equipment tests the current Fast/Shield corridor; no official character or future Victor progression is claimed"
+        }
+      ],
+      "notes": [
+        "Ficha sintética de integração. Os seis atributos são explícitos; legalidade de criação e repertório ótimo de poderes não são certificados.",
+        "O ataque à distância é um equipamento genérico não classificado como munição, para testar o limite da imunidade do Escudo. Não representa um poder oficial de energia.",
+        "A política de combate é registrada separadamente; conhecer a parede não concede bônus nas regras."
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "name": "hammer_fast_hammer",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": true,
+      "weapon": "hammer",
+      "offhand": "blade",
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": false,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": false,
+      "effect_limb": 0
+    },
+    {
+      "name": "holdout_gunner_open",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "bare",
+      "offhand": null,
+      "kite": true,
+      "riposte": false,
+      "move_after_attack": true,
+      "knockback_stance": false,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": true,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false,
+      "effect_limb": 0
+    }
+  ],
+  "policy_types": [
+    {
+      "module": "combatants.split_fast",
+      "class": "SplitFastPolicy"
+    },
+    {
+      "module": "combatants.split_fast",
+      "class": "SplitFastPolicy"
+    }
+  ],
+  "policy_provenance": "project_builtin",
+  "hero_id": "victor_halle",
+  "hero_revision": "2026-10-27-split-fast",
+  "opponent_id": "synthetic_rank4_nonammo_gunner",
+  "opponent_revision": "corridor-current-v1",
+  "hero_outcome": "loss",
+  "coverage": [
+    {
+      "sheet_id": "victor_halle",
+      "revision": "2026-10-27-split-fast",
+      "engine": "split_fast_physical_duel",
+      "build_legality": "not_certified_by_this_mechanics_adapter",
+      "ready_for_this_scope": true,
+      "blockers": [],
+      "features": [
+        {
+          "kind": "power",
+          "id": "mighty",
+          "level": 3,
+          "status": "implemented",
+          "detail": "Level becomes Melee damage bonus",
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "sturdy",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Level becomes Health DR",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "healing_factor",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "brawling",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "attack_stance",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "riposte",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "disguise",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No disguise/deception phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "do_this_all_day",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "blazing_fast_fists",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "weird",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No social phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "battle_ready",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "connections_military",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No contacts/reinforcements in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "situational_awareness",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "combat_reflexes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "signature_fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "obligation",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "rich",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "signature_weapon",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "heroic",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Nonlethal damage floor; Karma spending remains outside scope",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "blade",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "claw",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "hammer",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "shield",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "scope_limits": [
+        "two actors",
+        "direct physical combat",
+        "open field",
+        "no Karma spending",
+        "no numeric limb penalties",
+        "no Focus attacks",
+        "no climbing/swimming phase"
+      ]
+    },
+    {
+      "sheet_id": "synthetic_rank4_nonammo_gunner",
+      "revision": "corridor-current-v1",
+      "engine": "split_fast_physical_duel",
+      "build_legality": "not_certified_by_this_mechanics_adapter",
+      "ready_for_this_scope": true,
+      "blockers": [],
+      "features": [
+        {
+          "kind": "equipment",
+          "id": "ranged_attack",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Basic ranged attack with explicit range/ammunition",
+          "sources": [
+            "Synthetic corridor integration fixture; not an official energy power"
+          ]
+        }
+      ],
+      "scope_limits": [
+        "two actors",
+        "direct physical combat",
+        "open field",
+        "no Karma spending",
+        "no numeric limb penalties",
+        "no Focus attacks",
+        "no climbing/swimming phase"
+      ]
+    }
+  ],
+  "result": {
+    "seed": 146003,
+    "winner": "Atirador sintético Rank 4",
+    "outcome": "win",
+    "rounds": 30,
+    "turns": 59,
+    "bonus_round_occurred": false,
+    "final_health": [
+      -6,
+      120
+    ],
+    "final_focus": [
+      90,
+      60
+    ],
+    "metrics": [
+      {
+        "damage_dealt": 0,
+        "damage_taken": 300,
+        "damage_mitigated": 392,
+        "healing_effective": 144,
+        "focus_spent": 0,
+        "attacks": 0,
+        "hits": 0,
+        "fantastic_hits": 0,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 0,
+        "damage_round5": 0,
+        "damage_round10": 0
+      },
+      {
+        "damage_dealt": 300,
+        "damage_taken": 0,
+        "damage_mitigated": 0,
+        "healing_effective": 0,
+        "focus_spent": 0,
+        "attacks": 30,
+        "hits": 26,
+        "fantastic_hits": 3,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 19,
+        "damage_round5": 43,
+        "damage_round10": 84
+      }
+    ],
+    "log": [
+      {
+        "seq": 1,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "roll": [
+          1,
+          6,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 5,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 12,
+        "modifier": 2,
+        "fantastic": false
+      },
+      {
+        "seq": 2,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "roll": [
+          4,
+          6,
+          1
+        ],
+        "rerolls": [],
+        "total": 13,
+        "modifier": 2,
+        "fantastic": false
+      },
+      {
+        "seq": 3,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 4,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 5,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 6,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 1,
+        "remaining": 1
+      },
+      {
+        "seq": 7,
+        "round": 1,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 1,
+        "after_hit": true
+      },
+      {
+        "seq": 8,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 1,
+        "distance": 8,
+        "roll": [
+          2,
+          5,
+          3
+        ],
+        "rerolls": [],
+        "total": 16,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              5
+            ],
+            "counterfactual_faces": [
+              2,
+              3,
+              2
+            ],
+            "ammunition_immunity": false,
+            "damage": 11,
+            "damage_without_reduction": 18
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 11,
+        "damage": 11,
+        "health_before": 150,
+        "health_after": 139,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 9,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 8,
+        "distance_after": 14
+      },
+      {
+        "seq": 10,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 11,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 1
+      },
+      {
+        "seq": 12,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 14,
+        "distance_after": 9
+      },
+      {
+        "seq": 13,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": true,
+        "distance_before": 9,
+        "distance_after": 4
+      },
+      {
+        "seq": 14,
+        "round": 1,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 139,
+        "health_after": 144
+      },
+      {
+        "seq": 15,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 144,
+        "focus": 90
+      },
+      {
+        "seq": 16,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 17,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 18,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 19,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 2,
+        "distance": 4,
+        "roll": [
+          6,
+          5,
+          3
+        ],
+        "rerolls": [],
+        "total": 20,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              2
+            ],
+            "counterfactual_faces": [
+              1,
+              3,
+              3
+            ],
+            "ammunition_immunity": false,
+            "damage": 8,
+            "damage_without_reduction": 20
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 8,
+        "damage": 8,
+        "health_before": 144,
+        "health_after": 136,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 20,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 4,
+        "distance_after": 10
+      },
+      {
+        "seq": 21,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 22,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 23,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 10,
+        "distance_after": 5
+      },
+      {
+        "seq": 24,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 4,
+        "as_standard": true,
+        "distance_before": 5,
+        "distance_after": 1
+      },
+      {
+        "seq": 25,
+        "round": 2,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 136,
+        "health_after": 141
+      },
+      {
+        "seq": 26,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 141,
+        "focus": 90
+      },
+      {
+        "seq": 27,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 28,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 29,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 30,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 3,
+        "distance": 1,
+        "roll": [
+          2,
+          4,
+          2
+        ],
+        "rerolls": [],
+        "total": 14,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": false,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 141,
+        "health_after": 141,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 31,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 32,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 33,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 34,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 35,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 36,
+        "round": 3,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 141,
+        "health_after": 146
+      },
+      {
+        "seq": 37,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 146,
+        "focus": 90
+      },
+      {
+        "seq": 38,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 39,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 40,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 41,
+        "round": 4,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 4,
+        "distance": 1,
+        "roll": [
+          3,
+          5,
+          1
+        ],
+        "rerolls": [],
+        "total": 15,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": false,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 146,
+        "health_after": 146,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 42,
+        "round": 4,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 43,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 44,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 45,
+        "round": 4,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 46,
+        "round": 4,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 47,
+        "round": 4,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 4,
+        "health_before": 146,
+        "health_after": 150
+      },
+      {
+        "seq": 48,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 49,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 50,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 51,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 52,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 5,
+        "distance": 1,
+        "roll": [
+          1,
+          1,
+          5
+        ],
+        "rerolls": [],
+        "total": 18,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              6
+            ],
+            "counterfactual_faces": [
+              6,
+              2,
+              6
+            ],
+            "ammunition_immunity": false,
+            "damage": 24,
+            "damage_without_reduction": 52
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 24,
+        "damage": 24,
+        "health_before": 150,
+        "health_after": 126,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 53,
+        "round": 5,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 54,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 55,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 56,
+        "round": 5,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 57,
+        "round": 5,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 58,
+        "round": 5,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 126,
+        "health_after": 131
+      },
+      {
+        "seq": 59,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 131,
+        "focus": 90
+      },
+      {
+        "seq": 60,
+        "round": 6,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 61,
+        "round": 6,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 62,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 63,
+        "round": 6,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 6,
+        "distance": 1,
+        "roll": [
+          5,
+          6,
+          6
+        ],
+        "rerolls": [],
+        "total": 23,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              2
+            ],
+            "counterfactual_faces": [
+              4,
+              6,
+              1
+            ],
+            "ammunition_immunity": false,
+            "damage": 8,
+            "damage_without_reduction": 24
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 8,
+        "damage": 8,
+        "health_before": 131,
+        "health_after": 123,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 64,
+        "round": 6,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 65,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 66,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 67,
+        "round": 6,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 68,
+        "round": 6,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 69,
+        "round": 6,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 123,
+        "health_after": 128
+      },
+      {
+        "seq": 70,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 128,
+        "focus": 90
+      },
+      {
+        "seq": 71,
+        "round": 7,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 72,
+        "round": 7,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 73,
+        "round": 7,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 74,
+        "round": 7,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 7,
+        "distance": 1,
+        "roll": [
+          2,
+          5,
+          3
+        ],
+        "rerolls": [],
+        "total": 16,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              5
+            ],
+            "counterfactual_faces": [
+              4,
+              5,
+              5
+            ],
+            "ammunition_immunity": false,
+            "damage": 11,
+            "damage_without_reduction": 25
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 11,
+        "damage": 11,
+        "health_before": 128,
+        "health_after": 117,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 75,
+        "round": 7,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 76,
+        "round": 7,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 77,
+        "round": 7,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 78,
+        "round": 7,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 79,
+        "round": 7,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 80,
+        "round": 7,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 117,
+        "health_after": 122
+      },
+      {
+        "seq": 81,
+        "round": 7,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 122,
+        "focus": 90
+      },
+      {
+        "seq": 82,
+        "round": 8,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 83,
+        "round": 8,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 84,
+        "round": 8,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 85,
+        "round": 8,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 8,
+        "distance": 1,
+        "roll": [
+          5,
+          2,
+          4
+        ],
+        "rerolls": [],
+        "total": 17,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              4
+            ],
+            "counterfactual_faces": [
+              4,
+              2,
+              2
+            ],
+            "ammunition_immunity": false,
+            "damage": 10,
+            "damage_without_reduction": 18
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 10,
+        "damage": 10,
+        "health_before": 122,
+        "health_after": 112,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 86,
+        "round": 8,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 87,
+        "round": 8,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 88,
+        "round": 8,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 89,
+        "round": 8,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 90,
+        "round": 8,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 91,
+        "round": 8,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 112,
+        "health_after": 117
+      },
+      {
+        "seq": 92,
+        "round": 8,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 117,
+        "focus": 90
+      },
+      {
+        "seq": 93,
+        "round": 9,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 94,
+        "round": 9,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 95,
+        "round": 9,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 96,
+        "round": 9,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 9,
+        "distance": 1,
+        "roll": [
+          1,
+          4,
+          3
+        ],
+        "rerolls": [],
+        "total": 14,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": false,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 117,
+        "health_after": 117,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 97,
+        "round": 9,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 98,
+        "round": 9,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 99,
+        "round": 9,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 100,
+        "round": 9,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 101,
+        "round": 9,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 102,
+        "round": 9,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 117,
+        "health_after": 122
+      },
+      {
+        "seq": 103,
+        "round": 9,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 122,
+        "focus": 90
+      },
+      {
+        "seq": 104,
+        "round": 10,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 105,
+        "round": 10,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 106,
+        "round": 10,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 107,
+        "round": 10,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 10,
+        "distance": 1,
+        "roll": [
+          1,
+          5,
+          5
+        ],
+        "rerolls": [],
+        "total": 17,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              1
+            ],
+            "counterfactual_faces": [
+              5,
+              2,
+              2
+            ],
+            "ammunition_immunity": false,
+            "damage": 12,
+            "damage_without_reduction": 21
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 12,
+        "damage": 12,
+        "health_before": 122,
+        "health_after": 110,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 108,
+        "round": 10,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 109,
+        "round": 10,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 110,
+        "round": 10,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 111,
+        "round": 10,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 112,
+        "round": 10,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 113,
+        "round": 10,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 110,
+        "health_after": 115
+      },
+      {
+        "seq": 114,
+        "round": 10,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 115,
+        "focus": 90
+      },
+      {
+        "seq": 115,
+        "round": 11,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 116,
+        "round": 11,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 117,
+        "round": 11,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 118,
+        "round": 11,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 11,
+        "distance": 1,
+        "roll": [
+          4,
+          4,
+          5
+        ],
+        "rerolls": [],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              6
+            ],
+            "counterfactual_faces": [
+              2,
+              1,
+              6
+            ],
+            "ammunition_immunity": false,
+            "damage": 12,
+            "damage_without_reduction": 26
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 12,
+        "damage": 12,
+        "health_before": 115,
+        "health_after": 103,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 119,
+        "round": 11,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 120,
+        "round": 11,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 121,
+        "round": 11,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 122,
+        "round": 11,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 123,
+        "round": 11,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 124,
+        "round": 11,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 103,
+        "health_after": 108
+      },
+      {
+        "seq": 125,
+        "round": 11,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 108,
+        "focus": 90
+      },
+      {
+        "seq": 126,
+        "round": 12,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 127,
+        "round": 12,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 128,
+        "round": 12,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 129,
+        "round": 12,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 12,
+        "distance": 1,
+        "roll": [
+          2,
+          6,
+          5
+        ],
+        "rerolls": [],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              5
+            ],
+            "counterfactual_faces": [
+              3,
+              4,
+              1
+            ],
+            "ammunition_immunity": false,
+            "damage": 11,
+            "damage_without_reduction": 24
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 11,
+        "damage": 11,
+        "health_before": 108,
+        "health_after": 97,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 130,
+        "round": 12,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 131,
+        "round": 12,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 132,
+        "round": 12,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 133,
+        "round": 12,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 134,
+        "round": 12,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 135,
+        "round": 12,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 97,
+        "health_after": 102
+      },
+      {
+        "seq": 136,
+        "round": 12,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 102,
+        "focus": 90
+      },
+      {
+        "seq": 137,
+        "round": 13,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 138,
+        "round": 13,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 139,
+        "round": 13,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 140,
+        "round": 13,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 13,
+        "distance": 1,
+        "roll": [
+          3,
+          6,
+          1
+        ],
+        "rerolls": [],
+        "total": 16,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              1
+            ],
+            "counterfactual_faces": [
+              3,
+              1,
+              5
+            ],
+            "ammunition_immunity": false,
+            "damage": 12,
+            "damage_without_reduction": 26
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 12,
+        "damage": 12,
+        "health_before": 102,
+        "health_after": 90,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 141,
+        "round": 13,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 142,
+        "round": 13,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 143,
+        "round": 13,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 144,
+        "round": 13,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 145,
+        "round": 13,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 146,
+        "round": 13,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 90,
+        "health_after": 95
+      },
+      {
+        "seq": 147,
+        "round": 13,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 95,
+        "focus": 90
+      },
+      {
+        "seq": 148,
+        "round": 14,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 149,
+        "round": 14,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 150,
+        "round": 14,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 151,
+        "round": 14,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 14,
+        "distance": 1,
+        "roll": [
+          2,
+          5,
+          6
+        ],
+        "rerolls": [],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              6
+            ],
+            "counterfactual_faces": [
+              1,
+              3,
+              2
+            ],
+            "ammunition_immunity": false,
+            "damage": 12,
+            "damage_without_reduction": 23
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 12,
+        "damage": 12,
+        "health_before": 95,
+        "health_after": 83,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 152,
+        "round": 14,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 153,
+        "round": 14,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 154,
+        "round": 14,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 155,
+        "round": 14,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 156,
+        "round": 14,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 157,
+        "round": 14,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 83,
+        "health_after": 88
+      },
+      {
+        "seq": 158,
+        "round": 14,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 88,
+        "focus": 90
+      },
+      {
+        "seq": 159,
+        "round": 15,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 160,
+        "round": 15,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 161,
+        "round": 15,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 162,
+        "round": 15,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 15,
+        "distance": 1,
+        "roll": [
+          4,
+          3,
+          6
+        ],
+        "rerolls": [],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              3
+            ],
+            "counterfactual_faces": [
+              5,
+              1,
+              5
+            ],
+            "ammunition_immunity": false,
+            "damage": 9,
+            "damage_without_reduction": 25
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 9,
+        "damage": 9,
+        "health_before": 88,
+        "health_after": 79,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 163,
+        "round": 15,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 164,
+        "round": 15,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 165,
+        "round": 15,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 166,
+        "round": 15,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 167,
+        "round": 15,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 168,
+        "round": 15,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 79,
+        "health_after": 84
+      },
+      {
+        "seq": 169,
+        "round": 15,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 84,
+        "focus": 90
+      },
+      {
+        "seq": 170,
+        "round": 16,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 171,
+        "round": 16,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 172,
+        "round": 16,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 173,
+        "round": 16,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 16,
+        "distance": 1,
+        "roll": [
+          2,
+          6,
+          4
+        ],
+        "rerolls": [],
+        "total": 18,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              5
+            ],
+            "counterfactual_faces": [
+              5,
+              3,
+              1
+            ],
+            "ammunition_immunity": false,
+            "damage": 11,
+            "damage_without_reduction": 25
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 11,
+        "damage": 11,
+        "health_before": 84,
+        "health_after": 73,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 174,
+        "round": 16,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 175,
+        "round": 16,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 176,
+        "round": 16,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 177,
+        "round": 16,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 178,
+        "round": 16,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 179,
+        "round": 16,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 73,
+        "health_after": 78
+      },
+      {
+        "seq": 180,
+        "round": 16,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 78,
+        "focus": 90
+      },
+      {
+        "seq": 181,
+        "round": 17,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 182,
+        "round": 17,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 183,
+        "round": 17,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 184,
+        "round": 17,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 17,
+        "distance": 1,
+        "roll": [
+          6,
+          3,
+          1
+        ],
+        "rerolls": [],
+        "total": 16,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              5
+            ],
+            "counterfactual_faces": [
+              1,
+              6,
+              5
+            ],
+            "ammunition_immunity": false,
+            "damage": 11,
+            "damage_without_reduction": 28
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 11,
+        "damage": 11,
+        "health_before": 78,
+        "health_after": 67,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 185,
+        "round": 17,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 186,
+        "round": 17,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 187,
+        "round": 17,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 188,
+        "round": 17,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 189,
+        "round": 17,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 190,
+        "round": 17,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 67,
+        "health_after": 72
+      },
+      {
+        "seq": 191,
+        "round": 17,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 72,
+        "focus": 90
+      },
+      {
+        "seq": 192,
+        "round": 18,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 193,
+        "round": 18,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 194,
+        "round": 18,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 195,
+        "round": 18,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 18,
+        "distance": 1,
+        "roll": [
+          5,
+          5,
+          3
+        ],
+        "rerolls": [],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              5
+            ],
+            "counterfactual_faces": [
+              5,
+              5,
+              4
+            ],
+            "ammunition_immunity": false,
+            "damage": 11,
+            "damage_without_reduction": 25
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 11,
+        "damage": 11,
+        "health_before": 72,
+        "health_after": 61,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 196,
+        "round": 18,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 197,
+        "round": 18,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 198,
+        "round": 18,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 199,
+        "round": 18,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 200,
+        "round": 18,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 201,
+        "round": 18,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 61,
+        "health_after": 66
+      },
+      {
+        "seq": 202,
+        "round": 18,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 66,
+        "focus": 90
+      },
+      {
+        "seq": 203,
+        "round": 19,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 204,
+        "round": 19,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 205,
+        "round": 19,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 206,
+        "round": 19,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 19,
+        "distance": 1,
+        "roll": [
+          6,
+          6,
+          4
+        ],
+        "rerolls": [],
+        "total": 22,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              3
+            ],
+            "counterfactual_faces": [
+              6,
+              1,
+              1
+            ],
+            "ammunition_immunity": false,
+            "damage": 9,
+            "damage_without_reduction": 27
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 9,
+        "damage": 9,
+        "health_before": 66,
+        "health_after": 57,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 207,
+        "round": 19,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 208,
+        "round": 19,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 209,
+        "round": 19,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 210,
+        "round": 19,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 211,
+        "round": 19,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 212,
+        "round": 19,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 57,
+        "health_after": 62
+      },
+      {
+        "seq": 213,
+        "round": 19,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 62,
+        "focus": 90
+      },
+      {
+        "seq": 214,
+        "round": 20,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 215,
+        "round": 20,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 216,
+        "round": 20,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 217,
+        "round": 20,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 20,
+        "distance": 1,
+        "roll": [
+          1,
+          6,
+          5
+        ],
+        "rerolls": [],
+        "total": 18,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              5
+            ],
+            "counterfactual_faces": [
+              1,
+              6,
+              3
+            ],
+            "ammunition_immunity": false,
+            "damage": 11,
+            "damage_without_reduction": 26
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 11,
+        "damage": 11,
+        "health_before": 62,
+        "health_after": 51,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 218,
+        "round": 20,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 219,
+        "round": 20,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 220,
+        "round": 20,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 221,
+        "round": 20,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 222,
+        "round": 20,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 223,
+        "round": 20,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 51,
+        "health_after": 56
+      },
+      {
+        "seq": 224,
+        "round": 20,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 56,
+        "focus": 90
+      },
+      {
+        "seq": 225,
+        "round": 21,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 226,
+        "round": 21,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 227,
+        "round": 21,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 228,
+        "round": 21,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 21,
+        "distance": 1,
+        "roll": [
+          1,
+          6,
+          4
+        ],
+        "rerolls": [],
+        "total": 17,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              3
+            ],
+            "counterfactual_faces": [
+              1,
+              5,
+              1
+            ],
+            "ammunition_immunity": false,
+            "damage": 9,
+            "damage_without_reduction": 26
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 9,
+        "damage": 9,
+        "health_before": 56,
+        "health_after": 47,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 229,
+        "round": 21,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 230,
+        "round": 21,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 231,
+        "round": 21,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 232,
+        "round": 21,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 233,
+        "round": 21,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 234,
+        "round": 21,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 47,
+        "health_after": 52
+      },
+      {
+        "seq": 235,
+        "round": 21,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 52,
+        "focus": 90
+      },
+      {
+        "seq": 236,
+        "round": 22,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 237,
+        "round": 22,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 238,
+        "round": 22,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 239,
+        "round": 22,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 22,
+        "distance": 1,
+        "roll": [
+          3,
+          2,
+          2
+        ],
+        "rerolls": [],
+        "total": 13,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": false,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 52,
+        "health_after": 52,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 240,
+        "round": 22,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 241,
+        "round": 22,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 242,
+        "round": 22,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 243,
+        "round": 22,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 244,
+        "round": 22,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 245,
+        "round": 22,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 52,
+        "health_after": 57
+      },
+      {
+        "seq": 246,
+        "round": 22,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 57,
+        "focus": 90
+      },
+      {
+        "seq": 247,
+        "round": 23,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 248,
+        "round": 23,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 249,
+        "round": 23,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 250,
+        "round": 23,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 23,
+        "distance": 1,
+        "roll": [
+          3,
+          5,
+          6
+        ],
+        "rerolls": [],
+        "total": 20,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              4
+            ],
+            "counterfactual_faces": [
+              2,
+              3,
+              2
+            ],
+            "ammunition_immunity": false,
+            "damage": 10,
+            "damage_without_reduction": 17
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 10,
+        "damage": 10,
+        "health_before": 57,
+        "health_after": 47,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 251,
+        "round": 23,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 252,
+        "round": 23,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 253,
+        "round": 23,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 254,
+        "round": 23,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 255,
+        "round": 23,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 256,
+        "round": 23,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 47,
+        "health_after": 52
+      },
+      {
+        "seq": 257,
+        "round": 23,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 52,
+        "focus": 90
+      },
+      {
+        "seq": 258,
+        "round": 24,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 259,
+        "round": 24,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 260,
+        "round": 24,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 261,
+        "round": 24,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 24,
+        "distance": 1,
+        "roll": [
+          3,
+          5,
+          5
+        ],
+        "rerolls": [],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              3
+            ],
+            "counterfactual_faces": [
+              4,
+              3,
+              6
+            ],
+            "ammunition_immunity": false,
+            "damage": 9,
+            "damage_without_reduction": 22
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 9,
+        "damage": 9,
+        "health_before": 52,
+        "health_after": 43,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 262,
+        "round": 24,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 263,
+        "round": 24,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 264,
+        "round": 24,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 265,
+        "round": 24,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 266,
+        "round": 24,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 267,
+        "round": 24,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 43,
+        "health_after": 48
+      },
+      {
+        "seq": 268,
+        "round": 24,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 48,
+        "focus": 90
+      },
+      {
+        "seq": 269,
+        "round": 25,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 270,
+        "round": 25,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 271,
+        "round": 25,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 272,
+        "round": 25,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 25,
+        "distance": 1,
+        "roll": [
+          1,
+          4,
+          6
+        ],
+        "rerolls": [],
+        "total": 17,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              3
+            ],
+            "counterfactual_faces": [
+              4,
+              5,
+              6
+            ],
+            "ammunition_immunity": false,
+            "damage": 9,
+            "damage_without_reduction": 24
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 9,
+        "damage": 9,
+        "health_before": 48,
+        "health_after": 39,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 273,
+        "round": 25,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 274,
+        "round": 25,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 275,
+        "round": 25,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 276,
+        "round": 25,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 277,
+        "round": 25,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 278,
+        "round": 25,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 39,
+        "health_after": 44
+      },
+      {
+        "seq": 279,
+        "round": 25,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 44,
+        "focus": 90
+      },
+      {
+        "seq": 280,
+        "round": 26,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 281,
+        "round": 26,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 282,
+        "round": 26,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 283,
+        "round": 26,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 26,
+        "distance": 1,
+        "roll": [
+          5,
+          5,
+          6
+        ],
+        "rerolls": [],
+        "total": 22,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              6
+            ],
+            "counterfactual_faces": [
+              1,
+              6,
+              2
+            ],
+            "ammunition_immunity": false,
+            "damage": 12,
+            "damage_without_reduction": 26
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 12,
+        "damage": 12,
+        "health_before": 44,
+        "health_after": 32,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 284,
+        "round": 26,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 285,
+        "round": 26,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 286,
+        "round": 26,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 287,
+        "round": 26,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 288,
+        "round": 26,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 289,
+        "round": 26,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 32,
+        "health_after": 37
+      },
+      {
+        "seq": 290,
+        "round": 26,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 37,
+        "focus": 90
+      },
+      {
+        "seq": 291,
+        "round": 27,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 292,
+        "round": 27,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 293,
+        "round": 27,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 294,
+        "round": 27,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 27,
+        "distance": 1,
+        "roll": [
+          4,
+          4,
+          6
+        ],
+        "rerolls": [],
+        "total": 20,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              5
+            ],
+            "counterfactual_faces": [
+              5,
+              4,
+              1
+            ],
+            "ammunition_immunity": false,
+            "damage": 11,
+            "damage_without_reduction": 26
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 11,
+        "damage": 11,
+        "health_before": 37,
+        "health_after": 26,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 295,
+        "round": 27,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 296,
+        "round": 27,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 297,
+        "round": 27,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 298,
+        "round": 27,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 299,
+        "round": 27,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 300,
+        "round": 27,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 26,
+        "health_after": 31
+      },
+      {
+        "seq": 301,
+        "round": 27,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 31,
+        "focus": 90
+      },
+      {
+        "seq": 302,
+        "round": 28,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 303,
+        "round": 28,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 304,
+        "round": 28,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 305,
+        "round": 28,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 28,
+        "distance": 1,
+        "roll": [
+          4,
+          3,
+          4
+        ],
+        "rerolls": [],
+        "total": 17,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              3
+            ],
+            "counterfactual_faces": [
+              5,
+              2,
+              6
+            ],
+            "ammunition_immunity": false,
+            "damage": 9,
+            "damage_without_reduction": 22
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 9,
+        "damage": 9,
+        "health_before": 31,
+        "health_after": 22,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 306,
+        "round": 28,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 307,
+        "round": 28,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 308,
+        "round": 28,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 309,
+        "round": 28,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 310,
+        "round": 28,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 311,
+        "round": 28,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 22,
+        "health_after": 27
+      },
+      {
+        "seq": 312,
+        "round": 28,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 27,
+        "focus": 90
+      },
+      {
+        "seq": 313,
+        "round": 29,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 314,
+        "round": 29,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 315,
+        "round": 29,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 316,
+        "round": 29,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 29,
+        "distance": 1,
+        "roll": [
+          3,
+          1,
+          1
+        ],
+        "rerolls": [],
+        "total": 16,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              2
+            ],
+            "counterfactual_faces": [
+              4,
+              6,
+              3
+            ],
+            "ammunition_immunity": false,
+            "damage": 16,
+            "damage_without_reduction": 42
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 16,
+        "damage": 16,
+        "health_before": 27,
+        "health_after": 11,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 317,
+        "round": 29,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 318,
+        "round": 29,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      },
+      {
+        "seq": 319,
+        "round": 29,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 320,
+        "round": 29,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 321,
+        "round": 29,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 322,
+        "round": 29,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 11,
+        "health_after": 16
+      },
+      {
+        "seq": 323,
+        "round": 29,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 16,
+        "focus": 90
+      },
+      {
+        "seq": 324,
+        "round": 30,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 325,
+        "round": 30,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 326,
+        "round": 30,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "reactions": 1
+      },
+      {
+        "seq": 327,
+        "round": 30,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 30,
+        "distance": 1,
+        "roll": [
+          2,
+          1,
+          5
+        ],
+        "rerolls": [],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 4,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 4,
+            "reduction": 3,
+            "dice_after_reduction": 1,
+            "dice_rolled": 1,
+            "ability_added": 6,
+            "faces": [
+              5
+            ],
+            "counterfactual_faces": [
+              4,
+              6,
+              1
+            ],
+            "ammunition_immunity": false,
+            "damage": 22,
+            "damage_without_reduction": 54
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 22,
+        "damage": 22,
+        "health_before": 16,
+        "health_after": -6,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 328,
+        "round": 30,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 329,
+        "round": 30,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atirador sintético Rank 4",
+        "health": 120,
+        "focus": 60
+      }
+    ]
+  },
+  "audit_issues": [],
+  "demonstration": {
+    "scenario": "gunner_open",
+    "policy": "hammer_fast_hammer",
+    "source_commit": "107f54e3d9d04bae46b0d51c6a0c7eabff0bb0fa",
+    "purpose": "illustrative full audited log, not a statistical sample"
+  }
+}

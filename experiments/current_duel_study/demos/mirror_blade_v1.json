@@ -1,0 +1,4605 @@
+{
+  "schema": "blacklight-generic-character-duel-v1",
+  "damage_model": "literal_marvel_pool_v2",
+  "engine_version": "0.2.0-pool",
+  "seed": 146001,
+  "execution_adapter": "split_fast_physical_duel_v1",
+  "table_ruleset": "split_fast_v3",
+  "fast_zero_dice_bonus": true,
+  "fast_strikes_contract": "two checks before effects; one preselected effect limb; Shield before damage; both effects before Riposte",
+  "lifecycle_scope": "Dodge and Stunned expiry at turn start; immutable timing plans",
+  "runtime": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "implementation": "cpython",
+    "combat_core_dependencies": "Python standard library",
+    "external_policy_dependency_scope": "Class source is hashed; transitive external dependencies need a separate manifest"
+  },
+  "registered_action_modules": [
+    {
+      "kind": "heal",
+      "required_power": "do_this_all_day",
+      "minimum_spend": 5,
+      "maximum_spend_per_rank": 5,
+      "minimum_focus_remaining": 1,
+      "health_per_focus": 2,
+      "cost_rules": [
+        "RES-01",
+        "POW-07"
+      ],
+      "healing_rule": "POW-07",
+      "sources": [
+        "Core Rulebook p.94",
+        "RULES_AUDIT.md POW-07/RES-01"
+      ],
+      "family": "FocusSelfHeal",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "do_this_all_day"
+        }
+      ]
+    },
+    {
+      "kind": "stance",
+      "requirements": [
+        {
+          "kind": "power",
+          "id": "attack_stance"
+        }
+      ],
+      "state": "stance",
+      "require_inactive": true,
+      "rules": [
+        "POW-09"
+      ],
+      "sources": [
+        "Core Rulebook p.83",
+        "RULES_AUDIT.md POW-09"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "shield",
+      "requirements": [
+        {
+          "kind": "weapon",
+          "id": "shield"
+        }
+      ],
+      "state": "shield_active",
+      "require_inactive": true,
+      "rules": [
+        "HR-04"
+      ],
+      "sources": [
+        "User table ruling HR-04: standard-action activation"
+      ],
+      "family": "StateActivation"
+    },
+    {
+      "kind": "dodge",
+      "requirements": [],
+      "state": "dodging",
+      "require_inactive": false,
+      "rules": [
+        "ACT-07"
+      ],
+      "sources": [
+        "Core Rulebook p.30",
+        "RULES_AUDIT.md ACT-07"
+      ],
+      "family": "StateActivation"
+    }
+  ],
+  "mechanics_contract_sha256": "46920662f097656be8bd4e88e9281c87ec95a3c5f08d307267cd8ec5b8a64cb0",
+  "source_sha256": {
+    "blacklight/__init__.py": "661aacdbe8eec1dc9eb5af1fc4e6946742daf032dd96f95434dd541a1b650f03",
+    "blacklight/audit.py": "af63b0a71bb027db6093f620073aa08c5aaa517b57323b362c8f00e3715d19cf",
+    "blacklight/batch_audit.py": "bfc4c894e8da5ddef8d3ee2bf2e69d9a81a1baa07056afa63202f231e83f0d20",
+    "blacklight/damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight/dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight/dice_audit.py": "ebce1bd892f8ecef507162a0f28280e5fa5300d6408c04e97b45edab6335b1e1",
+    "blacklight/engine.py": "e49d63d730ce8ac2ad62ff45b392196783914d439c7e99efa6ec48be264202e5",
+    "blacklight/experiment.py": "81707496fce1164170e961287b0fe3105e7c21c8c030b472ddeac9b26523873b",
+    "blacklight/extended_batch_audit.py": "2b0add707c406dfa3cd7906c2f388cafd82aefa8c98dc10c557b87e3998e1de3",
+    "blacklight/mechanics_contract.py": "0c7a4c3a963e1ea13fe3f8c996f81f436b801758019d26f240078a883c6109c6",
+    "blacklight/policies.py": "fbf6756e0023efdb3b7d91a4ee4fd7f2a1868ab3b919ab28b284243e70a17e66",
+    "blacklight/pool_damage.py": "0b71361a4778d2f6e811357a854d7b67303b6c9ffaa5d2e7a61004b645f3e1d1",
+    "blacklight/profile_audit.py": "0ec9e752b3adddd71a8fd6c5e7c86dd8b0f9422dd7f7f234d726716ee155526d",
+    "blacklight/result_audit.py": "4162e48a0c1846e394ca4fd6f62cdecab17cb3f962b060404684273a2080fd43",
+    "blacklight/results_io.py": "858ceba8c897dae87119526313e6fb893dd88002d991fc263b33538839dbf9bb",
+    "blacklight/ruleset_audit.py": "5a35bf7c340c644fd44ac2b0e1c7aeb47f24582d3f6828607959224e11094f74",
+    "blacklight/rulesets.py": "ae933562bd76aa826a8ec1b7a1da6dad53ae52d4d70452d88682c2adc8f5d456",
+    "blacklight/search.py": "1cb96edf48e95ee9869c1e2f6741339ccbb8bfa63299f7ee4f38c53a219e0ffc",
+    "blacklight/sensitivity.py": "6f9755be75a0ef460e88dc419f1aaea67748f658b180b7e69577b9e83b9d91ea",
+    "blacklight/spatial_audit.py": "2773e2296db91957d4be901e0e436cabfbd65a8a4e51f36fdbced592b886e41d",
+    "blacklight/split_audit.py": "ee1d6c7b755762355d5edf8fbd81147ee05fa59967e06715a0db421646971c30",
+    "blacklight/turn_audit.py": "b73b5500a34885ae4e14516a770e3436ba2a92d7b476f233c9a50466d2e75e22",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "DAMAGE_POOL_RULING.md": "e09fcaea9bb1ce07f963b64980bcad5af1b144a855703678a78951d78de30c1c",
+    "DAMAGE_POOL_V2_SPEC.md": "92e1c71d767d075bc44ccc02e957b95bd904e20ff313f510fb8b315448b18387",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "FAST_STRIKES_RULING.md": "57fd65b361afdc1e7b53f8dafddef5ec26c2eea9df65d28fd9a53ec5276a8803",
+    "RULES_AUDIT.md": "2773d920e526dfb8f5d542f8a72f9af2b19a900ffcf63390bc4814945cbe1912",
+    "combatants/__init__.py": "5978e1e5aedae6ee1105f87ed6d05850b786ffd4d345baa1109eefde35762d5e",
+    "combatants/actions.py": "e6fd391755cdad6618cd1389938f844b35e8b3854d590510fc0f5db2071658a1",
+    "combatants/battlefields.py": "9edc399643999d6f832dca07e4ff303c903fe07b81e2fa5285a6161821fec0bd",
+    "combatants/condition_bridge.py": "e85b0c32e4beebe5302148f5c5d61658c821600a785355cc3a1c49c5325009d1",
+    "combatants/duel_adapter.py": "3dcd331697480bb385d999870e57511590997de84120308e6ecc86fd27881b5b",
+    "combatants/group.py": "469126ff4d5e937c1c60f29e75f2c1856b41064f4433a1ce4255b7e04e6a337c",
+    "combatants/group_audit.py": "e6489cd3ccc5c345bff59656a47c4debc3af903be9edea23f8b410e7cc88b3da",
+    "combatants/group_grid.py": "c6af56dbda7bff57ae8db9cd3a1ed30de59ddeb1751ba203f6d1aea32f00eb78",
+    "combatants/group_grid_audit.py": "8b8daea9d36bbb5428b1937535489254cd20fa0717437284ff9c3fdb85739689",
+    "combatants/group_initiative_audit.py": "240ab93eb5480266929de59bbbdec571066125cfb31a5b11296fabe45f51ed31",
+    "combatants/group_lifecycle_audit.py": "3338224852bb5eb883100ceac3cfdbcafb601ce0d3ee3bb182410e8b406ecd1c",
+    "combatants/group_runner.py": "a5c332b364ade9d713dcdd20cadb5b2da282564c07ac55a781fde29d1d877f50",
+    "combatants/lifecycle.py": "820dfdee332cced95cd51c08ca47999d523e910514edc49beadfad5abb3adf82",
+    "combatants/modular_duel.py": "158b569475ce20d158f7792e77ab38421c1ec68b348ff26ea43659982fe6b359",
+    "combatants/pdf_draft.py": "cf651dcf3d2b90a26ef961ed18caba5c2321e2330e48427773549040da862add",
+    "combatants/policy_provenance.py": "69a0a1c85a9c28eacdaab83a1a02deb5d5078918886fcb5c11d6b5b6c0627bde",
+    "combatants/runner.py": "96f2ef97f7f346605f7b87bd090fe76e4eafe5c72de0b4056e6258dccbf8125a",
+    "combatants/sheets.py": "ca90287b1ab6d2877388b3ffce53fc7ab70f778b992c14d5749b6b5a6300ad60",
+    "combatants/split_fast.py": "6d33a35cdd9c3ab3ef53469a637fccce6cf81ebf1759be9f1fd282232303df18",
+    "combatants/terrain_policies.py": "781591fa9ecc9f26712f5c272be2478fc30ce9bd9bbf601134db0f57955a2db9",
+    "characters/victor_halle/rank3_2026-10-27_split_fast.json": "194c63ac9746b88d6d466264173fb298426a05e07b37d52dd47c07151246d78d",
+    "characters/examples/synthetic_rank4_split_fast.json": "3057276d2615daebcd19e0abb20c58c9cf438728d9457b643ed72e6aee707906",
+    "characters/examples/synthetic_rank4_nonammo_gunner.json": "954c9d94829458d006b9c3b855587f56772559aaf0f3267a9f0042b4a9e803da",
+    "CURRENT_DUEL_STUDY_SPEC.md": "4a724e9371ce32b932ba9a7459272e7a57c3efbfc67927355c14fbe77a0ed56d",
+    "scripts/current_study_dev.py": "997e512bbbf9a801970c794a8d85714e70273e749e183cea0e484526be56e6c8",
+    "CURRENT_DUEL_HOLDOUT_SPEC.md": "ee1195ecc340698d2a9ab65bc344afacd26e40cfdd89af600fd48f34f49a6b2f",
+    "scripts/current_study_holdout.py": "0139862d7347fd3c0f23a90a96c0bbffb58cbcf68cdd4c5e1534177f5e397ad9",
+    "scripts/current_study_holdout_demo.py": "8bfac9d68da4c5ee299ca6ec330155c32ebadff3e34c66fc085602218478854f"
+  },
+  "initial_distance": 4,
+  "max_rounds": 30,
+  "sheets": [
+    {
+      "schema": "blacklight.character.v1",
+      "id": "victor_halle",
+      "revision": "2026-10-27-split-fast",
+      "name": "Blacklight",
+      "rank": 3,
+      "ruleset": "split_fast_v3",
+      "abilities": {
+        "melee": 6,
+        "agility": 1,
+        "resilience": 5,
+        "vigilance": 2,
+        "ego": 1,
+        "logic": 0
+      },
+      "defenses": {
+        "melee": 16,
+        "agility": 11,
+        "resilience": 15,
+        "vigilance": 12,
+        "ego": 11,
+        "logic": 10
+      },
+      "resources": {
+        "health": 150,
+        "focus": 90,
+        "karma": 3
+      },
+      "movement": {
+        "run": 5,
+        "climb": 3,
+        "swim": 3
+      },
+      "initiative_modifier": 2,
+      "features": [
+        {
+          "id": "mighty",
+          "kind": "power",
+          "level": 3,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "id": "sturdy",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "id": "healing_factor",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "id": "brawling",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "id": "fast_strikes",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "attack_stance",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "riposte",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "disguise",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "do_this_all_day",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blazing_fast_fists",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "weird",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "battle_ready",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "connections_military",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "situational_awareness",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "combat_reflexes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "id": "signature_fast_strikes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "obligation",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "rich",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "signature_weapon",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "heroic",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blade",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "claw",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "hammer",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "id": "shield",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "pdf",
+          "path": "C:/Users/avada/Downloads/Ficha_victor Halle Rank 3.pdf",
+          "sha256": "6c907dfcaa2af39b904e6144466915bafc6b6f66f407aeb312dea112fd3200d1",
+          "page": 1
+        },
+        {
+          "kind": "audit",
+          "path": "CHARACTER_AUDIT.md",
+          "date": "2026-10-26"
+        },
+        {
+          "kind": "table_rulings",
+          "paths": [
+            "DAMAGE_POOL_RULING.md",
+            "FAST_STRIKES_RULING.md",
+            "FOCUS_RULING.md"
+          ],
+          "date": "2026-10-27"
+        }
+      ],
+      "notes": [
+        "Initiative 2 and Run 5 follow the audited Core-derived variant. The PDF prints 1 and 6; that disagreement is retained in CHARACTER_AUDIT.md.",
+        "Mighty 1/2/3 rows are stored as the highest level 3, without summing levels.",
+        "Extended Reach is absent from this primary sheet. Whip is unavailable at Rank 3.",
+        "This record preserves all listed powers, traits and tags. Read the adapter coverage report before simulation.",
+        "Same character attributes/resources as the preserved earlier record; table rules revised on 2026-10-27: one check per limb, preselected effects, both checks before effects/reactions, Shield before damage and both damage/effects before Riposte. No Rank progression invented."
+      ]
+    },
+    {
+      "schema": "blacklight.character.v1",
+      "id": "synthetic_victor_mirror_blade",
+      "revision": "holdout-blade-v1",
+      "name": "Espelho sintético com Lâmina",
+      "rank": 3,
+      "ruleset": "split_fast_v3",
+      "abilities": {
+        "melee": 6,
+        "agility": 1,
+        "resilience": 5,
+        "vigilance": 2,
+        "ego": 1,
+        "logic": 0
+      },
+      "defenses": {
+        "melee": 16,
+        "agility": 11,
+        "resilience": 15,
+        "vigilance": 12,
+        "ego": 11,
+        "logic": 10
+      },
+      "resources": {
+        "health": 150,
+        "focus": 90,
+        "karma": 3
+      },
+      "movement": {
+        "run": 5,
+        "climb": 3,
+        "swim": 3
+      },
+      "initiative_modifier": 2,
+      "features": [
+        {
+          "id": "mighty",
+          "kind": "power",
+          "level": 3,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "id": "sturdy",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "id": "healing_factor",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "id": "brawling",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "id": "fast_strikes",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "attack_stance",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "riposte",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "disguise",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "do_this_all_day",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blazing_fast_fists",
+          "kind": "power",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "id": "weird",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "battle_ready",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "connections_military",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "situational_awareness",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "combat_reflexes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "id": "signature_fast_strikes",
+          "kind": "trait",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "obligation",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "rich",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "signature_weapon",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "heroic",
+          "kind": "tag",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "id": "blade",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "claw",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "id": "hammer",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "id": "shield",
+          "kind": "house_weapon",
+          "level": 1,
+          "parameters": {},
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "pdf",
+          "path": "C:/Users/avada/Downloads/Ficha_victor Halle Rank 3.pdf",
+          "sha256": "6c907dfcaa2af39b904e6144466915bafc6b6f66f407aeb312dea112fd3200d1",
+          "page": 1
+        },
+        {
+          "kind": "audit",
+          "path": "CHARACTER_AUDIT.md",
+          "date": "2026-10-26"
+        },
+        {
+          "kind": "table_rulings",
+          "paths": [
+            "DAMAGE_POOL_RULING.md",
+            "FAST_STRIKES_RULING.md",
+            "FOCUS_RULING.md"
+          ],
+          "date": "2026-10-27"
+        },
+        {
+          "kind": "synthetic",
+          "purpose": "Holdout mirror, not an official NPC"
+        }
+      ],
+      "notes": [
+        "Initiative 2 and Run 5 follow the audited Core-derived variant. The PDF prints 1 and 6; that disagreement is retained in CHARACTER_AUDIT.md.",
+        "Mighty 1/2/3 rows are stored as the highest level 3, without summing levels.",
+        "Extended Reach is absent from this primary sheet. Whip is unavailable at Rank 3.",
+        "This record preserves all listed powers, traits and tags. Read the adapter coverage report before simulation.",
+        "Same character attributes/resources as the preserved earlier record; table rules revised on 2026-10-27: one check per limb, preselected effects, both checks before effects/reactions, Shield before damage and both damage/effects before Riposte. No Rank progression invented.",
+        "Synthetic mirror uses the same biological arsenal as Victor."
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "name": "hammer_fast_hammer",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": true,
+      "weapon": "hammer",
+      "offhand": "blade",
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": false,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": false,
+      "effect_limb": 0
+    },
+    {
+      "name": "holdout_mirror_blade",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": true,
+      "weapon": "blade",
+      "offhand": "hammer",
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": false,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": true,
+      "effect_limb": 0
+    }
+  ],
+  "policy_types": [
+    {
+      "module": "combatants.split_fast",
+      "class": "SplitFastPolicy"
+    },
+    {
+      "module": "combatants.split_fast",
+      "class": "SplitFastPolicy"
+    }
+  ],
+  "policy_provenance": "project_builtin",
+  "hero_id": "victor_halle",
+  "hero_revision": "2026-10-27-split-fast",
+  "opponent_id": "synthetic_victor_mirror_blade",
+  "opponent_revision": "holdout-blade-v1",
+  "hero_outcome": "loss",
+  "coverage": [
+    {
+      "sheet_id": "victor_halle",
+      "revision": "2026-10-27-split-fast",
+      "engine": "split_fast_physical_duel",
+      "build_legality": "not_certified_by_this_mechanics_adapter",
+      "ready_for_this_scope": true,
+      "blockers": [],
+      "features": [
+        {
+          "kind": "power",
+          "id": "mighty",
+          "level": 3,
+          "status": "implemented",
+          "detail": "Level becomes Melee damage bonus",
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "sturdy",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Level becomes Health DR",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "healing_factor",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "brawling",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "attack_stance",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "riposte",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "disguise",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No disguise/deception phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "do_this_all_day",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "blazing_fast_fists",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "weird",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No social phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "battle_ready",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "connections_military",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No contacts/reinforcements in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "situational_awareness",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "combat_reflexes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "signature_fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "obligation",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "rich",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "signature_weapon",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "heroic",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Nonlethal damage floor; Karma spending remains outside scope",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "blade",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "claw",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "hammer",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "shield",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "scope_limits": [
+        "two actors",
+        "direct physical combat",
+        "open field",
+        "no Karma spending",
+        "no numeric limb penalties",
+        "no Focus attacks",
+        "no climbing/swimming phase"
+      ]
+    },
+    {
+      "sheet_id": "synthetic_victor_mirror_blade",
+      "revision": "holdout-blade-v1",
+      "engine": "split_fast_physical_duel",
+      "build_legality": "not_certified_by_this_mechanics_adapter",
+      "ready_for_this_scope": true,
+      "blockers": [],
+      "features": [
+        {
+          "kind": "power",
+          "id": "mighty",
+          "level": 3,
+          "status": "implemented",
+          "detail": "Level becomes Melee damage bonus",
+          "sources": [
+            "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "sturdy",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Level becomes Health DR",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "healing_factor",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.103"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "brawling",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; Core p.86"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "attack_stance",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "riposte",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "disguise",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No disguise/deception phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "do_this_all_day",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "power",
+          "id": "blazing_fast_fists",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Physical duel action/passive",
+          "sources": [
+            "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "weird",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No social phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "battle_ready",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "connections_military",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No contacts/reinforcements in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "situational_awareness",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "combat_reflexes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; official errata: per round"
+          ]
+        },
+        {
+          "kind": "trait",
+          "id": "signature_fast_strikes",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Initiative/reaction/check resource trait",
+          "sources": [
+            "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "obligation",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "rich",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "signature_weapon",
+          "level": 1,
+          "status": "contextual",
+          "detail": "No narrative phase in this direct duel",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "tag",
+          "id": "heroic",
+          "level": 1,
+          "status": "implemented",
+          "detail": "Nonlethal damage floor; Karma spending remains outside scope",
+          "sources": [
+            "CHARACTER_AUDIT.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "blade",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "claw",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "hammer",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-02"
+          ]
+        },
+        {
+          "kind": "house_weapon",
+          "id": "shield",
+          "level": 1,
+          "status": "implemented",
+          "detail": "User-confirmed Rank 3 biological weapon",
+          "sources": [
+            "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+          ]
+        }
+      ],
+      "scope_limits": [
+        "two actors",
+        "direct physical combat",
+        "open field",
+        "no Karma spending",
+        "no numeric limb penalties",
+        "no Focus attacks",
+        "no climbing/swimming phase"
+      ]
+    }
+  ],
+  "result": {
+    "seed": 146001,
+    "winner": "Espelho sintético com Lâmina",
+    "outcome": "win",
+    "rounds": 2,
+    "turns": 6,
+    "bonus_round_occurred": true,
+    "final_health": [
+      -5,
+      71
+    ],
+    "final_focus": [
+      90,
+      90
+    ],
+    "metrics": [
+      {
+        "damage_dealt": 94,
+        "damage_taken": 165,
+        "damage_mitigated": 85,
+        "healing_effective": 10,
+        "focus_spent": 0,
+        "attacks": 6,
+        "hits": 6,
+        "fantastic_hits": 2,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 94,
+        "damage_round5": 94,
+        "damage_round10": 94
+      },
+      {
+        "damage_dealt": 165,
+        "damage_taken": 94,
+        "damage_mitigated": 55,
+        "healing_effective": 15,
+        "focus_spent": 0,
+        "attacks": 8,
+        "hits": 8,
+        "fantastic_hits": 5,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 1,
+        "damage_round3": 165,
+        "damage_round5": 165,
+        "damage_round10": 165
+      }
+    ],
+    "log": [
+      {
+        "seq": 1,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "roll": [
+          6,
+          1,
+          6
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 2,
+            "original": 3,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 20,
+        "modifier": 2,
+        "fantastic": true
+      },
+      {
+        "seq": 2,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "roll": [
+          6,
+          1,
+          1
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 1,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 15,
+        "modifier": 2,
+        "fantastic": true
+      },
+      {
+        "seq": 3,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 4,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "reactions": 2
+      },
+      {
+        "seq": 5,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 6,
+        "round": 0,
+        "bonus_round": true,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 3,
+        "as_standard": false,
+        "distance_before": 4,
+        "distance_after": 1
+      },
+      {
+        "seq": 7,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_use_start",
+        "rules": [
+          "HR-09",
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "fast_use_id": 1,
+        "weapons": [
+          "hammer",
+          "blade"
+        ],
+        "effect_limb": 0,
+        "bonus_action": false
+      },
+      {
+        "seq": 8,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "fast_use_id": 1,
+        "limb": 0,
+        "weapon": "hammer",
+        "trigger": 1,
+        "roll": [
+          3,
+          6,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 1,
+            "rolled": 3,
+            "kept": 3
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 18,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false
+      },
+      {
+        "seq": 9,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "fast_use_id": 1,
+        "limb": 1,
+        "weapon": "blade",
+        "trigger": 2,
+        "roll": [
+          4,
+          6,
+          6
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 2,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 22,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false
+      },
+      {
+        "seq": 10,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "trigger": 1,
+        "remaining": 1
+      },
+      {
+        "seq": 11,
+        "round": 0,
+        "bonus_round": true,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "cost": "reaction",
+        "trigger": 1,
+        "after_hit": true
+      },
+      {
+        "seq": 12,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Blacklight",
+        "fast_use_id": 1,
+        "limb": 0,
+        "weapon": "hammer"
+      },
+      {
+        "seq": 13,
+        "round": 0,
+        "bonus_round": true,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-02",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "mode": "hammer_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 1,
+        "distance": 1,
+        "roll": [
+          3,
+          6,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 1,
+            "rolled": 3,
+            "kept": 3
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 18,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 2,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 2,
+            "ability_added": 3,
+            "faces": [
+              4,
+              6
+            ],
+            "counterfactual_faces": [
+              3,
+              5
+            ],
+            "ammunition_immunity": false,
+            "damage": 13,
+            "damage_without_reduction": 21
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 13,
+        "damage": 13,
+        "health_before": 150,
+        "health_after": 137,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 1,
+        "limb": 0,
+        "effect_limb": 0,
+        "effects_enabled": true
+      },
+      {
+        "seq": 14,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Blacklight",
+        "fast_use_id": 1,
+        "limb": 1,
+        "weapon": "blade"
+      },
+      {
+        "seq": 15,
+        "round": 0,
+        "bonus_round": true,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "mode": "blade_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 2,
+        "distance": 1,
+        "roll": [
+          4,
+          6,
+          6
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 2,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 22,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 3,
+        "damage_denominator": 2,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 3,
+            "dice_after_reduction": 4,
+            "dice_rolled": 2,
+            "ability_added": 3,
+            "faces": [
+              3,
+              4
+            ],
+            "counterfactual_faces": [
+              3
+            ],
+            "ammunition_immunity": false,
+            "damage": 10,
+            "damage_without_reduction": 13
+          }
+        ],
+        "strike_weapons": [
+          "blade"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 10,
+        "damage": 10,
+        "health_before": 137,
+        "health_after": 127,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 1,
+        "limb": 1,
+        "effect_limb": 0,
+        "effects_enabled": false
+      },
+      {
+        "seq": 16,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_use_end",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Blacklight",
+        "fast_use_id": 1,
+        "completed_limbs": 2,
+        "blade_bonus_eligible": false
+      },
+      {
+        "seq": 17,
+        "round": 0,
+        "bonus_round": true,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 18,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 19,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "reactions": 1
+      },
+      {
+        "seq": 20,
+        "round": 0,
+        "bonus_round": true,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 21,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_use_start",
+        "rules": [
+          "HR-09",
+          "ACT-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 2,
+        "weapons": [
+          "blade",
+          "hammer"
+        ],
+        "effect_limb": 0,
+        "bonus_action": false
+      },
+      {
+        "seq": 22,
+        "round": 0,
+        "bonus_round": true,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 23,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 2,
+        "limb": 0,
+        "weapon": "blade",
+        "trigger": 3,
+        "roll": [
+          1,
+          4,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 3,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 2,
+            "kept": 4
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false
+      },
+      {
+        "seq": 24,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 2,
+        "limb": 1,
+        "weapon": "hammer",
+        "trigger": 4,
+        "roll": [
+          4,
+          1,
+          2
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 3,
+            "kept": 6
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 18,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false
+      },
+      {
+        "seq": 25,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 3,
+        "remaining": 1
+      },
+      {
+        "seq": 26,
+        "round": 0,
+        "bonus_round": true,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 3,
+        "after_hit": true
+      },
+      {
+        "seq": 27,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 2,
+        "limb": 0,
+        "weapon": "blade"
+      },
+      {
+        "seq": 28,
+        "round": 0,
+        "bonus_round": true,
+        "type": "condition_start",
+        "rules": [
+          "COND-01",
+          "HR-03"
+        ],
+        "actor": "Blacklight",
+        "condition": "bleeding",
+        "intensity": 5
+      },
+      {
+        "seq": 29,
+        "round": 0,
+        "bonus_round": true,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "HR-03",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "mode": "blade_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 3,
+        "distance": 1,
+        "roll": [
+          1,
+          4,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 3,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 2,
+            "kept": 4
+          }
+        ],
+        "total": 16,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 3,
+        "damage_denominator": 2,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 3,
+            "dice_after_reduction": 4,
+            "dice_rolled": 2,
+            "ability_added": 3,
+            "faces": [
+              2,
+              6
+            ],
+            "counterfactual_faces": [
+              4
+            ],
+            "ammunition_immunity": false,
+            "damage": 11,
+            "damage_without_reduction": 15
+          }
+        ],
+        "strike_weapons": [
+          "blade"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 11,
+        "damage": 11,
+        "health_before": 150,
+        "health_after": 139,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 2,
+        "limb": 0,
+        "effect_limb": 0,
+        "effects_enabled": true
+      },
+      {
+        "seq": 30,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 2,
+        "limb": 1,
+        "weapon": "hammer"
+      },
+      {
+        "seq": 31,
+        "round": 0,
+        "bonus_round": true,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "mode": "hammer_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 4,
+        "distance": 1,
+        "roll": [
+          4,
+          1,
+          2
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 3,
+            "kept": 6
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "total": 18,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 5,
+            "ability_added": 6,
+            "faces": [
+              4,
+              2,
+              2,
+              1,
+              4
+            ],
+            "counterfactual_faces": [
+              5,
+              3,
+              5
+            ],
+            "ammunition_immunity": false,
+            "damage": 24,
+            "damage_without_reduction": 37
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 24,
+        "damage": 24,
+        "health_before": 139,
+        "health_after": 115,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 2,
+        "limb": 1,
+        "effect_limb": 0,
+        "effects_enabled": false
+      },
+      {
+        "seq": 32,
+        "round": 0,
+        "bonus_round": true,
+        "type": "fast_use_end",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 2,
+        "completed_limbs": 2,
+        "blade_bonus_eligible": false
+      },
+      {
+        "seq": 33,
+        "round": 0,
+        "bonus_round": true,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 127,
+        "health_after": 132
+      },
+      {
+        "seq": 34,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "source": "end_turn",
+        "remaining": 0
+      },
+      {
+        "seq": 35,
+        "round": 0,
+        "bonus_round": true,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "cost": "reaction",
+        "timing": "end_turn"
+      },
+      {
+        "seq": 36,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "health": 132,
+        "focus": 90
+      },
+      {
+        "seq": 37,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 38,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "reactions": 2
+      },
+      {
+        "seq": 39,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 40,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 41,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_use_start",
+        "rules": [
+          "HR-09",
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "fast_use_id": 3,
+        "weapons": [
+          "hammer",
+          "blade"
+        ],
+        "effect_limb": 0,
+        "bonus_action": false
+      },
+      {
+        "seq": 42,
+        "round": 1,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 43,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "fast_use_id": 3,
+        "limb": 0,
+        "weapon": "hammer",
+        "trigger": 5,
+        "roll": [
+          3,
+          4,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 3,
+            "kept": 4
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false
+      },
+      {
+        "seq": 44,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "fast_use_id": 3,
+        "limb": 1,
+        "weapon": "blade",
+        "trigger": 6,
+        "roll": [
+          5,
+          1,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 2,
+            "original": 3,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 2,
+            "original": 4,
+            "rolled": 4,
+            "kept": 4
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 21,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false
+      },
+      {
+        "seq": 45,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Blacklight",
+        "fast_use_id": 3,
+        "limb": 0,
+        "weapon": "hammer"
+      },
+      {
+        "seq": 46,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-02",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "mode": "hammer_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 5,
+        "distance": 1,
+        "roll": [
+          3,
+          4,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 3,
+            "kept": 4
+          }
+        ],
+        "total": 16,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 2,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 2,
+            "ability_added": 3,
+            "faces": [
+              2,
+              4
+            ],
+            "counterfactual_faces": [
+              5,
+              1
+            ],
+            "ammunition_immunity": false,
+            "damage": 9,
+            "damage_without_reduction": 20
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 9,
+        "damage": 9,
+        "health_before": 132,
+        "health_after": 123,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 3,
+        "limb": 0,
+        "effect_limb": 0,
+        "effects_enabled": true
+      },
+      {
+        "seq": 47,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Blacklight",
+        "fast_use_id": 3,
+        "limb": 1,
+        "weapon": "blade"
+      },
+      {
+        "seq": 48,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "mode": "blade_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 6,
+        "distance": 1,
+        "roll": [
+          5,
+          1,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 2,
+            "original": 3,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 2,
+            "original": 4,
+            "rolled": 4,
+            "kept": 4
+          }
+        ],
+        "total": 21,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 3,
+            "dice_after_reduction": 4,
+            "dice_rolled": 4,
+            "ability_added": 6,
+            "faces": [
+              4,
+              2,
+              4,
+              1
+            ],
+            "counterfactual_faces": [
+              6,
+              2,
+              3
+            ],
+            "ammunition_immunity": false,
+            "damage": 22,
+            "damage_without_reduction": 33
+          }
+        ],
+        "strike_weapons": [
+          "blade"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 22,
+        "damage": 22,
+        "health_before": 123,
+        "health_after": 101,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 3,
+        "limb": 1,
+        "effect_limb": 0,
+        "effects_enabled": false
+      },
+      {
+        "seq": 49,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_use_end",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Blacklight",
+        "fast_use_id": 3,
+        "completed_limbs": 2,
+        "blade_bonus_eligible": false
+      },
+      {
+        "seq": 50,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_end",
+        "rules": [
+          "COND-01",
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "condition": "bleeding",
+        "prior_intensity": 5
+      },
+      {
+        "seq": 51,
+        "round": 1,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 115,
+        "health_after": 120
+      },
+      {
+        "seq": 52,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 120,
+        "focus": 90
+      },
+      {
+        "seq": 53,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "reactions": 2
+      },
+      {
+        "seq": 54,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 55,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_use_start",
+        "rules": [
+          "HR-09",
+          "ACT-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 4,
+        "weapons": [
+          "blade",
+          "hammer"
+        ],
+        "effect_limb": 0,
+        "bonus_action": false
+      },
+      {
+        "seq": 56,
+        "round": 1,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 57,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 4,
+        "limb": 0,
+        "weapon": "blade",
+        "trigger": 7,
+        "roll": [
+          6,
+          1,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 23,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false
+      },
+      {
+        "seq": 58,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 4,
+        "limb": 1,
+        "weapon": "hammer",
+        "trigger": 8,
+        "roll": [
+          2,
+          1,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 4,
+            "kept": 6
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 17,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false
+      },
+      {
+        "seq": 59,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 7,
+        "remaining": 1
+      },
+      {
+        "seq": 60,
+        "round": 1,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 7,
+        "after_hit": true
+      },
+      {
+        "seq": 61,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 4,
+        "limb": 0,
+        "weapon": "blade"
+      },
+      {
+        "seq": 62,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "COND-01",
+          "HR-03"
+        ],
+        "actor": "Blacklight",
+        "condition": "bleeding",
+        "intensity": 5
+      },
+      {
+        "seq": 63,
+        "round": 1,
+        "bonus_round": false,
+        "type": "limb_effect",
+        "rules": [
+          "HR-03"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "stage": 1,
+        "mechanical_penalty": "unmodeled"
+      },
+      {
+        "seq": 64,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "HR-03",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "mode": "blade_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 7,
+        "distance": 1,
+        "roll": [
+          6,
+          1,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "total": 23,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 3,
+            "dice_after_reduction": 4,
+            "dice_rolled": 4,
+            "ability_added": 6,
+            "faces": [
+              1,
+              2,
+              1,
+              3
+            ],
+            "counterfactual_faces": [
+              5,
+              1,
+              5
+            ],
+            "ammunition_immunity": false,
+            "damage": 23,
+            "damage_without_reduction": 39
+          }
+        ],
+        "strike_weapons": [
+          "blade"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 23,
+        "damage": 23,
+        "health_before": 120,
+        "health_after": 97,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 4,
+        "limb": 0,
+        "effect_limb": 0,
+        "effects_enabled": true
+      },
+      {
+        "seq": 65,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 4,
+        "limb": 1,
+        "weapon": "hammer"
+      },
+      {
+        "seq": 66,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "mode": "hammer_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 8,
+        "distance": 1,
+        "roll": [
+          2,
+          1,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 4,
+            "kept": 6
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "total": 17,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 5,
+            "ability_added": 6,
+            "faces": [
+              6,
+              4,
+              5,
+              1,
+              1
+            ],
+            "counterfactual_faces": [
+              2,
+              1,
+              3
+            ],
+            "ammunition_immunity": false,
+            "damage": 33,
+            "damage_without_reduction": 44
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 33,
+        "damage": 33,
+        "health_before": 97,
+        "health_after": 64,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 4,
+        "limb": 1,
+        "effect_limb": 0,
+        "effects_enabled": false
+      },
+      {
+        "seq": 67,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_use_end",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 4,
+        "completed_limbs": 2,
+        "blade_bonus_eligible": true
+      },
+      {
+        "seq": 68,
+        "round": 1,
+        "bonus_round": false,
+        "type": "blade_bonus",
+        "rules": [
+          "HR-03",
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "chosen": "blade_fast",
+        "offhand": "hammer",
+        "source_fast_use": 4
+      },
+      {
+        "seq": 69,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_use_start",
+        "rules": [
+          "HR-09",
+          "ACT-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 5,
+        "weapons": [
+          "blade",
+          "hammer"
+        ],
+        "effect_limb": 0,
+        "bonus_action": true
+      },
+      {
+        "seq": 70,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 5,
+        "limb": 0,
+        "weapon": "blade",
+        "trigger": 9,
+        "roll": [
+          4,
+          1,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 2,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 4,
+            "rolled": 4,
+            "kept": 4
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 20,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false
+      },
+      {
+        "seq": 71,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 5,
+        "limb": 1,
+        "weapon": "hammer",
+        "trigger": 10,
+        "roll": [
+          3,
+          6,
+          2
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 6,
+            "kept": 6
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 3,
+            "kept": 6
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 17,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false
+      },
+      {
+        "seq": 72,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 5,
+        "limb": 0,
+        "weapon": "blade"
+      },
+      {
+        "seq": 73,
+        "round": 1,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "COND-01",
+          "HR-03"
+        ],
+        "actor": "Blacklight",
+        "condition": "bleeding",
+        "intensity": 5
+      },
+      {
+        "seq": 74,
+        "round": 1,
+        "bonus_round": false,
+        "type": "limb_effect",
+        "rules": [
+          "HR-03"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "stage": 2,
+        "mechanical_penalty": "unmodeled"
+      },
+      {
+        "seq": 75,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "HR-03",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "mode": "blade_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 9,
+        "distance": 1,
+        "roll": [
+          4,
+          1,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 2,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 4,
+            "rolled": 4,
+            "kept": 4
+          }
+        ],
+        "total": 20,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 3,
+            "dice_after_reduction": 4,
+            "dice_rolled": 4,
+            "ability_added": 6,
+            "faces": [
+              2,
+              5,
+              1,
+              1
+            ],
+            "counterfactual_faces": [
+              1,
+              5,
+              2
+            ],
+            "ammunition_immunity": false,
+            "damage": 25,
+            "damage_without_reduction": 38
+          }
+        ],
+        "strike_weapons": [
+          "blade"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 25,
+        "damage": 25,
+        "health_before": 64,
+        "health_after": 39,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 5,
+        "limb": 0,
+        "effect_limb": 0,
+        "effects_enabled": true
+      },
+      {
+        "seq": 76,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 5,
+        "limb": 1,
+        "weapon": "hammer"
+      },
+      {
+        "seq": 77,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "mode": "hammer_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 10,
+        "distance": 1,
+        "roll": [
+          3,
+          6,
+          2
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 6,
+            "kept": 6
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 3,
+            "kept": 6
+          }
+        ],
+        "total": 17,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 2,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 2,
+            "ability_added": 3,
+            "faces": [
+              1,
+              1
+            ],
+            "counterfactual_faces": [
+              6,
+              3
+            ],
+            "ammunition_immunity": false,
+            "damage": 15,
+            "damage_without_reduction": 24
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 15,
+        "damage": 15,
+        "health_before": 39,
+        "health_after": 24,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 5,
+        "limb": 1,
+        "effect_limb": 0,
+        "effects_enabled": false
+      },
+      {
+        "seq": 78,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_use_end",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 5,
+        "completed_limbs": 2,
+        "blade_bonus_eligible": true
+      },
+      {
+        "seq": 79,
+        "round": 1,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 101,
+        "health_after": 106
+      },
+      {
+        "seq": 80,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "source": "end_turn",
+        "remaining": 1
+      },
+      {
+        "seq": 81,
+        "round": 1,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "cost": "reaction",
+        "timing": "end_turn"
+      },
+      {
+        "seq": 82,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "health": 106,
+        "focus": 90
+      },
+      {
+        "seq": 83,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 84,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "reactions": 2
+      },
+      {
+        "seq": 85,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 86,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 87,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_use_start",
+        "rules": [
+          "HR-09",
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "fast_use_id": 6,
+        "weapons": [
+          "hammer",
+          "blade"
+        ],
+        "effect_limb": 0,
+        "bonus_action": false
+      },
+      {
+        "seq": 88,
+        "round": 2,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 89,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "fast_use_id": 6,
+        "limb": 0,
+        "weapon": "hammer",
+        "trigger": 11,
+        "roll": [
+          5,
+          6,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 3,
+            "rolled": 6,
+            "kept": 6
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 3,
+            "kept": 6
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 20,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false
+      },
+      {
+        "seq": 90,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "fast_use_id": 6,
+        "limb": 1,
+        "weapon": "blade",
+        "trigger": 12,
+        "roll": [
+          5,
+          1,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 5,
+            "rolled": 1,
+            "kept": 5
+          },
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 5,
+            "rolled": 5,
+            "kept": 5
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 22,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false
+      },
+      {
+        "seq": 91,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Blacklight",
+        "fast_use_id": 6,
+        "limb": 0,
+        "weapon": "hammer"
+      },
+      {
+        "seq": 92,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-02",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "mode": "hammer_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 11,
+        "distance": 1,
+        "roll": [
+          5,
+          6,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 3,
+            "rolled": 6,
+            "kept": 6
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 3,
+            "kept": 6
+          }
+        ],
+        "total": 20,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 2,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 2,
+            "ability_added": 3,
+            "faces": [
+              6,
+              3
+            ],
+            "counterfactual_faces": [
+              5,
+              5
+            ],
+            "ammunition_immunity": false,
+            "damage": 12,
+            "damage_without_reduction": 22
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 12,
+        "damage": 12,
+        "health_before": 106,
+        "health_after": 94,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 6,
+        "limb": 0,
+        "effect_limb": 0,
+        "effects_enabled": true
+      },
+      {
+        "seq": 93,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Blacklight",
+        "fast_use_id": 6,
+        "limb": 1,
+        "weapon": "blade"
+      },
+      {
+        "seq": 94,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "target": "Espelho sintético com Lâmina",
+        "mode": "blade_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 12,
+        "distance": 1,
+        "roll": [
+          5,
+          1,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 5,
+            "rolled": 1,
+            "kept": 5
+          },
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 5,
+            "rolled": 5,
+            "kept": 5
+          }
+        ],
+        "total": 22,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 3,
+            "dice_after_reduction": 4,
+            "dice_rolled": 4,
+            "ability_added": 6,
+            "faces": [
+              6,
+              1,
+              4,
+              6
+            ],
+            "counterfactual_faces": [
+              6,
+              2,
+              4
+            ],
+            "ammunition_immunity": false,
+            "damage": 28,
+            "damage_without_reduction": 40
+          }
+        ],
+        "strike_weapons": [
+          "blade"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 28,
+        "damage": 28,
+        "health_before": 94,
+        "health_after": 66,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 6,
+        "limb": 1,
+        "effect_limb": 0,
+        "effects_enabled": false
+      },
+      {
+        "seq": 95,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_use_end",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Blacklight",
+        "fast_use_id": 6,
+        "completed_limbs": 2,
+        "blade_bonus_eligible": false
+      },
+      {
+        "seq": 96,
+        "round": 2,
+        "bonus_round": false,
+        "type": "condition_end",
+        "rules": [
+          "COND-01",
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "condition": "bleeding",
+        "prior_intensity": 5
+      },
+      {
+        "seq": 97,
+        "round": 2,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 24,
+        "health_after": 29
+      },
+      {
+        "seq": 98,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 29,
+        "focus": 90
+      },
+      {
+        "seq": 99,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "reactions": 2
+      },
+      {
+        "seq": 100,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 101,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_use_start",
+        "rules": [
+          "HR-09",
+          "ACT-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 7,
+        "weapons": [
+          "blade",
+          "hammer"
+        ],
+        "effect_limb": 0,
+        "bonus_action": false
+      },
+      {
+        "seq": 102,
+        "round": 2,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 103,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 7,
+        "limb": 0,
+        "weapon": "blade",
+        "trigger": 13,
+        "roll": [
+          6,
+          4,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 3,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 2,
+            "kept": 4
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 19,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false
+      },
+      {
+        "seq": 104,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_limb_check",
+        "rules": [
+          "HR-09",
+          "D616-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "fast_use_id": 7,
+        "limb": 1,
+        "weapon": "hammer",
+        "trigger": 14,
+        "roll": [
+          4,
+          1,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 2,
+            "original": 3,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 4,
+            "rolled": 2,
+            "kept": 4
+          }
+        ],
+        "modifier": 6,
+        "target_number": 16,
+        "edges": 2,
+        "troubles": 0,
+        "total": 20,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false
+      },
+      {
+        "seq": 105,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 13,
+        "remaining": 1
+      },
+      {
+        "seq": 106,
+        "round": 2,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 13,
+        "after_hit": true
+      },
+      {
+        "seq": 107,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 7,
+        "limb": 0,
+        "weapon": "blade"
+      },
+      {
+        "seq": 108,
+        "round": 2,
+        "bonus_round": false,
+        "type": "condition_start",
+        "rules": [
+          "COND-01",
+          "HR-03"
+        ],
+        "actor": "Blacklight",
+        "condition": "bleeding",
+        "intensity": 5
+      },
+      {
+        "seq": 109,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "HR-03",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "mode": "blade_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 13,
+        "distance": 1,
+        "roll": [
+          6,
+          4,
+          3
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 3,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 4,
+            "rolled": 2,
+            "kept": 4
+          }
+        ],
+        "total": 19,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          4
+        ],
+        "reduction": 3,
+        "damage_denominator": 2,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "blade",
+            "bonus_candidates": [
+              4
+            ],
+            "full_multiplier": 7,
+            "reduction": 3,
+            "dice_after_reduction": 4,
+            "dice_rolled": 2,
+            "ability_added": 3,
+            "faces": [
+              2,
+              3
+            ],
+            "counterfactual_faces": [
+              1
+            ],
+            "ammunition_immunity": false,
+            "damage": 8,
+            "damage_without_reduction": 14
+          }
+        ],
+        "strike_weapons": [
+          "blade"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 8,
+        "damage": 8,
+        "health_before": 29,
+        "health_after": 21,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 7,
+        "limb": 0,
+        "effect_limb": 0,
+        "effects_enabled": true
+      },
+      {
+        "seq": 110,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_limb_start",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 7,
+        "limb": 1,
+        "weapon": "hammer"
+      },
+      {
+        "seq": 111,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-05",
+          "POW-08",
+          "HR-09",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "target": "Blacklight",
+        "mode": "hammer_fast",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 14,
+        "distance": 1,
+        "roll": [
+          4,
+          1,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 2,
+            "original": 3,
+            "rolled": 4,
+            "kept": 4
+          },
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 4,
+            "rolled": 2,
+            "kept": 4
+          }
+        ],
+        "total": 20,
+        "check_modifier": 6,
+        "edges": 2,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": false,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 5,
+            "ability_added": 6,
+            "faces": [
+              2,
+              5,
+              5,
+              3,
+              5
+            ],
+            "counterfactual_faces": [
+              5,
+              4,
+              4
+            ],
+            "ammunition_immunity": false,
+            "damage": 26,
+            "damage_without_reduction": 39
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 26,
+        "damage": 26,
+        "health_before": 21,
+        "health_after": -5,
+        "fast_zero_dice_bonus": true,
+        "fast_use_id": 7,
+        "limb": 1,
+        "effect_limb": 0,
+        "effects_enabled": false
+      },
+      {
+        "seq": 112,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_use_end",
+        "rules": [
+          "HR-09"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "fast_use_id": 7,
+        "completed_limbs": 2,
+        "blade_bonus_eligible": false
+      },
+      {
+        "seq": 113,
+        "round": 2,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "proposed": 5,
+        "effective": 5,
+        "health_before": 66,
+        "health_after": 71
+      },
+      {
+        "seq": 114,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "source": "end_turn",
+        "remaining": 1
+      },
+      {
+        "seq": 115,
+        "round": 2,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "cost": "reaction",
+        "timing": "end_turn"
+      },
+      {
+        "seq": 116,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Espelho sintético com Lâmina",
+        "health": 71,
+        "focus": 90
+      }
+    ]
+  },
+  "audit_issues": [],
+  "demonstration": {
+    "scenario": "mirror_blade",
+    "policy": "hammer_fast_hammer",
+    "source_commit": "107f54e3d9d04bae46b0d51c6a0c7eabff0bb0fa",
+    "purpose": "illustrative full audited log, not a statistical sample"
+  }
+}

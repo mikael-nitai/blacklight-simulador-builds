@@ -49,3 +49,10 @@ Focus, Karma, outros poderes e adversários também permanecem fora do recorte.
 Em conjunto com a confirmação, estes dados sustentam a opção de Fast com efeito
 da Marreta **nos dois espelhos avaliados**. Eles não estabelecem uma estratégia
 ótima universal nem respondem como Victor se sairia com Ram implementado.
+
+Três exemplos completos e auditados estão disponíveis para inspeção: [espelho](experiments/current_duel_study/demos/mirror_blade_v1.json),
+[oponente resistente](experiments/current_duel_study/demos/rank4_sturdy2_v1.json)
+e [atirador em campo aberto](experiments/current_duel_study/demos/gunner_open_v1.json).
+Foram fixados por seeds próprias para ilustrar a execução, não fazem parte das
+amostras estatísticas e não são necessariamente combates representativos. Os
+hashes de fontes e os logs completos foram conferidos por repetição.

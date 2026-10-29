@@ -1,0 +1,43 @@
+# Ram desarmado: ponto de interrupção em duelo experimental
+
+`experimental/ram_checkpoint_duel.py` conecta o gatilho de movimento do duelo
+unidimensional ao teste de acerto e ao cálculo de Ram da mesa. A política é
+limitada a usar **uma reação desarmada na primeira oportunidade do personagem
+selecionado**, sem executar Fast Strikes nem os efeitos de armas biológicas. Usa
+o fluxo de dados do duelo, rola pools separados para atacante e alvo, aplica a
+redução de cada um e registra o resultado em uma transação auditável.
+
+O duelo é **interrompido na oportunidade** e o experimento termina imediatamente
+após a reação; não se continua a luta, não se atualizam estatísticas completas
+e não se calculam taxas de vitória. Prone fica registrado na transação quando
+aplicável, mas não foi integrado à continuação de combate. O runner certificado
+recusa esse host. O resultado é um checkpoint de engenharia, não um duelo completo.
+
+O checkpoint exige trilha, reação disponível e estado inalterado entre detectar
+e resolver. Rejeita explicitamente interações ainda não implementadas: Escudo
+ativo no atacante ou alvo, Escudo ou Riposte disponíveis ao alvo, Attack Stance
+do atacante, Dodge/Stunned do alvo, knockback escolhido por Mighty e dano que
+exigiria o limite Heroic. Efeitos de armas, outros poderes que interfiram na
+reação, movimento complexo, prioridades simultâneas e continuação de Prone
+também estão fora do escopo. O dano aos dois participantes é aplicado de forma
+simultânea **como hipótese experimental**, sem decidir a ordem definitiva em
+casos onde um deles cai.
+
+Perfis com poderes, traits ou armas fora do catálogo físico já conhecido são
+recusados antes do duelo. A aceitação nesse recorte não certifica que a ficha é
+uma construção legal do jogo nem que todos os efeitos futuros foram modelados.
+
+`experimental/ram_checkpoint_audit.py` confere a trilha anterior com os
+auditores físicos e espaciais existentes, verifica a oportunidade e reconstrói
+independentemente os perfis, recursos, rolagens e efeitos da transação. A seed
+registrada é confrontada com a seed declarada, mas isso por si só não prova que
+o gerador a tenha usado: repetição integral continua necessária. Os testes em
+`tests/test_ram_checkpoint_duel.py` abrangem acerto, erro, fantástico, rejeição
+de interações não suportadas, adulteração, repetição e uma oportunidade da ficha
+atual de Victor contra um atirador sintético.
+
+Antes de permitir um estudo tático com Ram, será necessário integrar política de
+escolha e continuação da luta, Prone e a ação de levantar, reações pendentes,
+Escudo, armas, Heroic e Mighty, validar efeitos e custos em conjunto e criar um
+contrato de resultados separado dos estudos anteriores. A cobertura das fichas
+e demais regras continua limitada ao que seus adaptadores efetivamente suportam.

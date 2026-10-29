@@ -45,3 +45,7 @@ class RamOpportunityDuel(SplitFastDuel):
                          first_after=first.after, second_after=segment.after,
                          speed=segment.speed, reactions=fighter.reactions,
                          scope='opportunity only; no reaction or attack performed')
+            self._on_ram_opportunity(actor, first, segment)
+
+    def _on_ram_opportunity(self, actor, first, second):
+        """Experimental hosts may interrupt at this boundary; observer does nothing."""

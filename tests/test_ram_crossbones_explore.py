@@ -10,6 +10,7 @@ from experimental.stopping_duel import StoppingPolicy
 from scripts.audit_ram_crossbones_explore import audit
 from scripts.ram_crossbones_explore import (N_PER_CELL, StationaryPolicy, policies_for, run,
                                              seed_for, simulate, summarize)
+from scripts.replay_ram_crossbones_explore import replay, sample_indices
 
 
 class RamCrossbonesExploreTests(unittest.TestCase):
@@ -38,7 +39,8 @@ class RamCrossbonesExploreTests(unittest.TestCase):
     def test_sample_execution_and_independent_accounting_tamper_checks(self):
         with TemporaryDirectory() as directory, \
                 patch('scripts.ram_crossbones_explore.source_commit', return_value='test'), \
-                patch('scripts.ram_crossbones_explore.audit_exploration', return_value=[]):
+                patch('scripts.ram_crossbones_explore.audit_exploration',
+                      side_effect=lambda payload: audit(payload, verify_snapshots=False)):
             output = Path(directory) / 'small.json'
             run(output, n=2)
             data = json.loads(output.read_text(encoding='utf-8'))
@@ -52,6 +54,9 @@ class RamCrossbonesExploreTests(unittest.TestCase):
             altered['cells'][0]['summary']['recorded_victory_wilson_95'][0] += 0.01
             self.assertTrue(audit(altered, verify_snapshots=False))
             altered = deepcopy(data)
+            altered['cells'][0]['summary']['recorded_victory_wilson_95'][0] = float('nan')
+            self.assertTrue(audit(altered, verify_snapshots=False))
+            altered = deepcopy(data)
             altered['cells'][0]['summary']['counts']['victory'] += 1
             self.assertTrue(audit(altered, verify_snapshots=False))
             altered = deepcopy(data)
@@ -62,10 +67,38 @@ class RamCrossbonesExploreTests(unittest.TestCase):
                              if row['status'] != 'unresolved_death_threshold')
             completed['victor_metrics']['damage_taken'] += 1
             self.assertTrue(audit(altered, verify_snapshots=False))
+            altered = deepcopy(data)
+            del altered['source_sha256']['experimental/ram_incapacity_duel.py']
+            self.assertTrue(audit(altered, verify_snapshots=False))
             prior = output.read_bytes()
             with self.assertRaises((FileExistsError, ValueError)):
                 run(output, n=2)
             self.assertEqual(output.read_bytes(), prior)
+
+    def test_replay_sampling_and_detects_changed_trace_digest(self):
+        self.assertEqual(sample_indices(1), (0,))
+        self.assertEqual(sample_indices(2), (0, 1))
+        self.assertEqual(sample_indices(1000), (0, 500, 999))
+        with TemporaryDirectory() as directory, \
+                patch('scripts.ram_crossbones_explore.source_commit', return_value='test'), \
+                patch('scripts.ram_crossbones_explore.audit_exploration',
+                      side_effect=lambda payload: audit(payload, verify_snapshots=False)), \
+                patch('scripts.replay_ram_crossbones_explore.audit',
+                      side_effect=lambda payload: audit(payload, verify_snapshots=False)):
+            dataset = Path(directory) / 'small.json'
+            result = Path(directory) / 'replay.json'
+            run(dataset, n=2)
+            replay(dataset, result)
+            self.assertEqual(len(json.loads(result.read_text(encoding='utf-8'))['checked']), 24)
+            with self.assertRaises((FileExistsError, ValueError)):
+                replay(dataset, result)
+            data = json.loads(dataset.read_text(encoding='utf-8'))
+            row = data['cells'][0]['records'][0]
+            self.assertNotEqual(row['status'], 'unresolved_death_threshold')
+            row['result_sha256'] = '0' * 64
+            dataset.write_text(json.dumps(data), encoding='utf-8')
+            with self.assertRaisesRegex(RuntimeError, 'Replay mismatch'):
+                replay(dataset, Path(directory) / 'altered.json')
 
     def test_unresolved_is_explicit_and_reproducible(self):
         target = Profile('Target', 3, 250, 60, 2, 0, 5, 2, 12, 10, 5, initiative_modifier=0)

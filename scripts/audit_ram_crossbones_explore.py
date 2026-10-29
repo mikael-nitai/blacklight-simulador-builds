@@ -3,7 +3,7 @@
 from argparse import ArgumentParser
 from hashlib import sha256
 import json
-from math import sqrt
+from math import isfinite, sqrt
 from pathlib import Path
 import re
 import subprocess
@@ -15,6 +15,33 @@ SCENARIOS = ('stationary', 'kite')
 STRATEGIES = ('hammer', 'fast_hammer', 'fast_blade')
 STATUSES = ('victory', 'defeat', 'draw', 'inconclusive', 'unresolved_death_threshold')
 HEX = re.compile(r'[0-9a-f]{64}')
+REQUIRED_SOURCES = {
+    'RAM_CROSSBONES_EXPLORATION_SPEC.md', 'scripts/ram_crossbones_explore.py',
+    'scripts/audit_ram_crossbones_explore.py', 'scripts/replay_ram_crossbones_explore.py',
+    'character_evidence/crossbones_core_p155.json',
+    'characters/victor_halle/rank3_2026-10-27_split_fast.json',
+    'experimental/crossbones_subset.py', 'experimental/stopping_ram_duel.py',
+    'experimental/stopping_duel.py', 'experimental/stopping_audit.py',
+    'experimental/parry_duel.py', 'experimental/parry_audit.py',
+    'experimental/point_blank_parry.py', 'experimental/reaction_pools.py',
+    'experimental/smg_duel.py', 'experimental/smg_audit.py',
+    'experimental/ranged_powers_duel.py', 'experimental/ranged_powers_audit.py',
+    'experimental/slow_motion_duel.py', 'experimental/slow_motion_dodge.py',
+    'experimental/double_tap_duel.py', 'experimental/double_tap_audit.py',
+    'experimental/nonlethal_ram_duel.py', 'experimental/nonlethal_ram_audit.py',
+    'experimental/ram_incapacity_duel.py', 'experimental/ram_stop_audit.py',
+    'experimental/incapacity_endturn_audit.py', 'experimental/ram_prone_duel.py',
+    'experimental/ram_prone_audit.py', 'experimental/ram_opportunity_duel.py',
+    'experimental/ram_opportunity_audit.py', 'experimental/ram_trigger.py',
+    'experimental/ram_transaction.py', 'experimental/ram_record.py',
+    'experimental/ram_record_audit.py', 'experimental/ram_impact.py',
+    'experimental/ram_rolled.py', 'experimental/prone.py', 'experimental/prone_duel.py',
+    'experimental/prone_duel_audit.py', 'blacklight/engine.py', 'blacklight/dice.py',
+    'blacklight/pool_damage.py', 'blacklight/audit.py', 'blacklight/profile_audit.py',
+    'blacklight/result_audit.py', 'blacklight/turn_audit.py', 'blacklight/spatial_audit.py',
+    'blacklight/split_audit.py', 'combatants/sheets.py', 'combatants/duel_adapter.py',
+    'combatants/split_fast.py', 'combatants/modular_duel.py', 'combatants/actions.py',
+}
 
 
 def expected_policies(scenario, strategy, use_ram):
@@ -70,6 +97,10 @@ def audit(data, *, verify_snapshots=True):
     if not isinstance(source, dict) or not source or not isinstance(commit, str):
         return ['Missing source manifest']
     issues = []
+    if not REQUIRED_SOURCES.issubset(source):
+        issues.append('Source manifest omits required mechanics or audit files')
+    if data.get('spec') != 'RAM_CROSSBONES_EXPLORATION_SPEC.md':
+        issues.append('Unexpected preregistration path')
     subset = data.get('crossbones_subset')
     profile = subset.get('profile') if isinstance(subset, dict) else None
     powers = profile.get('powers') if isinstance(profile, dict) else None
@@ -209,7 +240,8 @@ def audit(data, *, verify_snapshots=True):
             issues.append(f'Missing uncertainty fields: {identity}')
         else:
             fields += tuple(zip(bounds, wanted)) + tuple(zip(wilson, interval))
-            if any(type(actual) not in (int, float) or abs(actual - expected) > 1e-12
+            if any(type(actual) not in (int, float) or not isfinite(actual)
+                   or abs(actual - expected) > 1e-12
                    for actual, expected in fields):
                 issues.append(f'Uncertainty field mismatch: {identity}')
     if found != expected_cells:

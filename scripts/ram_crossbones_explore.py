@@ -31,7 +31,8 @@ SCENARIOS = ('stationary', 'kite')
 STRATEGIES = ('hammer', 'fast_hammer', 'fast_blade')
 RAM_CHOICES = (False, True)
 EXTRA = tuple(sorted(set(RAM_SOURCES + ('RAM_CROSSBONES_EXPLORATION_SPEC.md',
-                'scripts/ram_crossbones_explore.py', 'scripts/audit_ram_crossbones_explore.py'))))
+                'scripts/ram_crossbones_explore.py', 'scripts/audit_ram_crossbones_explore.py',
+                'scripts/replay_ram_crossbones_explore.py'))))
 
 
 class StationaryPolicy(StoppingPolicy):
@@ -185,6 +186,9 @@ def run(output, *, n=N_PER_CELL):
                                'unresolved death-threshold prefixes replayed, not full-duel audits',
                                'paired seeds within scenario do not certify independent confirmation',
                                'one-dimensional field; no Karma, complete Focus powers or multi-target weapons']}
+    # Audit the exact JSON-compatible representation, including frozen sets in
+    # profile records, before writing any results.
+    payload = json.loads(json.dumps(payload, ensure_ascii=False, default=sorted))
     issues = audit_exploration(payload)
     if issues:
         raise RuntimeError(f'Independent exploration accounting audit failed: {issues}')

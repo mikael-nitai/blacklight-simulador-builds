@@ -54,3 +54,13 @@ Seeds e fontes são registrados com SHA-256 e commit imutável, e a execução u
 saída nova fora do inventário certificado. A implementação deve parar se o
 total, a auditoria, a integridade das fontes ou o replay de uma célula falhar.
 Não reproduzir silenciosamente as taxas antigas com a nova regra.
+
+## Registro de execução interrompida
+
+A primeira tentativa processou as 12 células e auditou os duelos concluídos,
+mas a validação final recusou a estrutura do subconjunto: o objeto ainda tinha
+conjuntos imutáveis em memória, enquanto o auditor exigia listas JSON. Nenhum
+arquivo agregado ou taxa foi publicado ou inspecionado. O gerador foi corrigido
+para validar a representação JSON efetiva antes de gravar; a execução deve ser
+refeita com os mesmos seeds e com as fontes corrigidas. Essa tentativa é
+exploratória e não deve ser apresentada como confirmação independente.

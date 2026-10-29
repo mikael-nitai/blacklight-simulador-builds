@@ -62,3 +62,14 @@ hipóteses e rejeitou registros falsificados em
 valida uma luta completa ou as interpretações ainda não decididas.
 Os caminhos `record_table_ram` e `audit_table_ram_record` exigem pools separados,
 impedindo que a hipótese histórica seja apresentada como regra da mesa.
+
+`experimental/ram_rolled.py` acrescenta ao mesmo recorte isolado um teste d616
+com edge/trouble e duas rolagens de dano separadas e reproduzíveis. O registro
+guarda a seed, dados finais, rerrolagens e os dois pools completos antes das
+reduções. O teste de acerto e o dano usam geradores separados, e neste protótipo
+as faces dos pools integrais são geradas mesmo quando parte dos dados é retirada
+por redução; essa ordem é parte do contrato experimental e ainda não foi adotada
+para um duelo integrado. Um auditor verifica independentemente o histórico de
+rerrolagem, o resultado do acerto e a transação, mas **não autentica a seed**.
+`tests/test_ram_rolled.py` testa reprodução, acertos, erros, fantástico,
+Ultimate Fantastic e registros falsificados. Isso ainda não é uma luta completa.

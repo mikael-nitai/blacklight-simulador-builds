@@ -30,3 +30,11 @@ equivalência de replay quando o poder está ausente. O recorte ampliado de
 Crossbones já permite exercitar a técnica contra Victor, mas ainda omite outros
 poderes e traços. Não é a ficha completa nem uma evidência de qual estratégia
 vence a maioria dos confrontos.
+
+O [combate ilustrativo completo](experimental_outputs/crossbones_stopping_victor_001.json)
+usa a ficha atual de Victor, o recorte ampliado de Crossbones e a seed `30`.
+Ele contém um ataque adicional de Stopping Power. A trilha foi auditada após a
+leitura do arquivo e reproduzida byte a byte; as fontes correspondem ao commit
+`61c7311` e o SHA-256 é
+`e43a37309e7a40d00177b3c7fd6daab9e43a394695f422f476d5fe9cef9f2ec7`.
+O exemplo foi selecionado para mostrar a mecânica; não é estimativa de vitória.

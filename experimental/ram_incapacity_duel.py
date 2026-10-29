@@ -4,6 +4,16 @@ from blacklight.engine import IllegalAction
 from .nonlethal_ram_duel import NonlethalRamProneDuel
 
 
+class RamDeathUndecided(IllegalAction):
+    """A Ram self-impact crossed a boundary the table has not resolved."""
+
+    def __init__(self, actor, raw_health_after, death_threshold):
+        super().__init__('Ram self-damage at the death threshold is undecided; abort this duel')
+        self.actor = actor
+        self.raw_health_after = raw_health_after
+        self.death_threshold = death_threshold
+
+
 class RamIncapacityMixin:
     """Allow a declared self-damage and end-of-combat convention.
 
@@ -39,7 +49,7 @@ class RamIncapacityMixin:
             return max(-attacker.profile.max_health + 1, raw_after)
         if (self.self_damage_mode == 'stop_before_heal_reject_lethal'
                 and raw_after <= -attacker.profile.max_health):
-            raise IllegalAction('Ram self-damage at the death threshold is undecided; abort this duel')
+            raise RamDeathUndecided(attacker.profile.name, raw_after, -attacker.profile.max_health)
         if (self.self_damage_mode == 'stop_before_heal_reject_lethal' and raw_after <= 0
                 and attacker.profile.name != self.stop_on_attacker):
             raise IllegalAction('Ram self-incapacitation for this attacker is undecided; abort this duel')

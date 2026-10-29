@@ -49,3 +49,11 @@ escolhe uma ação. O cálculo simultâneo é uma **hipótese**, não uma resolu
 oficial da ordem entre danos e efeitos. Essa transação não inclui Heroic,
 Escudo, Riposte, efeitos de armas ou outras condições, nem está integrada ao
 motor. Não executar estudos de eficácia usando-a como combate completo.
+
+`experimental/ram_record.py` registra essas entradas e saídas em uma estrutura
+versionada. `experimental/ram_record_audit.py` verifica movimento, disponibilidade,
+faces, reduções, dano, reação e estado final por aritmética própria, sem usar as
+funções de resolução. A verificação enumerou as faces de dois dados em ambas as
+hipóteses e rejeitou registros falsificados em
+`tests/test_ram_record_audit.py`. Ela cobre somente a transação sintética, não
+valida uma luta completa ou as interpretações ainda não decididas.

@@ -1,0 +1,3031 @@
+{
+  "schema": "blacklight-experimental-adaptive-armed-melee-demo-v1",
+  "source_commit": "e4c51f01779b969d273c6aebf41a1f80a2d62736",
+  "source_sha256": {
+    "blacklight/__init__.py": "661aacdbe8eec1dc9eb5af1fc4e6946742daf032dd96f95434dd541a1b650f03",
+    "blacklight/audit.py": "f5333d5eb54a0ef78fec8b11af1714a4c44575c7db217a94d588ef8b5ec1e81a",
+    "blacklight/batch_audit.py": "bfc4c894e8da5ddef8d3ee2bf2e69d9a81a1baa07056afa63202f231e83f0d20",
+    "blacklight/damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight/dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight/dice_audit.py": "ebce1bd892f8ecef507162a0f28280e5fa5300d6408c04e97b45edab6335b1e1",
+    "blacklight/engine.py": "e49d63d730ce8ac2ad62ff45b392196783914d439c7e99efa6ec48be264202e5",
+    "blacklight/experiment.py": "81707496fce1164170e961287b0fe3105e7c21c8c030b472ddeac9b26523873b",
+    "blacklight/extended_batch_audit.py": "2b0add707c406dfa3cd7906c2f388cafd82aefa8c98dc10c557b87e3998e1de3",
+    "blacklight/mechanics_contract.py": "0c7a4c3a963e1ea13fe3f8c996f81f436b801758019d26f240078a883c6109c6",
+    "blacklight/policies.py": "fbf6756e0023efdb3b7d91a4ee4fd7f2a1868ab3b919ab28b284243e70a17e66",
+    "blacklight/pool_damage.py": "0b71361a4778d2f6e811357a854d7b67303b6c9ffaa5d2e7a61004b645f3e1d1",
+    "blacklight/profile_audit.py": "e61dd61ae5d8fc54d0454a3bebe4aa307eefe2a6b8133b630b382dee26238823",
+    "blacklight/result_audit.py": "f0be778062fc3e0c485b15ea7432cdb666a7224809dd1f07117f007749dffb03",
+    "blacklight/results_io.py": "858ceba8c897dae87119526313e6fb893dd88002d991fc263b33538839dbf9bb",
+    "blacklight/ruleset_audit.py": "5a35bf7c340c644fd44ac2b0e1c7aeb47f24582d3f6828607959224e11094f74",
+    "blacklight/rulesets.py": "ae933562bd76aa826a8ec1b7a1da6dad53ae52d4d70452d88682c2adc8f5d456",
+    "blacklight/search.py": "1cb96edf48e95ee9869c1e2f6741339ccbb8bfa63299f7ee4f38c53a219e0ffc",
+    "blacklight/sensitivity.py": "6f9755be75a0ef460e88dc419f1aaea67748f658b180b7e69577b9e83b9d91ea",
+    "blacklight/spatial_audit.py": "2773e2296db91957d4be901e0e436cabfbd65a8a4e51f36fdbced592b886e41d",
+    "blacklight/split_audit.py": "15cc553e64c2b43860811fc3807bbb835e54300dffbb062686543e55a3426065",
+    "blacklight/turn_audit.py": "06764392e71352d92c06e5bf17599af363e47d1fa96d7625be129907c1a78fcf",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "DAMAGE_POOL_RULING.md": "e09fcaea9bb1ce07f963b64980bcad5af1b144a855703678a78951d78de30c1c",
+    "DAMAGE_POOL_V2_SPEC.md": "92e1c71d767d075bc44ccc02e957b95bd904e20ff313f510fb8b315448b18387",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "FAST_STRIKES_RULING.md": "57fd65b361afdc1e7b53f8dafddef5ec26c2eea9df65d28fd9a53ec5276a8803",
+    "RULES_AUDIT.md": "76f90df01507f96eda0ff8dcc9ae80db2b32053f181efdc89ed81cef057ed5a1",
+    "combatants/__init__.py": "5978e1e5aedae6ee1105f87ed6d05850b786ffd4d345baa1109eefde35762d5e",
+    "combatants/actions.py": "e6fd391755cdad6618cd1389938f844b35e8b3854d590510fc0f5db2071658a1",
+    "combatants/battlefields.py": "9edc399643999d6f832dca07e4ff303c903fe07b81e2fa5285a6161821fec0bd",
+    "combatants/condition_bridge.py": "e85b0c32e4beebe5302148f5c5d61658c821600a785355cc3a1c49c5325009d1",
+    "combatants/duel_adapter.py": "3dcd331697480bb385d999870e57511590997de84120308e6ecc86fd27881b5b",
+    "combatants/group.py": "469126ff4d5e937c1c60f29e75f2c1856b41064f4433a1ce4255b7e04e6a337c",
+    "combatants/group_audit.py": "e6489cd3ccc5c345bff59656a47c4debc3af903be9edea23f8b410e7cc88b3da",
+    "combatants/group_grid.py": "c6af56dbda7bff57ae8db9cd3a1ed30de59ddeb1751ba203f6d1aea32f00eb78",
+    "combatants/group_grid_audit.py": "8b8daea9d36bbb5428b1937535489254cd20fa0717437284ff9c3fdb85739689",
+    "combatants/group_initiative_audit.py": "240ab93eb5480266929de59bbbdec571066125cfb31a5b11296fabe45f51ed31",
+    "combatants/group_lifecycle_audit.py": "3338224852bb5eb883100ceac3cfdbcafb601ce0d3ee3bb182410e8b406ecd1c",
+    "combatants/group_runner.py": "a5c332b364ade9d713dcdd20cadb5b2da282564c07ac55a781fde29d1d877f50",
+    "combatants/lifecycle.py": "820dfdee332cced95cd51c08ca47999d523e910514edc49beadfad5abb3adf82",
+    "combatants/modular_duel.py": "158b569475ce20d158f7792e77ab38421c1ec68b348ff26ea43659982fe6b359",
+    "combatants/pdf_draft.py": "cf651dcf3d2b90a26ef961ed18caba5c2321e2330e48427773549040da862add",
+    "combatants/policy_provenance.py": "69a0a1c85a9c28eacdaab83a1a02deb5d5078918886fcb5c11d6b5b6c0627bde",
+    "combatants/runner.py": "96f2ef97f7f346605f7b87bd090fe76e4eafe5c72de0b4056e6258dccbf8125a",
+    "combatants/sheets.py": "ca90287b1ab6d2877388b3ffce53fc7ab70f778b992c14d5749b6b5a6300ad60",
+    "combatants/split_fast.py": "6d33a35cdd9c3ab3ef53469a637fccce6cf81ebf1759be9f1fd282232303df18",
+    "combatants/terrain_policies.py": "781591fa9ecc9f26712f5c272be2478fc30ce9bd9bbf601134db0f57955a2db9",
+    "experimental/adaptive_armed_melee.py": "d81fccfc518577b2d6a68841e4ba4795b6e8228f1b3fc600e70c7b492182a15b",
+    "experimental/stopping_duel.py": "9763797c81d4b4cd8ca55f33cac0d169ace647144937f39723dc4e44e1f59746",
+    "ADAPTIVE_ARMED_MELEE_EXPERIMENT.md": "9d742cfa1be6e4ec6076c2653ba60f83223362c07ba2d3a4208f4739b6c6e3a7",
+    "CROSSBONES_SUBSET_EXPERIMENT.md": "2aad5a5196493470666c77bd20373428a30c0b5374fd6b5b8a85b47fc6187b4b",
+    "DOUBLE_TAP_EXPERIMENT.md": "1b211eaf5243718b804cca602823356d3fbb0be8d43d30e1f6118b5dfbf1065d",
+    "FAST_HANDS_PARRY_EXPERIMENT.md": "c49d12a445b50520c257cfafcc15087cf579d4fd0159a132102f39bcdf59c29a",
+    "NONLETHAL_EXPERIMENT.md": "527d6659d7d382ac61d0987bba9007ddd847d48b951fbec5de314b58cd42b33b",
+    "NONLETHAL_GAP.md": "5829d3d39e19114bbc1fbebe5e3a467e84aa51731545cde22d327cfe68ed4367",
+    "RAM_INCAPACITY_EXPERIMENT.md": "49a529d9947154e778ccc0426669eea250c50d2c097148ad5cf543e4c4699e4c",
+    "RANGED_POWERS_EXPERIMENT.md": "e3d4abbbb54ccd2138b71f6b2b1b7ff0759c3109ad628839ba558c15b25209fa",
+    "STOPPING_POWER_EXPERIMENT.md": "3d9fb3dc383cb55d0a3b0be3350ed51dc6b2bfd85d39c911bd1d54718abc5e5e",
+    "character_evidence/crossbones_core_p155.json": "8f96d5df0d4091a05b87a194efddd110b152e523ff69c1d148516931dad8177c",
+    "characters/victor_halle/rank3_2026-10-27_split_fast.json": "194c63ac9746b88d6d466264173fb298426a05e07b37d52dd47c07151246d78d",
+    "experimental/__init__.py": "3307fa7761d0644fa1bdd3c5a0d194e70d0bb626da8907afd18fb5f753c2bf62",
+    "experimental/adaptive_armed_melee_audit.py": "47e870e2e6c118bf3f116aa7e4b582c88c3a22913520a554803c91a66bab5d3e",
+    "experimental/crossbones_subset.py": "94eacdfad090e65e69ab0d547a081ff133df20c10e0f7ef03db2a61b6fc2c178",
+    "experimental/double_tap_audit.py": "86f47e264f20b1f0144a4a0e4e5d2680cf2c2f7b10c36fc3818f6f0badd96db6",
+    "experimental/double_tap_duel.py": "df9933e8f3a9829e3d1d17154fef3585f0a7c73c90e7d33b4b927350eb76013e",
+    "experimental/incapacity_endturn_audit.py": "6807ea82ca5655c3cfd7bf03522ef6f67e6038b1c4477c58d42fd680a58ed36d",
+    "experimental/nonlethal_ram_audit.py": "32e08e0810a603475129100939a3d793f77adfa550c67ca85203137469a955f1",
+    "experimental/nonlethal_ram_duel.py": "e41af9d586a1e76ae99ab3a51e6ac55999c117843b23e48018721543d076ada8",
+    "experimental/parry_audit.py": "1da84b59c90db2cfd2a39405eed793a714c27f8a90d95d869d22dfa731167d8a",
+    "experimental/parry_duel.py": "9f45a61b7d1389f095c592596455e2b7e6ec8bb03ea732f838654e37bb7b2d68",
+    "experimental/point_blank_parry.py": "50fcc0927460ce0689a24e64a90c40361e7bcf8872ade4628651bb7db803a735",
+    "experimental/prone.py": "08ca7a3a89a7887ab01f28b1117d8a9f80d3d0e82fc7993ae2c5be2ba1219009",
+    "experimental/prone_duel.py": "3c9f9cba18945716a5e23103c3c57dfe3a4cad1fffca3fd35d2bacdc368e661a",
+    "experimental/prone_duel_audit.py": "c5928c7a64ed165b39ab8046b63ae55aca95c4591bcea07f014c64f70785c43f",
+    "experimental/ram_impact.py": "69411803a7a226ab5bb0f0a5537ff8a23df8b51495819f1a1dc2b34f381498a3",
+    "experimental/ram_incapacity_duel.py": "9f1b4d3b05814d867b4d43a05993cda00aa63e638f13ad5581074550fdc3c4c1",
+    "experimental/ram_opportunity_audit.py": "bc827cbd0e1b5a1031fd2d3286648d568778b621f668a02c24f6d0b7951c6cde",
+    "experimental/ram_opportunity_duel.py": "5d57a4314c2585bf6a20a2561ebae2e7d262f79ebe069f230705580892fac1c5",
+    "experimental/ram_prone_audit.py": "963578903b464fb51a3bbbe79c6f8e0cc181bbea8891a5027c71414ded976355",
+    "experimental/ram_prone_duel.py": "a2a29a886936404c3deec80f2ee14c2b44e542777bae53e96fad2d363b78115e",
+    "experimental/ram_record.py": "014adf3bb727b1864c56ffcfe035e0f77a19dd8df6defc76adc0d8fe59df70d9",
+    "experimental/ram_record_audit.py": "15451d9f63dc20fd426a86d3204421bc36d9040cd13f9e2bd0a7419b42d191f1",
+    "experimental/ram_rolled.py": "05acb179fc60e85ce5227b79e0c7e336754f5eb99aacee537a73bdefae088a3d",
+    "experimental/ram_stop_audit.py": "13b1d96eb468c559e56016e6e4f715336582142b5359d6b8996bf17b6596fc39",
+    "experimental/ram_transaction.py": "92e6203f4073bc8b8aa41cfabd6b819a89ce8ee156d320c223336edef49abcd0",
+    "experimental/ram_trigger.py": "2949d5eedb3de8d88fe1fc35dcb3d4b2333697ae30668d255f43be42cc3cec0d",
+    "experimental/ranged_powers_audit.py": "f5b2dac3e7e892936d80569226f583625779c84ba4b5b6001f095cf115b8fc36",
+    "experimental/ranged_powers_duel.py": "c0f5f93c11f5c8db079c92f41abc36141b6f0cecfaabaf0e959695abd8abb1d7",
+    "experimental/reaction_pools.py": "fcc3e12d38a14e5a6ac8b2a52a020a15ee5ea804190a37b1dc470b1decb59aaf",
+    "experimental/slow_motion_dodge.py": "aa656538ef2ed4304fb04503e6301d6323bdc495cdf5e4b4918a39079af5cd7c",
+    "experimental/slow_motion_duel.py": "13438f39cb9ac60c8bdc8c76820a199439b3aff4421cc3c686287e2e9ba80576",
+    "experimental/smg_audit.py": "1f16d3497e2ff40b69d2cc1e240ea4ce325c386cdfb2628d7bc412874b59a5f1",
+    "experimental/smg_duel.py": "466297795331a100c364601ab6fb6a9612c8537123d4975aaca2925ffe9d4e8c",
+    "experimental/stopping_audit.py": "b0f492ec2287ff9c812831feedee5d4403eb858339210cd4aff6eff3225a4357",
+    "experimental/stopping_ram_duel.py": "455d6633bf540296643a54fc72089a9b2aeadf7087e1563f7c0c3c882f29733a",
+    "scripts/adaptive_armed_melee_demo.py": "f1c56808b9798acdcd1ba8afa7a443789be3d77f6118705ce32a6f8fe6f59e01",
+    "scripts/crossbones_parry_demo.py": "34cc5cc77fae1643f55cbc965fd3837146f77773a7e61f157b7699f4c5f2987d",
+    "scripts/crossbones_ram_demo.py": "597f355d58fa89d648bb8dc3d9b29d9eeb760918b68d089205b3d9a1fbb277ca",
+    "scripts/crossbones_stopping_demo.py": "25012196a3eaf582095016ec48d6fa921390eaaef7bad3849e16486a71f903a0",
+    "scripts/crossbones_subset_demo.py": "45e506a8cbea6cc60c9310e4ccf058262e66e0344c6c48ef246d12d7e6b81fae",
+    "scripts/current_study_dev.py": "997e512bbbf9a801970c794a8d85714e70273e749e183cea0e484526be56e6c8",
+    "scripts/double_tap_demo.py": "179d7c180082a9c886ccd0e7e72bb078d4d7f256e92db5c3eaf79fcaf2d56879",
+    "scripts/nonlethal_demo.py": "721eccb64e310e2446f4d5afb32de20f6a4f6f1b3de5d92283a6cdae2b7f52a2",
+    "scripts/verify_sources.py": "f50a253d76c3f22a51be574bb1474b5465b7e930eee925c2235db343b49527fe"
+  },
+  "seed": 3,
+  "crossbones_subset": {
+    "profile": {
+      "name": "Crossbones (recorte experimental)",
+      "rank": 3,
+      "max_health": 90,
+      "max_focus": 90,
+      "melee": 4,
+      "agility": 5,
+      "resilience": 3,
+      "vigilance": 2,
+      "melee_defense": 14,
+      "agility_defense": 15,
+      "run_speed": 6,
+      "health_dr": 0,
+      "melee_bonus": 0,
+      "ranged_bonus": 2,
+      "ranged_range": 10,
+      "ranged_is_ammunition": true,
+      "logic": 1,
+      "initiative_modifier": 2,
+      "run_speed_exception": false,
+      "powers": [
+        "accuracy",
+        "double_tap",
+        "fast_hands",
+        "point_blank_parry",
+        "slow_motion_dodge",
+        "stopping_power"
+      ],
+      "traits": [
+        "battle_ready",
+        "situational_awareness"
+      ],
+      "weapons": [],
+      "shield_active": false,
+      "heroic": false
+    },
+    "ranged_weapon": "submachine_gun",
+    "included_powers": [
+      "Accuracy 2",
+      "Double Tap",
+      "Fast Hands",
+      "Point-Blank Parry",
+      "Slow-Motion Dodge",
+      "Stopping Power"
+    ],
+    "omitted_powers": [
+      "Banging Heads",
+      "Grappling Technique",
+      "Dance of Death",
+      "Slow-Motion Shoot-Dodge",
+      "Snap Shooting",
+      "Weapons Blazing"
+    ],
+    "included_traits": [
+      "Battle Ready",
+      "Situational Awareness"
+    ],
+    "omitted_traits": [
+      "Bloodthirsty",
+      "Combat Expert",
+      "Connections: Military (Hydra)",
+      "Determination",
+      "Piloting"
+    ],
+    "omitted_tags": [
+      "Backup",
+      "Public Identity",
+      "Villainous",
+      "Signature Weapon: Submachine Gun"
+    ],
+    "assumptions": [
+      "A printed Health DR dash is treated as zero for this experiment.",
+      "Karma, Focus attacks and noncombat abilities are not used.",
+      "Only single-target gunfire is modeled.",
+      "Table literal Marvel damage pools replace the printed Core damage formula.",
+      "The separate Fast Hands reaction can only pay a Ranged Weapons power.",
+      "Point-Blank Parry does not target an unconscious attacker in this host.",
+      "Stopping Power does not follow up against an unconscious target in this host."
+    ]
+  },
+  "victor_sheet": {
+    "schema": "blacklight.character.v1",
+    "id": "victor_halle",
+    "revision": "2026-10-27-split-fast",
+    "name": "Blacklight",
+    "rank": 3,
+    "ruleset": "split_fast_v3",
+    "abilities": {
+      "melee": 6,
+      "agility": 1,
+      "resilience": 5,
+      "vigilance": 2,
+      "ego": 1,
+      "logic": 0
+    },
+    "defenses": {
+      "melee": 16,
+      "agility": 11,
+      "resilience": 15,
+      "vigilance": 12,
+      "ego": 11,
+      "logic": 10
+    },
+    "resources": {
+      "health": 150,
+      "focus": 90,
+      "karma": 3
+    },
+    "movement": {
+      "run": 5,
+      "climb": 3,
+      "swim": 3
+    },
+    "initiative_modifier": 2,
+    "features": [
+      {
+        "id": "mighty",
+        "kind": "power",
+        "level": 3,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md: Mighty 1/2/3; RULES_AUDIT.md POW-01"
+        ]
+      },
+      {
+        "id": "sturdy",
+        "kind": "power",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; RULES_AUDIT.md POW-02"
+        ]
+      },
+      {
+        "id": "healing_factor",
+        "kind": "power",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; Core p.103"
+        ]
+      },
+      {
+        "id": "brawling",
+        "kind": "power",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; Core p.86"
+        ]
+      },
+      {
+        "id": "fast_strikes",
+        "kind": "power",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+        ]
+      },
+      {
+        "id": "attack_stance",
+        "kind": "power",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+        ]
+      },
+      {
+        "id": "riposte",
+        "kind": "power",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+        ]
+      },
+      {
+        "id": "disguise",
+        "kind": "power",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md"
+        ]
+      },
+      {
+        "id": "do_this_all_day",
+        "kind": "power",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+        ]
+      },
+      {
+        "id": "blazing_fast_fists",
+        "kind": "power",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; RULES_AUDIT.md"
+        ]
+      },
+      {
+        "id": "weird",
+        "kind": "trait",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md"
+        ]
+      },
+      {
+        "id": "battle_ready",
+        "kind": "trait",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md"
+        ]
+      },
+      {
+        "id": "connections_military",
+        "kind": "trait",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md"
+        ]
+      },
+      {
+        "id": "situational_awareness",
+        "kind": "trait",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md"
+        ]
+      },
+      {
+        "id": "combat_reflexes",
+        "kind": "trait",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; official errata: per round"
+        ]
+      },
+      {
+        "id": "signature_fast_strikes",
+        "kind": "trait",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md; FAST_STRIKES_RULING.md"
+        ]
+      },
+      {
+        "id": "obligation",
+        "kind": "tag",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md"
+        ]
+      },
+      {
+        "id": "rich",
+        "kind": "tag",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md"
+        ]
+      },
+      {
+        "id": "signature_weapon",
+        "kind": "tag",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md"
+        ]
+      },
+      {
+        "id": "heroic",
+        "kind": "tag",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "CHARACTER_AUDIT.md"
+        ]
+      },
+      {
+        "id": "blade",
+        "kind": "house_weapon",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "RULES_AUDIT.md HR-03; FAST_STRIKES_RULING.md"
+        ]
+      },
+      {
+        "id": "claw",
+        "kind": "house_weapon",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "RULES_AUDIT.md HR-01; FAST_STRIKES_RULING.md"
+        ]
+      },
+      {
+        "id": "hammer",
+        "kind": "house_weapon",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "RULES_AUDIT.md HR-02"
+        ]
+      },
+      {
+        "id": "shield",
+        "kind": "house_weapon",
+        "level": 1,
+        "parameters": {},
+        "sources": [
+          "RULES_AUDIT.md HR-04; FOCUS_RULING.md"
+        ]
+      }
+    ],
+    "provenance": [
+      {
+        "kind": "pdf",
+        "path": "C:/Users/avada/Downloads/Ficha_victor Halle Rank 3.pdf",
+        "sha256": "6c907dfcaa2af39b904e6144466915bafc6b6f66f407aeb312dea112fd3200d1",
+        "page": 1
+      },
+      {
+        "kind": "audit",
+        "path": "CHARACTER_AUDIT.md",
+        "date": "2026-10-26"
+      },
+      {
+        "kind": "table_rulings",
+        "paths": [
+          "DAMAGE_POOL_RULING.md",
+          "FAST_STRIKES_RULING.md",
+          "FOCUS_RULING.md"
+        ],
+        "date": "2026-10-27"
+      }
+    ],
+    "notes": [
+      "Initiative 2 and Run 5 follow the audited Core-derived variant. The PDF prints 1 and 6; that disagreement is retained in CHARACTER_AUDIT.md.",
+      "Mighty 1/2/3 rows are stored as the highest level 3, without summing levels.",
+      "Extended Reach is absent from this primary sheet. Whip is unavailable at Rank 3.",
+      "This record preserves all listed powers, traits and tags. Read the adapter coverage report before simulation.",
+      "Same character attributes/resources as the preserved earlier record; table rules revised on 2026-10-27: one check per limb, preselected effects, both checks before effects/reactions, Shield before damage and both damage/effects before Riposte. No Rank progression invented."
+    ]
+  },
+  "profiles": [
+    {
+      "name": "Crossbones (recorte experimental)",
+      "rank": 3,
+      "max_health": 90,
+      "max_focus": 90,
+      "melee": 4,
+      "agility": 5,
+      "resilience": 3,
+      "vigilance": 2,
+      "melee_defense": 14,
+      "agility_defense": 15,
+      "run_speed": 6,
+      "health_dr": 0,
+      "melee_bonus": 0,
+      "ranged_bonus": 2,
+      "ranged_range": 10,
+      "ranged_is_ammunition": true,
+      "logic": 1,
+      "initiative_modifier": 2,
+      "run_speed_exception": false,
+      "powers": [
+        "accuracy",
+        "double_tap",
+        "fast_hands",
+        "point_blank_parry",
+        "slow_motion_dodge",
+        "stopping_power"
+      ],
+      "traits": [
+        "battle_ready",
+        "situational_awareness"
+      ],
+      "weapons": [],
+      "shield_active": false,
+      "heroic": false
+    },
+    {
+      "name": "Blacklight",
+      "rank": 3,
+      "max_health": 150,
+      "max_focus": 90,
+      "melee": 6,
+      "agility": 1,
+      "resilience": 5,
+      "vigilance": 2,
+      "melee_defense": 16,
+      "agility_defense": 11,
+      "run_speed": 5,
+      "health_dr": 1,
+      "melee_bonus": 3,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": 2,
+      "run_speed_exception": false,
+      "powers": [
+        "attack_stance",
+        "blazing_fast_fists",
+        "brawling",
+        "do_this_all_day",
+        "fast_strikes",
+        "healing_factor",
+        "mighty",
+        "riposte",
+        "sturdy"
+      ],
+      "traits": [
+        "battle_ready",
+        "combat_reflexes",
+        "signature_fast_strikes",
+        "situational_awareness"
+      ],
+      "weapons": [
+        "blade",
+        "claw",
+        "hammer",
+        "shield"
+      ],
+      "shield_active": false,
+      "heroic": true
+    }
+  ],
+  "policies": [
+    {
+      "name": "crossbones",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "bare",
+      "offhand": null,
+      "kite": true,
+      "riposte": true,
+      "move_after_attack": true,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": true,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false,
+      "effect_limb": 0,
+      "stand_when_prone": true,
+      "use_ram": false,
+      "prefer_double_tap": true,
+      "dodge_agility_attacks": true,
+      "prefer_parry": true,
+      "prefer_fast_hands": true,
+      "prefer_stopping": true,
+      "use_stopping_followup": true
+    },
+    {
+      "name": "victor",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "hammer",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": true,
+      "shield_standard": false,
+      "shield_end_turn": false,
+      "effect_limb": 0,
+      "stand_when_prone": true,
+      "use_ram": false,
+      "prefer_double_tap": true,
+      "dodge_agility_attacks": true,
+      "prefer_parry": true,
+      "prefer_fast_hands": true,
+      "prefer_stopping": false,
+      "use_stopping_followup": true
+    }
+  ],
+  "policy_types": [
+    "experimental.adaptive_armed_melee.ShieldAwarePolicy",
+    "experimental.stopping_duel.StoppingPolicy"
+  ],
+  "ranged_weapons": [
+    "submachine_gun",
+    "generic"
+  ],
+  "declared_armed_lethal": [
+    "Crossbones (recorte experimental)"
+  ],
+  "initial_distance": 10,
+  "initial_prone": [
+    false,
+    false
+  ],
+  "max_rounds": 10,
+  "ruleset": "split_fast_v3",
+  "self_damage_mode": "stop_before_heal_reject_lethal",
+  "stop_on_attacker": "Blacklight",
+  "result": {
+    "seed": 3,
+    "winner": "Blacklight",
+    "outcome": "win",
+    "rounds": 6,
+    "turns": 11,
+    "bonus_round_occurred": false,
+    "final_health": [
+      -34,
+      150
+    ],
+    "final_focus": [
+      65,
+      90
+    ],
+    "metrics": [
+      {
+        "damage_dealt": 0,
+        "damage_taken": 124,
+        "damage_mitigated": 0,
+        "healing_effective": 0,
+        "focus_spent": 25,
+        "attacks": 7,
+        "hits": 5,
+        "fantastic_hits": 1,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 0,
+        "damage_round5": 0,
+        "damage_round10": 0
+      },
+      {
+        "damage_dealt": 124,
+        "damage_taken": 0,
+        "damage_mitigated": 150,
+        "healing_effective": 0,
+        "focus_spent": 0,
+        "attacks": 4,
+        "hits": 3,
+        "fantastic_hits": 0,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 86,
+        "damage_round5": 86,
+        "damage_round10": 124
+      }
+    ],
+    "log": [
+      {
+        "seq": 1,
+        "round": 0,
+        "bonus_round": false,
+        "type": "incapacity_contract",
+        "rules": [
+          "DMG-05",
+          "POW-03"
+        ],
+        "mode": "stop_before_heal_reject_lethal",
+        "simultaneous": true,
+        "heal_living_at_turn_end": false,
+        "healing_first": true,
+        "stop_on_attacker": "Blacklight"
+      },
+      {
+        "seq": 2,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "roll": [
+          2,
+          5,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 5,
+            "rolled": 2,
+            "kept": 5
+          }
+        ],
+        "total": 14,
+        "modifier": 2,
+        "fantastic": false
+      },
+      {
+        "seq": 3,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Blacklight",
+        "roll": [
+          3,
+          6,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 5,
+            "rolled": 6,
+            "kept": 6
+          }
+        ],
+        "total": 15,
+        "modifier": 2,
+        "fantastic": false
+      },
+      {
+        "seq": 4,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 5,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 6,
+        "round": 1,
+        "bonus_round": false,
+        "type": "fast_hands_reset",
+        "rules": [
+          "CORE-P99-FAST-HANDS"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 7,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 8,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 10,
+        "distance_after": 5
+      },
+      {
+        "seq": 9,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 4,
+        "as_standard": true,
+        "distance_before": 5,
+        "distance_after": 1
+      },
+      {
+        "seq": 10,
+        "round": 1,
+        "bonus_round": false,
+        "type": "ram_opportunity",
+        "rules": [
+          "ACT-01",
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Crossbones (recorte experimental)",
+        "first_before": 10,
+        "first_after": 5,
+        "second_after": 1,
+        "speed": 5,
+        "reactions": 2,
+        "scope": "opportunity only; no reaction or attack performed"
+      },
+      {
+        "seq": 11,
+        "round": 1,
+        "bonus_round": false,
+        "type": "ram_declined",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Crossbones (recorte experimental)"
+      },
+      {
+        "seq": 12,
+        "round": 1,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 13,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 14,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 15,
+        "round": 1,
+        "bonus_round": false,
+        "type": "stopping_start",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 1,
+        "distance": 1
+      },
+      {
+        "seq": 16,
+        "round": 1,
+        "bonus_round": false,
+        "type": "focus_spent",
+        "rules": [
+          "RES-01",
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "amount": 5,
+        "focus_before": 90,
+        "focus_after": 85,
+        "source": "stopping_power",
+        "stopping_use_id": 1
+      },
+      {
+        "seq": 17,
+        "round": 1,
+        "bonus_round": false,
+        "type": "smg_close_check",
+        "rules": [
+          "CORE-P36-SMG"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "trigger": 1,
+        "distance": 1,
+        "added_troubles": 1
+      },
+      {
+        "seq": 18,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 1,
+        "remaining": 1
+      },
+      {
+        "seq": 19,
+        "round": 1,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 1,
+        "after_hit": true
+      },
+      {
+        "seq": 20,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04",
+          "HR-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 1,
+        "distance": 1,
+        "roll": [
+          5,
+          1,
+          5
+        ],
+        "rerolls": [
+          {
+            "kind": "trouble",
+            "index": 1,
+            "original": 1,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "total": 21,
+        "check_modifier": 5,
+        "edges": 0,
+        "troubles": 1,
+        "target_number": 16,
+        "success": true,
+        "fantastic": true,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 5,
+        "bonus_candidates": [
+          2
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              2
+            ],
+            "full_multiplier": 5,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 5,
+            "ability_added": 5,
+            "faces": [
+              5,
+              5,
+              3,
+              5,
+              4
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": true,
+            "damage": 0,
+            "damage_without_reduction": 54
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": true,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 150,
+        "health_after": 150,
+        "fast_zero_dice_bonus": true,
+        "stopping_use_id": 1,
+        "stopping_role": "initial"
+      },
+      {
+        "seq": 21,
+        "round": 1,
+        "bonus_round": false,
+        "type": "stopping_decision",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 1,
+        "trigger": 1,
+        "eligible": true,
+        "used": true
+      },
+      {
+        "seq": 22,
+        "round": 1,
+        "bonus_round": false,
+        "type": "smg_close_check",
+        "rules": [
+          "CORE-P36-SMG"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "trigger": 2,
+        "distance": 1,
+        "added_troubles": 1
+      },
+      {
+        "seq": 23,
+        "round": 1,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 2,
+        "distance": 1,
+        "roll": [
+          4,
+          3,
+          2
+        ],
+        "rerolls": [
+          {
+            "kind": "trouble",
+            "index": 2,
+            "original": 5,
+            "rolled": 2,
+            "kept": 2
+          }
+        ],
+        "total": 14,
+        "check_modifier": 5,
+        "edges": 0,
+        "troubles": 1,
+        "target_number": 16,
+        "success": false,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 5,
+        "bonus_candidates": [
+          2
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": true,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 150,
+        "health_after": 150,
+        "fast_zero_dice_bonus": true,
+        "stopping_use_id": 1,
+        "stopping_role": "followup"
+      },
+      {
+        "seq": 24,
+        "round": 1,
+        "bonus_round": false,
+        "type": "stopping_end",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 1,
+        "followed_up": true
+      },
+      {
+        "seq": 25,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 26,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "health": 90,
+        "focus": 85
+      },
+      {
+        "seq": 27,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 28,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 29,
+        "round": 2,
+        "bonus_round": false,
+        "type": "fast_hands_reset",
+        "rules": [
+          "CORE-P99-FAST-HANDS"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 30,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 31,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 32,
+        "round": 2,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 33,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Crossbones (recorte experimental)",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 3,
+        "distance": 1,
+        "roll": [
+          2,
+          6,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 6,
+            "rolled": 5,
+            "kept": 6
+          }
+        ],
+        "total": 18,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 14,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 0,
+            "dice_after_reduction": 8,
+            "dice_rolled": 8,
+            "ability_added": 6,
+            "faces": [
+              3,
+              6,
+              1,
+              4,
+              1,
+              3,
+              2,
+              1
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": false,
+            "damage": 42,
+            "damage_without_reduction": 42
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 42,
+        "damage": 42,
+        "health_before": 90,
+        "health_after": 48,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 34,
+        "round": 2,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 35,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 36,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 37,
+        "round": 2,
+        "bonus_round": false,
+        "type": "stopping_start",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 2,
+        "distance": 1
+      },
+      {
+        "seq": 38,
+        "round": 2,
+        "bonus_round": false,
+        "type": "focus_spent",
+        "rules": [
+          "RES-01",
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "amount": 5,
+        "focus_before": 85,
+        "focus_after": 80,
+        "source": "stopping_power",
+        "stopping_use_id": 2
+      },
+      {
+        "seq": 39,
+        "round": 2,
+        "bonus_round": false,
+        "type": "smg_close_check",
+        "rules": [
+          "CORE-P36-SMG"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "trigger": 4,
+        "distance": 1,
+        "added_troubles": 1
+      },
+      {
+        "seq": 40,
+        "round": 2,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 4,
+        "remaining": 1
+      },
+      {
+        "seq": 41,
+        "round": 2,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 4,
+        "after_hit": true
+      },
+      {
+        "seq": 42,
+        "round": 2,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04",
+          "HR-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 4,
+        "distance": 1,
+        "roll": [
+          5,
+          4,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "trouble",
+            "index": 0,
+            "original": 5,
+            "rolled": 6,
+            "kept": 5
+          }
+        ],
+        "total": 18,
+        "check_modifier": 5,
+        "edges": 0,
+        "troubles": 1,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 5,
+        "bonus_candidates": [
+          2
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              2
+            ],
+            "full_multiplier": 5,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 5,
+            "ability_added": 5,
+            "faces": [
+              3,
+              4,
+              3,
+              4,
+              1
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": true,
+            "damage": 0,
+            "damage_without_reduction": 25
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": true,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 150,
+        "health_after": 150,
+        "fast_zero_dice_bonus": true,
+        "stopping_use_id": 2,
+        "stopping_role": "initial"
+      },
+      {
+        "seq": 43,
+        "round": 2,
+        "bonus_round": false,
+        "type": "stopping_decision",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 2,
+        "trigger": 4,
+        "eligible": false,
+        "used": false
+      },
+      {
+        "seq": 44,
+        "round": 2,
+        "bonus_round": false,
+        "type": "stopping_end",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 2,
+        "followed_up": false
+      },
+      {
+        "seq": 45,
+        "round": 2,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 46,
+        "round": 2,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "health": 48,
+        "focus": 80
+      },
+      {
+        "seq": 47,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 48,
+        "round": 3,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 49,
+        "round": 3,
+        "bonus_round": false,
+        "type": "fast_hands_reset",
+        "rules": [
+          "CORE-P99-FAST-HANDS"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 50,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 51,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 52,
+        "round": 3,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 53,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Crossbones (recorte experimental)",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 5,
+        "distance": 1,
+        "roll": [
+          2,
+          2,
+          6
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 2,
+            "rolled": 2,
+            "kept": 2
+          }
+        ],
+        "total": 16,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 14,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 0,
+            "dice_after_reduction": 8,
+            "dice_rolled": 8,
+            "ability_added": 6,
+            "faces": [
+              4,
+              4,
+              4,
+              6,
+              5,
+              3,
+              1,
+              6
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": false,
+            "damage": 44,
+            "damage_without_reduction": 44
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 44,
+        "damage": 44,
+        "health_before": 48,
+        "health_after": 4,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 54,
+        "round": 3,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 55,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 56,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 57,
+        "round": 3,
+        "bonus_round": false,
+        "type": "stopping_start",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 3,
+        "distance": 1
+      },
+      {
+        "seq": 58,
+        "round": 3,
+        "bonus_round": false,
+        "type": "focus_spent",
+        "rules": [
+          "RES-01",
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "amount": 5,
+        "focus_before": 80,
+        "focus_after": 75,
+        "source": "stopping_power",
+        "stopping_use_id": 3
+      },
+      {
+        "seq": 59,
+        "round": 3,
+        "bonus_round": false,
+        "type": "smg_close_check",
+        "rules": [
+          "CORE-P36-SMG"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "trigger": 6,
+        "distance": 1,
+        "added_troubles": 1
+      },
+      {
+        "seq": 60,
+        "round": 3,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 6,
+        "distance": 1,
+        "roll": [
+          5,
+          4,
+          1
+        ],
+        "rerolls": [
+          {
+            "kind": "trouble",
+            "index": 2,
+            "original": 6,
+            "rolled": 1,
+            "kept": 1
+          }
+        ],
+        "total": 15,
+        "check_modifier": 5,
+        "edges": 0,
+        "troubles": 1,
+        "target_number": 16,
+        "success": false,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 5,
+        "bonus_candidates": [
+          2
+        ],
+        "reduction": 1,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 150,
+        "health_after": 150,
+        "fast_zero_dice_bonus": true,
+        "stopping_use_id": 3,
+        "stopping_role": "initial"
+      },
+      {
+        "seq": 61,
+        "round": 3,
+        "bonus_round": false,
+        "type": "stopping_decision",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 3,
+        "trigger": 6,
+        "eligible": false,
+        "used": false
+      },
+      {
+        "seq": 62,
+        "round": 3,
+        "bonus_round": false,
+        "type": "stopping_end",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 3,
+        "followed_up": false
+      },
+      {
+        "seq": 63,
+        "round": 3,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "direction": "retreat",
+        "steps": 6,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 7
+      },
+      {
+        "seq": 64,
+        "round": 3,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "health": 4,
+        "focus": 75
+      },
+      {
+        "seq": 65,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 66,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 67,
+        "round": 4,
+        "bonus_round": false,
+        "type": "fast_hands_reset",
+        "rules": [
+          "CORE-P99-FAST-HANDS"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 68,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 69,
+        "round": 4,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 7,
+        "distance_after": 2
+      },
+      {
+        "seq": 70,
+        "round": 4,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "approach",
+        "steps": 1,
+        "as_standard": true,
+        "distance_before": 2,
+        "distance_after": 1
+      },
+      {
+        "seq": 71,
+        "round": 4,
+        "bonus_round": false,
+        "type": "ram_opportunity",
+        "rules": [
+          "ACT-01",
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Crossbones (recorte experimental)",
+        "first_before": 7,
+        "first_after": 2,
+        "second_after": 1,
+        "speed": 5,
+        "reactions": 2,
+        "scope": "opportunity only; no reaction or attack performed"
+      },
+      {
+        "seq": 72,
+        "round": 4,
+        "bonus_round": false,
+        "type": "ram_declined",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Blacklight",
+        "target": "Crossbones (recorte experimental)"
+      },
+      {
+        "seq": 73,
+        "round": 4,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 74,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 75,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 76,
+        "round": 4,
+        "bonus_round": false,
+        "type": "stopping_start",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 4,
+        "distance": 1
+      },
+      {
+        "seq": 77,
+        "round": 4,
+        "bonus_round": false,
+        "type": "focus_spent",
+        "rules": [
+          "RES-01",
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "amount": 5,
+        "focus_before": 75,
+        "focus_after": 70,
+        "source": "stopping_power",
+        "stopping_use_id": 4
+      },
+      {
+        "seq": 78,
+        "round": 4,
+        "bonus_round": false,
+        "type": "smg_close_check",
+        "rules": [
+          "CORE-P36-SMG"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "trigger": 7,
+        "distance": 1,
+        "added_troubles": 1
+      },
+      {
+        "seq": 79,
+        "round": 4,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 7,
+        "remaining": 1
+      },
+      {
+        "seq": 80,
+        "round": 4,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 7,
+        "after_hit": true
+      },
+      {
+        "seq": 81,
+        "round": 4,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04",
+          "HR-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 7,
+        "distance": 1,
+        "roll": [
+          6,
+          5,
+          2
+        ],
+        "rerolls": [
+          {
+            "kind": "trouble",
+            "index": 1,
+            "original": 1,
+            "rolled": 5,
+            "kept": 5
+          }
+        ],
+        "total": 18,
+        "check_modifier": 5,
+        "edges": 0,
+        "troubles": 1,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 5,
+        "bonus_candidates": [
+          2
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              2
+            ],
+            "full_multiplier": 5,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 5,
+            "ability_added": 5,
+            "faces": [
+              1,
+              5,
+              6,
+              6,
+              6
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": true,
+            "damage": 0,
+            "damage_without_reduction": 34
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": true,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 150,
+        "health_after": 150,
+        "fast_zero_dice_bonus": true,
+        "stopping_use_id": 4,
+        "stopping_role": "initial"
+      },
+      {
+        "seq": 82,
+        "round": 4,
+        "bonus_round": false,
+        "type": "stopping_decision",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 4,
+        "trigger": 7,
+        "eligible": false,
+        "used": false
+      },
+      {
+        "seq": 83,
+        "round": 4,
+        "bonus_round": false,
+        "type": "stopping_end",
+        "rules": [
+          "CORE-P121-STOPPING"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "use_id": 4,
+        "followed_up": false
+      },
+      {
+        "seq": 84,
+        "round": 4,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 85,
+        "round": 4,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "health": 4,
+        "focus": 70
+      },
+      {
+        "seq": 86,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 87,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 88,
+        "round": 5,
+        "bonus_round": false,
+        "type": "fast_hands_reset",
+        "rules": [
+          "CORE-P99-FAST-HANDS"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 89,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 90,
+        "round": 5,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 91,
+        "round": 5,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 92,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Crossbones (recorte experimental)",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 8,
+        "distance": 1,
+        "roll": [
+          3,
+          3,
+          1
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 0,
+            "original": 1,
+            "rolled": 3,
+            "kept": 3
+          }
+        ],
+        "total": 13,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 14,
+        "success": false,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 4,
+        "health_after": 4,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 93,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_queued",
+        "rules": [
+          "ACT-03",
+          "POW-06"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "trigger": 8,
+        "source": "Blacklight"
+      },
+      {
+        "seq": 94,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_considered",
+        "rules": [
+          "ACT-03",
+          "CORE-P112-PARRY"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "trigger": 8,
+        "source": "Blacklight"
+      },
+      {
+        "seq": 95,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "CORE-P112-PARRY"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "trigger": 8,
+        "remaining": 1,
+        "source": "point_blank_parry",
+        "pool": "fast_hands",
+        "fast_hands_remaining": 0
+      },
+      {
+        "seq": 96,
+        "round": 5,
+        "bonus_round": false,
+        "type": "focus_spent",
+        "rules": [
+          "RES-01",
+          "CORE-P112-PARRY"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "amount": 5,
+        "focus_before": 70,
+        "focus_after": 65,
+        "reaction": true,
+        "source": "point_blank_parry",
+        "trigger": 8
+      },
+      {
+        "seq": 97,
+        "round": 5,
+        "bonus_round": false,
+        "type": "parry_start",
+        "rules": [
+          "CORE-P112-PARRY"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "source_trigger": 8,
+        "pool": "fast_hands"
+      },
+      {
+        "seq": 98,
+        "round": 5,
+        "bonus_round": false,
+        "type": "smg_close_check",
+        "rules": [
+          "CORE-P36-SMG"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "trigger": 9,
+        "distance": 1,
+        "added_troubles": 1
+      },
+      {
+        "seq": 99,
+        "round": 5,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03",
+          "ACT-04",
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "trigger": 9,
+        "remaining": 1
+      },
+      {
+        "seq": 100,
+        "round": 5,
+        "bonus_round": false,
+        "type": "shield_activate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "reaction",
+        "trigger": 9,
+        "after_hit": true
+      },
+      {
+        "seq": 101,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-04",
+          "HR-04",
+          "HR-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "mode": "ranged",
+        "offhand": null,
+        "reaction": true,
+        "trigger": 9,
+        "distance": 1,
+        "roll": [
+          4,
+          5,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "trouble",
+            "index": 2,
+            "original": 6,
+            "rolled": 4,
+            "kept": 4
+          }
+        ],
+        "total": 18,
+        "check_modifier": 5,
+        "edges": 0,
+        "troubles": 1,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 5,
+        "bonus_candidates": [
+          2
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "ranged",
+            "bonus_candidates": [
+              2
+            ],
+            "full_multiplier": 5,
+            "reduction": 3,
+            "dice_after_reduction": 5,
+            "dice_rolled": 5,
+            "ability_added": 5,
+            "faces": [
+              5,
+              4,
+              2,
+              3,
+              4
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": true,
+            "damage": 0,
+            "damage_without_reduction": 23
+          }
+        ],
+        "strike_weapons": [
+          "ranged"
+        ],
+        "ammunition_immunity": true,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 150,
+        "health_after": 150,
+        "fast_zero_dice_bonus": true,
+        "reaction_power": "point_blank_parry",
+        "source_trigger": 8
+      },
+      {
+        "seq": 102,
+        "round": 5,
+        "bonus_round": false,
+        "type": "parry_end",
+        "rules": [
+          "CORE-P112-PARRY"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "source_trigger": 8,
+        "trigger": 9,
+        "bleeding": false
+      },
+      {
+        "seq": 103,
+        "round": 5,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 104,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      },
+      {
+        "seq": 105,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 106,
+        "round": 5,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 107,
+        "round": 5,
+        "bonus_round": false,
+        "type": "lethality_declaration",
+        "rules": [
+          "CORE-P36-LETHAL"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "mode": "melee",
+        "choice": "lethal"
+      },
+      {
+        "seq": 108,
+        "round": 5,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "HR-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "target": "Blacklight",
+        "mode": "melee",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 10,
+        "distance": 1,
+        "roll": [
+          6,
+          4,
+          4
+        ],
+        "rerolls": [],
+        "total": 18,
+        "check_modifier": 4,
+        "edges": 0,
+        "troubles": 0,
+        "target_number": 16,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 4,
+        "bonus_candidates": [
+          0
+        ],
+        "reduction": 3,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "bare",
+            "bonus_candidates": [
+              0
+            ],
+            "full_multiplier": 3,
+            "reduction": 3,
+            "dice_after_reduction": 0,
+            "dice_rolled": 0,
+            "ability_added": 0,
+            "faces": [],
+            "counterfactual_faces": [
+              4,
+              4,
+              2
+            ],
+            "ammunition_immunity": false,
+            "damage": 0,
+            "damage_without_reduction": 14
+          }
+        ],
+        "strike_weapons": [
+          "bare"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 0,
+        "damage": 0,
+        "health_before": 150,
+        "health_after": 150,
+        "fast_zero_dice_bonus": true,
+        "declared_lethality": "lethal"
+      },
+      {
+        "seq": 109,
+        "round": 5,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "health": 4,
+        "focus": 65
+      },
+      {
+        "seq": 110,
+        "round": 6,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 111,
+        "round": 6,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 112,
+        "round": 6,
+        "bonus_round": false,
+        "type": "fast_hands_reset",
+        "rules": [
+          "CORE-P99-FAST-HANDS"
+        ],
+        "actor": "Crossbones (recorte experimental)",
+        "reactions": 1
+      },
+      {
+        "seq": 113,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Blacklight",
+        "reactions": 2
+      },
+      {
+        "seq": 114,
+        "round": 6,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Blacklight",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 1,
+        "distance_after": 1
+      },
+      {
+        "seq": 115,
+        "round": 6,
+        "bonus_round": false,
+        "type": "shield_deactivate",
+        "rules": [
+          "HR-04"
+        ],
+        "actor": "Blacklight",
+        "cost": "free",
+        "reason": "attack"
+      },
+      {
+        "seq": 116,
+        "round": 6,
+        "bonus_round": false,
+        "type": "attack",
+        "rules": [
+          "ACT-05",
+          "DMG-01",
+          "POW-08",
+          "HR-02"
+        ],
+        "actor": "Blacklight",
+        "target": "Crossbones (recorte experimental)",
+        "mode": "hammer",
+        "offhand": null,
+        "reaction": false,
+        "trigger": 11,
+        "distance": 1,
+        "roll": [
+          6,
+          5,
+          4
+        ],
+        "rerolls": [
+          {
+            "kind": "edge",
+            "index": 1,
+            "original": 5,
+            "rolled": 2,
+            "kept": 5
+          }
+        ],
+        "total": 21,
+        "check_modifier": 6,
+        "edges": 1,
+        "troubles": 0,
+        "target_number": 14,
+        "success": true,
+        "fantastic": false,
+        "ultimate": false,
+        "rank": 3,
+        "ability_for_damage": 6,
+        "bonus_candidates": [
+          5
+        ],
+        "reduction": 0,
+        "damage_denominator": 1,
+        "default_fantastic_multiplier": true,
+        "damage_model": "literal_marvel_pool_v2",
+        "damage_components": [
+          {
+            "weapon": "hammer",
+            "bonus_candidates": [
+              5
+            ],
+            "full_multiplier": 8,
+            "reduction": 0,
+            "dice_after_reduction": 8,
+            "dice_rolled": 8,
+            "ability_added": 6,
+            "faces": [
+              1,
+              3,
+              4,
+              4,
+              2,
+              3,
+              5,
+              5
+            ],
+            "counterfactual_faces": [],
+            "ammunition_immunity": false,
+            "damage": 38,
+            "damage_without_reduction": 38
+          }
+        ],
+        "strike_weapons": [
+          "hammer"
+        ],
+        "ammunition_immunity": false,
+        "knockback_selected": false,
+        "calculated_damage": 38,
+        "damage": 38,
+        "health_before": 4,
+        "health_after": -34,
+        "fast_zero_dice_bonus": true
+      },
+      {
+        "seq": 117,
+        "round": 6,
+        "bonus_round": false,
+        "type": "heal",
+        "rules": [
+          "POW-03"
+        ],
+        "actor": "Blacklight",
+        "proposed": 5,
+        "effective": 0,
+        "health_before": 150,
+        "health_after": 150
+      },
+      {
+        "seq": 118,
+        "round": 6,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Blacklight",
+        "health": 150,
+        "focus": 90
+      }
+    ]
+  },
+  "audit_issues": [],
+  "limitations": [
+    "single selected example; no strategy or statistical conclusion",
+    "incomplete Crossbones; omitted features listed in the subset",
+    "declared lethal is a scenario choice, not a ruling on armed bare attack defaults"
+  ]
+}

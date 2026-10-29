@@ -3,7 +3,10 @@
 **Adversário adaptativo experimental:** uma [política de aproximação e ataque
 corporal explicitamente letal](ADAPTIVE_ARMED_MELEE_EXPERIMENT.md) permite ao
 recorte armado de Crossbones reagir ao Escudo observado. A cobertura continua
-limitada e não representa a ficha completa nem uma conclusão estatística.
+limitada e não representa a ficha completa nem uma conclusão estatística. A
+[demonstração individual](experimental_outputs/adaptive_armed_melee_demo_v1.json)
+foi auditada e reproduzida exatamente com 105 fontes no commit `e4c51f0`;
+SHA-256 `55ac92f598e3b54a299b775b44436fb9655e776091a1596d36193462f7618cb7`.
 
 **Exploração com Ram e Crossbones parcial:** [12.000 inícios](RAM_CROSSBONES_EXPLORATION_REPORT.md)
 foram auditados, e 36 registros foram reproduzidos. Contra uma política de

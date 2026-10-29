@@ -105,6 +105,12 @@ lutas chegaram ao limite de rodadas sem vencedor. Esses resultados **não
 incluíam Ram** e não representam adversários oficiais completos. Use-os como
 indicação para testar escolhas, não como garantia para a mesa.
 
+No cenário de campo aberto contra o atirador que recua, uma
+[leitura exploratória adicional](ALCANCE_VS_ATIRADOR_OBSERVACAO.md) encontrou
+7.987 combates em 10.000 sem qualquer tentativa de ataque de Victor na política
+Fast com efeito da Marreta. Esse cenário não inclui Ram e não prevê a frequência
+desse problema em outras mesas; ele destaca a importância da aproximação.
+
 Uma [exploração posterior com Ram e recorte parcial de Crossbones](RAM_CROSSBONES_EXPLORATION_REPORT.md)
 encontrou mais vitórias dentro de 30 rodadas quando Ram era permitido contra
 uma política de recuo, mas a maioria dos combates ainda terminou inconclusiva.

@@ -18,6 +18,15 @@ rolagem de dano para Victor e outra para o alvo. O cenário de dados
 compartilhados fica preservado somente como hipótese histórica de comparação,
 identificada em [RAM_IMPACT_EXPERIMENT.md](RAM_IMPACT_EXPERIMENT.md).
 
+Em 29/10/2026, o usuário esclareceu que, se o autoimpacto deixar Victor
+inconsciente, **ambos sofrem dano, mas o combate termina antes da cura**.
+Quanto a o autoimpacto poder matá-lo no limiar de morte, a resposta foi que
+isso ainda não foi decidido. O modo experimental correspondente aplica ambos os
+danos e encerra sem Healing Factor quando Victor sobrevive inconsciente; se o
+autoimpacto chegar ao limiar de morte, ele interrompe a execução sem decidir o
+resultado. A regra é vinculada ao atacante explicitamente identificado, sem
+presumir a mesma decisão para outros personagens.
+
 Ainda não foi definido como efeitos especiais de armas biológicas, Escudo,
 Riposte ou reduções integrais interagem especificamente com o impacto próprio.
 Não transformar essas questões em regras certas apenas com base no nome da

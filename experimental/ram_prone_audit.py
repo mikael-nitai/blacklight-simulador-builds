@@ -9,6 +9,7 @@ from .incapacity_endturn_audit import audit_incapacity_endturn
 from .prone_duel_audit import audit_prone_log
 from .ram_opportunity_audit import audit_ram_opportunities
 from .ram_rolled import audit_rolled_table_ram
+from .ram_stop_audit import audit_ram_stop
 
 
 def _physical_projection(result, profiles):
@@ -52,16 +53,22 @@ def _physical_projection(result, profiles):
 def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                          expected_seed, max_rounds, ruleset, stack_stunned_edge=False,
                          self_damage_mode='reject_incapacitation', end_turn_healing_first=True,
-                         verified_extra_troubles=None):
+                         verified_extra_troubles=None, stop_on_attacker=None):
     """Audit the full experimental result; never certify unsupported mechanics."""
     profiles = tuple(profiles)
     if len(profiles) != 2 or profiles[0].name == profiles[1].name:
         raise ValueError('Exactly two distinct profiles are required')
-    if self_damage_mode not in ('reject_incapacitation', 'lethal_impact', 'nonlethal_impact'):
+    if self_damage_mode not in ('reject_incapacitation', 'lethal_impact', 'nonlethal_impact',
+                                'stop_before_heal_reject_lethal'):
         raise ValueError('Unknown self-damage hypothesis')
     if type(end_turn_healing_first) is not bool:
         raise ValueError('Declare the end-turn healing order')
     names = {p.name: p for p in profiles}
+    if (self_damage_mode == 'stop_before_heal_reject_lethal'
+            and (not isinstance(stop_on_attacker, str) or stop_on_attacker not in names)):
+        raise ValueError('Identify the attacker covered by the table ruling')
+    if self_damage_mode != 'stop_before_heal_reject_lethal' and stop_on_attacker is not None:
+        raise ValueError('Unexpected stop attacker for this hypothesis')
     if not isinstance(result.log, (tuple, list)) or any(not isinstance(e, dict) for e in result.log):
         return ['Invalid experimental duel log']
     allowed = {'initiative', 'reaction_reset', 'turn_start', 'turn_end', 'turn_skipped',
@@ -71,7 +78,7 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                'shield_activate', 'shield_deactivate', 'reaction_spent', 'reaction_queued',
                'heal', 'knockback', 'knockback_declined', 'limb_effect', 'prone_initial',
                'prone_stand', 'prone_check', 'prone_start', 'ram_opportunity', 'ram_declined',
-               'ram_attack', 'incapacity_dead', 'incapacity_contract'}
+               'ram_attack', 'incapacity_dead', 'incapacity_contract', 'ram_incapacity_stop'}
     if (type(expected_seed) is not int or type(max_rounds) is not int or max_rounds < 1
             or type(result.rounds) is not int or type(result.turns) is not int
             or type(result.bonus_round_occurred) is not bool
@@ -91,10 +98,15 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                              initial_distance=initial_distance, stack_stunned_edge=stack_stunned_edge,
                              verified_extra_troubles=verified_extra_troubles)
     issues += audit_ram_opportunities(result.log, profiles)
+    if self_damage_mode == 'stop_before_heal_reject_lethal':
+        issues += audit_ram_stop(result.log, profiles, stop_on_attacker=stop_on_attacker)
+    elif any(event.get('type') == 'ram_incapacity_stop' for event in result.log):
+        issues.append('Ram stop marker requires the corresponding table ruling')
     if self_damage_mode != 'reject_incapacitation':
         try:
             issues += audit_incapacity_endturn(result.log, profiles, healing_first=end_turn_healing_first,
-                                               self_damage_mode=self_damage_mode)
+                                               self_damage_mode=self_damage_mode,
+                                               stop_on_attacker=stop_on_attacker)
         except (KeyError, TypeError, ValueError, IndexError) as error:
             issues.append(f'Invalid experimental end-turn ledger: {error}')
     contracts = [(index, event) for index, event in enumerate(result.log)
@@ -105,7 +117,10 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
     elif (len(contracts) != 1 or contracts[0][0] != sum(initial_prone)
           or contracts[0][1].get('mode') != self_damage_mode
           or contracts[0][1].get('simultaneous') is not True
-          or contracts[0][1].get('heal_living_at_turn_end') is not True
+          or contracts[0][1].get('heal_living_at_turn_end') is not
+             (self_damage_mode != 'stop_before_heal_reject_lethal')
+          or (self_damage_mode == 'stop_before_heal_reject_lethal'
+              and contracts[0][1].get('stop_on_attacker') != stop_on_attacker)
           or contracts[0][1].get('healing_first') is not end_turn_healing_first):
         issues.append('Missing or invalid self-incapacity contract')
     health = {p.name: p.max_health for p in profiles}
@@ -237,6 +252,10 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                 or reactions[actor] != before['reactions'] - 1 or shield[actor] or stance[actor]
                 or stunned[actor] or not p.heroic and (p.weapons or p.ranged_range)
                 or self_damage_mode == 'reject_incapacitation' and after['attacker_health'] <= 0
+                or self_damage_mode == 'stop_before_heal_reject_lethal'
+                   and after['attacker_health'] <= -p.max_health
+                or self_damage_mode == 'stop_before_heal_reject_lethal' and actor != stop_on_attacker
+                   and after['attacker_health'] <= 0
                 or first['actor'] != actor or first['target'] != target or first['turn'] != turns[actor]
                 or first['before'] != marker.get('first_before') or first['after'] != marker.get('first_after')
                 or second['after'] != marker.get('second_after') or first['speed'] != p.run_speed):

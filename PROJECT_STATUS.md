@@ -36,7 +36,10 @@ armas e outras interações seguem pendentes; o exemplo não autoriza novas taxa
 de vitória com Ram.
 As [hipóteses de auto-incapacitação](RAM_INCAPACITY_EXPERIMENT.md) foram
 implementadas em host separado e comparadas em um caso reproduzível; não são
-decisões da mesa nem modificam o padrão que bloqueia esse caso.
+decisões da mesa nem modificam o padrão que bloqueia esse caso. A mesa agora
+confirmou que os dois danos de Ram ocorrem e que o combate termina antes da
+cura quando Victor fica inconsciente; o modo experimental correspondente foi
+adicionado. A morte por autoimpacto permanece sem decisão e é bloqueada.
 
 **Prone experimental:** um [duelo separado](PRONE_EXPERIMENT.md) já mantém a
 condição, ajusta testes e permite levantar gastando movimento. A trilha completa

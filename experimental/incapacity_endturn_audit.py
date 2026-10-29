@@ -1,17 +1,18 @@
 """Independently verify experimental end-turn healing, bleeding and death."""
 
 
-def audit_incapacity_endturn(log, profiles, *, healing_first, self_damage_mode):
+def audit_incapacity_endturn(log, profiles, *, healing_first, self_damage_mode, stop_on_attacker=None):
     """Compare automatic end-turn events with a reconstructed health ledger."""
     profiles = tuple(profiles)
     if (len(profiles) != 2 or profiles[0].name == profiles[1].name
             or type(healing_first) is not bool
-            or self_damage_mode not in ('lethal_impact', 'nonlethal_impact')):
+            or self_damage_mode not in ('lethal_impact', 'nonlethal_impact',
+                                        'stop_before_heal_reject_lethal')):
         raise ValueError('Invalid end-turn audit contract')
     by_name = {profile.name: profile for profile in profiles}
     health = {profile.name: profile.max_health for profile in profiles}
     bleeding = dict.fromkeys(by_name, 0)
-    active, start, actual, issues = None, None, [], []
+    active, start, actual, issues, stopped = None, None, [], [], False
 
     def expected_end(name, hp, bleed):
         profile = by_name[name]
@@ -55,12 +56,18 @@ def audit_incapacity_endturn(log, profiles, *, healing_first, self_damage_mode):
     for event in log:
         kind, actor, seq = event.get('type'), event.get('actor'), event.get('seq')
         if kind == 'turn_start':
+            stopped = False
             if not isinstance(actor, str) or actor not in by_name:
                 issues.append(f'event {seq}: unknown turn actor')
                 active, start, actual = None, None, []
             else:
                 active, start, actual = actor, None, []
         if active is not None:
+            if kind == 'ram_incapacity_stop':
+                if (self_damage_mode != 'stop_before_heal_reject_lethal' or actor != active
+                        or actor != stop_on_attacker):
+                    issues.append(f'event {seq}: invalid Ram stop marker')
+                stopped = True
             rules = event.get('rules', ())
             if not isinstance(rules, (tuple, list)):
                 issues.append(f'event {seq}: invalid rule references')
@@ -85,7 +92,7 @@ def audit_incapacity_endturn(log, profiles, *, healing_first, self_damage_mode):
                 if actor != active:
                     issues.append(f'event {seq}: end-turn actor mismatch')
                 start = start if start is not None else (health[active], bleeding[active])
-                expected = expected_end(active, *start)
+                expected = [] if stopped else expected_end(active, *start)
                 if len(actual) != len(expected):
                     issues.append(f'event {seq}: missing or extra automatic end-turn effects')
                 else:

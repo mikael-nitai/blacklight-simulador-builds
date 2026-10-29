@@ -22,8 +22,10 @@ atacante é recusado. O dano dos dois participantes é simultâneo como hipótes
 experimental; se o dano próprio incapacitar o atacante, a simulação é
 interrompida em vez de adivinhar a ordem dos efeitos. Nenhum combate que falhe
 deve ser descartado silenciosamente em uma futura bateria.
-Um [host separado com hipóteses explícitas](RAM_INCAPACITY_EXPERIMENT.md) testa
-essa fronteira sem alterar o comportamento padrão nem definir a decisão da mesa.
+Um [host separado](RAM_INCAPACITY_EXPERIMENT.md) agora implementa a decisão
+da mesa de encerrar antes da cura quando Victor fica inconsciente; ele ainda
+bloqueia o autoimpacto que chega ao limiar de morte. O comportamento padrão
+mais antigo e suas trilhas ficam preservados.
 
 O host é **experimental** e não entra no runner certificado. Não implementa
 Ram com armas biológicas, movimento dividido, rastejar, cobertura, Karma, Focus,

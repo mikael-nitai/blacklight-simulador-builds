@@ -6,22 +6,34 @@ p. 103 diz que Healing Factor recupera Health no fim do turno; o texto não
 exige consciência. O Core p. 36 / PDF p. 37 diz que a morte remove o personagem
 de jogo e que poderes específicos podem restaurar a vida. O texto consultado
 não resolve expressamente se o impacto sofrido pelo próprio atacante em Ram
-pode ser letal nem a decisão da mesa sobre encerrar o combate antes da cura.
-As perguntas foram encaminhadas ao usuário; não presumir que uma delas já foi
-respondida.
+pode ser letal. Em 29/10/2026 a mesa confirmou que, se o autoimpacto deixar
+Victor inconsciente, ambos sofrem dano e o combate termina antes da cura. A
+possibilidade de morte por autoimpacto permanece sem decisão; veja
+[RAM_RULING.md](RAM_RULING.md).
 
-`experimental/ram_incapacity_duel.py` oferece duas **hipóteses opt-in**:
+O modo experimental `stop_before_heal_reject_lethal` aplica essa ordem ao
+atacante explicitamente identificado como Victor. Os dois danos são aplicados;
+se ele sobreviver inconsciente, o combate acaba antes de cura ou demais efeitos
+de fim de turno. Se o cálculo alcançar o limiar de morte, ou se outro atacante
+sofrer auto-incapacitação não esclarecida, a execução é interrompida sem
+concluir o combate. O auditor confere o marcador, o encerramento imediato e a
+ausência de cura. O executor ainda é experimental e não promove o cenário a
+uma bateria estatística.
+
+`experimental/ram_incapacity_duel.py` também preserva duas **hipóteses históricas opt-in**:
 
 * `lethal_impact`: o auto-dano pode atingir o limiar de morte. Um personagem
   morto não executa efeitos de fim de turno neste recorte.
 * `nonlethal_impact`: o auto-dano para um ponto antes da morte.
 
-Em ambas, o golpe aplica simultaneamente os danos calculados aos dois
+Em ambas as hipóteses históricas, o golpe aplica simultaneamente os danos calculados aos dois
 participantes. Um atacante inconsciente, mas vivo, recebe os efeitos automáticos
 de fim de turno antes de verificar o resultado; ele não pode realizar outras
 ações enquanto estiver inconsciente. A hipótese usa a ordem já configurada de
-Healing Factor e Bleeding. Isso é uma variante experimental, não uma decisão do
-mestre nem garantia de resolução das regras. O host original continua recusando
+Healing Factor e Bleeding. Essa variante experimental não é uma decisão da
+mesa e agora **contraria a decisão de encerrar antes da cura**; não usar essas
+hipóteses para novos resultados que aleguem representar a regra atual. Elas
+servem apenas para reprodução histórica. O host original continua recusando
 a auto-incapacitação e suas trilhas anteriores não são substituídas.
 
 O auditor de Ram recebe explicitamente o modo e verifica o dano aplicado, o

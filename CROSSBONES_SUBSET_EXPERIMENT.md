@@ -16,8 +16,19 @@ Point-Blank Parry, Stopping Power e as demais técnicas de armas — ainda não
 está implementada. A opção da submetralhadora de atingir múltiplos alvos não
 é executada. As limitações de Ram e do duelo experimental continuam em vigor.
 
+Os [contratos experimentais de Fast Hands e Point-Blank Parry](FAST_HANDS_PARRY_EXPERIMENT.md)
+já verificam seus recursos e gatilhos isoladamente, mas não participam desse
+duelo e continuam na lista de poderes omitidos.
+
 Qualquer resultado usando esse recorte representa apenas esse adversário
 restrito, não o personagem oficial completo. A política escolhida também é uma
 hipótese, não prova de comportamento ótimo. Um exemplo escolhido para revelar
 interações não deve ser usado como estimativa de vitória ou para classificar
 estratégias.
+
+O [combate demonstrativo completo](experimental_outputs/crossbones_subset_victor_001.json)
+usa a ficha atual de Victor, semente `30` e fontes do commit `099de10`. O
+exemplo foi escolhido para mostrar Double Tap fantástico, a trouble da
+submetralhadora e Fast Strikes; sua auditoria foi refeita a partir do arquivo e
+a geração reproduzida byte a byte. SHA-256:
+`d06905fc97bb8cf419580de2a69197e9929a279ecf9ebb47185736ef820f182c`.

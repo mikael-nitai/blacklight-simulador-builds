@@ -4,6 +4,9 @@
 foram combinados com os ataques dos envolvidos e com uma fila auditada de
 reações aninhadas. Autoacerto e ataques de terceiros continuam pendentes; a
 ficha oficial de Crossbones e as decisões ambíguas ainda não estão completas.
+Uma [trilha individual](experimental_outputs/entangled_reaction_demo_v1.json)
+foi reproduzida exatamente a partir de 120 fontes no commit `0fba2bf`;
+SHA-256 `3af9bd82e4a5b7af5226e924e0997926ed61dc52e2739ce11c092301785e656b`.
 
 **Ataques durante agarrão:** [uma extensão experimental](ENTANGLED_ATTACK_EXPERIMENT.md)
 permite ataques próximos entre os dois envolvidos, incluindo Fast Strikes, com

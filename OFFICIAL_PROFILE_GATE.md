@@ -24,3 +24,7 @@ em `character_evidence/crossbones_core_p155.json`. Ela é evidência, não uma
 ficha de combate executável, e mantém os demais poderes bloqueados. O mesmo
 experimento inclui submetralhadora em disparo contra um único alvo; a opção
 com múltiplos alvos ainda falta.
+
+O [adaptador parcial de Crossbones](CROSSBONES_SUBSET_EXPERIMENT.md) permite
+confrontos experimentais identificados como incompletos, com lista explícita
+de poderes e traços omitidos. Ele não altera o bloqueio da ficha completa.

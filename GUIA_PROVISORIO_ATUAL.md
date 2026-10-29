@@ -105,6 +105,10 @@ lutas chegaram ao limite de rodadas sem vencedor. Esses resultados **não
 incluíam Ram** e não representam adversários oficiais completos. Use-os como
 indicação para testar escolhas, não como garantia para a mesa.
 
+Uma [leitura exploratória dos efeitos](EFEITOS_FAST_OBSERVACAO.md) detalha
+quantos combates registraram Stunned e ações extras da Lâmina nas políticas
+fixas testadas. Ela não mede uma política que alterna efeitos conforme a situação.
+
 No cenário de campo aberto contra o atirador que recua, uma
 [leitura exploratória adicional](ALCANCE_VS_ATIRADOR_OBSERVACAO.md) encontrou
 7.987 combates em 10.000 sem qualquer tentativa de ataque de Victor na política

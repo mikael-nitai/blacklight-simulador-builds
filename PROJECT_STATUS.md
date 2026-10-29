@@ -5,6 +5,9 @@ permite ataques próximos entre os dois envolvidos, incluindo Fast Strikes, com
 duas hipóteses explícitas para trouble adicional. Autoacerto, terceiros,
 deslocamento conjunto e contra-ataques durante o agarrão seguem fora do escopo;
 não há novas estimativas de eficácia.
+Uma [trilha individual](experimental_outputs/entangled_attack_demo_v1.json)
+foi reproduzida exatamente a partir de 116 fontes no commit `1e69099`;
+SHA-256 `b8a96e3565398364a62b0e7569702602b3f6c656043428232a76e988045129ea`.
 
 **Agarrar em desenvolvimento:** [transações experimentais de Grappling
 Technique e Escape](GRAPPLING_EXPERIMENT.md) agora integram um duelo restrito

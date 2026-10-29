@@ -20,6 +20,13 @@ concluir o combate. O auditor confere o marcador, o encerramento imediato e a
 ausência de cura. O executor ainda é experimental e não promove o cenário a
 uma bateria estatística.
 
+O [exemplo sintético da decisão](experimental_outputs/ram_stop_table_ruling_001.json)
+usa seed `1`: os danos levam o atacante de 20 para −1 Health e o alvo de 250
+para 210, sem cura posterior. A trilha foi auditada novamente após a leitura e
+reproduzida byte a byte. Suas fontes correspondem ao commit `9e006c0`; o
+SHA-256 é `e5368a4239bc44464de6c953518c1481b53e8cc9c01ee170ab8e1299acd1b73e`.
+É um caso de fronteira sintético, não uma estimativa de desempenho de Victor.
+
 `experimental/ram_incapacity_duel.py` também preserva duas **hipóteses históricas opt-in**:
 
 * `lethal_impact`: o auto-dano pode atingir o limiar de morte. Um personagem

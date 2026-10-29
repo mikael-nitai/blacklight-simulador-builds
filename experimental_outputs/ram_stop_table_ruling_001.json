@@ -1,0 +1,609 @@
+{
+  "schema": "blacklight-experimental-ram-stop-demo-v1",
+  "source_commit": "9e006c02f65d99f5e2d3050d6b92ed4eebf93a42",
+  "source_sha256": {
+    "blacklight/__init__.py": "661aacdbe8eec1dc9eb5af1fc4e6946742daf032dd96f95434dd541a1b650f03",
+    "blacklight/audit.py": "af63b0a71bb027db6093f620073aa08c5aaa517b57323b362c8f00e3715d19cf",
+    "blacklight/batch_audit.py": "bfc4c894e8da5ddef8d3ee2bf2e69d9a81a1baa07056afa63202f231e83f0d20",
+    "blacklight/damage.py": "81fd3f9361808665d8d3791632d52b68419f0e742638fb1141aa0bed0e19f3e4",
+    "blacklight/dice.py": "cf39d006c227caba878bcb275eb1f0a036e1667ee2e35332b82e32d167983375",
+    "blacklight/dice_audit.py": "ebce1bd892f8ecef507162a0f28280e5fa5300d6408c04e97b45edab6335b1e1",
+    "blacklight/engine.py": "e49d63d730ce8ac2ad62ff45b392196783914d439c7e99efa6ec48be264202e5",
+    "blacklight/experiment.py": "81707496fce1164170e961287b0fe3105e7c21c8c030b472ddeac9b26523873b",
+    "blacklight/extended_batch_audit.py": "2b0add707c406dfa3cd7906c2f388cafd82aefa8c98dc10c557b87e3998e1de3",
+    "blacklight/mechanics_contract.py": "0c7a4c3a963e1ea13fe3f8c996f81f436b801758019d26f240078a883c6109c6",
+    "blacklight/policies.py": "fbf6756e0023efdb3b7d91a4ee4fd7f2a1868ab3b919ab28b284243e70a17e66",
+    "blacklight/pool_damage.py": "0b71361a4778d2f6e811357a854d7b67303b6c9ffaa5d2e7a61004b645f3e1d1",
+    "blacklight/profile_audit.py": "0ec9e752b3adddd71a8fd6c5e7c86dd8b0f9422dd7f7f234d726716ee155526d",
+    "blacklight/result_audit.py": "4162e48a0c1846e394ca4fd6f62cdecab17cb3f962b060404684273a2080fd43",
+    "blacklight/results_io.py": "858ceba8c897dae87119526313e6fb893dd88002d991fc263b33538839dbf9bb",
+    "blacklight/ruleset_audit.py": "5a35bf7c340c644fd44ac2b0e1c7aeb47f24582d3f6828607959224e11094f74",
+    "blacklight/rulesets.py": "ae933562bd76aa826a8ec1b7a1da6dad53ae52d4d70452d88682c2adc8f5d456",
+    "blacklight/search.py": "1cb96edf48e95ee9869c1e2f6741339ccbb8bfa63299f7ee4f38c53a219e0ffc",
+    "blacklight/sensitivity.py": "6f9755be75a0ef460e88dc419f1aaea67748f658b180b7e69577b9e83b9d91ea",
+    "blacklight/spatial_audit.py": "2773e2296db91957d4be901e0e436cabfbd65a8a4e51f36fdbced592b886e41d",
+    "blacklight/split_audit.py": "ee1d6c7b755762355d5edf8fbd81147ee05fa59967e06715a0db421646971c30",
+    "blacklight/turn_audit.py": "b73b5500a34885ae4e14516a770e3436ba2a92d7b476f233c9a50466d2e75e22",
+    "CHARACTER_AUDIT.md": "1c49e262de717102c64829b48d7e45dbc2ba7075f3d586f2ef182834f21b46ff",
+    "DAMAGE_POOL_RULING.md": "e09fcaea9bb1ce07f963b64980bcad5af1b144a855703678a78951d78de30c1c",
+    "DAMAGE_POOL_V2_SPEC.md": "92e1c71d767d075bc44ccc02e957b95bd904e20ff313f510fb8b315448b18387",
+    "EXPERIMENT_SPEC.md": "b678bd9d5bcf3fcef1a9199fa0b161dd0f683461cf984e724ca3ac7aa6a6b1a8",
+    "FAST_STRIKES_RULING.md": "57fd65b361afdc1e7b53f8dafddef5ec26c2eea9df65d28fd9a53ec5276a8803",
+    "RULES_AUDIT.md": "76f90df01507f96eda0ff8dcc9ae80db2b32053f181efdc89ed81cef057ed5a1",
+    "combatants/__init__.py": "5978e1e5aedae6ee1105f87ed6d05850b786ffd4d345baa1109eefde35762d5e",
+    "combatants/actions.py": "e6fd391755cdad6618cd1389938f844b35e8b3854d590510fc0f5db2071658a1",
+    "combatants/battlefields.py": "9edc399643999d6f832dca07e4ff303c903fe07b81e2fa5285a6161821fec0bd",
+    "combatants/condition_bridge.py": "e85b0c32e4beebe5302148f5c5d61658c821600a785355cc3a1c49c5325009d1",
+    "combatants/duel_adapter.py": "3dcd331697480bb385d999870e57511590997de84120308e6ecc86fd27881b5b",
+    "combatants/group.py": "469126ff4d5e937c1c60f29e75f2c1856b41064f4433a1ce4255b7e04e6a337c",
+    "combatants/group_audit.py": "e6489cd3ccc5c345bff59656a47c4debc3af903be9edea23f8b410e7cc88b3da",
+    "combatants/group_grid.py": "c6af56dbda7bff57ae8db9cd3a1ed30de59ddeb1751ba203f6d1aea32f00eb78",
+    "combatants/group_grid_audit.py": "8b8daea9d36bbb5428b1937535489254cd20fa0717437284ff9c3fdb85739689",
+    "combatants/group_initiative_audit.py": "240ab93eb5480266929de59bbbdec571066125cfb31a5b11296fabe45f51ed31",
+    "combatants/group_lifecycle_audit.py": "3338224852bb5eb883100ceac3cfdbcafb601ce0d3ee3bb182410e8b406ecd1c",
+    "combatants/group_runner.py": "a5c332b364ade9d713dcdd20cadb5b2da282564c07ac55a781fde29d1d877f50",
+    "combatants/lifecycle.py": "820dfdee332cced95cd51c08ca47999d523e910514edc49beadfad5abb3adf82",
+    "combatants/modular_duel.py": "158b569475ce20d158f7792e77ab38421c1ec68b348ff26ea43659982fe6b359",
+    "combatants/pdf_draft.py": "cf651dcf3d2b90a26ef961ed18caba5c2321e2330e48427773549040da862add",
+    "combatants/policy_provenance.py": "69a0a1c85a9c28eacdaab83a1a02deb5d5078918886fcb5c11d6b5b6c0627bde",
+    "combatants/runner.py": "96f2ef97f7f346605f7b87bd090fe76e4eafe5c72de0b4056e6258dccbf8125a",
+    "combatants/sheets.py": "ca90287b1ab6d2877388b3ffce53fc7ab70f778b992c14d5749b6b5a6300ad60",
+    "combatants/split_fast.py": "6d33a35cdd9c3ab3ef53469a637fccce6cf81ebf1759be9f1fd282232303df18",
+    "combatants/terrain_policies.py": "781591fa9ecc9f26712f5c272be2478fc30ce9bd9bbf601134db0f57955a2db9",
+    "experimental/ram_prone_duel.py": "a2a29a886936404c3deec80f2ee14c2b44e542777bae53e96fad2d363b78115e",
+    "scripts/ram_stop_demo.py": "5077cea3d224b2d2ba634ad5cd6c86a03eb1b89eb7898dbc24464aa1bc892e02",
+    "NONLETHAL_EXPERIMENT.md": "527d6659d7d382ac61d0987bba9007ddd847d48b951fbec5de314b58cd42b33b",
+    "RAM_INCAPACITY_EXPERIMENT.md": "0dd40f35fcb3afa710bfa656d10df0d3c5a2d54d73bd6116e2511ee1ff509cc4",
+    "RAM_RULING.md": "b6535e9a30caee56bde93aadfeaed6a18b8ee252eeda4f0e8b57aa51c51f7d53",
+    "experimental/__init__.py": "3307fa7761d0644fa1bdd3c5a0d194e70d0bb626da8907afd18fb5f753c2bf62",
+    "experimental/incapacity_endturn_audit.py": "6807ea82ca5655c3cfd7bf03522ef6f67e6038b1c4477c58d42fd680a58ed36d",
+    "experimental/nonlethal_ram_audit.py": "d064354b9cd47b68aa398ea665362aa7c564aa7fd668353abac73a410d489ae3",
+    "experimental/nonlethal_ram_duel.py": "896a6fd583f75decb168b680f158490fa18c82bdfbde0356afa493a930a802dc",
+    "experimental/prone.py": "08ca7a3a89a7887ab01f28b1117d8a9f80d3d0e82fc7993ae2c5be2ba1219009",
+    "experimental/prone_duel.py": "3c9f9cba18945716a5e23103c3c57dfe3a4cad1fffca3fd35d2bacdc368e661a",
+    "experimental/prone_duel_audit.py": "c5928c7a64ed165b39ab8046b63ae55aca95c4591bcea07f014c64f70785c43f",
+    "experimental/ram_impact.py": "69411803a7a226ab5bb0f0a5537ff8a23df8b51495819f1a1dc2b34f381498a3",
+    "experimental/ram_incapacity_duel.py": "e87644fdff5a6e111179d2b35e0d60ba03208b5d439517610614724c338611bb",
+    "experimental/ram_opportunity_audit.py": "bc827cbd0e1b5a1031fd2d3286648d568778b621f668a02c24f6d0b7951c6cde",
+    "experimental/ram_opportunity_duel.py": "5d57a4314c2585bf6a20a2561ebae2e7d262f79ebe069f230705580892fac1c5",
+    "experimental/ram_prone_audit.py": "e86b377e09c6475db9b45c6709ffa7f6b664104c291ff9ad6dcb4830b4b2e5cd",
+    "experimental/ram_record.py": "014adf3bb727b1864c56ffcfe035e0f77a19dd8df6defc76adc0d8fe59df70d9",
+    "experimental/ram_record_audit.py": "15451d9f63dc20fd426a86d3204421bc36d9040cd13f9e2bd0a7419b42d191f1",
+    "experimental/ram_rolled.py": "05acb179fc60e85ce5227b79e0c7e336754f5eb99aacee537a73bdefae088a3d",
+    "experimental/ram_stop_audit.py": "13b1d96eb468c559e56016e6e4f715336582142b5359d6b8996bf17b6596fc39",
+    "experimental/ram_transaction.py": "92e6203f4073bc8b8aa41cfabd6b819a89ce8ee156d320c223336edef49abcd0",
+    "experimental/ram_trigger.py": "2949d5eedb3de8d88fe1fc35dcb3d4b2333697ae30668d255f43be42cc3cec0d",
+    "scripts/current_study_dev.py": "997e512bbbf9a801970c794a8d85714e70273e749e183cea0e484526be56e6c8",
+    "scripts/ram_incapacity_demo.py": "58712a82f85abfbadc31e6f7e33865edcf95ddb2300447a053074328ef6cc51c"
+  },
+  "seed": 1,
+  "mode": "stop_before_heal_reject_lethal",
+  "stop_on_attacker": "Atacante sintético",
+  "profiles": [
+    {
+      "name": "Atacante sintético",
+      "rank": 3,
+      "max_health": 20,
+      "max_focus": 60,
+      "melee": 4,
+      "agility": 0,
+      "resilience": 5,
+      "vigilance": 2,
+      "melee_defense": 14,
+      "agility_defense": 10,
+      "run_speed": 5,
+      "health_dr": 0,
+      "melee_bonus": 0,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": 100,
+      "run_speed_exception": false,
+      "powers": [
+        "healing_factor"
+      ],
+      "traits": [],
+      "weapons": [],
+      "shield_active": false,
+      "heroic": false
+    },
+    {
+      "name": "Alvo sintético",
+      "rank": 3,
+      "max_health": 250,
+      "max_focus": 60,
+      "melee": 2,
+      "agility": 0,
+      "resilience": 5,
+      "vigilance": 2,
+      "melee_defense": 12,
+      "agility_defense": 10,
+      "run_speed": 5,
+      "health_dr": 0,
+      "melee_bonus": 0,
+      "ranged_bonus": 0,
+      "ranged_range": 0,
+      "ranged_is_ammunition": false,
+      "logic": 0,
+      "initiative_modifier": 0,
+      "run_speed_exception": false,
+      "powers": [],
+      "traits": [],
+      "weapons": [],
+      "shield_active": false,
+      "heroic": false
+    }
+  ],
+  "policies": [
+    {
+      "name": "atacante",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "bare",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": false,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false,
+      "effect_limb": 0,
+      "stand_when_prone": true,
+      "use_ram": true
+    },
+    {
+      "name": "alvo",
+      "open_stance": false,
+      "heal_missing": null,
+      "heal_spend": 15,
+      "prefer_fast": false,
+      "weapon": "bare",
+      "offhand": null,
+      "kite": false,
+      "riposte": true,
+      "move_after_attack": false,
+      "knockback_stance": true,
+      "edge_mode": "hit",
+      "always_wait": true,
+      "dodge_below_health": null,
+      "treat_bleeding": false,
+      "shield_react": false,
+      "shield_standard": false,
+      "shield_end_turn": false,
+      "effect_limb": 0,
+      "stand_when_prone": true,
+      "use_ram": false
+    }
+  ],
+  "initial_prone": [
+    false,
+    false
+  ],
+  "initial_distance": 10,
+  "max_rounds": 1,
+  "ruleset": "split_fast_v3",
+  "result": {
+    "seed": 1,
+    "winner": "Alvo sintético",
+    "outcome": "win",
+    "rounds": 1,
+    "turns": 2,
+    "bonus_round_occurred": true,
+    "final_health": [
+      -1,
+      210
+    ],
+    "final_focus": [
+      60,
+      60
+    ],
+    "metrics": [
+      {
+        "damage_dealt": 40,
+        "damage_taken": 21,
+        "damage_mitigated": 0,
+        "healing_effective": 0,
+        "focus_spent": 0,
+        "attacks": 1,
+        "hits": 1,
+        "fantastic_hits": 0,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 40,
+        "damage_round5": 40,
+        "damage_round10": 40
+      },
+      {
+        "damage_dealt": 0,
+        "damage_taken": 40,
+        "damage_mitigated": 0,
+        "healing_effective": 0,
+        "focus_spent": 0,
+        "attacks": 0,
+        "hits": 0,
+        "fantastic_hits": 0,
+        "ripostes": 0,
+        "stuns_applied": 0,
+        "blade_bonus_actions": 0,
+        "damage_round3": 0,
+        "damage_round5": 0,
+        "damage_round10": 0
+      }
+    ],
+    "log": [
+      {
+        "seq": 1,
+        "round": 0,
+        "bonus_round": false,
+        "type": "incapacity_contract",
+        "rules": [
+          "DMG-05",
+          "POW-03"
+        ],
+        "mode": "stop_before_heal_reject_lethal",
+        "simultaneous": true,
+        "heal_living_at_turn_end": false,
+        "healing_first": true,
+        "stop_on_attacker": "Atacante sintético"
+      },
+      {
+        "seq": 2,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Atacante sintético",
+        "roll": [
+          2,
+          5,
+          1
+        ],
+        "rerolls": [],
+        "total": 108,
+        "modifier": 100,
+        "fantastic": false
+      },
+      {
+        "seq": 3,
+        "round": 0,
+        "bonus_round": false,
+        "type": "initiative",
+        "rules": [
+          "ACT-02",
+          "TRT-03",
+          "D616-01"
+        ],
+        "actor": "Alvo sintético",
+        "roll": [
+          3,
+          1,
+          4
+        ],
+        "rerolls": [],
+        "total": 13,
+        "modifier": 0,
+        "fantastic": true
+      },
+      {
+        "seq": 4,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atacante sintético",
+        "reactions": 1
+      },
+      {
+        "seq": 5,
+        "round": 0,
+        "bonus_round": true,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Alvo sintético",
+        "reactions": 1
+      },
+      {
+        "seq": 6,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Alvo sintético",
+        "reactions": 1
+      },
+      {
+        "seq": 7,
+        "round": 0,
+        "bonus_round": true,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Alvo sintético",
+        "direction": "stay",
+        "steps": 0,
+        "as_standard": false,
+        "distance_before": 10,
+        "distance_after": 10
+      },
+      {
+        "seq": 8,
+        "round": 0,
+        "bonus_round": true,
+        "type": "wait",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Alvo sintético"
+      },
+      {
+        "seq": 9,
+        "round": 0,
+        "bonus_round": true,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Alvo sintético",
+        "health": 250,
+        "focus": 60
+      },
+      {
+        "seq": 10,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Atacante sintético",
+        "reactions": 1
+      },
+      {
+        "seq": 11,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_reset",
+        "rules": [
+          "ACT-03",
+          "ACT-04"
+        ],
+        "actor": "Alvo sintético",
+        "reactions": 1
+      },
+      {
+        "seq": 12,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_start",
+        "rules": [
+          "ACT-01",
+          "ACT-04"
+        ],
+        "actor": "Atacante sintético",
+        "reactions": 1
+      },
+      {
+        "seq": 13,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atacante sintético",
+        "direction": "approach",
+        "steps": 5,
+        "as_standard": false,
+        "distance_before": 10,
+        "distance_after": 5
+      },
+      {
+        "seq": 14,
+        "round": 1,
+        "bonus_round": false,
+        "type": "movement",
+        "rules": [
+          "ACT-01",
+          "ACT-06"
+        ],
+        "actor": "Atacante sintético",
+        "direction": "approach",
+        "steps": 4,
+        "as_standard": true,
+        "distance_before": 5,
+        "distance_after": 1
+      },
+      {
+        "seq": 15,
+        "round": 1,
+        "bonus_round": false,
+        "type": "ram_opportunity",
+        "rules": [
+          "ACT-01",
+          "ACT-03"
+        ],
+        "actor": "Atacante sintético",
+        "target": "Alvo sintético",
+        "first_before": 10,
+        "first_after": 5,
+        "second_after": 1,
+        "speed": 5,
+        "reactions": 1,
+        "scope": "opportunity only; no reaction or attack performed"
+      },
+      {
+        "seq": 16,
+        "round": 1,
+        "bonus_round": false,
+        "type": "reaction_spent",
+        "rules": [
+          "ACT-03"
+        ],
+        "actor": "Atacante sintético",
+        "source": "ram",
+        "remaining": 0
+      },
+      {
+        "seq": 17,
+        "round": 1,
+        "bonus_round": false,
+        "type": "ram_attack",
+        "rules": [
+          "ACT-01",
+          "ACT-03",
+          "ACT-05"
+        ],
+        "actor": "Atacante sintético",
+        "target": "Alvo sintético",
+        "trigger": 1,
+        "mode": "melee",
+        "edges": 0,
+        "troubles": 0,
+        "transaction": {
+          "schema": "blacklight-experimental-ram-transaction-v1",
+          "first": {
+            "actor": "Atacante sintético",
+            "target": "Alvo sintético",
+            "turn": 1,
+            "action": "movement",
+            "before": 10,
+            "after": 5,
+            "speed": 5
+          },
+          "second": {
+            "actor": "Atacante sintético",
+            "target": "Alvo sintético",
+            "turn": 1,
+            "action": "standard",
+            "before": 5,
+            "after": 1,
+            "speed": 5
+          },
+          "before": {
+            "attacker_health": 20,
+            "target_health": 250,
+            "reactions": 1,
+            "attacker_able": true,
+            "target_prone": false
+          },
+          "after": {
+            "attacker_health": -1,
+            "target_health": 210,
+            "reactions": 0,
+            "attacker_able": false,
+            "target_prone": false
+          },
+          "parameters": {
+            "self_pool": "separate",
+            "attacker_faces": [
+              5,
+              6,
+              6
+            ],
+            "success": true,
+            "fantastic_success": false,
+            "full_dice": 3,
+            "ability": 4,
+            "target_reduction": 0,
+            "attacker_reduction": 0,
+            "target_faces": [
+              5,
+              5,
+              6
+            ]
+          },
+          "impact": {
+            "target_regular": 20,
+            "attacker_regular": 21,
+            "target_damage": 40,
+            "attacker_damage": 21,
+            "target_prone": false
+          },
+          "scope": "synthetic simultaneous damage; no Heroic, Shield, Riposte or weapon effects",
+          "check": {
+            "seed": 1,
+            "roll": [
+              4,
+              4,
+              6
+            ],
+            "rerolls": [],
+            "modifier": 4,
+            "target_number": 12,
+            "edges": 0,
+            "troubles": 0,
+            "total": 18,
+            "success": true,
+            "fantastic_roll": false,
+            "ultimate": false
+          }
+        },
+        "target_health_after": 210,
+        "target_damage_applied": 40,
+        "attacker_damage_applied": 21,
+        "attacker_health_after": -1,
+        "self_damage_mode": "stop_before_heal_reject_lethal",
+        "target_damage_mitigated": 0,
+        "scope": "experimental bare Ram; simultaneous damage; self-incapacity hypothesis"
+      },
+      {
+        "seq": 18,
+        "round": 1,
+        "bonus_round": false,
+        "type": "ram_incapacity_stop",
+        "rules": [
+          "ACT-05",
+          "DMG-05"
+        ],
+        "actor": "Atacante sintético",
+        "target": "Alvo sintético",
+        "trigger": 1,
+        "health": -1,
+        "reason": "combat_ends_before_recovery"
+      },
+      {
+        "seq": 19,
+        "round": 1,
+        "bonus_round": false,
+        "type": "turn_end",
+        "rules": [
+          "ACT-01"
+        ],
+        "actor": "Atacante sintético",
+        "health": -1,
+        "focus": 60
+      }
+    ]
+  },
+  "audit_issues": [],
+  "limitations": [
+    "synthetic boundary case, not Victor or an efficacy study",
+    "self-damage reaching death threshold aborts because the table has not decided"
+  ]
+}

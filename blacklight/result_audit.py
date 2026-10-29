@@ -3,7 +3,7 @@
 from .turn_audit import audit_turn_sequence
 
 
-def audit_battle_result(result, profiles, *, expected_seed, max_rounds):
+def audit_battle_result(result, profiles, *, expected_seed, max_rounds, allow_experimental_parry=False):
     profiles = tuple(profiles)
     if len(profiles) != 2 or len({p.name for p in profiles}) != 2:
         raise ValueError('A physical duel result audit needs two distinct profiles')
@@ -15,7 +15,8 @@ def audit_battle_result(result, profiles, *, expected_seed, max_rounds):
             'stuns_applied', 'blade_bonus_actions', 'damage_round3', 'damage_round5', 'damage_round10')
     metrics = {name: dict.fromkeys(keys, 0) for name in names}
     turns, rounds, bonus = 0, 0, False
-    issues = audit_turn_sequence(result.log, profiles, outcome=result.outcome)
+    issues = audit_turn_sequence(result.log, profiles, outcome=result.outcome,
+                                 allow_experimental_parry=allow_experimental_parry)
     for event in result.log:
         kind, actor = event.get('type'), event.get('actor')
         round_number = event.get('round')
@@ -33,7 +34,8 @@ def audit_battle_result(result, profiles, *, expected_seed, max_rounds):
             metrics[actor]['attacks'] += 1
             metrics[actor]['hits'] += int(event['success'])
             metrics[actor]['fantastic_hits'] += int(event['success'] and event['fantastic'])
-            metrics[actor]['ripostes'] += int(event['reaction'])
+            is_parry = allow_experimental_parry and event.get('reaction_power') == 'point_blank_parry'
+            metrics[actor]['ripostes'] += int(event['reaction'] and not is_parry)
             for horizon in (3, 5, 10):
                 if type(round_number) is int and round_number <= horizon:
                     metrics[actor][f'damage_round{horizon}'] += damage

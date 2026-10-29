@@ -17,7 +17,7 @@ def _bonus_candidates(profile, weapon):
     return [bonus]
 
 
-def audit_profile_facts(log, profiles) -> list[str]:
+def audit_profile_facts(log, profiles, *, allow_experimental_parry=False) -> list[str]:
     """Verify attack inputs using profiles and visible stance/shield events."""
     by_name = {profile.name: profile for profile in profiles}
     stance = dict.fromkeys(by_name, False)
@@ -78,7 +78,9 @@ def audit_profile_facts(log, profiles) -> list[str]:
                     or (offhand is not None and (not fast or offhand not in profile.weapons
                                                 or offhand not in ('blade', 'claw', 'hammer')))
                     or (fast and 'fast_strikes' not in profile.powers)
-                    or (event.get('reaction') and
+                    or (event.get('reaction') and not (
+                        allow_experimental_parry and event.get('reaction_power') == 'point_blank_parry'
+                        and ranged and 'point_blank_parry' in profile.powers) and
                         ('riposte' not in profile.powers or ranged or fast))):
                 issues.append(f'event {seq}: attack not supported by profile capabilities')
             distance = event.get('distance')

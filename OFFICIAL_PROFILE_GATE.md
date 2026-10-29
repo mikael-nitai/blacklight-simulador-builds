@@ -27,4 +27,5 @@ com múltiplos alvos ainda falta.
 
 O [adaptador parcial de Crossbones](CROSSBONES_SUBSET_EXPERIMENT.md) permite
 confrontos experimentais identificados como incompletos, com lista explícita
-de poderes e traços omitidos. Ele não altera o bloqueio da ficha completa.
+de poderes e traços omitidos. Uma variante adiciona Fast Hands e Point-Blank
+Parry ao host experimental, sem alterar o bloqueio da ficha completa.

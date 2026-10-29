@@ -52,7 +52,12 @@ def audit_double_tap_duel(result, profiles, **context):
             pending = None
         elif pending is not None:
             allowed = {'prone_check', 'reaction_spent', 'shield_activate', 'shield_deactivate'}
-            if pending['attack'] is not None or kind not in allowed:
+            queued_miss = (context.get('allow_experimental_parry') is True
+                           and kind == 'reaction_queued' and pending['attack'] is not None
+                           and pending['attack'].get('success') is False
+                           and event.get('trigger') == pending['attack'].get('trigger')
+                           and actor == pending['target'] and event.get('source') == pending['actor'])
+            if not queued_miss and (pending['attack'] is not None or kind not in allowed):
                 issues.append(f'event {seq}: unexpected event during Double Tap')
     if pending is not None:
         issues.append('Double Tap declaration has no completion')

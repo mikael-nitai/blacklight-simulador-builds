@@ -1,7 +1,7 @@
 """Check complete two-fighter traces against their recorded turn schedule."""
 
 
-def audit_turn_sequence(log, profiles, *, outcome):
+def audit_turn_sequence(log, profiles, *, outcome, allow_experimental_parry=False):
     names = tuple(profile.name for profile in profiles)
     if len(names) != 2 or len(set(names)) != 2:
         raise ValueError('A turn audit needs two distinct profiles')
@@ -67,10 +67,13 @@ def audit_turn_sequence(log, profiles, *, outcome):
                 issues.append(f'event {seq}: turn end does not match active turn')
             active, active_phase = None, None
         else:
-            is_turn_action = (kind in turn_actions
+            reactive_cost = (allow_experimental_parry and kind == 'focus_spent'
+                             and event.get('reaction') is True and event.get('source') == 'point_blank_parry')
+            is_turn_action = (kind in turn_actions and not reactive_cost
                               or kind == 'attack' and event.get('reaction') is False
                               or kind == 'shield_activate' and event.get('cost') == 'standard')
             is_reaction = (kind in {'reaction_spent', 'reaction_queued'}
+                           or reactive_cost
                            or kind == 'attack' and event.get('reaction') is True
                            or kind == 'shield_activate' and event.get('cost') == 'reaction')
             if is_turn_action and (active != actor or phase != active_phase):

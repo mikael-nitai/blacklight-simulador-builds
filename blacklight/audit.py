@@ -96,12 +96,15 @@ def audit_log(log: tuple[dict, ...] | list[dict],
               initial_health: dict[str, int],
               initial_focus: dict[str, int], *,
               reaction_limits: dict[str, int] | None = None,
-              movement_limits: dict[str, int] | None = None) -> list[str]:
+              movement_limits: dict[str, int] | None = None,
+              allow_experimental_parry: bool = False) -> list[str]:
     """Audit ledgers; supplied limits also check capabilities against profiles.
 
     Without the optional limits, a self-consistent ledger cannot establish how
     many reactions or movement spaces a combatant was actually entitled to.
     """
+    if type(allow_experimental_parry) is not bool:
+        raise ValueError('Experimental audit option must be boolean')
     for limits in (reaction_limits, movement_limits):
         if limits is not None and (not isinstance(limits, dict)
                                    or any(not isinstance(name, str) or type(value) is not int or value < 0
@@ -161,7 +164,9 @@ def audit_log(log: tuple[dict, ...] | list[dict],
                 reaction_remaining.pop(actor, None)
             else:
                 previous = reaction_remaining.get(actor)
-                if previous is not None and previous - 1 != remaining:
+                restricted = (allow_experimental_parry and event.get('source') == 'point_blank_parry'
+                              and event.get('pool') == 'fast_hands')
+                if previous is not None and previous - (0 if restricted else 1) != remaining:
                     issues.append(f"event {seq}: reaction ledger mismatch")
                 reaction_remaining[actor] = remaining
             trigger = event.get("trigger")
@@ -231,7 +236,10 @@ def audit_log(log: tuple[dict, ...] | list[dict],
                 movement_actions[turn_key] = movement_actions.get(turn_key, 0) + 1
         elif kind in ("stance", "dodge", "focus_spent", "wait",
                       "condition_treatment"):
-            standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
+            reactive_cost = (allow_experimental_parry and kind == 'focus_spent'
+                             and event.get('reaction') is True and event.get('source') == 'point_blank_parry')
+            if not reactive_cost:
+                standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
         elif kind == "shield_activate" and event["cost"] == "standard":
             standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
         if kind == "shield_activate" and event["cost"] == "reaction":
@@ -282,7 +290,8 @@ def audit_log(log: tuple[dict, ...] | list[dict],
     return issues
 
 
-def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles, *, ruleset=None) -> list[str]:
+def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles, *, ruleset=None,
+                       allow_experimental_parry=False) -> list[str]:
     """Audit a physical trace against profiles and, if supplied, its ruleset."""
     profiles = tuple(profiles)
     names = [profile.name for profile in profiles]
@@ -294,8 +303,9 @@ def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles, *, ruleset=
         {p.name: p.max_focus for p in profiles},
         reaction_limits={p.name: 2 if 'combat_reflexes' in p.traits else 1 for p in profiles},
         movement_limits={p.name: p.run_speed for p in profiles},
+        allow_experimental_parry=allow_experimental_parry,
     )
-    issues.extend(audit_profile_facts(log, profiles))
+    issues.extend(audit_profile_facts(log, profiles, allow_experimental_parry=allow_experimental_parry))
     if ruleset is not None:
         issues.extend(audit_ruleset_log(log, ruleset))
     return issues

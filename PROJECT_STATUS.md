@@ -7,6 +7,10 @@ A [transcrição visual de Crossbones](character_evidence/crossbones_core_p155.j
 preserva os poderes faltantes; ela não é executável. Uma leitura do Core p. 36
 também corrigiu a descrição do número de alvos em `DMG-04`; o disparo da
 submetralhadora contra múltiplos alvos continua pendente.
+O host experimental inclui [Fast Hands e Point-Blank Parry](FAST_HANDS_PARRY_EXPERIMENT.md),
+com reação restrita, Focus e ordem dos dois braços auditados. O recorte de
+Crossbones continua incompleto; a opção experimental não amplia a certificação
+do runner genérico.
 
 **Lacuna posterior à certificação:** [ataques desarmados não Heroic](NONLETHAL_GAP.md)
 podem ultrapassar o limite não letal no duelo físico `split_fast_v3`. O problema

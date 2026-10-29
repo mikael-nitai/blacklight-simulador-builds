@@ -16,9 +16,10 @@ Point-Blank Parry, Stopping Power e as demais técnicas de armas — ainda não
 está implementada. A opção da submetralhadora de atingir múltiplos alvos não
 é executada. As limitações de Ram e do duelo experimental continuam em vigor.
 
-Os [contratos experimentais de Fast Hands e Point-Blank Parry](FAST_HANDS_PARRY_EXPERIMENT.md)
-já verificam seus recursos e gatilhos isoladamente, mas não participam desse
-duelo e continuam na lista de poderes omitidos.
+Um [recorte experimental ampliado](FAST_HANDS_PARRY_EXPERIMENT.md) inclui Fast
+Hands e Point-Blank Parry. O recorte anterior e seu exemplo preservado continuam
+sem esses poderes; cada saída lista explicitamente quais habilidades foram
+incluídas e omitidas.
 
 Qualquer resultado usando esse recorte representa apenas esse adversário
 restrito, não o personagem oficial completo. A política escolhida também é uma

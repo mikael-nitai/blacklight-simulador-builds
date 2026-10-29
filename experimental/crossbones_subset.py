@@ -1,6 +1,6 @@
 """Explicit, incomplete adaptation of the visually transcribed Core profile."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from blacklight.engine import Profile
 
@@ -101,3 +101,17 @@ def build_crossbones_subset(evidence, *, accept_incomplete: bool) -> CrossbonesS
                      'Only single-target gunfire is modeled.',
                      'Table literal Marvel damage pools replace the printed Core damage formula.'),
     )
+
+
+def build_crossbones_parry_subset(evidence, *, accept_incomplete: bool) -> CrossbonesSubset:
+    """Versioned larger subset for ParryDuel; the earlier adapter stays intact."""
+    base = build_crossbones_subset(evidence, accept_incomplete=accept_incomplete)
+    promoted = {'Fast Hands', 'Point-Blank Parry'}
+    if not promoted.issubset(base.omitted_powers):
+        raise ValueError('The verified parry powers are missing')
+    return replace(base,
+        profile=replace(base.profile, powers=base.profile.powers | {'fast_hands', 'point_blank_parry'}),
+        included_powers=tuple(sorted(set(base.included_powers) | promoted)),
+        omitted_powers=tuple(power for power in base.omitted_powers if power not in promoted),
+        assumptions=base.assumptions + ('The separate Fast Hands reaction can only pay a Ranged Weapons power.',
+                                        'Point-Blank Parry does not target an unconscious attacker in this host.'))

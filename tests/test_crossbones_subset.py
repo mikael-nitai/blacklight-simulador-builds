@@ -6,7 +6,9 @@ import unittest
 from combatants.actions import DEFAULT_ACTIONS
 from combatants.duel_adapter import compile_duel
 from combatants.sheets import load_sheet
-from experimental.crossbones_subset import build_crossbones_subset
+from experimental.crossbones_subset import build_crossbones_subset, build_crossbones_parry_subset
+from experimental.parry_duel import ParryDuel, ParryPolicy
+from experimental.parry_audit import audit_parry_duel
 from experimental.ranged_powers_duel import RangedPowersPolicy
 from experimental.smg_audit import audit_submachine_duel
 from experimental.smg_duel import SubmachineDuel
@@ -69,3 +71,23 @@ class CrossbonesSubsetTests(unittest.TestCase):
         self.assertTrue(any(event['type'] == 'smg_close_check' for event in result.log))
         self.assertTrue(any(event['type'] == 'fast_use_start' and event['actor'] == 'Blacklight'
                             for event in result.log))
+
+    def test_larger_subset_uses_parry_and_fast_hands_against_victor(self):
+        subset = build_crossbones_parry_subset(evidence(), accept_incomplete=True)
+        self.assertIn('Point-Blank Parry', subset.included_powers)
+        self.assertIn('Fast Hands', subset.included_powers)
+        self.assertNotIn('Fast Hands', subset.omitted_powers)
+        self.assertIn('Stopping Power', subset.omitted_powers)
+        victor = compile_duel(load_sheet(ROOT / 'characters/victor_halle/rank3_2026-10-27_split_fast.json'))
+        profiles = (subset.profile, victor)
+        policies = (ParryPolicy('crossbones parcial', use_ram=False),
+                    ParryPolicy('victor', weapon='hammer', offhand='blade', prefer_fast=True,
+                                effect_limb=1, use_ram=False, shield_react=True))
+        args = dict(seed=115, initial_prone=(False, False), initial_distance=1, max_rounds=8,
+                    audit=True, action_registry=DEFAULT_ACTIONS,
+                    ranged_weapons=('submachine_gun', 'generic'))
+        result = ParryDuel(profiles, policies, **args).run()
+        self.assertTrue(any(e['type'] == 'parry_start' for e in result.log))
+        self.assertEqual(audit_parry_duel(result, profiles, initial_prone=(False, False),
+                         initial_distance=1, expected_seed=115, max_rounds=8,
+                         ranged_weapons=args['ranged_weapons'], ruleset=ParryDuel.table_ruleset), [])

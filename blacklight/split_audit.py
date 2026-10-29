@@ -92,6 +92,8 @@ def audit_split_fast(log) -> list[str]:
                 issues.append(f'event {seq}: reaction before both checks')
             if 'POW-06' in event.get('rules', []):
                 issues.append(f'event {seq}: Riposte before both damage/effect resolutions')
+            if 'CORE-P112-PARRY' in event.get('rules', []):
+                issues.append(f'event {seq}: Point-Blank Parry before both damage/effect resolutions')
             if 'HR-04' in event.get('rules', []) and (current['attacks'] or active_limb is not None):
                 issues.append(f'event {seq}: Shield reaction after limb damage resolution began')
         elif kind == 'shield_activate' and event.get('cost') == 'reaction' and open_use is not None:

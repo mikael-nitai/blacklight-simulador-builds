@@ -53,7 +53,8 @@ def _physical_projection(result, profiles):
 def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                          expected_seed, max_rounds, ruleset, stack_stunned_edge=False,
                          self_damage_mode='reject_incapacitation', end_turn_healing_first=True,
-                         verified_extra_troubles=None, stop_on_attacker=None):
+                         verified_extra_troubles=None, stop_on_attacker=None,
+                         allow_experimental_parry=False):
     """Audit the full experimental result; never certify unsupported mechanics."""
     profiles = tuple(profiles)
     if len(profiles) != 2 or profiles[0].name == profiles[1].name:
@@ -63,6 +64,8 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
         raise ValueError('Unknown self-damage hypothesis')
     if type(end_turn_healing_first) is not bool:
         raise ValueError('Declare the end-turn healing order')
+    if type(allow_experimental_parry) is not bool:
+        raise ValueError('Experimental audit option must be boolean')
     names = {p.name: p for p in profiles}
     if (self_damage_mode == 'stop_before_heal_reject_lethal'
             and (not isinstance(stop_on_attacker, str) or stop_on_attacker not in names)):
@@ -79,6 +82,8 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                'heal', 'knockback', 'knockback_declined', 'limb_effect', 'prone_initial',
                'prone_stand', 'prone_check', 'prone_start', 'ram_opportunity', 'ram_declined',
                'ram_attack', 'incapacity_dead', 'incapacity_contract', 'ram_incapacity_stop'}
+    if allow_experimental_parry:
+        allowed.update({'fast_hands_reset', 'parry_start', 'parry_end', 'reaction_considered'})
     if (type(expected_seed) is not int or type(max_rounds) is not int or max_rounds < 1
             or type(result.rounds) is not int or type(result.turns) is not int
             or type(result.bonus_round_occurred) is not bool
@@ -313,8 +318,10 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
         return issues
     try:
         projection = _physical_projection(result, profiles)
-        issues += audit_profiled_log(projection.log, profiles, ruleset=ruleset)
-        issues += audit_battle_result(projection, profiles, expected_seed=expected_seed, max_rounds=max_rounds)
+        issues += audit_profiled_log(projection.log, profiles, ruleset=ruleset,
+                                     allow_experimental_parry=allow_experimental_parry)
+        issues += audit_battle_result(projection, profiles, expected_seed=expected_seed, max_rounds=max_rounds,
+                                      allow_experimental_parry=allow_experimental_parry)
         issues += audit_open_field_distance(projection.log, initial_distance)
     except (KeyError, TypeError, ValueError, IndexError) as error:
         issues.append(f'Invalid experimental Ram audit projection: {error}')

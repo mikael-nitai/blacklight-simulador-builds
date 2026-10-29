@@ -43,6 +43,8 @@ letal recebeu o limite não letal no **alvo**, inclusive para atacante não
 Heroic; há testes para os dois casos. O checkpoint anterior bloqueia esse
 limite em vez de resolvê-lo incorretamente. A regra de auto-dano do atacante
 de Ram é uma questão separada e não deve receber o limite de alvo sem suporte.
-O motor de duelo físico geral ainda precisa de solução própria versionada,
-auditoria de todos os tipos de ataque, testes de interação e replays antes de
-qualquer promoção dessa correção.
+Um [host experimental separado](NONLETHAL_EXPERIMENT.md) também aplica o
+limite a ataques desarmados de perfis claramente sem armas e verifica Fast
+Strikes; casos ambíguos são bloqueados. O motor de duelo físico geral ainda
+precisa de solução versionada, auditoria de mais tipos de ataque, testes de
+interação e replays antes de qualquer promoção dessa correção.

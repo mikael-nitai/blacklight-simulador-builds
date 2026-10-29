@@ -60,5 +60,18 @@ turno, primeiro deslocamento igual à velocidade, segundo pela ação padrão at
 distância 1, e reação disponível. A continuidade reta e a ausência de
 interrupção são pré-condições fornecidas pelo chamador; a função não as prova em
 um mapa real. Os casos positivos e negativos estão em `tests/test_ram_trigger.py`.
-O componente **não está ligado ao motor** e não resolve rolagem, dano, reações
-aninhadas ou Prone. Ele não modifica os resultados em andamento.
+A primitiva não resolve rolagem, dano, reações aninhadas ou Prone. Ela não
+modifica os resultados anteriores.
+
+## Observação em duelos experimentais
+
+`experimental/ram_opportunity_duel.py` usa o gatilho em um adaptador separado
+do duelo atual. Ele registra uma oportunidade após os movimentos, caso o alvo
+esteja consciente e haja reação disponível, mas não usa a reação nem executa
+ataque. O host está marcado como experimental e não é aceito pelo runner
+certificado. Um auditor separado reconstrói as oportunidades a partir dos
+movimentos, Health e reações registrados; deve ser usado com as auditorias físicas
+e espaciais existentes. `tests/test_ram_opportunity_duel.py` compara 20 replays
+com o duelo sem observador, verifica uma trilha completa e rejeita marcadores
+ausentes ou falsificados. A detecção é limitada a campo aberto unidimensional;
+não valida trajetória em grade, interrupções complexas ou o dano de Ram.

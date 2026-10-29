@@ -34,6 +34,15 @@ recorte experimental de poderes à distância. Há testes de Ram, reação a Ram
 errado, Stopping Power e auto-incapacitação, incluindo auditoria e replay.
 O limiar de morte por autoimpacto continua bloqueado.
 
+Um [confronto ilustrativo](experimental_outputs/crossbones_ram_victor_001.json)
+usa a ficha atual de Victor contra um recorte incompleto de Crossbones: um Ram
+falha e recebe Point-Blank Parry, e Stopping Power também aparece no combate.
+A seed `45` foi selecionada para mostrar essas interações. O arquivo foi
+auditado após a leitura e reproduzido byte a byte, com fontes do commit
+`6f7fc2b` e SHA-256
+`841549197f1abe7e1d41bb0d8486b6b14bd6ddc0b27c512980fcea6f2bd392ba`.
+Não é uma estimativa estatística nem uma ficha oficial completa.
+
 O [exemplo sintético da decisão](experimental_outputs/ram_stop_table_ruling_001.json)
 usa seed `1`: os danos levam o atacante de 20 para −1 Health e o alvo de 250
 para 210, sem cura posterior. A trilha foi auditada novamente após a leitura e

@@ -66,6 +66,15 @@ Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidade
 
 Abra PowerShell nesta pasta. Requer Python 3.11 ou mais recente; não há dependências Python externas para os experimentos.
 
+O [GitHub Actions](.github/workflows/tests.yml) executa a suíte e verifica as
+fontes históricas e o estudo experimental de Ram em Linux, em alterações de
+`master`, em pull requests e sob acionamento manual. Ele não roda novamente
+as grandes simulações nem certifica regras ainda experimentais. Como o
+repositório é privado, execuções hospedadas pelo GitHub consomem a franquia da
+conta e podem gerar cobrança após seus limites; consulte [cobrança do GitHub
+Actions](https://docs.github.com/en/actions/concepts/billing-and-usage). O
+tempo e saldo reais dependem da conta e do resultado da execução.
+
 ```powershell
 python -m unittest discover -s tests -q
 python -m scripts.verify_sources

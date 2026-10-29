@@ -33,10 +33,10 @@ resultado já existentes. `tests/test_prone_duel.py` cobre replays sem Prone,
 acertos, postura de ambos, Fast, Escudo, Stunned e Riposte em confrontos com a
 ficha atual de Victor e um espelho sintético, além de falsificações de registro.
 
-Não há ainda uma integração entre esse host e o checkpoint de Ram. Antes de
-usar combate continuado com Ram, é preciso conectar a aplicação de Prone,
-revisar a ordem dos efeitos, reações e incapacitação, e validar as interações
-pendentes sem substituir resultados históricos.
+Um [host posterior experimental](RAM_PRONE_EXPERIMENT.md) conecta Ram desarmado
+à continuação de Prone no recorte ali descrito. Ordem de auto-incapacitação,
+armas e outras interações continuam pendentes; nenhum resultado histórico foi
+substituído.
 
 Uma [trilha ilustrativa completa](experimental_outputs/prone_victor_duel_001.json)
 usa a ficha atual de Victor contra um espelho sintético que começa caído e foi

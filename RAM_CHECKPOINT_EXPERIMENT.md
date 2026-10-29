@@ -36,11 +36,12 @@ o gerador a tenha usado: repetição integral continua necessária. Os testes em
 de interações não suportadas, adulteração, repetição e uma oportunidade da ficha
 atual de Victor contra um atirador sintético.
 
-Antes de permitir um estudo tático com Ram, será necessário integrar política de
-escolha e continuação da luta, Prone e a ação de levantar, reações pendentes,
-Escudo, armas, Heroic e Mighty, validar efeitos e custos em conjunto e criar um
-contrato de resultados separado dos estudos anteriores. A cobertura das fichas
-e demais regras continua limitada ao que seus adaptadores efetivamente suportam.
+Um [host experimental posterior](RAM_PRONE_EXPERIMENT.md) já conecta política,
+continuação, Prone, parte das reações e Escudo no recorte de Ram desarmado.
+Antes de um estudo tático, permanecem a auto-incapacitação, armas, escolhas de
+Mighty e outras interações, além de um contrato de resultados separado. A
+cobertura das fichas e demais regras continua limitada ao que seus adaptadores
+efetivamente suportam.
 
 ## Demonstração com Victor
 

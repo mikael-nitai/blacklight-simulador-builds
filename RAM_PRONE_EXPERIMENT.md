@@ -40,3 +40,15 @@ levantar; limite Heroic; bloqueios; replay; e adulteração de eventos e métric
 Esses testes não certificam todo o jogo nem substituem uma revisão adversarial
 mais ampla das políticas e regras ausentes. Nenhuma taxa de vitória foi
 produzida por esta etapa.
+
+## Exemplo reproduzível
+
+O [duelo ilustrativo de Victor](experimental_outputs/ram_prone_victor_duel_001.json)
+usa a ficha Rank 3 atual, um atirador sintético em campo aberto e seed `987654`.
+Victor usa dois Rams desarmados e o combate termina na terceira rodada, com
+Health final de 102 para Victor e −8 para o adversário. A trilha completa foi
+auditada e reproduzida byte a byte. Seu SHA-256 é
+`f0e536b980ac5251db9f2130d04733ba3e21d378ffc29c80e783ef2e6cdfdb75`;
+as fontes registradas pertencem ao commit `1572a81`. A ausência de outros
+adversários e poderes, as políticas escolhidas e os limites acima tornam esse
+um exemplo de execução, não uma estimativa de vitória para a campanha.

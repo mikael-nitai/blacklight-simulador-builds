@@ -23,7 +23,8 @@ Riposte ou reduções integrais interagem especificamente com o impacto próprio
 Não transformar essas questões em regras certas apenas com base no nome da
 manobra.
 
-Esta decisão não modifica retroativamente os arquivos de resultados. Ram ainda
-não está integrado a um duelo completo; nenhum estudo estatístico preservado
-inclui essa reação. Um [checkpoint experimental](RAM_CHECKPOINT_EXPERIMENT.md)
+Esta decisão não modifica retroativamente os arquivos de resultados. Há um
+[duelo experimental limitado com Ram desarmado](RAM_PRONE_EXPERIMENT.md), mas
+nenhum estudo estatístico preservado inclui essa reação. O
+[checkpoint anterior](RAM_CHECKPOINT_EXPERIMENT.md) permanece histórico e
 interrompe a execução logo após o golpe.

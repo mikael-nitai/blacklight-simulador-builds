@@ -2,15 +2,15 @@
 
 O trecho do Core sobre Ram distingue dano regular no atacante e dano dobrado
 ou triplicado no alvo. O usuário confirmou que o cálculo usa os dados comuns de
-dano da mesa e que cada participante subtrai sua própria redução; veja
-[RAM_RULING.md](RAM_RULING.md). Ainda não ficou definido se os dois valores
-compartilham uma rolagem, nem a aplicação de efeitos de armas biológicas.
+dano da mesa e que cada participante subtrai sua própria redução; depois,
+confirmou que as rolagens são separadas. Veja [RAM_RULING.md](RAM_RULING.md).
+A aplicação de efeitos de armas biológicas ainda não ficou definida.
 
-`experimental/ram_impact.py` calcula dois cenários explícitos para investigação,
-sem afirmar que qualquer um é a regra adotada:
+`experimental/ram_impact.py` conserva dois cenários explícitos:
 
-* `shared`: atacante e alvo compartilham o mesmo pool integral de faces;
-* `separate`: o impacto no atacante usa outro pool integral fornecido.
+* `shared`: hipótese histórica, fora da regra atual, em que os dois compartilham faces;
+* `separate`: outro pool integral para o atacante, conforme a decisão sobre
+  rolagens separadas; as demais hipóteses ainda não estão todas confirmadas.
 
 Em ambas as hipóteses, cada redução informada retira dados do respectivo pool
 antes da multiplicação, os dados usam a regra de mesa em que face 1 vale 6,
@@ -22,13 +22,14 @@ O fantástico também sinaliza Prone. O cálculo recebe valores e faces já
 definidos: não escolhe arma, custos ou dados; não aplica dano ao estado de um
 combatente e não executa reações ou a condição Prone.
 
-Exemplo verificável: seis dados com faces `1,2,3,4,5,6`, atributo `+6`, redução
-do alvo `2` e redução do atacante `1`, no cenário `shared`. O dano regular do
-alvo é `6+2+3+4+6 = 21` e o do atacante é `6+2+3+4+5+6 = 26`. Ram causa `42`
-ao alvo em acerto comum, ou `63` em fantástico, e `26` ao atacante em ambos.
-Esses números ilustram a hipótese experimental, não uma jogada aprovada para a
-mesa. Os testes em `tests/test_ram_impact.py` cobrem esses casos, pools separados,
-redução integral, erro e entradas inválidas.
+Exemplo verificável com rolagens separadas: para o alvo, seis faces
+`1,2,3,4,5,6`; para o atacante, `6,6,6,6,6,6`. Com atributo `+6`, redução do
+alvo `2` e redução do atacante `1`, o dano regular do alvo é
+`6+2+3+4+6 = 21` e o do atacante é `6+6+6+6+6+6 = 36`. Ram causa `42`
+ao alvo em acerto comum, ou `63` em fantástico, e `36` ao atacante em ambos.
+O exemplo ilustra a interpretação de remoção dos dados descrita acima; outras
+interações continuam pendentes. Os testes em `tests/test_ram_impact.py` cobrem
+ambos os pools, redução integral, erro e entradas inválidas.
 
 Para integrar ao motor ainda é necessário decidir quais dados de base e quais
 reduções se aplicam, ordenar danos e incapacidade, respeitar o limite Heroic,
@@ -45,6 +46,7 @@ Prone existente e aplica Prone no fantástico. Rejeita gatilho ausente, reação
 indisponível, incapacidade prévia e dados inválidos. Os testes estão em
 `tests/test_ram_transaction.py`.
 
+O caminho `execute_table_ram` exige `separate` e rejeita a escolha de `shared`.
 O teste já recebe um resultado de ataque e as faces de dano; não rola dados nem
 escolhe uma ação. O cálculo simultâneo é uma **hipótese**, não uma resolução
 oficial da ordem entre danos e efeitos. Essa transação não inclui Heroic,
@@ -58,3 +60,5 @@ funções de resolução. A verificação enumerou as faces de dois dados em amb
 hipóteses e rejeitou registros falsificados em
 `tests/test_ram_record_audit.py`. Ela cobre somente a transação sintética, não
 valida uma luta completa ou as interpretações ainda não decididas.
+Os caminhos `record_table_ram` e `audit_table_ram_record` exigem pools separados,
+impedindo que a hipótese histórica seja apresentada como regra da mesa.

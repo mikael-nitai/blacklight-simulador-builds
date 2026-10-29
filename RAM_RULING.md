@@ -12,13 +12,16 @@ acerto comum. No sucesso fantástico, o Core p. 31 impressa / p. 32 do PDF
 estabelece dano triplicado no alvo e dano regular no atacante, além de Prone;
 nenhuma decisão recebida até agora substituiu esse efeito fantástico.
 
-A resposta não esclarece expressamente se os dois valores partem da **mesma
-rolagem de dados** ou de **rolagens separadas**. A pergunta foi apresentada ao
-usuário e os dois cenários seguem identificados em
-[RAM_IMPACT_EXPERIMENT.md](RAM_IMPACT_EXPERIMENT.md). Também não foi definido
-como efeitos especiais de armas biológicas, Escudo, Riposte ou reduções
-integrais interagem especificamente com o impacto próprio. Não transformar
-essas questões em regras certas apenas com base no nome da manobra.
+Em esclarecimento posterior, o usuário confirmou: **“Rolagens separadas para
+cada participante”**. O modo aplicável à mesa deve, portanto, exigir uma
+rolagem de dano para Victor e outra para o alvo. O cenário de dados
+compartilhados fica preservado somente como hipótese histórica de comparação,
+identificada em [RAM_IMPACT_EXPERIMENT.md](RAM_IMPACT_EXPERIMENT.md).
+
+Ainda não foi definido como efeitos especiais de armas biológicas, Escudo,
+Riposte ou reduções integrais interagem especificamente com o impacto próprio.
+Não transformar essas questões em regras certas apenas com base no nome da
+manobra.
 
 Esta decisão não modifica retroativamente os arquivos de resultados. Ram ainda
 não está integrado ao motor de combate; nenhum estudo preservado inclui essa

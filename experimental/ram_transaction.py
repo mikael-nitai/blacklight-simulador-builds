@@ -58,3 +58,12 @@ def execute_ram(state: RamState, first: Approach, second: Approach, *,
                      reactions=state.reactions - 1, attacker_able=state.attacker_able and after_health > 0,
                      target_prone=state.target_prone or impact.target_prone)
     return RamTransaction(state, after, impact, self_pool)
+
+
+def execute_table_ram(state: RamState, first: Approach, second: Approach, *,
+                      attacker_faces: tuple[int, ...], **parameters) -> RamTransaction:
+    """Use the table's separately rolled pools within this limited prototype."""
+    if 'self_pool' in parameters:
+        raise ValueError('The current table requires separately rolled pools')
+    return execute_ram(state, first, second, self_pool='separate',
+                       attacker_faces=attacker_faces, **parameters)

@@ -2,7 +2,7 @@ from dataclasses import replace
 import unittest
 
 from experimental.ram_trigger import Approach
-from experimental.ram_transaction import RamState, execute_ram
+from experimental.ram_transaction import RamState, execute_ram, execute_table_ram
 
 
 class RamTransactionTests(unittest.TestCase):
@@ -48,3 +48,13 @@ class RamTransactionTests(unittest.TestCase):
         state = replace(self.state, target_prone=True)
         args = {**self.args, 'success': False, 'target_faces': ()}
         self.assertTrue(execute_ram(state, self.first, self.second, **args).after.target_prone)
+
+    def test_table_mode_requires_separate_damage_pools(self):
+        args = {key: value for key, value in self.args.items() if key != 'self_pool'}
+        result = execute_table_ram(self.state, self.first, self.second,
+                                   attacker_faces=(6, 6, 6, 6, 6, 6), **args)
+        self.assertEqual(result.self_pool, 'separate')
+        self.assertEqual(result.after, RamState(114, 58, 1, True, False))
+        with self.assertRaises(ValueError):
+            execute_table_ram(self.state, self.first, self.second,
+                              attacker_faces=(6, 6, 6, 6, 6, 6), **self.args)

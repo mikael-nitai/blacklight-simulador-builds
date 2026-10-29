@@ -91,3 +91,13 @@ def audit_ram_record(record):
     except (KeyError, TypeError, ValueError, OverflowError) as error:
         return [f'Invalid experimental Ram record: {error}']
     return []
+
+
+def audit_table_ram_record(record):
+    """Require the table's separate-pool decision in addition to arithmetic."""
+    issues = audit_ram_record(record)
+    if issues:
+        return issues
+    if record['parameters']['self_pool'] != 'separate':
+        return ['Ram record uses the historical shared-pool hypothesis, not the table ruling']
+    return []

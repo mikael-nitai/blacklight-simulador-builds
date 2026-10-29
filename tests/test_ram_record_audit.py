@@ -2,8 +2,8 @@ from copy import deepcopy
 from itertools import product
 import unittest
 
-from experimental.ram_record import record_ram
-from experimental.ram_record_audit import audit_ram_record
+from experimental.ram_record import record_ram, record_table_ram
+from experimental.ram_record_audit import audit_ram_record, audit_table_ram_record
 from experimental.ram_transaction import RamState
 from experimental.ram_trigger import Approach
 
@@ -50,3 +50,15 @@ class IndependentRamAuditTests(unittest.TestCase):
         for record in (None, {}, {'schema': 'blacklight-experimental-ram-transaction-v1'}):
             with self.subTest(record=record):
                 self.assertTrue(audit_ram_record(record))
+
+    def test_table_audit_rejects_historical_shared_roll(self):
+        shared = record_ram(self.state, self.first, self.second, **self.args)
+        self.assertEqual(audit_ram_record(shared), [])
+        self.assertTrue(audit_table_ram_record(shared))
+        params = {key: value for key, value in self.args.items() if key != 'self_pool'}
+        table = record_table_ram(self.state, self.first, self.second,
+                                 attacker_faces=(6, 3), **params)
+        self.assertEqual(audit_table_ram_record(table), [])
+        with self.assertRaises(ValueError):
+            record_table_ram(self.state, self.first, self.second,
+                             attacker_faces=(6, 3), **self.args)

@@ -34,15 +34,15 @@ como se incluísse Ram. Um estudo com Ram exige fonte, mecanismo e sementes novo
 
 **Esclarecimento posterior:** a [decisão da mesa sobre o dano de Ram](RAM_RULING.md)
 confirma dados comuns de dano e redução individual para atacante e alvo. A
-questão de dados compartilhados ou separados permanece em esclarecimento.
+mesa também confirmou rolagens separadas para os dois participantes.
 
 1. Rastrear deslocamento integral, direção, movimento adicional, chegada e
    disponibilidade de reação sem presumir linha reta em mapas mais gerais.
 2. Verificar a natureza do ataque próximo e a interação com armas biológicas,
    efeitos especiais, Riposte, Escudo e a regra de dano com múltiplos dados.
-3. Aplicar a decisão de redução individual, esclarecer se os dados são
-   compartilhados ou separados e determinar a ordem dos dois danos. Não
-   apresentar uma hipótese como esclarecimento oficial ou decisão da mesa.
+3. Aplicar a decisão de redução individual e rolagens separadas e determinar a
+   ordem dos dois danos. Não apresentar uma hipótese como esclarecimento
+   oficial ou decisão da mesa.
 4. Implementar e testar Prone e sua duração conforme o Core, ou impedir
    simulações que silenciosamente omitam o efeito fantástico.
 5. Construir casos independentes para gatilhos válidos e inválidos, consumo de

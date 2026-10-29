@@ -15,3 +15,11 @@ def record_ram(state, first, second, **parameters):
                                               if parameters.get('attacker_faces') is not None else None)},
             'impact': asdict(transaction.impact),
             'scope': 'synthetic simultaneous damage; no Heroic, Shield, Riposte or weapon effects'}
+
+
+def record_table_ram(state, first, second, *, attacker_faces, **parameters):
+    """Record only the independently rolled pools confirmed by the table."""
+    if 'self_pool' in parameters:
+        raise ValueError('The current table requires separately rolled pools')
+    return record_ram(state, first, second, self_pool='separate',
+                      attacker_faces=attacker_faces, **parameters)

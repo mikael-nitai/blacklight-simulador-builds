@@ -32,3 +32,13 @@ adulterações e repetição. Um caso de dupla incapacitação muda de empate pa
 vitória conforme a hipótese e a cura automática, demonstrando por que esses
 resultados não podem ser misturados. Não há bateria estatística ou certificação
 para essas variantes.
+
+A [comparação ilustrativa preservada](experimental_outputs/ram_self_incapacity_sensitivity_001.json)
+usa a mesma seed `1` e os mesmos dados nas duas hipóteses, com dois personagens
+sintéticos de Health máximo 1. Os dois recebem dano; a hipótese letal termina
+em empate e a não letal permite que a cura automática deixe o atacante consciente,
+resultando em vitória. As duas trilhas foram auditadas e reproduzidas byte a
+byte. As fontes correspondem ao commit `f858a99` e o SHA-256 do arquivo é
+`9748df88fb39addfd6878637e5388dc68ac3cc126a84559252ffd46e461a9fb4`.
+Essa é uma comparação de fronteira, não uma estimativa de frequência nem uma
+decisão sobre a mesa.

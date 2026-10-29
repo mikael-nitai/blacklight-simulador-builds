@@ -26,6 +26,9 @@ Um [duelo limitado com Ram desarmado e Prone](RAM_PRONE_EXPERIMENT.md) já
 continua após a reação, com parte de Escudo e Riposte auditada. Auto-incapacitação,
 armas e outras interações seguem pendentes; o exemplo não autoriza novas taxas
 de vitória com Ram.
+As [hipóteses de auto-incapacitação](RAM_INCAPACITY_EXPERIMENT.md) foram
+implementadas em host separado e comparadas em um caso reproduzível; não são
+decisões da mesa nem modificam o padrão que bloqueia esse caso.
 
 **Prone experimental:** um [duelo separado](PRONE_EXPERIMENT.md) já mantém a
 condição, ajusta testes e permite levantar gastando movimento. A trilha completa

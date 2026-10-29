@@ -1,7 +1,8 @@
 """Independent Prone event/attack audit for the experimental duel host."""
 
 
-def audit_prone_log(log, profiles, *, initial_prone, initial_distance, stack_stunned_edge=False):
+def audit_prone_log(log, profiles, *, initial_prone, initial_distance, stack_stunned_edge=False,
+                    verified_extra_troubles=None):
     """Reconstruct standing costs and Prone modifiers; use base audits separately."""
     profiles = tuple(profiles)
     if (len(profiles) != 2 or profiles[0].name == profiles[1].name
@@ -12,6 +13,12 @@ def audit_prone_log(log, profiles, *, initial_prone, initial_distance, stack_stu
         raise ValueError('Invalid Prone audit setup')
     if not isinstance(log, (list, tuple)) or any(not isinstance(event, dict) for event in log):
         return ['Invalid Prone log']
+    if verified_extra_troubles is None:
+        verified_extra_troubles = {}
+    if (not isinstance(verified_extra_troubles, dict)
+            or any(type(key) is not int or key < 1 or type(value) is not int or value < 0
+                   for key, value in verified_extra_troubles.items())):
+        raise ValueError('Invalid externally verified trouble contributions')
     names = {profile.name: profile for profile in profiles}
     prone = {profile.name: flag for profile, flag in zip(profiles, initial_prone)}
     stunned = dict.fromkeys(names, False)
@@ -100,7 +107,8 @@ def audit_prone_log(log, profiles, *, initial_prone, initial_distance, stack_stu
                 edges = edges + 1 if stack_stunned_edge else max(1, edges)
             troubles = int(ranged and type(distance) is int and distance > names[actor].ranged_range)
             troubles += int(dodging[target])
-            checks[trigger] = (actor, target, mode, edges + added_edges, troubles + added_troubles)
+            checks[trigger] = (actor, target, mode, edges + added_edges,
+                               troubles + added_troubles + verified_extra_troubles.get(trigger, 0))
         elif kind in ('attack', 'fast_limb_check', 'ram_attack'):
             trigger = event.get('trigger')
             if type(trigger) is not int or trigger < 1:

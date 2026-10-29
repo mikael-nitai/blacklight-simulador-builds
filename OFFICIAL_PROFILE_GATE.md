@@ -17,3 +17,10 @@ Crossbones ou qualquer outra ficha completa no catálogo.
 O [experimento de Double Tap](DOUBLE_TAP_EXPERIMENT.md) já pode enfrentar
 Victor em um executor separado, mas ainda não combina todas as técnicas de
 Crossbones nem promove sua ficha ao catálogo genérico.
+
+Um [novo host experimental](RANGED_POWERS_EXPERIMENT.md) combina Double Tap e
+Slow-Motion Dodge; a transcrição visual da página de Crossbones foi preservada
+em `character_evidence/crossbones_core_p155.json`. Ela é evidência, não uma
+ficha de combate executável, e mantém os demais poderes bloqueados. O mesmo
+experimento inclui submetralhadora em disparo contra um único alvo; a opção
+com múltiplos alvos ainda falta.

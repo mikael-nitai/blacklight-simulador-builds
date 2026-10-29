@@ -24,25 +24,8 @@ class SlowMotionPolicy(SplitFastPolicy):
         return self.dodge_agility_attacks
 
 
-class SlowMotionDuel(SplitFastDuel):
-    execution_scope = 'experimental_slow_motion_restricted_duel'
-
-    def __init__(self, *args, **kwargs):
-        if kwargs.get('audit') is not True:
-            raise ValueError('Slow-Motion Dodge requires a complete trace')
-        super().__init__(*args, **kwargs)
-        if len(self.fighters) != 2 or len(self.policies) != 2:
-            raise ValueError('Exactly two fighters and policies are required')
-        if self.fighters[0].profile.name == self.fighters[1].profile.name:
-            raise ValueError('Combatant names must be distinct')
-        for fighter, policy in zip(self.fighters, self.policies):
-            p = fighter.profile
-            if (p.powers - {'slow_motion_dodge', 'accuracy', 'brawling'}
-                    or p.traits - {'combat_reflexes'} or p.weapons or not p.heroic):
-                raise ValueError('Profile is outside the experimental Slow-Motion scope')
-            if not callable(getattr(policy, 'choose_slow_motion_dodge', None)):
-                raise ValueError('Each policy must explicitly decide whether to dodge')
-
+class SlowMotionAttackMixin:
+    """Apply the verified power before a host resolves its ranged attack."""
     def _attack(self, actor, kind, *, reaction=False, offhand=None, fast_strike=None,
                 prepared_check=None, target_actor=None):
         if kind != 'ranged' or prepared_check is not None:
@@ -79,3 +62,23 @@ class SlowMotionDuel(SplitFastDuel):
         check = self._prepare_attack_check(actor, kind, spec, target_actor=target)
         return super()._attack(actor, kind, reaction=False, prepared_check=check,
                                target_actor=target)
+
+
+class SlowMotionDuel(SlowMotionAttackMixin, SplitFastDuel):
+    execution_scope = 'experimental_slow_motion_restricted_duel'
+
+    def __init__(self, *args, **kwargs):
+        if kwargs.get('audit') is not True:
+            raise ValueError('Slow-Motion Dodge requires a complete trace')
+        super().__init__(*args, **kwargs)
+        if len(self.fighters) != 2 or len(self.policies) != 2:
+            raise ValueError('Exactly two fighters and policies are required')
+        if self.fighters[0].profile.name == self.fighters[1].profile.name:
+            raise ValueError('Combatant names must be distinct')
+        for fighter, policy in zip(self.fighters, self.policies):
+            p = fighter.profile
+            if (p.powers - {'slow_motion_dodge', 'accuracy', 'brawling'}
+                    or p.traits - {'combat_reflexes'} or p.weapons or not p.heroic):
+                raise ValueError('Profile is outside the experimental Slow-Motion scope')
+            if not callable(getattr(policy, 'choose_slow_motion_dodge', None)):
+                raise ValueError('Each policy must explicitly decide whether to dodge')

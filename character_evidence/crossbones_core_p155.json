@@ -1,0 +1,66 @@
+{
+  "schema": "blacklight.character-evidence.v1",
+  "character": "Crossbones",
+  "real_name": "Brock Rumlow",
+  "source": {
+    "title": "Marvel Multiverse Role-Playing Game Core Rulebook",
+    "path": "C:/Users/avada/Downloads/Marvel Multiverse Role-Playing Game - Rulebook (Bookmarks Searchable).pdf",
+    "sha256": "ed5c2ba40910973d973fc06669bc361d3a30054753402299a180450977ca9bf6",
+    "printed_page": 155,
+    "pdf_page": 156,
+    "method": "Visual inspection of full character page"
+  },
+  "rank": 3,
+  "karma_printed": "—",
+  "health": 90,
+  "health_damage_reduction_printed": "—",
+  "focus": 90,
+  "focus_damage_reduction_printed": "—",
+  "abilities": {
+    "melee": {"score": 4, "defense": 14, "noncombat": 4},
+    "agility": {"score": 5, "defense": 15, "noncombat": 7},
+    "resilience": {"score": 3, "defense": 13, "noncombat": 3},
+    "vigilance": {"score": 2, "defense": 12, "noncombat": 2},
+    "ego": {"score": 0, "defense": 10, "noncombat": 0},
+    "logic": {"score": 1, "defense": 11, "noncombat": 1}
+  },
+  "movement": {"run": 6, "climb": 3, "swim": 3, "jump": 3},
+  "initiative_printed": "+2E",
+  "damage_printed": {
+    "melee": {"marvel_multiplier": 3, "ability_bonus": 4},
+    "agility": {"marvel_multiplier": 5, "ability_bonus": 5},
+    "ego": {"marvel_multiplier": 3, "ability_bonus": 0},
+    "logic": {"marvel_multiplier": 3, "ability_bonus": 1}
+  },
+  "traits": [
+    "Battle Ready", "Bloodthirsty", "Combat Expert", "Connections: Military (Hydra)",
+    "Determination", "Piloting", "Situational Awareness"
+  ],
+  "tags": ["Backup", "Public Identity", "Villainous", "Signature Weapon: Submachine Gun"],
+  "powers": {
+    "Basic": ["Accuracy 2", "Slow-Motion Dodge"],
+    "Martial Arts": ["Banging Heads", "Grappling Technique"],
+    "Ranged Weapons": [
+      "Dance of Death", "Double Tap", "Fast Hands", "Point-Blank Parry",
+      "Slow-Motion Shoot-Dodge", "Snap Shooting", "Stopping Power", "Weapons Blazing"
+    ]
+  },
+  "weapon_reference": {
+    "weapon": "Submachine Gun",
+    "range_spaces": 10,
+    "damage_multiplier_bonus": 1,
+    "source_printed_pages": [34, 36],
+    "source_pdf_pages": [35, 37],
+    "close_range_trouble_max_spaces": 5,
+    "multi_target_maximum": 3,
+    "notes": "Weapon damage multiplier bonus does not stack with Accuracy; multi-target handling is not implemented in this evidence record."
+  },
+  "scope": "Evidence transcript only; not an executable or complete combat profile.",
+  "open_items": [
+    "The printed dash for Karma is retained verbatim rather than converted to a number.",
+    "Damage reduction dashes are retained verbatim.",
+    "The character page names a submachine gun; its range and close-range trouble come from the separate weapon rules.",
+    "Most powers and some traits are not yet covered by an audited combat engine.",
+    "Printed official damage formulas are not the literal Marvel-dice pool used by the table."
+  ]
+}

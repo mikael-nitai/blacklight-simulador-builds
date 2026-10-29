@@ -1,5 +1,13 @@
 # Estado do projeto completo — 27/10/2026
 
+**Expansão em 29/10/2026:** [Double Tap, Slow-Motion Dodge e submetralhadora
+contra um alvo](RANGED_POWERS_EXPERIMENT.md) foram combinados em um host
+experimental com auditorias próprias, sem promover ficha oficial completa.
+A [transcrição visual de Crossbones](character_evidence/crossbones_core_p155.json)
+preserva os poderes faltantes; ela não é executável. Uma leitura do Core p. 36
+também corrigiu a descrição do número de alvos em `DMG-04`; o disparo da
+submetralhadora contra múltiplos alvos continua pendente.
+
 **Lacuna posterior à certificação:** [ataques desarmados não Heroic](NONLETHAL_GAP.md)
 podem ultrapassar o limite não letal no duelo físico `split_fast_v3`. O problema
 foi reproduzido em 29/10/2026. Isso limita a certificação anterior para essa

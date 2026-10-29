@@ -51,7 +51,8 @@ def _physical_projection(result, profiles):
 
 def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                          expected_seed, max_rounds, ruleset, stack_stunned_edge=False,
-                         self_damage_mode='reject_incapacitation', end_turn_healing_first=True):
+                         self_damage_mode='reject_incapacitation', end_turn_healing_first=True,
+                         verified_extra_troubles=None):
     """Audit the full experimental result; never certify unsupported mechanics."""
     profiles = tuple(profiles)
     if len(profiles) != 2 or profiles[0].name == profiles[1].name:
@@ -87,7 +88,8 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                 or any(type(value) is not int for value in row.values()) for row in result.metrics)):
         return ['Invalid experimental event sequence or metric types']
     issues = audit_prone_log(result.log, profiles, initial_prone=initial_prone,
-                             initial_distance=initial_distance, stack_stunned_edge=stack_stunned_edge)
+                             initial_distance=initial_distance, stack_stunned_edge=stack_stunned_edge,
+                             verified_extra_troubles=verified_extra_troubles)
     issues += audit_ram_opportunities(result.log, profiles)
     if self_damage_mode != 'reject_incapacitation':
         try:

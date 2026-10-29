@@ -59,7 +59,8 @@ Ficam fora da inferência confirmatória de duelos: múltiplos alvos, penalidade
 - `results/`: JSONs estruturados; `legacy_scalar_v1/`, `pre_*` e `invalid_*` são históricos. Os experimentos `pool_v2` precedem o último balanceamento de Fast Strikes.
 - [OPERACAO_FUNDACAO.md](OPERACAO_FUNDACAO.md): diagnóstico, correções, evidências, limites e próximos gates da auditoria estrutural.
 - [CERTIFICACAO_FUNDACAO.md](CERTIFICACAO_FUNDACAO.md): escopo congelado e matriz dos critérios de conclusão da continuação da auditoria.
-- [DEMONSTRATIONS.md](DEMONSTRATIONS.md): quatro combates completos válidos com rolagens, ações e estados auditados; a trilha antiga do Escudo em Fast Strikes está arquivada.
+- [COMBATE_EXEMPLO_ATUAL.md](COMBATE_EXEMPLO_ATUAL.md): demonstração legível da regra atual a partir de uma trilha auditada, sem interpretação estatística.
+- [DEMONSTRATIONS.md](DEMONSTRATIONS.md): quatro demonstrações **históricas**, anteriores ao dano e Fast atuais; não use suas fórmulas para a mesa. A trilha antiga do Escudo em Fast Strikes está arquivada.
 - [REPORT.md](REPORT.md): relatório histórico da fórmula escalar, com resultados, intervalos, refutação, sensibilidade e cenários reservados.
 - [MANUAL_BLACKLIGHT.md](MANUAL_BLACKLIGHT.md) e [QUICK_REFERENCE.md](QUICK_REFERENCE.md): registros históricos de opções; suas contas e recomendações ainda não foram atualizadas para as regras atuais.
 - [PROJECT_STATUS.md](PROJECT_STATUS.md): o que a missão completa já tem de evidência e os gates ainda abertos.

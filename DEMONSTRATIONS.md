@@ -1,5 +1,11 @@
 # Combates completos reproduzíveis
 
+**Documento histórico:** os quatro exemplos abaixo usam o contrato antigo de
+dano escalar e Fast Strikes anterior às decisões atuais da mesa. Não use suas
+fórmulas ou efeitos como orientação para jogar hoje. Para um combate com o
+contrato atual de dois testes e dados de dano literais, consulte
+[COMBATE_EXEMPLO_ATUAL.md](COMBATE_EXEMPLO_ATUAL.md).
+
 Os quatro exemplos abaixo foram escolhidos para mostrar transições distintas, **não** para estimar frequência. Cada JSON guarda os perfis e políticas iniciais, semente, todas as rolagens, movimentos, estados, alterações de Health/Focus, IDs das regras e auditoria aritmética. Todos passaram em `audit_log` sem divergências.
 
 Para reproduzir, execute `python -m scripts.replay --scenario ID --strategy ID --index N --output results\replay.json` nesta pasta. O estágio padrão é `demo`; a fórmula da semente e os hashes de fontes estão no arquivo gerado.

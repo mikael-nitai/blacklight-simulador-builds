@@ -93,15 +93,17 @@ class RamCheckpointDuelTests(unittest.TestCase):
                     duel.resolve_bare_ram()
                 self.assertEqual(before, [(f.health, f.reactions) for f in duel.fighters])
 
-    def test_unsupported_heroic_floor_fails_without_health_or_reaction_change(self):
-        attacker = replace(self.attacker, heroic=True)
+    def test_unsupported_nonlethal_floor_fails_without_health_or_reaction_change(self):
         defender = replace(self.defender, max_health=1)
-        duel, checkpoint = self.checkpoint(seed=1, attacker=attacker, defender=defender)
-        self.assertEqual(checkpoint['status'], 'opportunity')
-        before = [(fighter.health, fighter.reactions) for fighter in duel.fighters]
-        with self.assertRaisesRegex(IllegalAction, 'Heroic damage floor'):
-            duel.resolve_bare_ram()
-        self.assertEqual(before, [(fighter.health, fighter.reactions) for fighter in duel.fighters])
+        for heroic in (False, True):
+            with self.subTest(heroic=heroic):
+                attacker = replace(self.attacker, heroic=heroic)
+                duel, checkpoint = self.checkpoint(seed=1, attacker=attacker, defender=defender)
+                self.assertEqual(checkpoint['status'], 'opportunity')
+                before = [(fighter.health, fighter.reactions) for fighter in duel.fighters]
+                with self.assertRaisesRegex(IllegalAction, 'Nonlethal damage floor'):
+                    duel.resolve_bare_ram()
+                self.assertEqual(before, [(fighter.health, fighter.reactions) for fighter in duel.fighters])
 
     def test_fights_without_opportunity_end_without_ram(self):
         duel, result = self.checkpoint(distance=1)

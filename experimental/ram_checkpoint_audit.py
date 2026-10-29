@@ -106,6 +106,6 @@ def audit_ram_checkpoint(log, profiles, *, initial_distance, ruleset, seed):
             or first['before'] != marker['first_before'] or first['after'] != marker['first_after']
             or second['after'] != marker['second_after'] or first['speed'] != p.run_speed):
         issues.append('Ram checkpoint movement evidence mismatch')
-    if p.heroic and record['after']['target_health'] <= -q.max_health:
-        issues.append('Unsupported Heroic floor')
+    if record['after']['target_health'] <= -q.max_health:
+        issues.append('Unsupported nonlethal floor')
     return issues

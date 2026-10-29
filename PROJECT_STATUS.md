@@ -1,5 +1,12 @@
 # Estado do projeto completo — 27/10/2026
 
+**Lacuna posterior à certificação:** [ataques desarmados não Heroic](NONLETHAL_GAP.md)
+podem ultrapassar o limite não letal no duelo físico `split_fast_v3`. O problema
+foi reproduzido em 29/10/2026. Isso limita a certificação anterior para essa
+fronteira de letalidade; resultados e fontes históricas permanecem preservados.
+O Ram desarmado no host experimental posterior aplica o limite ao alvo, mas o
+duelo físico geral ainda precisa de correção versionada e validação.
+
 **Estudo de duelos sob a regra atual:** o [pré-registro](CURRENT_DUEL_STUDY_SPEC.md)
 define três cenários sintéticos, cinco políticas e a seleção das finalistas antes
 de observar os novos resultados. A execução e a confirmação devem ser registradas

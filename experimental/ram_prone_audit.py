@@ -212,7 +212,8 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                or item.get('trigger') != event.get('trigger') or not params['success']
                for item in pending['shield_events']):
             issues.append(f'event {seq}: invalid Shield reaction to Ram')
-        final_target = max(-q.max_health + 1, after['target_health']) if p.heroic else after['target_health']
+        # Bare Ram has no explicit lethal declaration in this host.
+        final_target = max(-q.max_health + 1, after['target_health'])
         applied = before['target_health'] - final_target
         faces = params['target_faces']
         raw = max(0, sum(6 if face == 1 else face for face in faces) + p.melee) if params['success'] and params['full_dice'] else 0

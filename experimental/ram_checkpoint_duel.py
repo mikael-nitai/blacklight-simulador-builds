@@ -115,8 +115,8 @@ class RamCheckpointDuel(RamOpportunityDuel):
         issues = audit_rolled_table_ram(record)
         if issues:
             raise RuntimeError(f'Ram checkpoint audit failed: {issues}')
-        if p.heroic and record['after']['target_health'] <= -q.max_health:
-            raise IllegalAction('Heroic damage floor interaction is not supported by this checkpoint')
+        if record['after']['target_health'] <= -q.max_health:
+            raise IllegalAction('Nonlethal damage floor interaction is not supported by this checkpoint')
         # The checkpoint stops immediately after this atomic hypothetical event.
         attacker.reactions = record['after']['reactions']
         attacker.health = record['after']['attacker_health']

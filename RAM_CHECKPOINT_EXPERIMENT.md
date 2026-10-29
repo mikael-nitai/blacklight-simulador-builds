@@ -17,7 +17,7 @@ O checkpoint exige trilha, reação disponível e estado inalterado entre detect
 e resolver. Rejeita explicitamente interações ainda não implementadas: Escudo
 ativo no atacante ou alvo, Escudo ou Riposte disponíveis ao alvo, Attack Stance
 do atacante, Dodge/Stunned do alvo, knockback escolhido por Mighty e dano que
-exigiria o limite Heroic. Efeitos de armas, outros poderes que interfiram na
+exigiria o limite não letal. Efeitos de armas, outros poderes que interfiram na
 reação, movimento complexo, prioridades simultâneas e continuação de Prone
 também estão fora do escopo. O dano aos dois participantes é aplicado de forma
 simultânea **como hipótese experimental**, sem decidir a ordem definitiva em

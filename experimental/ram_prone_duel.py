@@ -83,7 +83,9 @@ class RamProneDuel(RamOpportunityDuel, ProneDuel):
         if record['after']['attacker_health'] <= 0:
             raise IllegalAction('Ram self-incapacitation timing is unresolved; abort this experimental duel')
         raw_target_health = record['after']['target_health']
-        target_after = max(-q.max_health + 1, raw_target_health) if p.heroic else raw_target_health
+        # This host only offers an undeclared-lethality, weaponless Ram; Core
+        # p.36 treats weaponless attacks as nonlethal unless stated otherwise.
+        target_after = max(-q.max_health + 1, raw_target_health)
         applied_target = target.health - target_after
         self_damage = record['impact']['attacker_damage']
         multiplier = 3 if hit.success and hit.fantastic else 2

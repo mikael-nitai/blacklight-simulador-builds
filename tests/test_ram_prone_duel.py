@@ -185,19 +185,21 @@ class RamProneDuelTests(unittest.TestCase):
                                               initial_distance=10, expected_seed=1,
                                               max_rounds=1, ruleset=duel.table_ruleset), [])
 
-    def test_heroic_target_floor_is_applied_after_calculated_ram_damage(self):
-        profiles = (profile('A', health=250, initiative=100, heroic=True), profile('B', health=1))
-        policies = (RamPronePolicy('A'), StationaryRamPolicy('B', always_wait=True, use_ram=False))
-        duel = RamProneDuel(profiles, policies, initial_prone=(False, False), seed=1,
-                            initial_distance=10, max_rounds=1, audit=True, action_registry=DEFAULT_ACTIONS)
-        result = duel.run()
-        attack = next(event for event in result.log if event['type'] == 'ram_attack')
-        self.assertLess(attack['transaction']['after']['target_health'], 0)
-        self.assertEqual(attack['target_health_after'], 0)
-        self.assertEqual(attack['target_damage_applied'], 1)
-        self.assertEqual(audit_ram_prone_duel(result, profiles, initial_prone=(False, False),
-                                              initial_distance=10, expected_seed=1,
-                                              max_rounds=1, ruleset=duel.table_ruleset), [])
+    def test_bare_ram_target_is_nonlethal_even_without_heroic_tag(self):
+        for heroic in (False, True):
+            with self.subTest(heroic=heroic):
+                profiles = (profile('A', health=250, initiative=100, heroic=heroic), profile('B', health=1))
+                policies = (RamPronePolicy('A'), StationaryRamPolicy('B', always_wait=True, use_ram=False))
+                duel = RamProneDuel(profiles, policies, initial_prone=(False, False), seed=1,
+                                    initial_distance=10, max_rounds=1, audit=True, action_registry=DEFAULT_ACTIONS)
+                result = duel.run()
+                attack = next(event for event in result.log if event['type'] == 'ram_attack')
+                self.assertLess(attack['transaction']['after']['target_health'], 0)
+                self.assertEqual(attack['target_health_after'], 0)
+                self.assertEqual(attack['target_damage_applied'], 1)
+                self.assertEqual(audit_ram_prone_duel(result, profiles, initial_prone=(False, False),
+                                                      initial_distance=10, expected_seed=1,
+                                                      max_rounds=1, ruleset=duel.table_ruleset), [])
 
     def test_prone_target_can_stand_on_following_turn_after_fantastic_ram(self):
         profiles = (profile('A', health=250, initiative=100), profile('B', health=250))

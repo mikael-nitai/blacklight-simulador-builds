@@ -11,8 +11,9 @@ movimento. Não usa Fast Strikes ou efeitos de arma no Ram.
 
 O alvo pode ativar Escudo após o acerto e antes do dano; sua redução soma com
 Sturdy. Em erro, a fila permite Riposte, inclusive reações posteriores dentro
-dos orçamentos existentes. O limite Heroic do atacante sobre o dano ao alvo é
-aplicado conforme o duelo físico atual. A política de Ram escolhida aqui não
+dos orçamentos existentes. Este Ram desarmado sem declaração de letalidade
+aplica ao alvo o limite não letal, com ou sem Heroic, conforme o Core p. 36;
+veja [a lacuna encontrada no duelo físico geral](NONLETHAL_GAP.md). A política de Ram escolhida aqui não
 seleciona knockback de Mighty; um Escudo ativo no atacante faz a política padrão
 recusar Ram, sem presumir uma interação não decidida. Attack Stance ativo no
 atacante é recusado. O dano dos dois participantes é simultâneo como hipótese

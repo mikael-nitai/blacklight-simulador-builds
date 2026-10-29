@@ -10,6 +10,6 @@ Fonte visual: `C:\Users\avada\Downloads\Marvel Multiverse Role-Playing Game - Ru
 
 Uma próxima bateria com esses nomes só deve usar perfis completos após auditar os poderes relevantes e adaptar o estado, ou ser rotulada explicitamente como **subconjunto mecânico do perfil oficial**. A regra **Big** foi conferida no Core p.60 (PDF p.61): ela reduz em 1 as defesas Melee e Agility, acrescenta 1 a Run e dá Reach 2. Ela **não** resolve Agility 14 de Kingpin; a diferença deve ficar aberta até outra fonte oficial ou decisão da mesa. A decisão recente sobre rolagem de dano da mesa pode alterar as expressões usadas em qualquer simulação, mas os números acima são transcrições da **impressão oficial** e permanecem separados das house rules.
 
-O primeiro contrato isolado para [Slow-Motion Dodge](SLOW_MOTION_DODGE_EXPERIMENT.md)
-está em desenvolvimento experimental. Ele ainda não integra os confrontos nem
-libera Crossbones ou qualquer outra ficha completa no catálogo.
+O [experimento de Slow-Motion Dodge](SLOW_MOTION_DODGE_EXPERIMENT.md) inclui
+um contrato isolado e duelos sintéticos restritos. Ele ainda não libera
+Crossbones ou qualquer outra ficha completa no catálogo.

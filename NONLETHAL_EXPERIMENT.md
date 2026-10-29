@@ -32,3 +32,11 @@ verificando seus eventos e estados independentemente. Testes cobrem o exemplo
 que antes ultrapassava a morte, Fast com dois braços, falta de declaração de
 arma, adulterações e replays sem mudança, inclusive Victor contra o atirador
 sintético. Esses testes não certificam todo o catálogo de ataques ou o RPG.
+
+Uma [comparação reproduzível](experimental_outputs/nonlethal_boundary_001.json)
+guarda as duas trilhas para o mesmo caso sintético e a mesma seed: Health final
+do alvo `−19` no comportamento anterior e `0` no host experimental. Ambas as
+trilhas passaram pelas auditorias aplicáveis; os hashes de fontes correspondem
+ao commit `29779c3` e a repetição produziu bytes idênticos. O SHA-256 do arquivo
+é `14e1117b429f18cfefb5a4c4d799c44dc57ba490664be359b07448722f2a8d63`.
+O exemplo não é uma comparação de estratégias ou uma estimativa de vitória.

@@ -4,8 +4,9 @@
 podem ultrapassar o limite não letal no duelo físico `split_fast_v3`. O problema
 foi reproduzido em 29/10/2026. Isso limita a certificação anterior para essa
 fronteira de letalidade; resultados e fontes históricas permanecem preservados.
-O Ram desarmado no host experimental posterior aplica o limite ao alvo, mas o
-duelo físico geral ainda precisa de correção versionada e validação.
+Uma [correção experimental](NONLETHAL_EXPERIMENT.md) aplica o limite ao Ram e
+a ataques de perfis claramente sem armas. O duelo físico geral ainda precisa
+de cobertura dos casos ambíguos e validação antes de promover uma solução.
 
 **Estudo de duelos sob a regra atual:** o [pré-registro](CURRENT_DUEL_STUDY_SPEC.md)
 define três cenários sintéticos, cinco políticas e a seleção das finalistas antes

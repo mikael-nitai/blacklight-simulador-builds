@@ -1,4 +1,6 @@
 import unittest
+from fractions import Fraction
+from itertools import product
 
 from experimental.ram_impact import RamImpact, ram_impact
 
@@ -44,3 +46,18 @@ class RamImpactTests(unittest.TestCase):
             args.update(changes)
             with self.subTest(changes=changes), self.assertRaises(ValueError):
                 ram_impact(**args)
+
+    def test_one_die_is_enumerated_independently_for_both_pool_hypotheses(self):
+        shared, separate = [], []
+        for target in range(1, 7):
+            common = dict(success=True, fantastic_success=False, full_dice=1, ability=2,
+                          target_reduction=0, attacker_reduction=0, target_faces=(target,))
+            shared.append(ram_impact(**common, self_pool='shared'))
+            for own in range(1, 7):
+                separate.append(ram_impact(**common, self_pool='separate', attacker_faces=(own,)))
+        self.assertEqual(Fraction(sum(x.target_damage for x in shared), 6), Fraction(38, 3))
+        self.assertEqual(Fraction(sum(x.attacker_damage for x in shared), 6), Fraction(19, 3))
+        self.assertTrue(all(x.target_damage == 2 * x.attacker_damage for x in shared))
+        self.assertEqual(sum(x.target_damage != 2 * x.attacker_damage for x in separate), 28)
+        self.assertEqual(Fraction(sum(x.target_damage for x in separate), 36), Fraction(38, 3))
+        self.assertEqual(Fraction(sum(x.attacker_damage for x in separate), 36), Fraction(19, 3))

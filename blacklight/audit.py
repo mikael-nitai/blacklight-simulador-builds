@@ -97,13 +97,14 @@ def audit_log(log: tuple[dict, ...] | list[dict],
               initial_focus: dict[str, int], *,
               reaction_limits: dict[str, int] | None = None,
               movement_limits: dict[str, int] | None = None,
-              allow_experimental_parry: bool = False) -> list[str]:
+              allow_experimental_parry: bool = False,
+              allow_experimental_stopping: bool = False) -> list[str]:
     """Audit ledgers; supplied limits also check capabilities against profiles.
 
     Without the optional limits, a self-consistent ledger cannot establish how
     many reactions or movement spaces a combatant was actually entitled to.
     """
-    if type(allow_experimental_parry) is not bool:
+    if type(allow_experimental_parry) is not bool or type(allow_experimental_stopping) is not bool:
         raise ValueError('Experimental audit option must be boolean')
     for limits in (reaction_limits, movement_limits):
         if limits is not None and (not isinstance(limits, dict)
@@ -217,7 +218,8 @@ def audit_log(log: tuple[dict, ...] | list[dict],
             if not 0 <= event["damage"] <= calculated:
                 issues.append(f"event {seq}: applied damage outside allowed range")
             health[event["target"]] = after
-            if not event["reaction"] and 'fast_use_id' not in event:
+            stopping_followup = (allow_experimental_stopping and event.get('stopping_role') == 'followup')
+            if not event["reaction"] and 'fast_use_id' not in event and not stopping_followup:
                 standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
         elif kind == "movement":
             steps, direction, as_standard = (event.get('steps'), event.get('direction'),
@@ -238,7 +240,9 @@ def audit_log(log: tuple[dict, ...] | list[dict],
                       "condition_treatment"):
             reactive_cost = (allow_experimental_parry and kind == 'focus_spent'
                              and event.get('reaction') is True and event.get('source') == 'point_blank_parry')
-            if not reactive_cost:
+            stopping_cost = (allow_experimental_stopping and kind == 'focus_spent'
+                             and event.get('source') == 'stopping_power')
+            if not reactive_cost and not stopping_cost:
                 standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
         elif kind == "shield_activate" and event["cost"] == "standard":
             standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
@@ -291,7 +295,7 @@ def audit_log(log: tuple[dict, ...] | list[dict],
 
 
 def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles, *, ruleset=None,
-                       allow_experimental_parry=False) -> list[str]:
+                       allow_experimental_parry=False, allow_experimental_stopping=False) -> list[str]:
     """Audit a physical trace against profiles and, if supplied, its ruleset."""
     profiles = tuple(profiles)
     names = [profile.name for profile in profiles]
@@ -304,6 +308,7 @@ def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles, *, ruleset=
         reaction_limits={p.name: 2 if 'combat_reflexes' in p.traits else 1 for p in profiles},
         movement_limits={p.name: p.run_speed for p in profiles},
         allow_experimental_parry=allow_experimental_parry,
+        allow_experimental_stopping=allow_experimental_stopping,
     )
     issues.extend(audit_profile_facts(log, profiles, allow_experimental_parry=allow_experimental_parry))
     if ruleset is not None:

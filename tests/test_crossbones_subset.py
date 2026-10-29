@@ -6,9 +6,12 @@ import unittest
 from combatants.actions import DEFAULT_ACTIONS
 from combatants.duel_adapter import compile_duel
 from combatants.sheets import load_sheet
-from experimental.crossbones_subset import build_crossbones_subset, build_crossbones_parry_subset
+from experimental.crossbones_subset import (build_crossbones_subset, build_crossbones_parry_subset,
+                                         build_crossbones_stopping_subset)
 from experimental.parry_duel import ParryDuel, ParryPolicy
 from experimental.parry_audit import audit_parry_duel
+from experimental.stopping_duel import StoppingDuel, StoppingPolicy
+from experimental.stopping_audit import audit_stopping_duel
 from experimental.ranged_powers_duel import RangedPowersPolicy
 from experimental.smg_audit import audit_submachine_duel
 from experimental.smg_duel import SubmachineDuel
@@ -91,3 +94,22 @@ class CrossbonesSubsetTests(unittest.TestCase):
         self.assertEqual(audit_parry_duel(result, profiles, initial_prone=(False, False),
                          initial_distance=1, expected_seed=115, max_rounds=8,
                          ranged_weapons=args['ranged_weapons'], ruleset=ParryDuel.table_ruleset), [])
+
+    def test_stopping_subset_fires_followup_against_current_victor(self):
+        subset = build_crossbones_stopping_subset(evidence(), accept_incomplete=True)
+        self.assertIn('Stopping Power', subset.included_powers)
+        self.assertNotIn('Stopping Power', subset.omitted_powers)
+        self.assertIn('Weapons Blazing', subset.omitted_powers)
+        victor = compile_duel(load_sheet(ROOT / 'characters/victor_halle/rank3_2026-10-27_split_fast.json'))
+        profiles = (subset.profile, victor)
+        policies = (StoppingPolicy('crossbones parcial', prefer_stopping=True, use_ram=False),
+                    StoppingPolicy('victor', weapon='hammer', offhand='blade', prefer_fast=True,
+                                   effect_limb=1, use_ram=False, shield_react=True))
+        args = dict(seed=30, initial_prone=(False, False), initial_distance=2, max_rounds=8,
+                    audit=True, action_registry=DEFAULT_ACTIONS,
+                    ranged_weapons=('submachine_gun', 'generic'))
+        result = StoppingDuel(profiles, policies, **args).run()
+        self.assertTrue(any(e.get('stopping_role') == 'followup' for e in result.log))
+        self.assertEqual(audit_stopping_duel(result, profiles, initial_prone=(False, False),
+                         initial_distance=2, expected_seed=30, max_rounds=8,
+                         ranged_weapons=args['ranged_weapons'], ruleset=StoppingDuel.table_ruleset), [])

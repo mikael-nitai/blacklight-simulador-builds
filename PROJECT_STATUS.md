@@ -11,6 +11,9 @@ O host experimental inclui [Fast Hands e Point-Blank Parry](FAST_HANDS_PARRY_EXP
 com reação restrita, Focus e ordem dos dois braços auditados. O recorte de
 Crossbones continua incompleto; a opção experimental não amplia a certificação
 do runner genérico.
+O recorte ampliado também experimenta [Stopping Power](STOPPING_POWER_EXPERIMENT.md)
+com custo de Focus e ataque adicional condicionado ao fantástico. Ele permanece
+separado dos resultados certificados e não completa a ficha de Crossbones.
 
 **Lacuna posterior à certificação:** [ataques desarmados não Heroic](NONLETHAL_GAP.md)
 podem ultrapassar o limite não letal no duelo físico `split_fast_v3`. O problema

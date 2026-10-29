@@ -115,3 +115,15 @@ def build_crossbones_parry_subset(evidence, *, accept_incomplete: bool) -> Cross
         omitted_powers=tuple(power for power in base.omitted_powers if power not in promoted),
         assumptions=base.assumptions + ('The separate Fast Hands reaction can only pay a Ranged Weapons power.',
                                         'Point-Blank Parry does not target an unconscious attacker in this host.'))
+
+
+def build_crossbones_stopping_subset(evidence, *, accept_incomplete: bool) -> CrossbonesSubset:
+    """Larger experimental subset for StoppingDuel; previous versions remain stable."""
+    base = build_crossbones_parry_subset(evidence, accept_incomplete=accept_incomplete)
+    if 'Stopping Power' not in base.omitted_powers:
+        raise ValueError('The verified Stopping Power is missing')
+    return replace(base,
+        profile=replace(base.profile, powers=base.profile.powers | {'stopping_power'}),
+        included_powers=tuple(sorted(set(base.included_powers) | {'Stopping Power'})),
+        omitted_powers=tuple(power for power in base.omitted_powers if power != 'Stopping Power'),
+        assumptions=base.assumptions + ('Stopping Power does not follow up against an unconscious target in this host.',))

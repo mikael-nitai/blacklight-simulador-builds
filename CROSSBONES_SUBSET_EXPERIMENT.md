@@ -21,6 +21,9 @@ Hands e Point-Blank Parry. O recorte anterior e seu exemplo preservado continuam
 sem esses poderes; cada saída lista explicitamente quais habilidades foram
 incluídas e omitidas.
 
+Uma terceira variante também inclui [Stopping Power](STOPPING_POWER_EXPERIMENT.md),
+mantendo as versões anteriores reproduzíveis e os demais poderes omitidos.
+
 Qualquer resultado usando esse recorte representa apenas esse adversário
 restrito, não o personagem oficial completo. A política escolhida também é uma
 hipótese, não prova de comportamento ótimo. Um exemplo escolhido para revelar

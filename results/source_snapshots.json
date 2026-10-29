@@ -208,6 +208,54 @@
     "current_duel_dev_v1_rank4_hammer_fast_hammer.json": {
       "result_sha256": "1b47ea4b2e58cde0f0b4225c5c3c0e4d45ce72625a731bfc22bde983dd74ab84",
       "source_commit": "0e9f30776cb5ab990578b0a12b23e764303e19ba"
+    },
+    "current_duel_confirm_v1_gunner_corridor_bare.json": {
+      "result_sha256": "719fae56740762db7647e497b460d09c41d47e01044a153754013073d3b5c20c",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_gunner_corridor_hammer.json": {
+      "result_sha256": "0fbfa1488c921e8e4e98ab258664732788eeedd08a5b45cf91e0ccdadf2534af",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_gunner_corridor_hammer_fast_blade.json": {
+      "result_sha256": "d82dd4cdce4a29c7233d74e2e309dbd7262ecec5ea0592f7f60496ed32d8222e",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_gunner_corridor_hammer_fast_hammer.json": {
+      "result_sha256": "7e1bd532e60a2a3114e30b35004b39e01bbcbe4e06470d92850ff196da53ced5",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_mirror_bare.json": {
+      "result_sha256": "a2af066913dff6eb26b81e597f2a929aa69abdad03ffd8ec343572f6e32d853c",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_mirror_hammer.json": {
+      "result_sha256": "f605747249c70cdf6feb54d1df0a793e0a792463283dcba887081863f6509323",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_mirror_hammer_fast_blade.json": {
+      "result_sha256": "30c57660e7e3e72825822e19d1ec707a80a4166e3e2538691e63046a08af094e",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_mirror_hammer_fast_hammer.json": {
+      "result_sha256": "a8f17c7ca480406bb6b4d6b2a45b38aa5afd730ffd13128cbda62364b1ab3ea2",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_rank4_bare.json": {
+      "result_sha256": "6da573d6f557251c0f8e9f1781ee13d659a96e5295f1250d0cacc0a6afd7681f",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_rank4_hammer.json": {
+      "result_sha256": "56478bfa28b91816aac82b16d99d474b24e682f1d521955d4cf19e4a5f5cd5d4",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_rank4_hammer_fast_blade.json": {
+      "result_sha256": "29a13f64b81a1e066bd587b7d9abe778f5cfcd9371df4c3cc4ed06f7e3feb54e",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
+    },
+    "current_duel_confirm_v1_rank4_hammer_fast_hammer.json": {
+      "result_sha256": "8763435b2dfa03a15488a343263f392277d5b18f68e785651ef6cdb13b25a96e",
+      "source_commit": "3ee42f9f1c4550fbf55be6b6470b980156ef817e"
     }
   }
 }

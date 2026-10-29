@@ -19,7 +19,8 @@ SEED = 987654
 INITIAL_PRONE = (False, False)
 MAX_ROUNDS = 30
 EXTRA = ('experimental/__init__.py', 'experimental/prone.py', 'experimental/prone_duel.py',
-         'experimental/prone_duel_audit.py', 'experimental/ram_prone_duel.py',
+         'experimental/prone_duel_audit.py', 'experimental/incapacity_endturn_audit.py',
+         'experimental/ram_prone_duel.py',
          'experimental/ram_prone_audit.py', 'experimental/ram_opportunity_duel.py',
          'experimental/ram_opportunity_audit.py', 'experimental/ram_trigger.py',
          'experimental/ram_transaction.py', 'experimental/ram_impact.py',

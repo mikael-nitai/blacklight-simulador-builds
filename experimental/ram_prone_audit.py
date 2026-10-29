@@ -5,6 +5,7 @@ from dataclasses import replace
 from blacklight.audit import audit_profiled_log
 from blacklight.result_audit import audit_battle_result
 from blacklight.spatial_audit import audit_open_field_distance
+from .incapacity_endturn_audit import audit_incapacity_endturn
 from .prone_duel_audit import audit_prone_log
 from .ram_opportunity_audit import audit_ram_opportunities
 from .ram_rolled import audit_rolled_table_ram
@@ -88,6 +89,12 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
     issues = audit_prone_log(result.log, profiles, initial_prone=initial_prone,
                              initial_distance=initial_distance, stack_stunned_edge=stack_stunned_edge)
     issues += audit_ram_opportunities(result.log, profiles)
+    if self_damage_mode != 'reject_incapacitation':
+        try:
+            issues += audit_incapacity_endturn(result.log, profiles, healing_first=end_turn_healing_first,
+                                               self_damage_mode=self_damage_mode)
+        except (KeyError, TypeError, ValueError, IndexError) as error:
+            issues.append(f'Invalid experimental end-turn ledger: {error}')
     contracts = [(index, event) for index, event in enumerate(result.log)
                  if event.get('type') == 'incapacity_contract']
     if self_damage_mode == 'reject_incapacitation':

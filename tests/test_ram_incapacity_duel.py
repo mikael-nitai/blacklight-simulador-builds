@@ -107,6 +107,58 @@ class RamIncapacityDuelTests(unittest.TestCase):
         marker['mode'] = 'nonlethal_impact'
         self.assertTrue(self.audit(duel, replace(result, log=tuple(log))))
 
+    def test_audit_rejects_consistent_healing_with_wrong_healing_factor_amount(self):
+        duel, result = self.run_mode('nonlethal_impact')
+        log = deepcopy(list(result.log))
+        heal = next(event for event in log if event['type'] == 'heal' and event['actor'] == 'A')
+        heal['proposed'] += 1
+        self.assertTrue(any('incorrect automatic end-turn effect' in issue
+                            for issue in self.audit(duel, replace(result, log=tuple(log)))))
+        heal['health_after'] = None
+        self.assertTrue(self.audit(duel, replace(result, log=tuple(log))))
+
+    def test_audit_rejects_omitted_healing_even_if_result_is_reconciled(self):
+        duel, result = self.run_mode('nonlethal_impact')
+        log = deepcopy(list(result.log))
+        heal_index = next(i for i, event in enumerate(log) if event['type'] == 'heal' and event['actor'] == 'A')
+        heal = log.pop(heal_index)
+        next(event for event in log[heal_index:] if event['type'] == 'turn_end' and event['actor'] == 'A')['health'] = heal['health_before']
+        for index, event in enumerate(log, 1):
+            event['seq'] = index
+        metrics = tuple(dict(row) for row in result.metrics)
+        metrics[0]['healing_effective'] -= heal['effective']
+        forged = replace(result, log=tuple(log), metrics=metrics,
+                         final_health=(heal['health_before'], result.final_health[1]),
+                         outcome='win', winner='B')
+        self.assertTrue(any('missing or extra automatic' in issue for issue in self.audit(duel, forged)))
+
+    def test_bleeding_first_variant_is_checked_in_a_complete_duel(self):
+        profiles = (replace(self.profiles[0], max_health=200, initiative_modifier=0),
+                    replace(self.profiles[1], initiative_modifier=100, weapons=frozenset({'claw'})))
+        policies = (RamPronePolicy('A', always_wait=True, use_ram=False),
+                    RamPronePolicy('B', weapon='claw', use_ram=False))
+        found = False
+        for seed in range(200):
+            duel = RamIncapacityDuel(profiles, policies, self_damage_mode='lethal_impact',
+                                     initial_prone=(False, False), seed=seed, initial_distance=1,
+                                     max_rounds=1, audit=True, action_registry=DEFAULT_ACTIONS,
+                                     end_turn_healing_first=False)
+            result = duel.run()
+            tick = next((i for i, event in enumerate(result.log)
+                         if event['type'] == 'condition_tick' and event['actor'] == 'A'), None)
+            if tick is None:
+                continue
+            heal = next(i for i, event in enumerate(result.log)
+                        if event['type'] == 'heal' and event['actor'] == 'A')
+            self.assertLess(tick, heal)
+            self.assertEqual(audit_nonlethal_ram_duel(result, profiles, initial_prone=(False, False),
+                                                      initial_distance=1, expected_seed=seed, max_rounds=1,
+                                                      ruleset=duel.table_ruleset, self_damage_mode='lethal_impact',
+                                                      end_turn_healing_first=False), [])
+            found = True
+            break
+        self.assertTrue(found)
+
     def test_audit_rejects_consistent_but_impossible_healing_after_death(self):
         duel, result = self.run_mode('lethal_impact')
         log = deepcopy(list(result.log))

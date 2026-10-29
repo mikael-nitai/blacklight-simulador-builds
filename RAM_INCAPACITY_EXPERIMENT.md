@@ -26,7 +26,10 @@ a auto-incapacitação e suas trilhas anteriores não são substituídas.
 
 O auditor de Ram recebe explicitamente o modo e verifica o dano aplicado, o
 estado, a sequência de morte e a ausência de efeitos posteriores de fim de
-turno quando morto. `tests/test_ram_incapacity_duel.py` cobre morte, inconsciência
+turno quando morto. Um auditor separado reconstrói o valor e a ordem de Healing
+Factor e Bleeding no fim de cada turno, incluindo o bloqueio de cura depois da
+morte; o próprio registro identifica a hipótese e a ordem de cura. O arquivo
+`tests/test_ram_incapacity_duel.py` cobre morte, inconsciência
 reversível pela cura, a hipótese não letal, dano simultâneo no alvo, reação,
 adulterações e repetição. Um caso de dupla incapacitação muda de empate para
 vitória conforme a hipótese e a cura automática, demonstrando por que esses

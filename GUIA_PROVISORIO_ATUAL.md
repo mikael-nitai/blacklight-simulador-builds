@@ -103,6 +103,12 @@ lutas chegaram ao limite de rodadas sem vencedor. Esses resultados **não
 incluíam Ram** e não representam adversários oficiais completos. Use-os como
 indicação para testar escolhas, não como garantia para a mesa.
 
+Uma [exploração posterior com Ram e recorte parcial de Crossbones](RAM_CROSSBONES_EXPLORATION_REPORT.md)
+encontrou mais vitórias dentro de 30 rodadas quando Ram era permitido contra
+uma política de recuo, mas a maioria dos combates ainda terminou inconclusiva.
+O adversário usa apenas parte da ficha oficial e munição à qual o Escudo é
+imune. Essa amostra não estabelece uma arma ou estratégia universalmente melhor.
+
 Fontes de decisões: [Fast Strikes](FAST_STRIKES_RULING.md),
 [dados de dano](DAMAGE_POOL_RULING.md), [Escudo e Focus](FOCUS_RULING.md) e
 [Ram](RAM_RULING.md). Este documento substitui o uso prático dos números do

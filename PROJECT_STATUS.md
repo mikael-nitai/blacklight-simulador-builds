@@ -1,5 +1,10 @@
 # Estado do projeto completo — 27/10/2026
 
+**Exploração com Ram e Crossbones parcial:** [12.000 inícios](RAM_CROSSBONES_EXPLORATION_REPORT.md)
+foram auditados, e 36 registros foram reproduzidos. Contra uma política de
+recuo, a maioria permaneceu inconclusiva; os dados são exploratórios e não
+completam a ficha do adversário nem definem a regra de morte por autoimpacto.
+
 **Expansão em 29/10/2026:** [Double Tap, Slow-Motion Dodge e submetralhadora
 contra um alvo](RANGED_POWERS_EXPERIMENT.md) foram combinados em um host
 experimental com auditorias próprias, sem promover ficha oficial completa.

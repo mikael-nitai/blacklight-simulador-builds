@@ -1,0 +1,301 @@
+{
+  "schema": "blacklight-experimental-ram-crossbones-replay-v1",
+  "dataset_sha256": "225097014e9c608813889d3ba2fa88fc68949bf79023adcaf4c757e66d4c8e29",
+  "source_commit": "b483568d46f19f4784287608a341c9452ed4ab5a",
+  "sampling": "first, middle and last index per cell; duplicates removed",
+  "checked": [
+    {
+      "scenario": "stationary",
+      "strategy": "hammer",
+      "use_ram": false,
+      "index": 0,
+      "seed": 1759945218126064792,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "hammer",
+      "use_ram": false,
+      "index": 500,
+      "seed": 5029142195650484924,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "hammer",
+      "use_ram": false,
+      "index": 999,
+      "seed": 7023829061782542739,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "hammer",
+      "use_ram": true,
+      "index": 0,
+      "seed": 1759945218126064792,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "hammer",
+      "use_ram": true,
+      "index": 500,
+      "seed": 5029142195650484924,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "hammer",
+      "use_ram": true,
+      "index": 999,
+      "seed": 7023829061782542739,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_hammer",
+      "use_ram": false,
+      "index": 0,
+      "seed": 1759945218126064792,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_hammer",
+      "use_ram": false,
+      "index": 500,
+      "seed": 5029142195650484924,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_hammer",
+      "use_ram": false,
+      "index": 999,
+      "seed": 7023829061782542739,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_hammer",
+      "use_ram": true,
+      "index": 0,
+      "seed": 1759945218126064792,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_hammer",
+      "use_ram": true,
+      "index": 500,
+      "seed": 5029142195650484924,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_hammer",
+      "use_ram": true,
+      "index": 999,
+      "seed": 7023829061782542739,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_blade",
+      "use_ram": false,
+      "index": 0,
+      "seed": 1759945218126064792,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_blade",
+      "use_ram": false,
+      "index": 500,
+      "seed": 5029142195650484924,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_blade",
+      "use_ram": false,
+      "index": 999,
+      "seed": 7023829061782542739,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_blade",
+      "use_ram": true,
+      "index": 0,
+      "seed": 1759945218126064792,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_blade",
+      "use_ram": true,
+      "index": 500,
+      "seed": 5029142195650484924,
+      "status": "victory"
+    },
+    {
+      "scenario": "stationary",
+      "strategy": "fast_blade",
+      "use_ram": true,
+      "index": 999,
+      "seed": 7023829061782542739,
+      "status": "victory"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "hammer",
+      "use_ram": false,
+      "index": 0,
+      "seed": 18121724345648494822,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "hammer",
+      "use_ram": false,
+      "index": 500,
+      "seed": 4612445862657999607,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "hammer",
+      "use_ram": false,
+      "index": 999,
+      "seed": 15781424103966865826,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "hammer",
+      "use_ram": true,
+      "index": 0,
+      "seed": 18121724345648494822,
+      "status": "victory"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "hammer",
+      "use_ram": true,
+      "index": 500,
+      "seed": 4612445862657999607,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "hammer",
+      "use_ram": true,
+      "index": 999,
+      "seed": 15781424103966865826,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_hammer",
+      "use_ram": false,
+      "index": 0,
+      "seed": 18121724345648494822,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_hammer",
+      "use_ram": false,
+      "index": 500,
+      "seed": 4612445862657999607,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_hammer",
+      "use_ram": false,
+      "index": 999,
+      "seed": 15781424103966865826,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_hammer",
+      "use_ram": true,
+      "index": 0,
+      "seed": 18121724345648494822,
+      "status": "victory"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_hammer",
+      "use_ram": true,
+      "index": 500,
+      "seed": 4612445862657999607,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_hammer",
+      "use_ram": true,
+      "index": 999,
+      "seed": 15781424103966865826,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_blade",
+      "use_ram": false,
+      "index": 0,
+      "seed": 18121724345648494822,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_blade",
+      "use_ram": false,
+      "index": 500,
+      "seed": 4612445862657999607,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_blade",
+      "use_ram": false,
+      "index": 999,
+      "seed": 15781424103966865826,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_blade",
+      "use_ram": true,
+      "index": 0,
+      "seed": 18121724345648494822,
+      "status": "victory"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_blade",
+      "use_ram": true,
+      "index": 500,
+      "seed": 4612445862657999607,
+      "status": "inconclusive"
+    },
+    {
+      "scenario": "kite",
+      "strategy": "fast_blade",
+      "use_ram": true,
+      "index": 999,
+      "seed": 15781424103966865826,
+      "status": "inconclusive"
+    }
+  ],
+  "issues": [],
+  "limitations": [
+    "sampled replay; not a replay of every completed duel",
+    "unresolved cases repeat the incomplete prefix rather than an outcome"
+  ]
+}

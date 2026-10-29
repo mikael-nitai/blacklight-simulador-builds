@@ -12,6 +12,13 @@ foi executada, congelada e analisada. O atirador em campo aberto expôs uma
 limitação importante: Ram não integra o motor desses testes; veja
 [RAM_REVIEW.md](RAM_REVIEW.md). A missão completa permanece em andamento.
 
+**Ram em desenvolvimento experimental:** a mesa confirmou rolagens separadas
+para o atacante e o alvo, com redução individual; veja [RAM_RULING.md](RAM_RULING.md).
+A detecção de oportunidades já foi ligada a um observador de duelo experimental,
+e o acerto/dano foram testados em uma transação isolada com dados reproduzíveis.
+O ataque, Prone e as interações ainda não estão integrados ao combate; essas
+primitivas não autorizam novas taxas de vitória com Ram.
+
 **Grade experimental de grupo:** [posições individuais, caminhos e alcance
 por alvo](GROUP_GRID_EXPERIMENT.md) já podem ser executados por fichas dentro
 de um cenário limitado; não são certificação geral de mapa ou grupo.

@@ -41,3 +41,16 @@ escolha e continuação da luta, Prone e a ação de levantar, reações pendent
 Escudo, armas, Heroic e Mighty, validar efeitos e custos em conjunto e criar um
 contrato de resultados separado dos estudos anteriores. A cobertura das fichas
 e demais regras continua limitada ao que seus adaptadores efetivamente suportam.
+
+## Demonstração com Victor
+
+O [checkpoint preservado](experimental_outputs/ram_victor_checkpoint_001.json)
+usa a ficha Rank 3 atual, um atirador sintético e a seed `987654`. Victor chega
+ao alcance, acerta o Ram desarmado e gasta uma reação: o exemplo registra 66 de
+dano no alvo e 27 em Victor, com pools separados e as reduções respectivas.
+O Health passa de 150 para 123 em Victor e de 120 para 54 no alvo. A execução
+para ali; não há vencedor nem conclusão sobre a campanha. A trilha, a auditoria
+independente e os hashes de fonte foram conferidos, e uma segunda execução
+produziu bytes idênticos. O SHA-256 do arquivo é
+`d510aabc794bd1e0aa0ad15cdb74afc9d90882b4e72e4310133d06d91d45126e`;
+as fontes foram vinculadas ao commit `a6f04bd`.

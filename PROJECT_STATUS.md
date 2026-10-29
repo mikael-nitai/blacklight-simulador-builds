@@ -15,9 +15,10 @@ limitação importante: Ram não integra o motor desses testes; veja
 **Ram em desenvolvimento experimental:** a mesa confirmou rolagens separadas
 para o atacante e o alvo, com redução individual; veja [RAM_RULING.md](RAM_RULING.md).
 A detecção de oportunidades já foi ligada a um observador de duelo experimental,
-e o acerto/dano foram testados em uma transação isolada com dados reproduzíveis.
-O ataque, Prone e as interações ainda não estão integrados ao combate; essas
-primitivas não autorizam novas taxas de vitória com Ram.
+e um [checkpoint de Ram desarmado](RAM_CHECKPOINT_EXPERIMENT.md) foi executado
+e reproduzido com a ficha de Victor. Ele interrompe o duelo após a reação;
+Prone e as demais interações ainda não estão integradas à continuação, e esse
+experimento não autoriza novas taxas de vitória com Ram.
 
 **Grade experimental de grupo:** [posições individuais, caminhos e alcance
 por alvo](GROUP_GRID_EXPERIMENT.md) já podem ser executados por fichas dentro

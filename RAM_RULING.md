@@ -24,5 +24,6 @@ Não transformar essas questões em regras certas apenas com base no nome da
 manobra.
 
 Esta decisão não modifica retroativamente os arquivos de resultados. Ram ainda
-não está integrado ao motor de combate; nenhum estudo preservado inclui essa
-reação.
+não está integrado a um duelo completo; nenhum estudo estatístico preservado
+inclui essa reação. Um [checkpoint experimental](RAM_CHECKPOINT_EXPERIMENT.md)
+interrompe a execução logo após o golpe.

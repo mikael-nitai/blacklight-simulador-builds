@@ -20,6 +20,11 @@ e reproduzido com a ficha de Victor. Ele interrompe o duelo após a reação;
 Prone e as demais interações ainda não estão integradas à continuação, e esse
 experimento não autoriza novas taxas de vitória com Ram.
 
+**Prone experimental:** um [duelo separado](PRONE_EXPERIMENT.md) já mantém a
+condição, ajusta testes e permite levantar gastando movimento. A trilha completa
+com Victor foi auditada e reproduzida. Esse host ainda não executa Ram e não foi
+promovido ao runner certificado.
+
 **Grade experimental de grupo:** [posições individuais, caminhos e alcance
 por alvo](GROUP_GRID_EXPERIMENT.md) já podem ser executados por fichas dentro
 de um cenário limitado; não são certificação geral de mapa ou grupo.

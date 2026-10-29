@@ -37,3 +37,12 @@ Não há ainda uma integração entre esse host e o checkpoint de Ram. Antes de
 usar combate continuado com Ram, é preciso conectar a aplicação de Prone,
 revisar a ordem dos efeitos, reações e incapacitação, e validar as interações
 pendentes sem substituir resultados históricos.
+
+Uma [trilha ilustrativa completa](experimental_outputs/prone_victor_duel_001.json)
+usa a ficha atual de Victor contra um espelho sintético que começa caído e foi
+programado deliberadamente para permanecer assim. A seed é `246810`; a
+simulação terminou em quatro rodadas, passou pelas auditorias e foi reproduzida
+com bytes idênticos. O arquivo tem SHA-256
+`44125b08a8259ef9bc69b7573b0c4114ff86f8ffe3f336e58d5e2721befe293a`
+e registra suas fontes no commit `9f710c1`. Esse único exemplo não mede a
+eficácia de uma estratégia e não usa Ram.

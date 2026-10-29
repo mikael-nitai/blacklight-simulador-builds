@@ -1,9 +1,10 @@
 # Ram: hipóteses experimentais de dano de impacto
 
 O trecho do Core sobre Ram distingue dano regular no atacante e dano dobrado
-ou triplicado no alvo, mas não explica todos os detalhes para a regra caseira
-de múltiplos dados. Não há decisão da mesa que defina como essas duas quantidades
-compartilham dados, nem sobre a aplicação de efeitos de armas biológicas.
+ou triplicado no alvo. O usuário confirmou que o cálculo usa os dados comuns de
+dano da mesa e que cada participante subtrai sua própria redução; veja
+[RAM_RULING.md](RAM_RULING.md). Ainda não ficou definido se os dois valores
+compartilham uma rolagem, nem a aplicação de efeitos de armas biológicas.
 
 `experimental/ram_impact.py` calcula dois cenários explícitos para investigação,
 sem afirmar que qualquer um é a regra adotada:

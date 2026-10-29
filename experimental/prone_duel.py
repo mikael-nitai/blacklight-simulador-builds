@@ -53,6 +53,7 @@ class ProneDuel(SplitFastDuel):
     """A deliberately limited host; no crawling or Ram is implemented."""
 
     execution_scope = 'experimental_prone_duel'
+    additional_experimental_powers = frozenset()
 
     def __init__(self, *args, initial_prone=(False, False), **kwargs):
         if (not isinstance(initial_prone, tuple) or len(initial_prone) != 2
@@ -67,6 +68,7 @@ class ProneDuel(SplitFastDuel):
         allowed = {kind: {identity for (family, identity), entry in REGISTRY.items()
                           if family == kind and entry.status == 'implemented'}
                    for kind in ('power', 'trait', 'house_weapon')}
+        allowed['power'].update(self.additional_experimental_powers)
         for fighter, policy in zip(self.fighters, self.policies):
             p = fighter.profile
             if (p.powers - allowed['power'] or p.traits - allowed['trait']

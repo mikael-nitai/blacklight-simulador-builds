@@ -13,3 +13,7 @@ Uma próxima bateria com esses nomes só deve usar perfis completos após audita
 O [experimento de Slow-Motion Dodge](SLOW_MOTION_DODGE_EXPERIMENT.md) inclui
 um contrato isolado e duelos sintéticos restritos. Ele ainda não libera
 Crossbones ou qualquer outra ficha completa no catálogo.
+
+O [experimento de Double Tap](DOUBLE_TAP_EXPERIMENT.md) já pode enfrentar
+Victor em um executor separado, mas ainda não combina todas as técnicas de
+Crossbones nem promove sua ficha ao catálogo genérico.

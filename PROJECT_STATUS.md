@@ -5,7 +5,12 @@ define três cenários sintéticos, cinco políticas e a seleção das finalista
 de observar os novos resultados. A execução e a confirmação devem ser registradas
 separadamente; as taxas antigas não substituem esses dados.
 O [desenvolvimento com 15.000 inícios](CURRENT_DUEL_DEV_REPORT.md) foi auditado,
-congelado e selecionou duas candidatas; confirmação e reserva ainda faltam.
+congelado e selecionou duas candidatas. A [confirmação com 120.000 inícios](CURRENT_DUEL_CONFIRM_REPORT.md)
+foi preservada e analisada; suas conclusões se limitam aos cenários sintéticos
+descritos. A [reserva em três cenários novos](CURRENT_DUEL_HOLDOUT_REPORT.md)
+foi executada, congelada e analisada. O atirador em campo aberto expôs uma
+limitação importante: Ram não integra o motor desses testes; veja
+[RAM_REVIEW.md](RAM_REVIEW.md). A missão completa permanece em andamento.
 
 **Grade experimental de grupo:** [posições individuais, caminhos e alcance
 por alvo](GROUP_GRID_EXPERIMENT.md) já podem ser executados por fichas dentro

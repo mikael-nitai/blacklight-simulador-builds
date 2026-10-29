@@ -1,5 +1,9 @@
 # Exploração com as regras atuais de Fast Strikes
 
+**Atualização posterior:** a confirmação foi executada e está descrita em
+[CURRENT_DUEL_CONFIRM_REPORT.md](CURRENT_DUEL_CONFIRM_REPORT.md). A seção
+"Próxima verificação" abaixo registra o estado no momento deste relatório.
+
 Esta etapa executou o [pré-registro](CURRENT_DUEL_STUDY_SPEC.md): 15 células,
 1.000 inícios por célula, 15.000 combates ao todo. Todas as trilhas foram
 auditadas durante a execução; os resultados guardam cada semente e métricas

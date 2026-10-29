@@ -1,5 +1,7 @@
 # Blacklight Rank 3 — consulta rápida na mesa
 
+**Para jogar com as regras atuais, use [CONSULTA_RAPIDA_V1.md](CONSULTA_RAPIDA_V1.md).** Este documento é preservado como registro histórico.
+
 **Guia histórico, ainda não revisado para a regra atual:** a mesa [rola vários d6 literais](DAMAGE_POOL_RULING.md) em todo ataque; as expressões antigas `dM×N` abaixo pertencem ao motor anterior e **não são fórmulas válidas para a mesa atual**. A versão mais recente de [Fast Strikes](FAST_STRIKES_RULING.md) usa duas edges em cada um de dois testes de acerto, com efeitos de um único braço escolhido; os braços podem mirar alvos diferentes. As recomendações de estratégia deste guia também foram obtidas sob regras antigas e precisam ser reavaliadas.
 
 **Plano em duelo próximo:** ataque com **Marreta** (`Melee +6` contra defesa Melee). Depois, ative **Escudo** com uma reação ao fim do turno **ou** espere um ataque inimigo acertar e ative como reação antes do dano. O Escudo fica ativo até desativação gratuita. **Desative antes de usar Marreta ou Lâmina.** Escudo é defesa separada, nunca um braço de Fast Strikes.

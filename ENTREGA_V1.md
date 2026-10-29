@@ -1,10 +1,12 @@
 # Blacklight — primeira versão estável, v1.0.0
 
+Atualização v1.0.1: acrescentada uma consulta rápida com as regras atuais e corrigida uma referência desatualizada ao estudo de Ram. O escopo certificado e o código de combate permanecem os mesmos.
+
 Esta entrega reúne uma base de simulação e pesquisa para Victor Halle, Rank 3. A estabilidade vale para o **recorte certificado de duelos físicos entre duas fichas compatíveis** e o corredor limitado descritos em [CERTIFICACAO_FUNDACAO.md](CERTIFICACAO_FUNDACAO.md). O pacote também contém pesquisas e funções experimentais claramente identificadas: elas não recebem automaticamente a mesma certificação.
 
 ## Como usar agora
 
-- Para jogar com Victor, comece pelo [guia provisório de mesa](GUIA_PROVISORIO_ATUAL.md). Ele descreve as armas, Fast Strikes, Escudo, Riposte, cura e Ram conforme as decisões disponíveis, e explica onde ainda há dúvidas.
+- Para jogar com Victor, use a [consulta rápida atual](CONSULTA_RAPIDA_V1.md) e o [guia provisório de mesa](GUIA_PROVISORIO_ATUAL.md). Eles descrevem as armas, Fast Strikes, Escudo, Riposte, cura e Ram conforme as decisões disponíveis, e explicam onde ainda há dúvidas.
 - Para entender a ficha e a origem dos dados, consulte [auditoria da ficha](CHARACTER_AUDIT.md) e [registro de regras](RULES_AUDIT.md).
 - Para executar o programa, veja as instruções do [README](README.md). É um projeto em Python com execução por comandos, não um aplicativo com interface gráfica. Não é necessário comprar um serviço para executar localmente.
 - Para ver o estado de cada parte, consulte [estado do projeto](PROJECT_STATUS.md); para reproduzir ou comparar resultados, consulte [versionamento dos resultados](RESULT_VERSIONING.md).

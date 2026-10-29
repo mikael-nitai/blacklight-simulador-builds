@@ -1,5 +1,7 @@
 # Blacklight Rank 3 — guia provisório para a mesa
 
+Para consulta durante a sessão, use a [versão resumida atual](CONSULTA_RAPIDA_V1.md).
+
 Este guia reúne as decisões que você transmitiu para a ficha atual de Victor:
 Health 150, Focus 90, Melee 6, Mighty 3 e Sturdy 1. **É provisório:** os
 resultados de estratégia ainda não cobrem todas as situações e adversários.

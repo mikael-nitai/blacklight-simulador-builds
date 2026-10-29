@@ -33,7 +33,8 @@ Não transformar essas questões em regras certas apenas com base no nome da
 manobra.
 
 Esta decisão não modifica retroativamente os arquivos de resultados. Há um
-[duelo experimental limitado com Ram desarmado](RAM_PRONE_EXPERIMENT.md), mas
-nenhum estudo estatístico preservado inclui essa reação. O
+[duelo experimental limitado com Ram desarmado](RAM_PRONE_EXPERIMENT.md) e,
+posteriormente, foi preservada uma [exploração com Ram e Crossbones parcial](RAM_CROSSBONES_EXPLORATION_REPORT.md).
+Ela é limitada ao cenário e às políticas descritas, sem conclusão universal. O
 [checkpoint anterior](RAM_CHECKPOINT_EXPERIMENT.md) permanece histórico e
 interrompe a execução logo após o golpe.

@@ -1,6 +1,6 @@
 # Blacklight: simulador de duelos restritos
 
-**Primeira entrega v1.0.0:** comece pelo [relatório de entrega](ENTREGA_V1.md) e pelo [guia de mesa](GUIA_PROVISORIO_ATUAL.md). A versão estável cobre o recorte certificado de duelos físicos e corredor; grupo, Focus, Ram, agarrão e adversários parciais permanecem experimentais, conforme o relatório.
+**Primeira entrega v1.0.0:** comece pelo [relatório de entrega](ENTREGA_V1.md), pelo [guia de mesa](GUIA_PROVISORIO_ATUAL.md) e pela [consulta rápida atual](CONSULTA_RAPIDA_V1.md). A versão estável cobre o recorte certificado de duelos físicos e corredor; grupo, Focus, Ram, agarrão e adversários parciais permanecem experimentais, conforme o relatório.
 
 **Regra atual em 27/10/2026:** o [duelo genérico já executa o novo Fast Strikes](SPLIT_FAST_SPEC.md): um teste por braço, ambos antes dos efeitos, escolha prévia de um único braço para efeitos, Escudo antes do dano e ambos os danos/efeitos antes de Riposte. O usuário confirmou que os braços podem mirar alvos distintos. Os experimentos `pool_v2` preservam o contrato anterior e são históricos quanto ao novo Fast. O [corredor de duas fichas](CURRENT_CORRIDOR.md) também usa a regra atual; a migração de grupo começou, mas continua experimental e sem validação suficiente. Nenhuma taxa antiga mede essa versão.
 

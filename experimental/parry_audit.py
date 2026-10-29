@@ -3,9 +3,10 @@
 from .smg_audit import audit_submachine_duel
 
 
-def audit_parry_duel(result, profiles, *, ranged_weapons, **context):
+def audit_parry_duel(result, profiles, *, ranged_weapons, nested_reactions_first=False, **context):
     profiles = tuple(profiles)
-    if len(profiles) != 2 or len({p.name for p in profiles}) != 2:
+    if (len(profiles) != 2 or len({p.name for p in profiles}) != 2
+            or type(nested_reactions_first) is not bool):
         raise ValueError('Exactly two distinct profiles are required')
     if any('point_blank_parry' in p.powers and (p.rank < 2 or p.ranged_range < 1)
            or 'fast_hands' in p.powers and (p.rank < 3 or 'point_blank_parry' not in p.powers)
@@ -21,7 +22,7 @@ def audit_parry_duel(result, profiles, *, ranged_weapons, **context):
     stunned = dict.fromkeys(names, False)
     spent = {p.name: set() for p in profiles}
     reset_expected, reset_seen = set(), set()
-    failed, queued, pending_consideration = {}, set(), []
+    failed, failed_reactions, queued, pending_consideration = {}, {}, set(), []
     issues, pending, open_fast = [], None, None
     distance = context.get('initial_distance')
     log = result.log
@@ -73,6 +74,7 @@ def audit_parry_duel(result, profiles, *, ranged_weapons, **context):
             trigger = event.get('trigger')
             if event.get('success') is False:
                 failed[trigger] = (actor, target, event.get('mode'))
+                failed_reactions[trigger] = event.get('reaction') is True
             if event.get('reaction_power') == 'point_blank_parry':
                 if (pending is None or pending.get('attack') is not None
                         or (actor, target, event.get('source_trigger')) !=
@@ -99,7 +101,11 @@ def audit_parry_duel(result, profiles, *, ranged_weapons, **context):
             else:
                 queued.add(trigger)
                 if actor in names and 'point_blank_parry' in names[actor].powers:
-                    pending_consideration.append((actor, event.get('source'), trigger))
+                    item = (actor, event.get('source'), trigger)
+                    if nested_reactions_first and failed_reactions.get(trigger, False):
+                        pending_consideration.insert(0, item)
+                    else:
+                        pending_consideration.append(item)
         elif kind == 'reaction_considered':
             expected = pending_consideration.pop(0) if pending_consideration else None
             if (expected is None or (actor, event.get('source'), event.get('trigger')) != expected

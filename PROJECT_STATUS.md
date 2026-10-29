@@ -1,5 +1,10 @@
 # Estado do projeto completo — 27/10/2026
 
+**Reações durante agarrão:** [Riposte e Point-Blank Parry experimentais](ENTANGLED_REACTION_EXPERIMENT.md)
+foram combinados com os ataques dos envolvidos e com uma fila auditada de
+reações aninhadas. Autoacerto e ataques de terceiros continuam pendentes; a
+ficha oficial de Crossbones e as decisões ambíguas ainda não estão completas.
+
 **Ataques durante agarrão:** [uma extensão experimental](ENTANGLED_ATTACK_EXPERIMENT.md)
 permite ataques próximos entre os dois envolvidos, incluindo Fast Strikes, com
 duas hipóteses explícitas para trouble adicional. Autoacerto, terceiros,

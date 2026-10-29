@@ -5,10 +5,12 @@ from dataclasses import replace
 from .grappling_duel_audit import audit_grappling_duel
 
 
-def audit_entangled_attacks(result, profiles, *, inside_attack_trouble, **context):
+def audit_entangled_attacks(result, profiles, *, inside_attack_trouble,
+                            allow_reaction_ranged=False, **context):
     profiles = tuple(profiles)
     names = {p.name for p in profiles}
-    if len(profiles) != 2 or len(names) != 2 or type(inside_attack_trouble) is not bool:
+    if (len(profiles) != 2 or len(names) != 2 or type(inside_attack_trouble) is not bool
+            or type(allow_reaction_ranged) is not bool):
         raise ValueError('Invalid entangled attack audit context')
     holder, victim, pinned = None, None, False
     pending, extras, projection, issues = {}, {}, [], []
@@ -33,7 +35,8 @@ def audit_entangled_attacks(result, profiles, *, inside_attack_trouble, **contex
             amount = int(expected_pinned) + int(inside_attack_trouble)
             if (holder is None or actor not in (holder, victim) or target not in (holder, victim)
                     or actor == target or type(trigger) is not int or trigger < 1 or trigger in extras
-                    or event.get('mode') == 'ranged' or not isinstance(event.get('mode'), str)
+                    or event.get('mode') == 'ranged' and not allow_reaction_ranged
+                    or not isinstance(event.get('mode'), str)
                     or type(event.get('pinned')) is not bool or event['pinned'] is not expected_pinned
                     or type(event.get('inside_attack_trouble')) is not bool
                     or event['inside_attack_trouble'] is not inside_attack_trouble
@@ -48,6 +51,10 @@ def audit_entangled_attacks(result, profiles, *, inside_attack_trouble, **contex
             if holder is not None:
                 if pending.pop(trigger, None) != (actor, target, event.get('mode')):
                     issues.append(f'event {seq}: missing entangled attack check')
+                if (event.get('mode') == 'ranged' and
+                        (not allow_reaction_ranged or event.get('reaction') is not True
+                         or event.get('reaction_power') != 'point_blank_parry')):
+                    issues.append(f'event {seq}: ranged attack while held is not a Point-Blank Parry')
                 if event.get('knockback_selected') is not False:
                     issues.append(f'event {seq}: entangled knockback is unsupported')
             elif trigger in pending:

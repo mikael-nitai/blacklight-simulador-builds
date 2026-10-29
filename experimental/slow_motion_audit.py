@@ -42,7 +42,9 @@ def audit_slow_motion_duel(result, profiles, *, seed, max_rounds, initial_distan
                     or following.get('actor') != event.get('attacker')
                     or following.get('target') != actor
                     or following.get('trigger') != event.get('trigger')
-                    or event.get('before_roll') is not True or event.get('added_troubles') != 1):
+                    or event.get('before_roll') is not True
+                    or type(event.get('added_troubles')) is not int
+                    or event.get('added_troubles') != 1):
                 issues.append(f'event {seq}: illegal or unpaired Slow-Motion Dodge')
         elif kind == 'attack':
             attacker, target = names.get(actor), names.get(event.get('target'))

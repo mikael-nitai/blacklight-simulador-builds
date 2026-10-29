@@ -30,3 +30,15 @@ com Double Tap neste host. As mesmas restrições e ambiguidades do host de Ram
 continuam valendo, incluindo a rejeição de autoincapacitação de Ram e a
 incerteza sobre ataques desarmados de personagens não Heroic que carregam
 armas. Não usar este experimento como uma estimativa de desempenho estatístico.
+
+## Combate completo reproduzível
+
+O arquivo [double_tap_victor_duel_001.json](experimental_outputs/double_tap_victor_duel_001.json)
+registra o combate completo gerado pelo commit `0c19f1a` e semente `7`, com a
+ficha atual de Victor e um atirador sintético com 300 Health. Nele aparecem um
+Double Tap fantástico, sangramento, Fast Strikes e cura; a auditoria passa e a
+geração foi reproduzida byte a byte. SHA-256 do arquivo:
+`5452004b122a0676d1e839d85cddec2a64ba093a41894b918ef8bb9b1718636a`.
+O exemplo foi escolhido para mostrar interações, não para inferir probabilidade
+de vitória ou recomendar uma estratégia. As fontes congeladas pertencem ao
+commit registrado no próprio arquivo.

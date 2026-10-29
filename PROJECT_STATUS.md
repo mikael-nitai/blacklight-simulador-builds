@@ -1,5 +1,10 @@
 # Estado do projeto completo — 27/10/2026
 
+**Adversário adaptativo experimental:** uma [política de aproximação e ataque
+corporal explicitamente letal](ADAPTIVE_ARMED_MELEE_EXPERIMENT.md) permite ao
+recorte armado de Crossbones reagir ao Escudo observado. A cobertura continua
+limitada e não representa a ficha completa nem uma conclusão estatística.
+
 **Exploração com Ram e Crossbones parcial:** [12.000 inícios](RAM_CROSSBONES_EXPLORATION_REPORT.md)
 foram auditados, e 36 registros foram reproduzidos. Contra uma política de
 recuo, a maioria permaneceu inconclusiva; os dados são exploratórios e não

@@ -14,13 +14,18 @@ class NonlethalRamProneDuel(RamProneDuel):
 
     execution_scope = 'experimental_nonlethal_ram_prone_duel'
 
+    def _allow_declared_armed_bare_attack(self, actor, target_actor, kind):
+        """Subclasses may explicitly support a declared attack; default stays blocked."""
+        return False
+
     def _attack(self, actor, kind, *, reaction=False, offhand=None, fast_strike=None,
                 prepared_check=None, target_actor=None):
         target_actor = self._target_index(actor, target_actor)
         attacker, target = self.fighters[actor], self.fighters[target_actor]
         p, q = attacker.profile, target.profile
         bare = kind in ('melee', 'fast_strikes') and offhand is None
-        if bare and not p.heroic and (p.weapons or p.ranged_range):
+        if (bare and not p.heroic and (p.weapons or p.ranged_range)
+                and not self._allow_declared_armed_bare_attack(actor, target_actor, kind)):
             raise IllegalAction('Default nonlethal status is unclear for an armed profile')
         eligible = bare and not p.heroic and not p.weapons and not p.ranged_range
         before = target.health

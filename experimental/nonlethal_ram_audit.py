@@ -5,7 +5,7 @@ from dataclasses import replace
 from .ram_prone_audit import audit_ram_prone_duel
 
 
-def audit_nonlethal_ram_duel(result, profiles, **context):
+def audit_nonlethal_ram_duel(result, profiles, *, declared_armed_lethal=(), **context):
     """Check the unarmed floor, then reuse existing experimental duel ledgers."""
     profiles = tuple(profiles)
     if len(profiles) != 2 or profiles[0].name == profiles[1].name:
@@ -13,6 +13,10 @@ def audit_nonlethal_ram_duel(result, profiles, **context):
     if not isinstance(result.log, (tuple, list)) or any(not isinstance(event, dict) for event in result.log):
         return ['Invalid nonlethal experimental log']
     names = {profile.name: profile for profile in profiles}
+    if (not isinstance(declared_armed_lethal, tuple)
+            or any(not isinstance(name, str) or name not in names for name in declared_armed_lethal)
+            or len(set(declared_armed_lethal)) != len(declared_armed_lethal)):
+        raise ValueError('Declared lethal actors must be a tuple of distinct combatant names')
     issues = []
     for event in result.log:
         if event.get('type') != 'attack':
@@ -24,7 +28,8 @@ def audit_nonlethal_ram_duel(result, profiles, **context):
         p, q = names[actor], names[target]
         bare = event.get('mode') in ('melee', 'fast_strikes') and event.get('offhand') is None
         qualified = bare and not p.heroic and not p.weapons and not p.ranged_range
-        if bare and not p.heroic and (p.weapons or p.ranged_range):
+        if (bare and not p.heroic and (p.weapons or p.ranged_range)
+                and (actor not in declared_armed_lethal or event.get('declared_lethality') != 'lethal')):
             issues.append(f'event {seq}: armed profile has an unresolved bare attack')
         keys = ('nonlethal_floor', 'nonlethal_raw_after', 'nonlethal_prevented')
         if not qualified:

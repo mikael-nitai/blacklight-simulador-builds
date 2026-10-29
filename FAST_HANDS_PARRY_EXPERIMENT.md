@@ -33,3 +33,11 @@ certificado. O host ainda aborta auto-incapacitação por Ram, não modela
 submetralhadora contra múltiplos alvos e, conservadoramente, não permite usar
 Point-Blank Parry contra atacante inconsciente. Outras habilidades de
 Crossbones, escolhas táticas e fichas completas continuam pendentes.
+
+Um [combate completo de demonstração](experimental_outputs/crossbones_parry_victor_001.json)
+usa a ficha atual de Victor contra o recorte ampliado de Crossbones, com seed
+`115`. A trilha contém Point-Blank Parry pago pela reação de Fast Hands, lista
+os poderes omitidos e foi auditada e reproduzida byte a byte. As fontes são do
+commit `49e6b3b`; o SHA-256 do arquivo é
+`464bdbbdefb1d6d238d408ff12f429735a5d2c1e8a6722248994a4e6022f399d`.
+É um exemplo selecionado, não uma comparação estatística.

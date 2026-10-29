@@ -113,7 +113,9 @@ Outra [exploração de agarrão](GRAPPLE_STRATEGY_EXPLORATION_REPORT.md) comparo
 escapar com continuar atacando contra Crossbones parcial. As duas políticas
 venceram todos os combates do recorte; a taxa de vitória não permite escolher
 entre elas. A penalidade entre personagens agarrados e o possível autoacerto
-continuam dependendo da interpretação da mesa.
+seguem a [interpretação de trabalho](GRAPPLE_TABLE_INTERPRETATION.md): uma
+trouble ao atacar o outro envolvido, sem presumir autoacerto. É uma leitura
+conservadora para o simulador, não uma decisão específica do mestre.
 
 Fontes de decisões: [Fast Strikes](FAST_STRIKES_RULING.md),
 [dados de dano](DAMAGE_POOL_RULING.md), [Escudo e Focus](FOCUS_RULING.md) e

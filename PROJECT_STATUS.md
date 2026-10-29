@@ -1,5 +1,15 @@
 # Estado do projeto completo — 27/10/2026
 
+**Focus com Fast Strikes atual:** [novo duelo experimental](MENTAL_PUNCH_SPLIT_EXPERIMENT.md)
+combina Mental Punch, Demoralized e Shattered com os dois testes de Fast Strikes
+e um auditor de Focus próprio. O adversário dos testes é sintético; não há
+novas estimativas de eficácia nem certificação de poderes mentais em geral.
+
+**Interpretação de trabalho para agarrão:** o usuário pediu seguir o livro ou
+uma leitura lógica conservadora. [O registro específico](GRAPPLE_TABLE_INTERPRETATION.md)
+adota trouble entre os envolvidos e não presume autoacerto, mantendo a outra
+variante para sensibilidade e sem atribuir essa escolha ao mestre.
+
 **Estudo exploratório do agarrão:** [8.000 inícios](GRAPPLE_STRATEGY_EXPLORATION_REPORT.md)
 compararam políticas de fuga e ataque em quatro combinações de hipóteses. Todas
 as células registraram 1.000 vitórias no recorte parcial; isso não distingue as

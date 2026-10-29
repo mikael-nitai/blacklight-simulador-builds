@@ -98,13 +98,15 @@ def audit_log(log: tuple[dict, ...] | list[dict],
               reaction_limits: dict[str, int] | None = None,
               movement_limits: dict[str, int] | None = None,
               allow_experimental_parry: bool = False,
-              allow_experimental_stopping: bool = False) -> list[str]:
+              allow_experimental_stopping: bool = False,
+              allow_experimental_grappling: bool = False) -> list[str]:
     """Audit ledgers; supplied limits also check capabilities against profiles.
 
     Without the optional limits, a self-consistent ledger cannot establish how
     many reactions or movement spaces a combatant was actually entitled to.
     """
-    if type(allow_experimental_parry) is not bool or type(allow_experimental_stopping) is not bool:
+    if any(type(option) is not bool for option in (allow_experimental_parry,
+            allow_experimental_stopping, allow_experimental_grappling)):
         raise ValueError('Experimental audit option must be boolean')
     for limits in (reaction_limits, movement_limits):
         if limits is not None and (not isinstance(limits, dict)
@@ -242,7 +244,9 @@ def audit_log(log: tuple[dict, ...] | list[dict],
                              and event.get('reaction') is True and event.get('source') == 'point_blank_parry')
             stopping_cost = (allow_experimental_stopping and kind == 'focus_spent'
                              and event.get('source') == 'stopping_power')
-            if not reactive_cost and not stopping_cost:
+            grappling_cost = (allow_experimental_grappling and kind == 'focus_spent'
+                              and event.get('source') == 'grappling_technique')
+            if not reactive_cost and not stopping_cost and not grappling_cost:
                 standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
         elif kind == "shield_activate" and event["cost"] == "standard":
             standard_actions[turn_key] = standard_actions.get(turn_key, 0) + 1
@@ -295,7 +299,8 @@ def audit_log(log: tuple[dict, ...] | list[dict],
 
 
 def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles, *, ruleset=None,
-                       allow_experimental_parry=False, allow_experimental_stopping=False) -> list[str]:
+                       allow_experimental_parry=False, allow_experimental_stopping=False,
+                       allow_experimental_grappling=False) -> list[str]:
     """Audit a physical trace against profiles and, if supplied, its ruleset."""
     profiles = tuple(profiles)
     names = [profile.name for profile in profiles]
@@ -309,6 +314,7 @@ def audit_profiled_log(log: tuple[dict, ...] | list[dict], profiles, *, ruleset=
         movement_limits={p.name: p.run_speed for p in profiles},
         allow_experimental_parry=allow_experimental_parry,
         allow_experimental_stopping=allow_experimental_stopping,
+        allow_experimental_grappling=allow_experimental_grappling,
     )
     issues.extend(audit_profile_facts(log, profiles, allow_experimental_parry=allow_experimental_parry))
     if ruleset is not None:

@@ -1,8 +1,10 @@
 # Grappling Technique, Grabbed e Escape: transações experimentais
 
-Esta etapa **ainda não integra o poder aos duelos nem ao recorte de Crossbones**.
-São transações determinísticas para verificar a mecânica antes de conectar
-movimento, poderes, dano, políticas e fila de reações. Não geram taxas de vitória.
+Esta etapa integra as transações a um **duelo experimental restrito** e a um
+recorte ainda incompleto de Crossbones. O host usa ataques e dano existentes,
+mantém Grabbed/Pinned, permite Escape e registra a ordem de Escudo e reação.
+Suas limitações abaixo impedem tratá-lo como duelo completo ou usar esta etapa
+como estudo de eficácia. Nenhuma taxa de vitória foi gerada.
 
 ## Fontes e contrato
 
@@ -44,11 +46,26 @@ voluntária exige um agarrador consciente e não Stunned neste protótipo. Não
 há representação de múltiplos agarradores, incapacitação ou soltura automática,
 alcance estendido, efeitos sobre armas, ataques de terceiros contra personagens
 enredados, recursos de Focus especiais ou outras condições simultâneas. A
-interação exata de Escudo, dano e evento de agarrar precisa de integração e
-revisão; não se deve apresentar a função isolada como um simulador de combate.
+host usa duas hipóteses distintas para a identidade dos gatilhos de Escudo e
+Escape, selecionadas explicitamente. Enquanto o agarrão persiste, o agarrador
+pode esperar ou soltar e esperar; o alvo pode esperar ou tentar Escape. Outras
+ações, inclusive atacar, são rejeitadas embora possam ser legais no jogo. O
+host também recusa Grappling Technique de atacantes com Mighty até implementar
+a escolha entre o efeito especial e knockback. Ele não valida qualquer efeito
+de armas biológicas no agarrão e não é uma representação completa de combate.
 
 Os testes cobrem ações inválidas, acertos e erros, dano zerado, custo, reações,
 trocas de condição, auditoria independente das transições, todos os 216
 resultados iniciais de um exemplo de fuga e os 1.296 pares de resultado inicial
 e nova face em seu caso Pinned. Os auditores recebem fatos externos e não
 validam a origem do acerto ou do dano por si mesmos.
+
+No host, outro auditor reconstrói o ataque e a sequência das duas condições,
+confere o custo e a fuga contra as fichas e então delega aos verificadores
+físicos existentes. Uma bateria reproduz 50 sementes em cada hipótese de
+gatilho, verifica os rastros e falsifica custos, marcadores e rolagens. O
+adaptador `crossbones_grapple_subset.py` acrescenta Grappling Technique ao
+recorte anterior e mantém explícitas as demais omissões da ficha.
+Uma trilha individual pode ser gerada em um destino novo com
+`python -m scripts.crossbones_grapple_demo --output CAMINHO_NOVO`; ela usa a
+hipótese de gatilhos distintos e não é uma comparação estatística.

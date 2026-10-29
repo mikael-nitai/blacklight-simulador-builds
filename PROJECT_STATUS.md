@@ -1,9 +1,9 @@
 # Estado do projeto completo — 27/10/2026
 
 **Agarrar em desenvolvimento:** [transações experimentais de Grappling
-Technique e Escape](GRAPPLING_EXPERIMENT.md) cobrem custo, condições, fuga,
-movimento limitado e reações, mas ainda não integram o poder ao host de duelo
-ou à ficha parcial de Crossbones. Não há novos resultados de eficácia.
+Technique e Escape](GRAPPLING_EXPERIMENT.md) agora integram um duelo restrito
+e um recorte parcial de Crossbones, com auditoria e duas hipóteses de gatilho.
+As ações durante agarrão continuam limitadas; não há resultados de eficácia.
 
 **Adversário adaptativo experimental:** uma [política de aproximação e ataque
 corporal explicitamente letal](ADAPTIVE_ARMED_MELEE_EXPERIMENT.md) permite ao

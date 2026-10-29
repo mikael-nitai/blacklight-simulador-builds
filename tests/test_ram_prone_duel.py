@@ -160,6 +160,16 @@ class RamProneDuelTests(unittest.TestCase):
         with self.assertRaisesRegex(IllegalAction, 'Attack Stance'):
             duel.run()
 
+    def test_armed_nonhero_ram_fails_closed_when_nonlethal_status_is_unclear(self):
+        profiles = (profile('A', health=250, initiative=100, weapons=frozenset({'hammer'})),
+                    profile('B', health=250))
+        policies = (RamPronePolicy('A'), StationaryRamPolicy('B', always_wait=True, use_ram=False))
+        duel = RamProneDuel(profiles, policies, initial_prone=(False, False), seed=1,
+                            initial_distance=10, max_rounds=1, audit=True, action_registry=DEFAULT_ACTIONS)
+        with self.assertRaisesRegex(IllegalAction, 'nonlethal Ram status'):
+            duel.run()
+        self.assertFalse(any(event['type'] == 'ram_attack' for event in duel.log))
+
     def test_initially_prone_attacker_cannot_count_standing_as_full_speed(self):
         profiles = (profile('A', health=250, initiative=100), profile('B', health=250))
         policies = (RamPronePolicy('A'), StationaryRamPolicy('B', always_wait=True, use_ram=False))

@@ -37,7 +37,8 @@ def _physical_projection(result, profiles):
                 actor_metrics[f'damage_round{horizon}'] -= event['target_damage_applied']
         for name, old, new, damage in (
                 (target, before['target_health'], event['target_health_after'], event['target_damage_applied']),
-                (actor, before['attacker_health'], after['attacker_health'], impact['attacker_damage'])):
+                (actor, before['attacker_health'], event.get('attacker_health_after', after['attacker_health']),
+                 event['attacker_damage_applied'])):
             projected.append({'type': 'condition_tick', 'actor': name, 'round': event['round'],
                               'bonus_round': event['bonus_round'], 'rules': ['ACT-05'],
                               'condition': 'ram_audit_projection', 'intensity': damage,
@@ -48,11 +49,16 @@ def _physical_projection(result, profiles):
 
 
 def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
-                         expected_seed, max_rounds, ruleset, stack_stunned_edge=False):
+                         expected_seed, max_rounds, ruleset, stack_stunned_edge=False,
+                         self_damage_mode='reject_incapacitation', end_turn_healing_first=True):
     """Audit the full experimental result; never certify unsupported mechanics."""
     profiles = tuple(profiles)
     if len(profiles) != 2 or profiles[0].name == profiles[1].name:
         raise ValueError('Exactly two distinct profiles are required')
+    if self_damage_mode not in ('reject_incapacitation', 'lethal_impact', 'nonlethal_impact'):
+        raise ValueError('Unknown self-damage hypothesis')
+    if type(end_turn_healing_first) is not bool:
+        raise ValueError('Declare the end-turn healing order')
     names = {p.name: p for p in profiles}
     if not isinstance(result.log, (tuple, list)) or any(not isinstance(e, dict) for e in result.log):
         return ['Invalid experimental duel log']
@@ -63,7 +69,7 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                'shield_activate', 'shield_deactivate', 'reaction_spent', 'reaction_queued',
                'heal', 'knockback', 'knockback_declined', 'limb_effect', 'prone_initial',
                'prone_stand', 'prone_check', 'prone_start', 'ram_opportunity', 'ram_declined',
-               'ram_attack'}
+               'ram_attack', 'incapacity_dead', 'incapacity_contract'}
     if (type(expected_seed) is not int or type(max_rounds) is not int or max_rounds < 1
             or type(result.rounds) is not int or type(result.turns) is not int
             or type(result.bonus_round_occurred) is not bool
@@ -82,6 +88,17 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
     issues = audit_prone_log(result.log, profiles, initial_prone=initial_prone,
                              initial_distance=initial_distance, stack_stunned_edge=stack_stunned_edge)
     issues += audit_ram_opportunities(result.log, profiles)
+    contracts = [(index, event) for index, event in enumerate(result.log)
+                 if event.get('type') == 'incapacity_contract']
+    if self_damage_mode == 'reject_incapacitation':
+        if contracts:
+            issues.append('Unexpected self-incapacity contract')
+    elif (len(contracts) != 1 or contracts[0][0] != sum(initial_prone)
+          or contracts[0][1].get('mode') != self_damage_mode
+          or contracts[0][1].get('simultaneous') is not True
+          or contracts[0][1].get('heal_living_at_turn_end') is not True
+          or contracts[0][1].get('healing_first') is not end_turn_healing_first):
+        issues.append('Missing or invalid self-incapacity contract')
     health = {p.name: p.max_health for p in profiles}
     reactions = {p.name: None for p in profiles}
     shield = {p.name: p.shield_active for p in profiles}
@@ -90,11 +107,15 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
     dodging = dict.fromkeys(names, False)
     prone = {p.name: value for p, value in zip(profiles, initial_prone)}
     turns = dict.fromkeys(names, 0)
-    opportunity, pending, expect_queue = None, None, None
+    opportunity, pending, expect_queue, dead_end = None, None, None, None
     for event in result.log:
         kind, actor, target, seq = (event.get('type'), event.get('actor'),
                                      event.get('target'), event.get('seq'))
         started_ram = False
+        if dead_end is not None:
+            if kind != 'turn_end' or actor != dead_end:
+                issues.append(f'event {seq}: dead actor must end the turn without effects')
+            dead_end = None
         if expect_queue is not None:
             if (kind != 'reaction_queued' or (actor, event.get('source'), event.get('trigger')) != expect_queue):
                 issues.append(f'event {seq}: missing Ram miss/Riposte queue')
@@ -141,6 +162,22 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
             reactions[actor] = event.get('remaining')
         if kind == 'turn_start':
             turns[actor] += 1
+        if (self_damage_mode != 'reject_incapacitation' and kind in ('heal', 'condition_tick')
+                and type(health[actor]) is int and health[actor] <= -names[actor].max_health):
+            issues.append(f'event {seq}: dead actor received an automatic end-turn effect')
+        if self_damage_mode == 'reject_incapacitation' and kind == 'incapacity_dead':
+            issues.append(f'event {seq}: death marker requires an explicit hypothesis')
+        if self_damage_mode != 'reject_incapacitation' and kind == 'incapacity_dead':
+            if (type(health[actor]) is not int or health[actor] > -names[actor].max_health
+                    or type(event.get('health')) is not int or event['health'] != health[actor]
+                    or event.get('mode') != self_damage_mode):
+                issues.append(f'event {seq}: invalid death boundary')
+            dead_end = actor
+        if (self_damage_mode != 'reject_incapacitation' and kind == 'turn_end'
+                and type(health[actor]) is int and health[actor] <= -names[actor].max_health
+                and (result.log[event['seq'] - 2].get('type') != 'incapacity_dead'
+                     or result.log[event['seq'] - 2].get('actor') != actor)):
+            issues.append(f'event {seq}: dead actor ended turn without death marker')
         if kind == 'attack' and target in health:
             health[target] = event.get('health_after')
         elif kind in ('heal', 'condition_tick'):
@@ -189,7 +226,8 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
                        'reactions': pending['reactions_before'], 'attacker_able': True,
                        'target_prone': prone[target]}
                 or reactions[actor] != before['reactions'] - 1 or shield[actor] or stance[actor]
-                or stunned[actor] or after['attacker_health'] <= 0
+                or stunned[actor] or not p.heroic and (p.weapons or p.ranged_range)
+                or self_damage_mode == 'reject_incapacitation' and after['attacker_health'] <= 0
                 or first['actor'] != actor or first['target'] != target or first['turn'] != turns[actor]
                 or first['before'] != marker.get('first_before') or first['after'] != marker.get('first_after')
                 or second['after'] != marker.get('second_after') or first['speed'] != p.run_speed):
@@ -214,25 +252,34 @@ def audit_ram_prone_duel(result, profiles, *, initial_prone, initial_distance,
             issues.append(f'event {seq}: invalid Shield reaction to Ram')
         # Bare Ram has no explicit lethal declaration in this host.
         final_target = max(-q.max_health + 1, after['target_health'])
+        final_attacker = (max(-p.max_health + 1, after['attacker_health'])
+                          if self_damage_mode == 'nonlethal_impact' else after['attacker_health'])
         applied = before['target_health'] - final_target
+        self_applied = before['attacker_health'] - final_attacker
         faces = params['target_faces']
         raw = max(0, sum(6 if face == 1 else face for face in faces) + p.melee) if params['success'] and params['full_dice'] else 0
         raw *= 3 if params['fantastic_success'] else 2
         mitigation = max(0, raw - impact['target_damage'])
+        expected_scope = ('experimental bare Ram; simultaneous damage; no self-incapacitation'
+                          if self_damage_mode == 'reject_incapacitation' else
+                          'experimental bare Ram; simultaneous damage; self-incapacity hypothesis')
+        actor_after = event.get('attacker_health_after', after['attacker_health'])
+        recorded_mode = event.get('self_damage_mode', 'reject_incapacitation')
         if (any(type(event.get(key)) is not int for key in
                 ('target_health_after', 'target_damage_applied', 'attacker_damage_applied', 'target_damage_mitigated'))
+                or type(actor_after) is not int or actor_after != final_attacker or recorded_mode != self_damage_mode
                 or event.get('target_health_after') != final_target or event.get('target_damage_applied') != applied
-                or event.get('attacker_damage_applied') != impact['attacker_damage']
+                or event.get('attacker_damage_applied') != self_applied
                 or event.get('target_damage_mitigated') != mitigation
-                or event.get('scope') != 'experimental bare Ram; simultaneous damage; no self-incapacitation'):
+                or event.get('scope') != expected_scope):
             issues.append(f'event {seq}: Ram applied damage or scope mismatch')
-        health[actor], health[target] = after['attacker_health'], final_target
+        health[actor], health[target] = final_attacker, final_target
         if final_target <= 0:
             stance[target] = False
         if not params['success']:
             expect_queue = (target, actor, event['trigger'])
         pending = None
-    if opportunity is not None or pending is not None or expect_queue is not None:
+    if opportunity is not None or pending is not None or expect_queue is not None or dead_end is not None:
         issues.append('Experimental duel ends with unresolved Ram event')
     if issues:
         return issues

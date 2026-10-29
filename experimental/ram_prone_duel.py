@@ -35,6 +35,17 @@ class RamProneDuel(RamOpportunityDuel, ProneDuel):
         if any(not callable(getattr(policy, 'choose_ram', None)) for policy in self.policies):
             raise ValueError('Both policies must explicitly decide whether to use Ram')
 
+    def _ram_self_health(self, attacker, raw_after):
+        if raw_after <= 0:
+            raise IllegalAction('Ram self-incapacitation timing is unresolved; abort this experimental duel')
+        return raw_after
+
+    def _ram_self_damage_mode(self):
+        return 'reject_incapacitation'
+
+    def _ram_scope(self):
+        return 'experimental bare Ram; simultaneous damage; no self-incapacitation'
+
     def _on_ram_opportunity(self, actor, first, second):
         choice = self.policies[actor].choose_ram(self.observe(actor))
         if type(choice) is not bool:
@@ -49,6 +60,8 @@ class RamProneDuel(RamOpportunityDuel, ProneDuel):
         p, q = attacker.profile, target.profile
         if attacker.shield_active or attacker.stance:
             raise IllegalAction('Ram with an active attacker Shield or Attack Stance is unsupported')
+        if not p.heroic and (p.weapons or p.ranged_range):
+            raise IllegalAction('Default nonlethal Ram status is unclear for an armed profile')
         before = RamState(attacker.health, target.health, attacker.reactions,
                           attacker.conscious and attacker.stunned_by is None, self.prone[target_actor])
         attacker.reactions -= 1
@@ -80,14 +93,16 @@ class RamProneDuel(RamOpportunityDuel, ProneDuel):
         issues = audit_rolled_table_ram(record)
         if issues:
             raise RuntimeError(f'Ram transaction failed audit: {issues}')
-        if record['after']['attacker_health'] <= 0:
-            raise IllegalAction('Ram self-incapacitation timing is unresolved; abort this experimental duel')
+        attacker_after = self._ram_self_health(attacker, record['after']['attacker_health'])
+        if (type(attacker_after) is not int
+                or not record['after']['attacker_health'] <= attacker_after <= before.attacker_health):
+            raise RuntimeError('Experimental self-damage rule produced an invalid Health transition')
         raw_target_health = record['after']['target_health']
         # This host only offers an undeclared-lethality, weaponless Ram; Core
         # p.36 treats weaponless attacks as nonlethal unless stated otherwise.
         target_after = max(-q.max_health + 1, raw_target_health)
         applied_target = target.health - target_after
-        self_damage = record['impact']['attacker_damage']
+        self_damage = before.attacker_health - attacker_after
         multiplier = 3 if hit.success and hit.fantastic else 2
         raw_regular = (max(0, sum(6 if face == 1 else face for face in target_faces) + p.melee)
                        if hit.success and full_dice > 0 else 0)
@@ -100,7 +115,7 @@ class RamProneDuel(RamOpportunityDuel, ProneDuel):
         attacker.damage_taken += self_damage
         target.damage_taken += applied_target
         target.damage_mitigated += mitigation
-        attacker.health = record['after']['attacker_health']
+        attacker.health = attacker_after
         target.health = target_after
         if not target.conscious:
             target.stance = False
@@ -108,8 +123,9 @@ class RamProneDuel(RamOpportunityDuel, ProneDuel):
                      trigger=check.trigger, mode='melee', edges=spec.edges, troubles=spec.troubles,
                      transaction=record, target_health_after=target_after,
                      target_damage_applied=applied_target, attacker_damage_applied=self_damage,
+                     attacker_health_after=attacker_after, self_damage_mode=self._ram_self_damage_mode(),
                      target_damage_mitigated=mitigation,
-                     scope='experimental bare Ram; simultaneous damage; no self-incapacitation')
+                     scope=self._ram_scope())
         if hit.success and hit.fantastic and not self.prone[target_actor]:
             self.prone[target_actor] = True
             self._record('prone_start', ('ACT-05',), actor=q.name, source=p.name, trigger=check.trigger)

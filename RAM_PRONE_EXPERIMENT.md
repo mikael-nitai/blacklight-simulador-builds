@@ -13,13 +13,17 @@ O alvo pode ativar Escudo após o acerto e antes do dano; sua redução soma com
 Sturdy. Em erro, a fila permite Riposte, inclusive reações posteriores dentro
 dos orçamentos existentes. Este Ram desarmado sem declaração de letalidade
 aplica ao alvo o limite não letal, com ou sem Heroic, conforme o Core p. 36;
-veja [a lacuna encontrada no duelo físico geral](NONLETHAL_GAP.md). A política de Ram escolhida aqui não
-seleciona knockback de Mighty; um Escudo ativo no atacante faz a política padrão
-recusar Ram, sem presumir uma interação não decidida. Attack Stance ativo no
+veja [a lacuna encontrada no duelo físico geral](NONLETHAL_GAP.md). Para um
+atacante não Heroic com armas ou ataque à distância no perfil, o host bloqueia
+Ram porque não estabelece se ele está armado. A política aqui não seleciona
+knockback de Mighty; um Escudo ativo no atacante faz a política padrão recusar
+Ram, sem presumir uma interação não decidida. Attack Stance ativo no
 atacante é recusado. O dano dos dois participantes é simultâneo como hipótese
 experimental; se o dano próprio incapacitar o atacante, a simulação é
 interrompida em vez de adivinhar a ordem dos efeitos. Nenhum combate que falhe
 deve ser descartado silenciosamente em uma futura bateria.
+Um [host separado com hipóteses explícitas](RAM_INCAPACITY_EXPERIMENT.md) testa
+essa fronteira sem alterar o comportamento padrão nem definir a decisão da mesa.
 
 O host é **experimental** e não entra no runner certificado. Não implementa
 Ram com armas biológicas, movimento dividido, rastejar, cobertura, Karma, Focus,

@@ -13,8 +13,27 @@ o chamador informe se movimento é permitido e quanto resta. Os testes
 `tests/test_prone_primitives.py` incluem atacante e alvo caídos simultaneamente,
 ataque próximo ou à distância, custo exato e ausência de movimento.
 
-Essas funções **não estão integradas ao motor** e não alteram lutas ou resultados.
-Elas não definem prioridade entre gatilhos, interação com movimento dividido,
-efeitos de outros poderes, imunidades, reação Ram ou acessibilidade de terreno.
-Antes da integração, essas fronteiras devem ser verificadas em conjunto com os
-testes de ação, condições, reações, logs e replays das versões preservadas.
+## Duelo experimental
+
+`experimental/prone_duel.py` usa essas contribuições em um host separado de
+duelo físico de dois personagens em campo aberto. A política recebe observações
+imutáveis com as condições dos dois e escolhe se tenta levantar. Levantar
+consome uma casa do movimento escolhido; os ataques usam edge/trouble próprios
+de Prone junto das demais fontes. Se o personagem decidir permanecer no chão,
+esse host aceita apenas deslocamento zero: **não modelar rastejar é uma
+restrição experimental**, não uma proibição geral da regra. Ele não implementa
+movimento dividido, terreno, imunidades ou Ram.
+
+O host exige políticas que decidam sobre levantar, rejeita mecânicas fora do
+catálogo físico e é recusado pelo runner certificado. Os resultados antigos não
+mudam. `experimental/prone_duel_audit.py` reconstrói independentemente a
+condição, o custo de levantar e as contribuições de edge/trouble, incluindo os
+dois testes de Fast; seu uso acompanha as auditorias físicas, espaciais e de
+resultado já existentes. `tests/test_prone_duel.py` cobre replays sem Prone,
+acertos, postura de ambos, Fast, Escudo, Stunned e Riposte em confrontos com a
+ficha atual de Victor e um espelho sintético, além de falsificações de registro.
+
+Não há ainda uma integração entre esse host e o checkpoint de Ram. Antes de
+usar combate continuado com Ram, é preciso conectar a aplicação de Prone,
+revisar a ordem dos efeitos, reações e incapacitação, e validar as interações
+pendentes sem substituir resultados históricos.

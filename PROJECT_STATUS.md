@@ -4,6 +4,9 @@
 Technique e Escape](GRAPPLING_EXPERIMENT.md) agora integram um duelo restrito
 e um recorte parcial de Crossbones, com auditoria e duas hipóteses de gatilho.
 As ações durante agarrão continuam limitadas; não há resultados de eficácia.
+Uma [trilha individual](experimental_outputs/crossbones_grapple_demo_v1.json)
+foi reproduzida exatamente a partir de 112 fontes no commit `b8e46d4`;
+SHA-256 `b58c4073007c0ac808df28c02c95a68cabd4ea2aeb8549e622154d2c3d10ba31`.
 
 **Adversário adaptativo experimental:** uma [política de aproximação e ataque
 corporal explicitamente letal](ADAPTIVE_ARMED_MELEE_EXPERIMENT.md) permite ao

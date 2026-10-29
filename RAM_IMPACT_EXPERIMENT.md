@@ -34,3 +34,18 @@ reduções se aplicam, ordenar danos e incapacidade, respeitar o limite Heroic,
 conectar o gatilho e o gasto de reação, resolver interações com armas, Escudo,
 Riposte e Prone, e revisar logs e testes de não regressão. Os resultados
 históricos continuam usando seus contratos preservados.
+
+## Transação isolada
+
+`experimental/ram_transaction.py` combina o gatilho unidimensional com uma das
+hipóteses de impacto em um estado sintético imutável. Gasta uma reação mesmo
+quando o ataque erra, propõe simultaneamente as perdas de Health, preserva
+Prone existente e aplica Prone no fantástico. Rejeita gatilho ausente, reação
+indisponível, incapacidade prévia e dados inválidos. Os testes estão em
+`tests/test_ram_transaction.py`.
+
+O teste já recebe um resultado de ataque e as faces de dano; não rola dados nem
+escolhe uma ação. O cálculo simultâneo é uma **hipótese**, não uma resolução
+oficial da ordem entre danos e efeitos. Essa transação não inclui Heroic,
+Escudo, Riposte, efeitos de armas ou outras condições, nem está integrada ao
+motor. Não executar estudos de eficácia usando-a como combate completo.
